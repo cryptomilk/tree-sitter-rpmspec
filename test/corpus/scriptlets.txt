@@ -23,10 +23,8 @@ Prep Section (%setup)
   (prep_scriptlet
     (section_name)
     (shell_block
-      (macro_call
-        (macro_simple_expansion
-          (identifier))
-          (word)))))
+      (setup_macro
+        (setup_flag)))))
 
 ===============================================================================
 Prep Section (%autosetup)
@@ -65,3 +63,114 @@ Build section (%build)
       (macro_call
         (macro_simple_expansion
           (identifier))))))
+
+===============================================================================
+Prep Section (%setup with flags)
+===============================================================================
+
+%prep
+%setup -c -q
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (setup_macro
+        (setup_flag)
+        (setup_flag)))))
+
+===============================================================================
+Prep Section (%setup with source options)
+===============================================================================
+
+%prep
+%setup -a 0 -b 1
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (setup_macro
+        (setup_source_option
+          (integer))
+        (setup_source_option
+          (integer))))))
+
+===============================================================================
+Prep Section (%setup with name option)
+===============================================================================
+
+%prep
+%setup -n custom-directory
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (setup_macro
+        (setup_name_option
+          (word))))))
+
+===============================================================================
+Prep Section (%setup complex combination)
+===============================================================================
+
+%prep
+%setup -c -n %{name} -a 1 -q
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (setup_macro
+        (setup_flag)
+        (setup_name_option
+          (macro_expansion
+            (identifier)))
+        (setup_source_option
+          (integer))
+        (setup_flag)))))
+
+===============================================================================
+Prep Section (%setup standalone at top level)
+===============================================================================
+
+%setup -D -T
+
+-------------------------------------------------------------------------------
+
+(spec
+  (setup_macro
+    (setup_flag)
+    (setup_flag)))
+
+===============================================================================
+Prep Section (%setup edge cases)
+===============================================================================
+
+%prep
+%setup -C
+%setup -a 10 -n "quoted directory name"
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (setup_macro
+        (setup_flag))
+      (setup_macro
+        (setup_source_option
+          (integer))
+        (setup_name_option
+          (quoted_string
+            (quoted_string_content)))))))

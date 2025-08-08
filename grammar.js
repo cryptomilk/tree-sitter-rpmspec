@@ -103,7 +103,8 @@ module.exports = grammar({
             choice(
                 $.macro_definition, // %define, %global
                 $.macro_undefinition, // %undefine
-                $.macro_call, // %setup, %patch, etc.
+                $.setup_macro, // %setup with specific option support
+                $.macro_call, // %patch, etc. (general macro calls)
                 $.macro_expansion, // %{name}, %name
                 $.preamble, // Name:, Version:, etc.
                 $.description, // %description section
@@ -876,7 +877,8 @@ module.exports = grammar({
                         prec(1, $.macro_expansion), // Macro expansions %{...}
                         $.macro_definition, // Inline %define statements
                         $.macro_undefinition, // Inline %undefine statements
-                        $.macro_call, // Macro calls like %setup, %patch
+                        $.setup_macro, // %setup with specific option support
+                        $.macro_call, // Macro calls like %patch
                         $.string // Raw shell command text
                     )
                 )
@@ -1220,7 +1222,50 @@ module.exports = grammar({
         // Special Macros (%autosetup, %autopatch, %setup, ...)
         ///////////////////////////////////////////////////////////////////////
 
-        // TODO FIXME
+        // %setup macro: source preparation with comprehensive option support
+        // Syntax: %setup [options]
+        // Options can be combined, e.g., %setup -c -n mydir -q
+        setup_macro: ($) =>
+            seq(
+                '%setup',
+                repeat(
+                    choice(
+                        field('argument', $.setup_flag), // Simple flags: -c, -C, -D, -T, -q
+                        field('argument', $.setup_source_option), // Source options: -a N, -b N
+                        field('argument', $.setup_name_option) // Name option: -n DIR
+                    )
+                ),
+                NEWLINE
+            ),
+
+        // Simple setup flags (no parameters)
+        setup_flag: ($) =>
+            seq(
+                '-',
+                choice(
+                    'c', // Create build directory and change to it
+                    'C', // Create build directory, unpack, strip top-level if exists
+                    'D', // Do not delete build directory before unpacking
+                    'T', // Skip default unpacking of first source
+                    'q' // Operate quietly
+                )
+            ),
+
+        // Setup options that take a source number parameter
+        setup_source_option: ($) =>
+            seq(
+                '-',
+                choice('a', 'b'), // -a: unpack after cd, -b: unpack before cd
+                field('number', $.integer)
+            ),
+
+        // Setup name option that takes a directory name
+        setup_name_option: ($) =>
+            seq(
+                '-',
+                'n', // Set name of build directory
+                field('directory', $._primary_expression)
+            ),
 
         ///////////////////////////////////////////////////////////////////////
         // LITERAL VALUES - NUMBERS, VERSIONS, AND STRINGS
