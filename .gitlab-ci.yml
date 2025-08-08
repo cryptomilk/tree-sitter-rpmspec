@@ -19,4 +19,6 @@ format/prettier:
 tree-sitter/test:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   script:
-    - make test
+    - cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
+    - cmake --build build
+    - make -C build ts-test
