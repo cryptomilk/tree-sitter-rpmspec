@@ -48,3 +48,75 @@ cat /dev/urandom
     (shell_block
       (string
         (string_content)))))
+
+===============================================================================
+Filetriggerin Section (with path patterns)
+===============================================================================
+
+# FIXME Add support for -- or not?
+%filetriggerin -- /usr/bin/* /usr/sbin/*
+ldconfig
+
+-------------------------------------------------------------------------------
+
+(spec
+  (comment)
+  (file_trigger
+    (concatenation
+      (word)
+      (word)
+      (word))
+    (shell_block
+      (string
+        (string_content)))))
+
+===============================================================================
+Filetriggerin Section (with priority)
+:skip
+===============================================================================
+
+# TODO Add -P support
+%filetriggerin -P 1000 -- /etc/systemd/system/*
+systemctl daemon-reload
+
+-------------------------------------------------------------------------------
+
+===============================================================================
+Transfiletriggerin Section (with complex patterns)
+===============================================================================
+
+%transfiletriggerin -- /usr/share/applications/*.desktop
+update-desktop-database
+
+-------------------------------------------------------------------------------
+
+(spec
+  (file_trigger
+    (concatenation
+      (word)
+      (word))
+    (shell_block
+      (string
+        (string_content)))))
+
+===============================================================================
+Filetriggerun Section (with multiple patterns)
+===============================================================================
+
+%filetriggerun -- /usr/lib*/gio/modules/* /usr/lib*/gdk-pixbuf-*/*/loaders/*
+gio-querymodules
+gdk-pixbuf-query-loaders
+
+-------------------------------------------------------------------------------
+
+(spec
+  (file_trigger
+    (concatenation
+      (word)
+      (word)
+      (word))
+    (shell_block
+      (string
+        (string_content))
+      (string
+        (string_content)))))
