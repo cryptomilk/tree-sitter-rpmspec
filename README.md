@@ -23,8 +23,11 @@ should read.
 ## Building the parser
 
 ```sh
-make
+cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake --build build
+cmake --install build --install-prefix=/usr
 ```
+
 ## Generating the parser after changing the grammar
 
 ```sh
