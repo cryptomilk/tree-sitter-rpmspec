@@ -366,18 +366,16 @@ Provides:       tree-sitter-rpm-spec = bar
   (preamble
     (tags
       (tag)
-      (word)))
+      value: (word)))
   (preamble
     (tags
       (dependency_tag)
-      (concatenation
-        (word)
+      value: (comparison_operator
         (word)
         (word)))))
 
 ===============================================================================
 Preamble Section (Requires with version operators)
-:skip
 ===============================================================================
 
 Name:           tree-sitter-rpmspec
@@ -391,32 +389,28 @@ BuildRequires:  python3 >= 3.8.0
   (preamble
     (tags
       (tag)
-      (word)))
+      value: (word)))
   (preamble
     (tags
       (dependency_tag)
-      (concatenation
+      value: (comparison_operator
         (word)
-        (word)
-        (float))))
+        (version))))
   (preamble
     (tags
       (dependency_tag)
-      (concatenation
+      value: (comparison_operator
         (word)
-        (word)
-        (float))))
+        (version))))
   (preamble
     (tags
       (dependency_tag)
-      (concatenation
-        (word)
+      value: (comparison_operator
         (word)
         (version)))))
 
 ===============================================================================
 Preamble Section (Complex boolean dependencies)
-:skip
 ===============================================================================
 
 Name:           tree-sitter-rpmspec
@@ -428,23 +422,21 @@ Requires:       (package1 >= 1.0 and package2) or package3
   (preamble
     (tags
       (tag)
-      (word)))
+      value: (word)))
   (preamble
     (tags
       (dependency_tag)
-      (concatenation
-        (parenthesized_expression
+      value: (boolean_operator
+        left: (parenthesized_expression
           (boolean_operator
-            (comparison_operator
+            left: (comparison_operator
               (word)
-              (float))
-            (word)))
-        (word)
-        (word)))))
+              (version))
+            right: (word)))
+        right: (word)))))
 
 ===============================================================================
 Preamble Section (Epoch in dependencies)
-:skip
 ===============================================================================
 
 Name:           tree-sitter-rpmspec
@@ -457,25 +449,22 @@ BuildRequires:  another-package >= 1:2.0.0
   (preamble
     (tags
       (tag)
-      (word)))
+      value: (word)))
   (preamble
     (tags
       (dependency_tag)
-      (concatenation
+      value: (comparison_operator
         (word)
-        (word)
-        (word))))
+        (version))))
   (preamble
     (tags
       (dependency_tag)
-      (concatenation
+      value: (comparison_operator
         (word)
-        (word)
-        (word)))))
+        (version)))))
 
 ===============================================================================
 Preamble Section (Virtual capabilities with complex naming)
-:skip
 ===============================================================================
 
 Name:           tree-sitter-rpmspec
@@ -488,20 +477,358 @@ Requires:       capability(feature.subfeature)
   (preamble
     (tags
       (tag)
-      (word)))
+      value: (word)))
   (preamble
     (tags
       (dependency_tag)
-      (concatenation
+      value: (concatenation
         (word)
         (parenthesized_expression
           (word))
         (word)
-        (float))))
+        (version))))
   (preamble
     (tags
       (dependency_tag)
-      (concatenation
+      value: (concatenation
         (word)
         (parenthesized_expression
           (word))))))
+
+===============================================================================
+Preamble Section (Multiple comparison operators)
+===============================================================================
+
+Name:           tree-sitter-rpmspec
+Requires:       package1 >= 1.0
+Requires:       package2 <= 2.0
+Requires:       package3 != 1.5
+Requires:       package4 < 3.0
+Requires:       package5 > 0.5
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version))))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version))))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version))))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version))))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version)))))
+
+===============================================================================
+Preamble Section (Nested boolean dependencies)
+===============================================================================
+
+Name:           tree-sitter-rpmspec
+Requires:       ((package1 >= 1.0 and package2) or (package3 and package4 >= 2.0))
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (parenthesized_expression
+        (boolean_operator
+          left: (parenthesized_expression
+            (boolean_operator
+              left: (comparison_operator
+                (word)
+                (version))
+              right: (word)))
+          right: (parenthesized_expression
+            (boolean_operator
+              left: (word)
+              right: (comparison_operator
+                (word)
+                (version)))))))))
+
+===============================================================================
+Preamble Section (Dependencies with macro expansions)
+===============================================================================
+
+Name:           tree-sitter-rpmspec
+Version:        1.2.3
+Release:        1%{?dist}
+Requires:       main-package = %{version}
+BuildRequires:  dev-package >= %{version}
+Provides:       virtual-service = %version
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (version)))
+  (preamble
+    (tags
+      (tag)
+      (concatenation
+        (integer)
+        (macro_expansion
+          (conditional_expansion
+            (identifier))))))
+  (preamble
+    (tags
+      (dependency_tag)
+      (comparison_operator
+        (word)
+        (macro_expansion
+          (identifier)))))
+  (preamble
+    (tags
+      (dependency_tag)
+      (comparison_operator
+        (word)
+        (macro_expansion
+          (identifier)))))
+  (preamble
+    (tags
+      (dependency_tag)
+      (comparison_operator
+        (word)
+        (macro_simple_expansion
+          (identifier))))))
+
+===============================================================================
+Preamble Section (Complex macro dependencies with epochs)
+:skip
+===============================================================================
+
+Name:           tree-sitter-rpmspec
+Epoch:          1
+Version:        2.0.0
+Requires:       package = %{epoch}:%{version}-%{release}
+BuildRequires:  tool >= %epoch:%version
+
+-------------------------------------------------------------------------------
+
+===============================================================================
+Preamble Section (Boolean dependencies with macros)
+===============================================================================
+
+Name:           tree-sitter-rpmspec
+Requires:       (package1 = %{version} and package2 >= %version) or package3
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (boolean_operator
+        left: (parenthesized_expression
+          (boolean_operator
+            left: (comparison_operator
+              (word)
+              (macro_expansion
+                (identifier)))
+            right: (comparison_operator
+              (word)
+              (macro_simple_expansion
+                (identifier)))))
+        right: (word)))))
+
+===============================================================================
+Preamble Section (Mixed epoch and non-epoch dependencies)
+===============================================================================
+
+Name:           tree-sitter-rpmspec
+Requires:       (package1 = 2:1.0.0-1 and package2 >= 3.0) or package3
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (boolean_operator
+        left: (parenthesized_expression
+          (boolean_operator
+            left: (comparison_operator
+              (word)
+              (version))
+            right: (comparison_operator
+              (word)
+              (version))))
+        right: (word)))))
+
+===============================================================================
+Preamble Section (Weak dependencies - Recommends)
+===============================================================================
+
+Name:           tree-sitter-rpmspec
+Recommends:     optional-package >= 1.0
+Recommends:     another-optional
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version))))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (word))))
+
+===============================================================================
+Preamble Section (Weak dependencies - Suggests)
+===============================================================================
+
+Name:           tree-sitter-rpmspec
+Suggests:       nice-to-have-package
+Suggests:       extra-feature = 2.0
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version)))))
+
+===============================================================================
+Preamble Section (Weak dependencies - Supplements and Enhances)
+===============================================================================
+
+Name:           tree-sitter-rpmspec
+Supplements:    main-package
+Enhances:       enhanced-package >= 1.5
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version)))))
+
+===============================================================================
+Preamble Section (Complex release numbers)
+===============================================================================
+
+Name:           tree-sitter-rpmspec
+Requires:       package = 1.0-1.fc35
+BuildRequires:  another = 2:1.5.0-2.el8
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version))))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version)))))
+
+===============================================================================
+Preamble Section (Zero epoch explicit with complex version)
+===============================================================================
+
+Name:           tree-sitter-rpmspec
+Provides:       service = 0:2.1.0-3.fc35
+Conflicts:      old-service <= 0:1.0.0
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version))))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version)))))

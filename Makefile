@@ -1,5 +1,7 @@
 TS ?= tree-sitter
 
+default: build
+
 configure:
 	cmake -B build
 
@@ -10,6 +12,7 @@ build:
 test: all
 	$(TS) test
 
-all: build
+fast-test:
+	$(TS) test
 
-.PHONY: all configure build test
+.PHONY: default configure build test

@@ -1,29 +1,52 @@
 ===============================================================================
 Version (Simple epoch)
-:skip
 ===============================================================================
 
-# TODO Add support for epoch in version strings
 Name:           tree-sitter-rpmspec
 Version:        2:1.0.0
 
 -------------------------------------------------------------------------------
 
+(spec
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (version))))
+
 ===============================================================================
 Version (Epoch in dependencies)
-:skip
 ===============================================================================
 
-# TODO correctly detect version checks
 Name:           tree-sitter-rpmspec
 Requires:       package = 2:1.0.0-1
 BuildRequires:  another-package >= 1:2.0.0
 
 -------------------------------------------------------------------------------
 
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version))))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version)))))
+
 ===============================================================================
 Version (Complex epoch with release)
-:skip
 ===============================================================================
 
 Name:           tree-sitter-rpmspec
@@ -32,25 +55,66 @@ Release:        3%{?dist}
 
 -------------------------------------------------------------------------------
 
+(spec
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (version)))
+  (preamble
+    (tags
+      (tag)
+      (concatenation
+        (integer)
+        (macro_expansion
+          (conditional_expansion
+            (identifier)))))))
+
 ===============================================================================
 Version (Epoch in conditional dependencies)
-:skip
 ===============================================================================
 
-# TODO Add complex Requires support
 Name:           tree-sitter-rpmspec
 Requires:       (package >= 2:1.0 or alternative-package)
 
 -------------------------------------------------------------------------------
 
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (parenthesized_expression
+        (boolean_operator
+          left: (comparison_operator
+            (word)
+            (version))
+          right: (word))))))
+
 ===============================================================================
 Version (Epoch zero explicit)
-:skip
 ===============================================================================
 
-# TODO
 Name:           tree-sitter-rpmspec
 Provides:       virtual-package = 0:1.0.0
 
 -------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (comparison_operator
+        (word)
+        (version)))))
 

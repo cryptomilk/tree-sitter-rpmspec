@@ -58,7 +58,10 @@ module.exports = grammar({
     // Grammar conflicts resolution
     // The macro_call vs string conflict occurs because macro calls can appear
     // in contexts where strings are also valid, requiring parser lookahead
-    conflicts: ($) => [[$.macro_call, $.string]],
+    conflicts: ($) => [
+        [$.macro_call, $.string],
+        [$.expression, $.tags],
+    ],
 
     // Tokens that may appear anywhere in the language and are typically ignored
     // during parsing (whitespace, comments, line continuations)
@@ -170,8 +173,8 @@ module.exports = grammar({
                     $.word, // Unquoted words
                     $.quoted_string, // "quoted strings"
                     $.integer, // 123, 0x1a
+                    alias($.dependency_version, $.version), // Full version-release for dependencies
                     $.float, // 1.23
-                    $.version, // 1.2.3-beta
                     $.parenthesized_expression, // (expr)
                     $.macro_simple_expansion, // %name
                     $.macro_expansion, // %{name}
@@ -535,7 +538,8 @@ module.exports = grammar({
                                 choice(
                                     '<', // Less than
                                     '<=', // Less than or equal
-                                    '==', // Equal
+                                    '=', // Equal (RPM uses single =)
+                                    '==', // Equal (alternative form)
                                     '!=', // Not equal
                                     '>=', // Greater than or equal
                                     '>' // Greater than
@@ -704,11 +708,27 @@ module.exports = grammar({
         //   Requires(pre): tree-sitter
         //   Summary: A parser generator tool
         tags: ($) =>
-            seq(
-                choice($.tag, $.dependency_tag), // Tag name (with optional qualifier)
-                token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
-                field('value', $._literal), // Tag value (can contain macros)
-                token.immediate(NEWLINE) // Must end with newline
+            choice(
+                // Regular tags (Source, Name, etc.) - only support literals
+                seq(
+                    $.tag, // Tag name
+                    token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
+                    field('value', $._literal), // Simple values (can contain macros)
+                    token.immediate(NEWLINE) // Must end with newline
+                ),
+                // Dependency tags - support both expressions and literals
+                seq(
+                    $.dependency_tag, // Dependency tag name (with optional qualifier)
+                    token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
+                    field(
+                        'value',
+                        choice(
+                            $.expression, // For dependencies with version operators
+                            $._literal // For simple values (can contain macros)
+                        )
+                    ),
+                    token.immediate(NEWLINE) // Must end with newline
+                )
             ),
 
         // Standard RPM tags: core package metadata fields
@@ -1375,18 +1395,48 @@ module.exports = grammar({
             return token(seq(digits, '.', digits));
         },
 
-        // Version literals: semantic version numbers with optional suffixes
-        // Supports various version formats: 1.2.3, 2.0-beta, 1.0~rc1+git123
+        // Version literals: semantic version numbers with optional epoch and suffixes
+        // Supports various version formats: 1.2.3, 2:1.0.0, 1.0~rc1+git123
         // Common in RPM for package versioning and dependency specifications
         version: ($) => {
             const digits = repeat1(/[0-9]+_?/);
 
             return token(
-                seq(
-                    digits,
-                    '.',
-                    digits, // Major.minor version
-                    optional(/[a-zA-Z0-9+._-~]+/) // Optional suffix (patch, pre-release, etc.)
+                prec(
+                    1,
+                    seq(
+                        optional(seq(digits, ':')), // Optional epoch: N:
+                        digits,
+                        '.',
+                        digits, // Major.minor version
+                        optional(/[a-zA-Z0-9+._~]+/) // Optional version suffix (patch, pre-release, etc.)
+                    )
+                )
+            );
+        },
+
+        // Release literals: RPM release numbers
+        // Examples: 1, 2, 1.fc35, 3.el8
+        release: ($) => {
+            return token(/[a-zA-Z0-9+._~]+/);
+        },
+
+        // Dependency version: version with optional release for dependency specifications
+        // Format: [epoch:]version[-release] - used in dependency contexts like Requires
+        dependency_version: ($) => {
+            const digits = repeat1(/[0-9]+_?/);
+
+            return token(
+                prec(
+                    3,
+                    seq(
+                        optional(seq(digits, ':')), // Optional epoch: N:
+                        digits,
+                        '.',
+                        digits, // Major.minor version
+                        optional(/[a-zA-Z0-9+._~]+/), // Optional version suffix (patch, pre-release, etc.)
+                        optional(seq('-', /[0-9]+[a-zA-Z0-9+._~]*/)) // Optional release: -release (must start with digit)
+                    )
                 )
             );
         },
