@@ -35,7 +35,7 @@ module.exports = grammar({
         $._simple_statements,
         $._compound_statements,
         $.expression,
-        $.primary_expression,
+        $._primary_expression,
     ],
 
     inline: ($) => [
@@ -97,9 +97,9 @@ module.exports = grammar({
         // Literals
         ///////////////////////////////////////////////////////////////////////
 
-        _literal: ($) => choice($.concatenation, $.primary_expression),
+        _literal: ($) => choice($.concatenation, $._primary_expression),
 
-        primary_expression: ($) =>
+        _primary_expression: ($) =>
             prec(
                 1,
                 choice(
@@ -390,9 +390,9 @@ module.exports = grammar({
                     fn(
                         precedence,
                         seq(
-                            field('left', $.primary_expression),
+                            field('left', $._primary_expression),
                             field('operator', operator),
-                            field('right', $.primary_expression)
+                            field('right', $._primary_expression)
                         )
                     )
                 )
@@ -403,14 +403,14 @@ module.exports = grammar({
             prec.left(
                 PREC.compare,
                 seq(
-                    $.primary_expression,
+                    $._primary_expression,
                     repeat1(
                         seq(
                             field(
                                 'operators',
                                 choice('<', '<=', '==', '!=', '>=', '>')
                             ),
-                            $.primary_expression
+                            $._primary_expression
                         )
                     )
                 )
@@ -443,7 +443,7 @@ module.exports = grammar({
                 $.boolean_operator,
                 $.with_operator,
                 $.defined_operator,
-                $.primary_expression
+                $._primary_expression
             ),
 
         _conditional_block: ($) =>
@@ -967,7 +967,10 @@ module.exports = grammar({
         word: ($) => token(/([^\s"#%{}()\\])+/),
 
         concatenation: ($) =>
-            prec(-1, seq($.primary_expression, repeat1($.primary_expression))),
+            prec(
+                -1,
+                seq($._primary_expression, repeat1($._primary_expression))
+            ),
     },
 });
 
