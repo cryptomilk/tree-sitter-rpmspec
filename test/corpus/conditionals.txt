@@ -387,3 +387,97 @@ Requires(post): libwbclient
         (dependency_tag
           (qualifier))
         (word)))))
+
+===============================================================================
+Conditionals (%ifnarch with negation)
+===============================================================================
+
+%ifnarch i386 i686
+BuildRequires:  foo
+%endif
+
+-------------------------------------------------------------------------------
+
+(spec
+  (ifarch_statement
+    (arch
+      (identifier)
+      (identifier))
+    (preamble
+      (tags
+        (dependency_tag)
+        (word)))))
+
+===============================================================================
+Conditionals (%ifnos with negation)
+===============================================================================
+
+%ifnos windows
+BuildRequires:  linux-only-package
+%endif
+
+-------------------------------------------------------------------------------
+
+(spec
+  (ifos_statement
+    (os
+      (identifier))
+    (preamble
+      (tags
+        (dependency_tag)
+        (word)))))
+
+===============================================================================
+Conditionals (%ifarch with macro expressions)
+===============================================================================
+
+%ifarch %{ix86} x86_64
+BuildRequires:  arch-specific-package
+%endif
+
+-------------------------------------------------------------------------------
+
+(spec
+  (ifarch_statement
+    (arch
+      (macro_expansion
+        (identifier))
+      (identifier))
+    (preamble
+      (tags
+        (dependency_tag)
+        (word)))))
+
+===============================================================================
+Conditionals (%elifarch support)
+===============================================================================
+
+%ifarch x86_64
+BuildRequires:  x86_64-package
+%elifarch aarch64
+BuildRequires:  aarch64-package
+%else
+BuildRequires:  generic-package
+%endif
+
+-------------------------------------------------------------------------------
+
+(spec
+  (ifarch_statement
+    (arch
+      (identifier))
+    (preamble
+      (tags
+        (dependency_tag)
+        (word)))
+    (elifarch_clause
+      (word)
+      (preamble
+        (tags
+          (dependency_tag)
+          (word))))
+    (else_clause
+      (preamble
+        (tags
+          (dependency_tag)
+          (word))))))
