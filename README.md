@@ -18,7 +18,7 @@ should read.
 ### RPM
 
 * [Spec File Format](https://rpm-software-management.github.io/rpm/manual/spec.html)
-* [Macro Syntax](https://rpm-software-management.github.io/rpm/manual/macros.html)
+* [Macro Syntax](https://rpm-software-management.github.io/rpm/man/rpm-macros.7)
 
 ## Building the parser
 
