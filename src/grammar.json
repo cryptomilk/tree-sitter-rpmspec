@@ -1539,10 +1539,6 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "arithmetic_operator"
-        },
-        {
-          "type": "SYMBOL",
           "name": "comparison_operator"
         },
         {

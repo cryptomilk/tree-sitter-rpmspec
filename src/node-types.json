@@ -162,10 +162,6 @@
         "named": true
       },
       {
-        "type": "arithmetic_operator",
-        "named": true
-      },
-      {
         "type": "boolean_operator",
         "named": true
       },
@@ -204,54 +200,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "arithmetic_operator",
-    "named": true,
-    "fields": {
-      "left": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "_primary_expression",
-            "named": true
-          }
-        ]
-      },
-      "operator": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "*",
-            "named": false
-          },
-          {
-            "type": "+",
-            "named": false
-          },
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "/",
-            "named": false
-          }
-        ]
-      },
-      "right": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "_primary_expression",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -2106,10 +2054,6 @@
     "named": false
   },
   {
-    "type": "+",
-    "named": false
-  },
-  {
     "type": ",",
     "named": false
   },
@@ -2127,10 +2071,6 @@
   },
   {
     "type": "-n",
-    "named": false
-  },
-  {
-    "type": "/",
     "named": false
   },
   {
