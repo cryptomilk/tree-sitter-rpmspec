@@ -244,13 +244,28 @@ Macros (Conditional macro definition #2)
 
 ===============================================================================
 Macros (Complex arguments with quotes)
-:skip
 ===============================================================================
 
 %setup -q -n "package name with spaces"
 %patch0 -p1 --fuzz=0 --backup="file.bak"
 
 -------------------------------------------------------------------------------
+
+(spec
+  (setup_macro
+    (macro_builtin)
+    (setup_flag)
+    (setup_name_option
+      (quoted_string
+        (quoted_string_content))))
+  (macro_call
+    (macro_simple_expansion
+      (identifier))
+    (word)
+    (word)
+    (word)
+    (quoted_string
+      (quoted_string_content))))
 
 ===============================================================================
 Macros (Arguments with escaping)

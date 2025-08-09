@@ -36,6 +36,14 @@
       (word) @variable.parameter)
   ])
 
+(setup_macro
+  argument: [
+    (setup_flag) @variable.parameter
+    (setup_source_option) @variable.parameter
+    ((setup_name_option
+      directory: (_) @string) @variable.parameter)
+  ])
+
 [
   (tag)
   (dependency_tag)

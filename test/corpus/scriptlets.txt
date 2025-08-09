@@ -24,6 +24,7 @@ Prep Section (%setup)
     (section_name)
     (shell_block
       (setup_macro
+        (macro_builtin)
         (setup_flag)))))
 
 ===============================================================================
@@ -78,6 +79,7 @@ Prep Section (%setup with flags)
     (section_name)
     (shell_block
       (setup_macro
+        (macro_builtin)
         (setup_flag)
         (setup_flag)))))
 
@@ -95,6 +97,7 @@ Prep Section (%setup with source options)
     (section_name)
     (shell_block
       (setup_macro
+        (macro_builtin)
         (setup_source_option
           (integer))
         (setup_source_option
@@ -114,6 +117,7 @@ Prep Section (%setup with name option)
     (section_name)
     (shell_block
       (setup_macro
+        (macro_builtin)
         (setup_name_option
           (word))))))
 
@@ -131,6 +135,7 @@ Prep Section (%setup complex combination)
     (section_name)
     (shell_block
       (setup_macro
+        (macro_builtin)
         (setup_flag)
         (setup_name_option
           (macro_expansion
@@ -149,6 +154,7 @@ Prep Section (%setup standalone at top level)
 
 (spec
   (setup_macro
+    (macro_builtin)
     (setup_flag)
     (setup_flag)))
 
@@ -167,8 +173,10 @@ Prep Section (%setup edge cases)
     (section_name)
     (shell_block
       (setup_macro
+        (macro_builtin)
         (setup_flag))
       (setup_macro
+        (macro_builtin)
         (setup_source_option
           (integer))
         (setup_name_option

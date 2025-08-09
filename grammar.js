@@ -1227,7 +1227,8 @@ module.exports = grammar({
         // Options can be combined, e.g., %setup -c -n mydir -q
         setup_macro: ($) =>
             seq(
-                '%setup',
+                '%',
+                alias('setup', $.macro_builtin),
                 repeat(
                     choice(
                         field('argument', $.setup_flag), // Simple flags: -c, -C, -D, -T, -q
