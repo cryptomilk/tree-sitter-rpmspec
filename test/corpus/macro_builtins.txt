@@ -1,0 +1,325 @@
+# TODO: Most builtin macro tests are currently skipped because the grammar
+# doesn't yet support the colon syntax for builtin macros like %{basename:/path}.
+# This requires implementing support for function-style builtin macro arguments
+# in the _macro_expansion_body rule. The colon syntax is defined in the RPM
+# specification but not yet implemented in this parser.
+#
+# See: https://rpm-software-management.github.io/rpm/man/rpm-macros.7
+# Examples that need implementation:
+# - %{basename:/some/dir/file.suf}  # Path operations
+# - %{upper:CamelCase}              # String manipulation
+# - %{getenv:HOME}                  # Environment variables
+# - %{exists:%{builddir}/file}      # File existence checks
+
+===============================================================================
+Macro Builtin (basename simple)
+===============================================================================
+
+%{basename}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)))
+
+===============================================================================
+Macro Builtin (dirname with path)
+:skip
+===============================================================================
+
+%{dirname:/some/dir/file.suf}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (lower case conversion)
+:skip
+===============================================================================
+
+%{lower:CamelCase}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (upper case conversion)
+:skip
+===============================================================================
+
+%{upper:CamelCase}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (getenv environment variable)
+:skip
+===============================================================================
+
+%{getenv:HOME}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (identifier)))
+
+===============================================================================
+Macro Builtin (exists file check)
+:skip
+===============================================================================
+
+%{exists:%{builddir}/myflag.txt}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (macro_expansion
+      (identifier))
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (suffix extraction)
+:skip
+===============================================================================
+
+%{suffix:myfile.zip}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (uncompress command)
+:skip
+===============================================================================
+
+%{uncompress:/my/source.tar.gz}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (quote string with spaces)
+:skip
+===============================================================================
+
+%{quote:empty spaces.zip}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (shrink whitespace)
+:skip
+===============================================================================
+
+%{shrink:aa  bb   ccc   }
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (len string length)
+:skip
+===============================================================================
+
+%{len:hello world}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (reverse string)
+:skip
+===============================================================================
+
+%{reverse:hello}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (rep string repetition)
+:skip
+===============================================================================
+
+%{rep:hello 3}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (sub string substitution)
+:skip
+===============================================================================
+
+%{sub:old:new:old text old}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (gsub global substitution)
+:skip
+===============================================================================
+
+%{gsub:old:new:old text old}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (getncpus system info)
+===============================================================================
+
+%{getncpus}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)))
+
+===============================================================================
+Macro Builtin (expand macro expansion)
+:skip
+===============================================================================
+
+%{expand:%{version}-%{release}}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (macro_expansion
+      (identifier))
+    (string
+      (string_content))
+    (macro_expansion
+      (identifier))))
+
+===============================================================================
+Macro Builtin (echo output)
+:skip
+===============================================================================
+
+%{echo:Building package}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (warn warning message)
+:skip
+===============================================================================
+
+%{warn:This is deprecated}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (error fatal error)
+:skip
+===============================================================================
+
+%{error:Build failed}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macro Builtin (trace debugging)
+:skip
+===============================================================================
+
+%{trace:0}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (integer)))
