@@ -283,6 +283,144 @@ Macros (Nested macro arguments)
 ===============================================================================
 
 %{expand: %{configure %{configure_args}}}
-%{lua: some_function("%{name}", %{version})}
+
+-------------------------------------------------------------------------------
+
+===============================================================================
+Macros (Function-style Built-in with Colon)
+:skip
+===============================================================================
+
+%{basename:/path/to/file.txt}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macros (Environment Variable Expansion)
+:skip
+===============================================================================
+
+%{getenv:HOME}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (identifier)))
+
+===============================================================================
+Macros (String Transformation Functions)
+:skip
+===============================================================================
+
+%{upper:hello world}
+%{lower:HELLO WORLD}
+%{shrink:  extra   spaces  }
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content)))
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content)))
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macros (Path Operations)
+:skip
+===============================================================================
+
+%{dirname:/usr/local/bin/program}
+%{basename:/usr/local/bin/program}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content)))
+  (macro_expansion
+    (macro_builtin)
+    (string
+      (string_content))))
+
+===============================================================================
+Macros (Nested Function Calls)
+:skip
+===============================================================================
+
+%{upper:%{basename:/path/to/FILE.txt}}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (macro_expansion
+      (macro_builtin)
+      (string
+        (string_content)))))
+
+===============================================================================
+Macros (Complex Lua with Variables)
+:skip
+===============================================================================
+
+%{lua:
+local name = rpm.expand("%{name}")
+print("Package: " .. name)
+}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (macro_builtin)
+    (text
+      (text_content)
+      (macro_expansion
+        (identifier))
+      (text_content))))
+
+===============================================================================
+Macros (Format Specifiers)
+:skip
+===============================================================================
+
+%{name:-%{version}}
+%{?dist:+%{dist}}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (identifier)
+    (string
+      (string_content)
+      (macro_expansion
+        (identifier))))
+  (macro_expansion
+    (conditional_expansion
+      (identifier)
+      (string
+        (string_content)
+        (macro_expansion
+          (identifier))))))
 
 -------------------------------------------------------------------------------
