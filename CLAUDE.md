@@ -18,16 +18,18 @@ cmake --build build
 ### Testing
 
 ```sh
-# Run the full test suite
+# ALWAYS run the full test suite to verfiy changes are working
 tree-sitter test
+
+# Run tests matching a pattern (regex)
+tree-sitter test -i "pattern"
 ```
 
 ### Code Quality
 
+ALWAYS run code quality as the last step when done
+
 ```sh
 # Format the grammar.js code
 prettier -w grammar.js
-
-# Format the src/scanner.c code
-clang-format -i src/scanner.c
 ```
