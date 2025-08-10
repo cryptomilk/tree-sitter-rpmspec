@@ -1,7 +1,12 @@
 (identifier) @variable
 (special_variable_name) @constant
 
-(macro_builtin) @variable.builtin
+(builtin) @variable.builtin
+
+(macro_expansion
+  (builtin) @variable.builtin
+  argument: (_) @variable.parameter)
+
 
 (macro_simple_expansion
   "%" @punctuation.special) @none
@@ -10,10 +15,10 @@
   "}" @punctuation.special) @none
 (macro_definition
   "%" @punctuation.special
-  (macro_builtin) @keyword.directive.define
+  (builtin) @keyword.directive.define
   (identifier) @keyword.macro)
 (macro_undefinition
-  (macro_builtin) @keyword.directive.define
+  (builtin) @keyword.directive.define
   (identifier) @keyword.macro)
 
 (macro_expansion

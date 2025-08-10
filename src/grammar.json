@@ -292,13 +292,22 @@
                   ]
                 },
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "macro_name"
-                  },
-                  "named": true,
-                  "value": "identifier"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "macro_name"
+                      },
+                      "named": true,
+                      "value": "identifier"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "builtin"
+                    }
+                  ]
                 }
               ]
             },
@@ -490,46 +499,100 @@
       ]
     },
     "macro_source": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "S"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "S"
+                },
+                {
+                  "type": "STRING",
+                  "value": "SOURCE"
+                }
+              ]
             },
             {
-              "type": "STRING",
-              "value": "SOURCE"
+              "type": "SYMBOL",
+              "name": "integer"
             }
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "integer"
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 2,
+            "content": {
+              "type": "PATTERN",
+              "value": "SOURCE[0-9]+"
+            }
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 2,
+            "content": {
+              "type": "PATTERN",
+              "value": "S[0-9]+"
+            }
+          }
         }
       ]
     },
     "macro_patch": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "P"
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "P"
+                },
+                {
+                  "type": "STRING",
+                  "value": "PATCH"
+                }
+              ]
             },
             {
-              "type": "STRING",
-              "value": "PATCH"
+              "type": "SYMBOL",
+              "name": "integer"
             }
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "integer"
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 2,
+            "content": {
+              "type": "PATTERN",
+              "value": "PATCH[0-9]+"
+            }
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 2,
+            "content": {
+              "type": "PATTERN",
+              "value": "P[0-9]+"
+            }
+          }
         }
       ]
     },
@@ -578,6 +641,31 @@
     "_macro_expansion_body": {
       "type": "CHOICE",
       "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "builtin"
+            },
+            {
+              "type": "STRING",
+              "value": ":"
+            },
+            {
+              "type": "FIELD",
+              "name": "argument",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_literal"
+              }
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "builtin"
+        },
         {
           "type": "SEQ",
           "members": [

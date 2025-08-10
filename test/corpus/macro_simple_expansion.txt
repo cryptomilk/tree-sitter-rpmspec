@@ -113,7 +113,8 @@ Simple Macro Expansion (Custom macro SOURCE0)
 (spec
   (macro_call
     (macro_simple_expansion
-      (identifier))))
+      (builtin
+        (macro_source)))))
 
 ===============================================================================
 Simple Macro Expansion (Custom macro name)

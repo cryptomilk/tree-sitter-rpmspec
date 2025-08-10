@@ -223,7 +223,7 @@ module.exports = grammar({
                 choice(
                     seq(
                         optional(field('operator', token.immediate('!'))),
-                        alias($.macro_name, $.identifier)
+                        choice(alias($.macro_name, $.identifier), $.builtin)
                     ),
                     $.conditional_expansion,
                     $._special_macro_name
@@ -280,9 +280,19 @@ module.exports = grammar({
                 'warn'
             ),
 
-        macro_source: ($) => seq(choice('S', 'SOURCE'), $.integer),
+        macro_source: ($) =>
+            choice(
+                seq(choice('S', 'SOURCE'), $.integer),
+                token(prec(2, /SOURCE[0-9]+/)),
+                token(prec(2, /S[0-9]+/))
+            ),
 
-        macro_patch: ($) => seq(choice('P', 'PATCH'), $.integer),
+        macro_patch: ($) =>
+            choice(
+                seq(choice('P', 'PATCH'), $.integer),
+                token(prec(2, /PATCH[0-9]+/)),
+                token(prec(2, /P[0-9]+/))
+            ),
 
         macro_define: ($) => choice('define', 'global'),
 
@@ -299,6 +309,10 @@ module.exports = grammar({
 
         _macro_expansion_body: ($) =>
             choice(
+                // %{<builtin>:<argument>}
+                seq($.builtin, ':', field('argument', $._literal)),
+                // %{<builtin>} - standalone builtin without arguments
+                $.builtin,
                 // %{<name>}
                 seq(
                     optional(field('operator', token.immediate('!'))),

@@ -25,7 +25,6 @@ Macro Builtin (basename simple)
 
 ===============================================================================
 Macro Builtin (dirname with path)
-:skip
 ===============================================================================
 
 %{dirname:/some/dir/file.suf}
@@ -35,12 +34,10 @@ Macro Builtin (dirname with path)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (lower case conversion)
-:skip
 ===============================================================================
 
 %{lower:CamelCase}
@@ -50,12 +47,10 @@ Macro Builtin (lower case conversion)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (upper case conversion)
-:skip
 ===============================================================================
 
 %{upper:CamelCase}
@@ -65,12 +60,10 @@ Macro Builtin (upper case conversion)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (getenv environment variable)
-:skip
 ===============================================================================
 
 %{getenv:HOME}
@@ -80,11 +73,10 @@ Macro Builtin (getenv environment variable)
 (spec
   (macro_expansion
     (builtin)
-    (identifier)))
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (exists file check)
-:skip
 ===============================================================================
 
 %{exists:%{builddir}/myflag.txt}
@@ -94,14 +86,13 @@ Macro Builtin (exists file check)
 (spec
   (macro_expansion
     (builtin)
-    (macro_expansion
-      (identifier))
-    (string
-      (string_content))))
+    argument: (concatenation
+      (macro_expansion
+        (identifier))
+      (word))))
 
 ===============================================================================
 Macro Builtin (suffix extraction)
-:skip
 ===============================================================================
 
 %{suffix:myfile.zip}
@@ -111,12 +102,10 @@ Macro Builtin (suffix extraction)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (uncompress command)
-:skip
 ===============================================================================
 
 %{uncompress:/my/source.tar.gz}
@@ -126,12 +115,10 @@ Macro Builtin (uncompress command)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (quote string with spaces)
-:skip
 ===============================================================================
 
 %{quote:empty spaces.zip}
@@ -141,12 +128,12 @@ Macro Builtin (quote string with spaces)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (concatenation
+      (word)
+      (word))))
 
 ===============================================================================
 Macro Builtin (shrink whitespace)
-:skip
 ===============================================================================
 
 %{shrink:aa  bb   ccc   }
@@ -156,12 +143,13 @@ Macro Builtin (shrink whitespace)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (concatenation
+      (word)
+      (word)
+      (word))))
 
 ===============================================================================
 Macro Builtin (len string length)
-:skip
 ===============================================================================
 
 %{len:hello world}
@@ -171,12 +159,12 @@ Macro Builtin (len string length)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (concatenation
+      (word)
+      (word))))
 
 ===============================================================================
 Macro Builtin (reverse string)
-:skip
 ===============================================================================
 
 %{reverse:hello}
@@ -186,12 +174,10 @@ Macro Builtin (reverse string)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (rep string repetition)
-:skip
 ===============================================================================
 
 %{rep:hello 3}
@@ -201,12 +187,12 @@ Macro Builtin (rep string repetition)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (concatenation
+      (word)
+      (integer))))
 
 ===============================================================================
 Macro Builtin (sub string substitution)
-:skip
 ===============================================================================
 
 %{sub:old:new:old text old}
@@ -216,12 +202,13 @@ Macro Builtin (sub string substitution)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (concatenation
+      (word)
+      (word)
+      (word))))
 
 ===============================================================================
 Macro Builtin (gsub global substitution)
-:skip
 ===============================================================================
 
 %{gsub:old:new:old text old}
@@ -231,8 +218,10 @@ Macro Builtin (gsub global substitution)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (concatenation
+      (word)
+      (word)
+      (word))))
 
 ===============================================================================
 Macro Builtin (getncpus system info)
@@ -248,7 +237,6 @@ Macro Builtin (getncpus system info)
 
 ===============================================================================
 Macro Builtin (expand macro expansion)
-:skip
 ===============================================================================
 
 %{expand:%{version}-%{release}}
@@ -258,16 +246,15 @@ Macro Builtin (expand macro expansion)
 (spec
   (macro_expansion
     (builtin)
-    (macro_expansion
-      (identifier))
-    (string
-      (string_content))
-    (macro_expansion
-      (identifier))))
+    argument: (concatenation
+      (macro_expansion
+        (identifier))
+      (word)
+      (macro_expansion
+        (identifier)))))
 
 ===============================================================================
 Macro Builtin (echo output)
-:skip
 ===============================================================================
 
 %{echo:Building package}
@@ -277,12 +264,12 @@ Macro Builtin (echo output)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (concatenation
+      (word)
+      (word))))
 
 ===============================================================================
 Macro Builtin (warn warning message)
-:skip
 ===============================================================================
 
 %{warn:This is deprecated}
@@ -292,12 +279,13 @@ Macro Builtin (warn warning message)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (concatenation
+      (word)
+      (word)
+      (word))))
 
 ===============================================================================
 Macro Builtin (error fatal error)
-:skip
 ===============================================================================
 
 %{error:Build failed}
@@ -307,12 +295,12 @@ Macro Builtin (error fatal error)
 (spec
   (macro_expansion
     (builtin)
-    (string
-      (string_content))))
+    argument: (concatenation
+      (word)
+      (word))))
 
 ===============================================================================
 Macro Builtin (trace debugging)
-:skip
 ===============================================================================
 
 %{trace:0}
@@ -322,4 +310,4 @@ Macro Builtin (trace debugging)
 (spec
   (macro_expansion
     (builtin)
-    (integer)))
+    argument: (integer)))
