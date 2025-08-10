@@ -178,17 +178,10 @@ module.exports = grammar({
                     $.parenthesized_expression, // (expr)
                     $.macro_simple_expansion, // %name
                     $.macro_expansion, // %{name}
-                    $.macro_integer_expansion, // 0%{?dist}
                     $.macro_shell_expansion // %(shell command)
                     // $.macro_expression // %[expression]
                 )
             ),
-
-        // Macro integer expansion: integer followed by macro expansion
-        // Common pattern: 0%{?dist} (adds .el8, .fc35, etc. to package names)
-        // TODO: Consider integrating this into general macro expansion rules
-        macro_integer_expansion: ($) =>
-            seq($.integer, choice($.macro_simple_expansion, $.macro_expansion)),
 
         ///////////////////////////////////////////////////////////////////////
         // MACRO SYSTEM
@@ -555,7 +548,7 @@ module.exports = grammar({
             prec.left(
                 PREC.compare,
                 seq(
-                    $._primary_expression,
+                    $._literal,
                     repeat1(
                         seq(
                             field(
@@ -570,7 +563,7 @@ module.exports = grammar({
                                     '>' // Greater than
                                 )
                             ),
-                            $._primary_expression
+                            $._literal
                         )
                     )
                 )
@@ -614,7 +607,7 @@ module.exports = grammar({
                 $.boolean_operator, // &&, ||, and, or
                 $.with_operator, // %{with feature}
                 $.defined_operator, // %{defined macro}
-                $._primary_expression // literals, macros, etc.
+                $._literal
             ),
 
         _conditional_block: ($) =>
@@ -1409,7 +1402,14 @@ module.exports = grammar({
         // Integer literals: whole numbers with optional base and suffix
         // Supports decimal (123), hexadecimal (0x1a), and RPM version suffixes
         // Example: 0x10#sometext for special RPM version handling
-        integer: ($) => token(/-?(0x)?[0-9]+(#[0-9A-Za-z@_]+)?/),
+        integer: ($) =>
+            choice(
+                /-?(0x)?[0-9]+(#[0-9A-Za-z@_]+)?/,
+                seq(
+                    /-?(0x)?[0-9]+/,
+                    choice($.macro_simple_expansion, $.macro_expansion)
+                )
+            ),
 
         // Floating point literals: decimal numbers with fractional part
         // Supports underscores in digits for readability: 1_000.50
@@ -1527,7 +1527,7 @@ module.exports = grammar({
         // Word tokens: unquoted identifiers and simple values
         // Excludes whitespace and special characters that have syntactic meaning
         // Used for simple identifiers, paths, and unquoted string values
-        word: ($) => token(/([^\s"#%{}()\\])+/),
+        word: ($) => token(/([^\s"#%{}()<>|&\\])+/),
 
         // String concatenation: automatic joining of adjacent expressions
         // RPM automatically concatenates adjacent values without operators
@@ -1538,7 +1538,8 @@ module.exports = grammar({
                 -1,
                 seq(
                     $._primary_expression, // First expression
-                    repeat1($._primary_expression) // One or more additional expressions
+                    // One or more additional expressions
+                    repeat1($._primary_expression)
                 )
             ),
     },

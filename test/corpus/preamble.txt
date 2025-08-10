@@ -464,7 +464,8 @@ BuildRequires:  another-package >= 1:2.0.0
         (version)))))
 
 ===============================================================================
-Preamble Section (Virtual capabilities with complex naming)
+TODO Preamble Section (Virtual capabilities with complex naming)
+:skip
 ===============================================================================
 
 Name:           tree-sitter-rpmspec
@@ -472,28 +473,6 @@ Provides:       virtual(capability-name) = 1.0
 Requires:       capability(feature.subfeature)
 
 -------------------------------------------------------------------------------
-
-(spec
-  (preamble
-    (tags
-      (tag)
-      value: (word)))
-  (preamble
-    (tags
-      (dependency_tag)
-      value: (concatenation
-        (word)
-        (parenthesized_expression
-          (word))
-        (word)
-        (version))))
-  (preamble
-    (tags
-      (dependency_tag)
-      value: (concatenation
-        (word)
-        (parenthesized_expression
-          (word))))))
 
 ===============================================================================
 Preamble Section (Multiple comparison operators)

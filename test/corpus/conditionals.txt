@@ -133,14 +133,14 @@ BuildRequires:  foo
   (if_statement
     (boolean_operator
       (comparison_operator
-        (macro_integer_expansion
+        (concatenation
           (integer)
           (macro_expansion
             (conditional_expansion
               (identifier))))
         (integer))
       (comparison_operator
-        (macro_integer_expansion
+        (concatenation
           (integer)
           (macro_expansion
             (conditional_expansion
@@ -163,7 +163,7 @@ BuildRequires:  foo
 
 (spec
   (if_statement
-    (macro_integer_expansion
+    (concatenation
       (integer)
       (macro_expansion
         (conditional_expansion
@@ -187,13 +187,13 @@ BuildRequires:  foo
   (if_statement
     (parenthesized_expression
       (boolean_operator
-        (macro_integer_expansion
+        (concatenation
           (integer)
           (macro_expansion
             (conditional_expansion
               (identifier))))
         (comparison_operator
-          (macro_integer_expansion
+          (concatenation
             (integer)
             (macro_expansion
               (conditional_expansion
@@ -218,7 +218,7 @@ BuildRequires:  bar
 
 (spec
   (if_statement
-    (macro_integer_expansion
+    (concatenation
       (integer)
       (macro_expansion
         (conditional_expansion
@@ -247,7 +247,7 @@ BuildRequires:  bar
 
 (spec
   (if_statement
-    (macro_integer_expansion
+    (concatenation
       (integer)
       (macro_expansion
         (conditional_expansion
@@ -257,7 +257,7 @@ BuildRequires:  bar
         (dependency_tag)
         (word)))
     (elif_clause
-      (macro_integer_expansion
+      (concatenation
         (integer)
         (macro_expansion
           (conditional_expansion
@@ -283,7 +283,7 @@ BuildRequires:  wurst
 
 (spec
   (if_statement
-    (macro_integer_expansion
+    (concatenation
       (integer)
       (macro_expansion
         (conditional_expansion
@@ -293,7 +293,7 @@ BuildRequires:  wurst
         (dependency_tag)
         (word)))
     (elif_clause
-      (macro_integer_expansion
+      (concatenation
         (integer)
         (macro_expansion
           (conditional_expansion
@@ -332,7 +332,7 @@ Conditionals (Nested %if with %elif and %else)
 
 (spec
   (if_statement
-    (macro_integer_expansion
+    (concatenation
       (integer)
       (macro_expansion
         (conditional_expansion

@@ -250,36 +250,10 @@
           },
           {
             "type": "SYMBOL",
-            "name": "macro_integer_expansion"
-          },
-          {
-            "type": "SYMBOL",
             "name": "macro_shell_expansion"
           }
         ]
       }
-    },
-    "macro_integer_expansion": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "integer"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "macro_simple_expansion"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "macro_expansion"
-            }
-          ]
-        }
-      ]
     },
     "macro_name": {
       "type": "PATTERN",
@@ -1391,7 +1365,7 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "_primary_expression"
+            "name": "_literal"
           },
           {
             "type": "REPEAT1",
@@ -1437,7 +1411,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "_primary_expression"
+                  "name": "_literal"
                 }
               ]
             }
@@ -1559,7 +1533,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_primary_expression"
+          "name": "_literal"
         }
       ]
     },
@@ -3981,11 +3955,35 @@
       ]
     },
     "integer": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PATTERN",
-        "value": "-?(0x)?[0-9]+(#[0-9A-Za-z@_]+)?"
-      }
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "-?(0x)?[0-9]+(#[0-9A-Za-z@_]+)?"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "-?(0x)?[0-9]+"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_simple_expansion"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_expansion"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     "float": {
       "type": "TOKEN",
@@ -4326,7 +4324,7 @@
       "type": "TOKEN",
       "content": {
         "type": "PATTERN",
-        "value": "([^\\s\"#%{}()\\\\])+"
+        "value": "([^\\s\"#%{}()<>|&\\\\])+"
       }
     },
     "concatenation": {
