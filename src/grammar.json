@@ -292,22 +292,13 @@
                   ]
                 },
                 {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SYMBOL",
-                      "name": "macro_builtin"
-                    },
-                    {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "SYMBOL",
-                        "name": "macro_name"
-                      },
-                      "named": true,
-                      "value": "identifier"
-                    }
-                  ]
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "macro_name"
+                  },
+                  "named": true,
+                  "value": "identifier"
                 }
               ]
             },
@@ -353,7 +344,7 @@
       "named": true,
       "value": "special_variable_name"
     },
-    "macro_builtin": {
+    "builtin": {
       "type": "CHOICE",
       "members": [
         {
@@ -613,10 +604,6 @@
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "SYMBOL",
-                  "name": "macro_builtin"
-                },
-                {
                   "type": "ALIAS",
                   "content": {
                     "type": "SYMBOL",
@@ -822,7 +809,7 @@
               "name": "macro_define"
             },
             "named": true,
-            "value": "macro_builtin"
+            "value": "builtin"
           },
           {
             "type": "IMMEDIATE_TOKEN",
@@ -956,7 +943,7 @@
               "name": "macro_undefine"
             },
             "named": true,
-            "value": "macro_builtin"
+            "value": "builtin"
           },
           {
             "type": "IMMEDIATE_TOKEN",
@@ -3540,7 +3527,7 @@
             "value": "setup"
           },
           "named": true,
-          "value": "macro_builtin"
+          "value": "builtin"
         },
         {
           "type": "REPEAT",
@@ -3682,7 +3669,7 @@
             }
           },
           "named": true,
-          "value": "macro_builtin"
+          "value": "builtin"
         }
       ]
     },
@@ -3713,7 +3700,7 @@
                       "value": "patch"
                     },
                     "named": true,
-                    "value": "macro_builtin"
+                    "value": "builtin"
                   },
                   {
                     "type": "CHOICE",

@@ -223,10 +223,7 @@ module.exports = grammar({
                 choice(
                     seq(
                         optional(field('operator', token.immediate('!'))),
-                        choice(
-                            $.macro_builtin,
-                            alias($.macro_name, $.identifier)
-                        )
+                        alias($.macro_name, $.identifier)
                     ),
                     $.conditional_expansion,
                     $._special_macro_name
@@ -244,7 +241,7 @@ module.exports = grammar({
 
         // Built-in RPM macros providing utility functions and system information
         // These are predefined macros available in all RPM builds
-        macro_builtin: ($) =>
+        builtin: ($) =>
             choice(
                 $.macro_source,
                 $.macro_patch,
@@ -306,7 +303,6 @@ module.exports = grammar({
                 seq(
                     optional(field('operator', token.immediate('!'))),
                     choice(
-                        $.macro_builtin,
                         alias($.macro_name, $.identifier),
                         $._special_macro_name
                     ),
@@ -366,7 +362,7 @@ module.exports = grammar({
             prec.left(
                 seq(
                     '%',
-                    alias($.macro_define, $.macro_builtin),
+                    alias($.macro_define, $.builtin),
                     token.immediate(BLANK),
                     field('name', alias($.macro_name, $.identifier)),
                     optional(seq('(', optional($.macro_options), ')')),
@@ -399,7 +395,7 @@ module.exports = grammar({
             prec.left(
                 seq(
                     '%',
-                    alias($.macro_undefine, $.macro_builtin),
+                    alias($.macro_undefine, $.builtin),
                     token.immediate(BLANK),
                     field('name', alias($.macro_name, $.identifier))
                 )
@@ -1269,7 +1265,7 @@ module.exports = grammar({
         setup_macro: ($) =>
             seq(
                 '%',
-                alias('setup', $.macro_builtin),
+                alias('setup', $.builtin),
                 repeat(
                     choice(
                         field('argument', $.setup_flag), // Simple flags: -c, -C, -D, -T, -q
@@ -1312,7 +1308,7 @@ module.exports = grammar({
         ///////////////////////////////////////////////////////////////////////
         // Legacy patch token for %patch0, %patch1 etc.
         patch_legacy_token: ($) =>
-            seq(alias(token(prec(2, /patch[0-9]+/)), $.macro_builtin)),
+            seq(alias(token(prec(2, /patch[0-9]+/)), $.builtin)),
 
         // %patch macro: patch application with comprehensive option support
         // Syntax: %patch [number] [options] or %patch [options]
@@ -1327,7 +1323,7 @@ module.exports = grammar({
                         $.patch_legacy_token,
                         // Modern syntax: %patch [optional number]
                         seq(
-                            alias('patch', $.macro_builtin),
+                            alias('patch', $.builtin),
                             optional(field('patch_number', $.integer))
                         )
                     ),

@@ -24,7 +24,7 @@ Prep Section (%setup)
     (section_name)
     (shell_block
       (setup_macro
-        (macro_builtin)
+        (builtin)
         (setup_flag)))))
 
 ===============================================================================
@@ -79,7 +79,7 @@ Prep Section (%setup with flags)
     (section_name)
     (shell_block
       (setup_macro
-        (macro_builtin)
+        (builtin)
         (setup_flag)
         (setup_flag)))))
 
@@ -97,7 +97,7 @@ Prep Section (%setup with source options)
     (section_name)
     (shell_block
       (setup_macro
-        (macro_builtin)
+        (builtin)
         (setup_source_option
           (integer))
         (setup_source_option
@@ -117,7 +117,7 @@ Prep Section (%setup with name option)
     (section_name)
     (shell_block
       (setup_macro
-        (macro_builtin)
+        (builtin)
         (setup_name_option
           (word))))))
 
@@ -135,7 +135,7 @@ Prep Section (%setup complex combination)
     (section_name)
     (shell_block
       (setup_macro
-        (macro_builtin)
+        (builtin)
         (setup_flag)
         (setup_name_option
           (macro_expansion
@@ -154,7 +154,7 @@ Prep Section (%setup standalone at top level)
 
 (spec
   (setup_macro
-    (macro_builtin)
+    (builtin)
     (setup_flag)
     (setup_flag)))
 
@@ -173,10 +173,10 @@ Prep Section (%setup edge cases)
     (section_name)
     (shell_block
       (setup_macro
-        (macro_builtin)
+        (builtin)
         (setup_flag))
       (setup_macro
-        (macro_builtin)
+        (builtin)
         (setup_source_option
           (integer))
         (setup_name_option
@@ -198,10 +198,10 @@ Prep Section (%patch basic usage)
     (section_name)
     (shell_block
       (patch_macro
-        (macro_builtin)
+        (builtin)
         (integer))
       (patch_macro
-        (macro_builtin)
+        (builtin)
         (patch_number_option
           (integer))))))
 
@@ -220,13 +220,13 @@ Prep Section (%patch with flags)
     (section_name)
     (shell_block
       (patch_macro
-        (macro_builtin)
+        (builtin)
         (integer)
         (patch_number_option
           (integer))
         (patch_flag))
       (patch_macro
-        (macro_builtin)
+        (builtin)
         (integer)
         (patch_flag)
         (patch_flag)))))
@@ -246,12 +246,12 @@ Prep Section (%patch with string options)
     (section_name)
     (shell_block
       (patch_macro
-        (macro_builtin)
+        (builtin)
         (integer)
         (patch_string_option
           (word)))
       (patch_macro
-        (macro_builtin)
+        (builtin)
         (patch_number_option
           (integer))
         (patch_string_option
@@ -272,7 +272,7 @@ Prep Section (%patch complex combination)
     (section_name)
     (shell_block
       (patch_macro
-        (macro_builtin)
+        (builtin)
         (integer)
         (patch_number_option
           (integer))
@@ -282,7 +282,7 @@ Prep Section (%patch complex combination)
           (integer))
         (patch_flag))
       (patch_macro
-        (macro_builtin)
+        (builtin)
         (patch_number_option
           (integer))
         (patch_flag)
@@ -300,12 +300,12 @@ Prep Section (%patch standalone at top level)
 
 (spec
   (patch_macro
-    (macro_builtin)
+    (builtin)
     (integer)
     (patch_number_option
       (integer)))
   (patch_macro
-    (macro_builtin)
+    (builtin)
     (patch_number_option
       (integer))
     (patch_flag)))
@@ -325,12 +325,12 @@ Prep Section (%patch edge cases)
     (section_name)
     (shell_block
       (patch_macro
-        (macro_builtin)
+        (builtin)
         (integer)
         (patch_number_option
           (integer)))
       (patch_macro
-        (macro_builtin)
+        (builtin)
         (patch_string_option
           (quoted_string
             (quoted_string_content)))

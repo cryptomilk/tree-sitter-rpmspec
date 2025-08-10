@@ -21,7 +21,7 @@ Macro Builtin (basename simple)
 
 (spec
   (macro_expansion
-    (macro_builtin)))
+    (builtin)))
 
 ===============================================================================
 Macro Builtin (dirname with path)
@@ -34,7 +34,7 @@ Macro Builtin (dirname with path)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -49,7 +49,7 @@ Macro Builtin (lower case conversion)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -64,7 +64,7 @@ Macro Builtin (upper case conversion)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -79,7 +79,7 @@ Macro Builtin (getenv environment variable)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (identifier)))
 
 ===============================================================================
@@ -93,7 +93,7 @@ Macro Builtin (exists file check)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (macro_expansion
       (identifier))
     (string
@@ -110,7 +110,7 @@ Macro Builtin (suffix extraction)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -125,7 +125,7 @@ Macro Builtin (uncompress command)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -140,7 +140,7 @@ Macro Builtin (quote string with spaces)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -155,7 +155,7 @@ Macro Builtin (shrink whitespace)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -170,7 +170,7 @@ Macro Builtin (len string length)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -185,7 +185,7 @@ Macro Builtin (reverse string)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -200,7 +200,7 @@ Macro Builtin (rep string repetition)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -215,7 +215,7 @@ Macro Builtin (sub string substitution)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -230,7 +230,7 @@ Macro Builtin (gsub global substitution)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -244,7 +244,7 @@ Macro Builtin (getncpus system info)
 
 (spec
   (macro_expansion
-    (macro_builtin)))
+    (builtin)))
 
 ===============================================================================
 Macro Builtin (expand macro expansion)
@@ -257,7 +257,7 @@ Macro Builtin (expand macro expansion)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (macro_expansion
       (identifier))
     (string
@@ -276,7 +276,7 @@ Macro Builtin (echo output)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -291,7 +291,7 @@ Macro Builtin (warn warning message)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -306,7 +306,7 @@ Macro Builtin (error fatal error)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -321,5 +321,5 @@ Macro Builtin (trace debugging)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (integer)))

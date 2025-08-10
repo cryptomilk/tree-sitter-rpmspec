@@ -9,7 +9,7 @@ Simple Macro Expansion (Built-in macro without braces)
 (spec
   (macro_call
     (macro_simple_expansion
-      (macro_builtin))))
+      (builtin))))
 
 ===============================================================================
 Simple Macro Expansion (Custom macro with single argument)
@@ -61,7 +61,7 @@ Simple Macro Expansion (Built-in macro dirname)
 (spec
   (macro_call
     (macro_simple_expansion
-      (macro_builtin))))
+      (builtin))))
 
 ===============================================================================
 Simple Macro Expansion (Built-in macro upper)
@@ -74,7 +74,7 @@ Simple Macro Expansion (Built-in macro upper)
 (spec
   (macro_call
     (macro_simple_expansion
-      (macro_builtin))))
+      (builtin))))
 
 ===============================================================================
 Simple Macro Expansion (Built-in macro lower)
@@ -87,7 +87,7 @@ Simple Macro Expansion (Built-in macro lower)
 (spec
   (macro_call
     (macro_simple_expansion
-      (macro_builtin))))
+      (builtin))))
 
 ===============================================================================
 Simple Macro Expansion (Built-in macro getenv)
@@ -100,7 +100,7 @@ Simple Macro Expansion (Built-in macro getenv)
 (spec
   (macro_call
     (macro_simple_expansion
-      (macro_builtin))))
+      (builtin))))
 
 ===============================================================================
 Simple Macro Expansion (Custom macro SOURCE0)
@@ -256,7 +256,7 @@ Simple Macro Expansion (Negation operator with built-in)
 (spec
   (macro_call
     (macro_simple_expansion
-      (macro_builtin))
+      (builtin))
     (macro_expansion
       (identifier))
     (word)))

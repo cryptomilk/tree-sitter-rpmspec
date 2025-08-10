@@ -8,7 +8,7 @@ Macros (%define)
 
 (spec
   (macro_definition
-    (macro_builtin)
+    (builtin)
     (identifier)
     (word)))
 
@@ -22,7 +22,7 @@ Macros (%global)
 
 (spec
   (macro_definition
-    (macro_builtin)
+    (builtin)
     (identifier)
     (word)))
 
@@ -36,7 +36,7 @@ Macros (%global positive integer)
 
 (spec
   (macro_definition
-    (macro_builtin)
+    (builtin)
     (identifier)
     (integer)))
 
@@ -50,7 +50,7 @@ Macros (%global negative integer)
 
 (spec
   (macro_definition
-    (macro_builtin)
+    (builtin)
     (identifier)
     (integer)))
 
@@ -64,7 +64,7 @@ Macros (%global hex)
 
 (spec
   (macro_definition
-    (macro_builtin)
+    (builtin)
     (identifier)
     (integer)))
 
@@ -78,7 +78,7 @@ Macros (%global function with empty arguments)
 
 (spec
   (macro_definition
-    (macro_builtin)
+    (builtin)
     (identifier)
     (word)))
 
@@ -92,7 +92,7 @@ Macros (%global with quoted string)
 
 (spec
   (macro_definition
-    (macro_builtin)
+    (builtin)
     (identifier)
     (quoted_string
       (quoted_string_content))))
@@ -107,7 +107,7 @@ Macros (%undefine)
 
 (spec
   (macro_undefinition
-    (macro_builtin)
+    (builtin)
     (identifier)))
 
 ===============================================================================
@@ -120,7 +120,7 @@ Macros (Usage/Braces)
 
 (spec
   (macro_expansion
-    (macro_builtin)))
+    (builtin)))
 
 ===============================================================================
 Macros (Shell Expansion)
@@ -163,7 +163,7 @@ Macros (Conditional macro defintion #1)
     (conditional_expansion
       (identifier)
       (macro_definition
-        (macro_builtin)
+        (builtin)
         (identifier)
         (word)
         (word)))))
@@ -183,7 +183,7 @@ Macros (Conditional macro definition #2)
     (conditional_expansion
       (identifier)
       (macro_definition
-        (macro_builtin)
+        (builtin)
         (identifier)
         (macro_expansion
           (identifier))
@@ -200,14 +200,14 @@ Macros (Complex arguments with quotes)
 -------------------------------------------------------------------------------
 (spec
   (setup_macro
-    (macro_builtin)
+    (builtin)
     (setup_flag)
     (setup_name_option
       (quoted_string
         (quoted_string_content))))
   (patch_macro
     (patch_legacy_token
-      (macro_builtin))
+      (builtin))
     (patch_number_option)
     (patch_long_option
       (integer))
@@ -245,7 +245,7 @@ Macros (Function-style Built-in with Colon)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -260,7 +260,7 @@ Macros (Environment Variable Expansion)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (identifier)))
 
 ===============================================================================
@@ -276,15 +276,15 @@ Macros (String Transformation Functions)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content)))
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content)))
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -300,11 +300,11 @@ Macros (Path Operations)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content)))
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (string
       (string_content))))
 
@@ -319,9 +319,9 @@ Macros (Nested Function Calls)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (macro_expansion
-      (macro_builtin)
+      (builtin)
       (string
         (string_content)))))
 
@@ -339,7 +339,7 @@ print("Package: " .. name)
 
 (spec
   (macro_expansion
-    (macro_builtin)
+    (builtin)
     (text
       (text_content)
       (macro_expansion

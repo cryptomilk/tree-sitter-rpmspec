@@ -275,6 +275,11 @@
     }
   },
   {
+    "type": "builtin",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "changelog",
     "named": true,
     "fields": {},
@@ -1015,25 +1020,6 @@
     }
   },
   {
-    "type": "macro_builtin",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "macro_patch",
-          "named": true
-        },
-        {
-          "type": "macro_source",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "macro_call",
     "named": true,
     "fields": {
@@ -1121,7 +1107,7 @@
       "required": true,
       "types": [
         {
-          "type": "macro_builtin",
+          "type": "builtin",
           "named": true
         },
         {
@@ -1173,30 +1159,11 @@
           "named": true
         },
         {
-          "type": "macro_builtin",
-          "named": true
-        },
-        {
           "type": "special_variable_name",
           "named": true
         },
         {
           "type": "string",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "macro_patch",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "integer",
           "named": true
         }
       ]
@@ -1253,26 +1220,7 @@
           "named": true
         },
         {
-          "type": "macro_builtin",
-          "named": true
-        },
-        {
           "type": "special_variable_name",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "macro_source",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "integer",
           "named": true
         }
       ]
@@ -1298,7 +1246,7 @@
       "required": true,
       "types": [
         {
-          "type": "macro_builtin",
+          "type": "builtin",
           "named": true
         }
       ]
@@ -1395,7 +1343,7 @@
       "required": true,
       "types": [
         {
-          "type": "macro_builtin",
+          "type": "builtin",
           "named": true
         }
       ]
@@ -1437,7 +1385,7 @@
       "required": true,
       "types": [
         {
-          "type": "macro_builtin",
+          "type": "builtin",
           "named": true
         },
         {
@@ -1609,7 +1557,7 @@
       "required": true,
       "types": [
         {
-          "type": "macro_builtin",
+          "type": "builtin",
           "named": true
         }
       ]
@@ -2238,10 +2186,6 @@
     "named": false
   },
   {
-    "type": "PATCH",
-    "named": false
-  },
-  {
     "type": "Packager",
     "named": false
   },
@@ -2279,14 +2223,6 @@
   },
   {
     "type": "Requires",
-    "named": false
-  },
-  {
-    "type": "S",
-    "named": false
-  },
-  {
-    "type": "SOURCE",
     "named": false
   },
   {
@@ -2350,10 +2286,6 @@
     "named": false
   },
   {
-    "type": "basename",
-    "named": false
-  },
-  {
     "type": "c",
     "named": false
   },
@@ -2371,38 +2303,6 @@
     "named": false
   },
   {
-    "type": "dirname",
-    "named": false
-  },
-  {
-    "type": "dnl",
-    "named": false
-  },
-  {
-    "type": "dump",
-    "named": false
-  },
-  {
-    "type": "echo",
-    "named": false
-  },
-  {
-    "type": "error",
-    "named": false
-  },
-  {
-    "type": "exists",
-    "named": false
-  },
-  {
-    "type": "expand",
-    "named": false
-  },
-  {
-    "type": "expr",
-    "named": false
-  },
-  {
     "type": "filedigest",
     "named": false
   },
@@ -2415,27 +2315,11 @@
     "named": false
   },
   {
-    "type": "getdirconf",
-    "named": false
-  },
-  {
-    "type": "getenv",
-    "named": false
-  },
-  {
-    "type": "getncpus",
-    "named": false
-  },
-  {
     "type": "global",
     "named": false
   },
   {
     "type": "group",
-    "named": false
-  },
-  {
-    "type": "gsub",
     "named": false
   },
   {
@@ -2447,33 +2331,13 @@
     "named": false
   },
   {
-    "type": "len",
-    "named": false
-  },
-  {
     "type": "line_continuation",
     "named": true,
     "extra": true
   },
   {
-    "type": "load",
-    "named": false
-  },
-  {
-    "type": "lower",
-    "named": false
-  },
-  {
-    "type": "lua",
-    "named": false
-  },
-  {
     "type": "macro_options",
     "named": true
-  },
-  {
-    "type": "macrobody",
-    "named": false
   },
   {
     "type": "maj",
@@ -2552,36 +2416,12 @@
     "named": false
   },
   {
-    "type": "quote",
-    "named": false
-  },
-  {
     "type": "quoted_string_content",
     "named": true
   },
   {
-    "type": "rep",
-    "named": false
-  },
-  {
-    "type": "reverse",
-    "named": false
-  },
-  {
-    "type": "rpmversion",
-    "named": false
-  },
-  {
     "type": "section_name",
     "named": true
-  },
-  {
-    "type": "shescape",
-    "named": false
-  },
-  {
-    "type": "shrink",
-    "named": false
   },
   {
     "type": "size",
@@ -2596,14 +2436,6 @@
     "named": true
   },
   {
-    "type": "sub",
-    "named": false
-  },
-  {
-    "type": "suffix",
-    "named": false
-  },
-  {
     "type": "symlink",
     "named": false
   },
@@ -2612,31 +2444,7 @@
     "named": true
   },
   {
-    "type": "trace",
-    "named": false
-  },
-  {
-    "type": "u2p",
-    "named": false
-  },
-  {
-    "type": "uncompress",
-    "named": false
-  },
-  {
     "type": "undefined",
-    "named": false
-  },
-  {
-    "type": "upper",
-    "named": false
-  },
-  {
-    "type": "url2path",
-    "named": false
-  },
-  {
-    "type": "verbose",
     "named": false
   },
   {
@@ -2646,10 +2454,6 @@
   {
     "type": "version",
     "named": true
-  },
-  {
-    "type": "warn",
-    "named": false
   },
   {
     "type": "with",
