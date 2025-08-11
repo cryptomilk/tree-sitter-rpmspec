@@ -10,7 +10,8 @@
         "spec"
       ],
       "injection-regex": "^rpmspec$",
-      "class-name": "TreeSitterRpmspec"
+      "class-name": "TreeSitterRpmspec",
+      "highlights": "queries/highlights.scm"
     }
   ],
   "metadata": {

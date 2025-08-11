@@ -1,25 +1,27 @@
-(identifier) @variable
-(special_variable_name) @constant
+; Specific parametric macro expansion rules (must come first)
+(macro_simple_expansion_parametric
+  (builtin) @function.call)
 
-(builtin) @variable.builtin
+(macro_simple_expansion_parametric
+  (identifier) @function.call)
 
+(macro_simple_expansion_parametric
+  option: (macro_option) @variable.parameter
+  argument: [
+    (word) @variable.parameter
+    (concatenation
+      (word) @variable.parameter)
+    (macro_expansion) @function.call
+    (macro_simple_expansion) @function.call
+  ])
+
+; Highlight macro options in parametric expansions
+(macro_option) @variable.parameter
+
+; Macro expansion rules
 (macro_expansion
   (builtin) @variable.builtin
   argument: (_) @variable.parameter)
-
-
-(macro_simple_expansion
-  "%" @punctuation.special) @none
-(macro_expansion
-  "%{" @punctuation.special
-  "}" @punctuation.special) @none
-(macro_definition
-  "%" @punctuation.special
-  (builtin) @keyword.directive.define
-  (identifier) @keyword.macro)
-(macro_undefinition
-  (builtin) @keyword.directive.define
-  (identifier) @keyword.macro)
 
 (macro_expansion
   (identifier) @function.call
@@ -29,17 +31,25 @@
       (word) @variable.parameter)
   ])
 
-(macro_call
-  name: (macro_simple_expansion
-          (identifier) @function.call))
-(macro_call
-  name: (macro_simple_expansion
-          (identifier) @function.call)
-  argument: [
-    (word) @variable.parameter
-    (concatenation
-      (word) @variable.parameter)
-  ])
+; Macro definition and undefinition
+(macro_definition
+  "%" @punctuation.special
+  (builtin) @keyword.directive.define
+  (identifier) @keyword.macro)
+(macro_undefinition
+  (builtin) @keyword.directive.define
+  (identifier) @keyword.macro)
+
+; General punctuation for macros
+(macro_simple_expansion
+  "%" @punctuation.special) @none
+(macro_expansion
+  "%{" @punctuation.special
+  "}" @punctuation.special) @none
+
+; General identifier and builtin rules (must come after specific rules)
+(special_variable_name) @constant
+(builtin) @variable.builtin
 
 (setup_macro
   argument: [
@@ -167,3 +177,6 @@
   "%else"
   "%endif"
 ] @keyword.conditional
+
+; Fallback rule for identifiers (commented out due to conflicts with parametric macros)
+; (identifier) @variable

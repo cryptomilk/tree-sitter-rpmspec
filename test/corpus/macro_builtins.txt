@@ -1,15 +1,15 @@
-# TODO: Most builtin macro tests are currently skipped because the grammar
-# doesn't yet support the colon syntax for builtin macros like %{basename:/path}.
-# This requires implementing support for function-style builtin macro arguments
-# in the _macro_expansion_body rule. The colon syntax is defined in the RPM
-# specification but not yet implemented in this parser.
+# Builtin macro tests for parametric and functional syntax
+#
+# This test file covers both the colon syntax (%{builtin:argument}) and the
+# parametric syntax (%builtin [options] [arguments]) for builtin macros.
+# The parametric syntax supports options and arguments parsed up to string end
+# or next newline, as specified in the RPM macro documentation.
 #
 # See: https://rpm-software-management.github.io/rpm/man/rpm-macros.7
-# Examples that need implementation:
-# - %{basename:/some/dir/file.suf}  # Path operations
-# - %{upper:CamelCase}              # String manipulation
-# - %{getenv:HOME}                  # Environment variables
-# - %{exists:%{builddir}/file}      # File existence checks
+# Examples include:
+# - %{basename:/some/dir/file.suf}  # Colon syntax
+# - %basename /some/dir/file.suf    # Parametric syntax
+# - %dirname -x /path/to/file       # Parametric with options
 
 ===============================================================================
 Macro Builtin (basename simple)
@@ -128,9 +128,8 @@ Macro Builtin (quote string with spaces)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (word))))
+    argument: (word)
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (shrink whitespace)
@@ -143,10 +142,9 @@ Macro Builtin (shrink whitespace)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (word)
-      (word))))
+    argument: (word)
+    argument: (word)
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (len string length)
@@ -159,9 +157,8 @@ Macro Builtin (len string length)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (word))))
+    argument: (word)
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (reverse string)
@@ -187,9 +184,8 @@ Macro Builtin (rep string repetition)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (integer))))
+    argument: (word)
+    argument: (integer)))
 
 ===============================================================================
 Macro Builtin (sub string substitution)
@@ -202,10 +198,9 @@ Macro Builtin (sub string substitution)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (word)
-      (word))))
+    argument: (word)
+    argument: (word)
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (gsub global substitution)
@@ -218,10 +213,9 @@ Macro Builtin (gsub global substitution)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (word)
-      (word))))
+    argument: (word)
+    argument: (word)
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (getncpus system info)
@@ -264,9 +258,8 @@ Macro Builtin (echo output)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (word))))
+    argument: (word)
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (warn warning message)
@@ -279,10 +272,9 @@ Macro Builtin (warn warning message)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (word)
-      (word))))
+    argument: (word)
+    argument: (word)
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (error fatal error)
@@ -295,9 +287,8 @@ Macro Builtin (error fatal error)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (word))))
+    argument: (word)
+    argument: (word)))
 
 ===============================================================================
 Macro Builtin (trace debugging)
@@ -310,4 +301,112 @@ Macro Builtin (trace debugging)
 (spec
   (macro_expansion
     (builtin)
-    argument: (integer)))
+    argument: (word)))
+
+===============================================================================
+Parametric Macro (basename with argument)
+===============================================================================
+
+%basename /some/dir/file.suf
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_simple_expansion_parametric
+    (builtin)
+    argument: (word)))
+
+===============================================================================
+Parametric Macro (dirname with multiple arguments)
+===============================================================================
+
+%dirname /path/to/file.txt /another/path
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_simple_expansion_parametric
+    (builtin)
+    argument: (word)
+    argument: (word)))
+
+===============================================================================
+Parametric Macro (builtin with short option)
+===============================================================================
+
+%getenv -x HOME
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_simple_expansion_parametric
+    (builtin)
+    option: (macro_option)
+    argument: (word)))
+
+===============================================================================
+Parametric Macro (builtin with option and value)
+===============================================================================
+
+%gsub -p old new text
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_simple_expansion_parametric
+    (builtin)
+    option: (macro_option)
+    argument: (word)
+    argument: (word)
+    argument: (word)))
+
+===============================================================================
+Parametric Macro (within braces with arguments)
+===============================================================================
+
+%{basename /some/dir/file.suf}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (word)))
+
+===============================================================================
+Parametric Macro (within braces with options)
+===============================================================================
+
+%{dirname -x /path/to/file}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    option: (macro_option)
+    argument: (word)))
+
+===============================================================================
+Parametric Macro (with macro expansion as argument)
+===============================================================================
+
+%basename %{builddir}/file.txt
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_simple_expansion_parametric
+    (builtin)
+    argument: (macro_expansion
+      (identifier))
+    argument: (word)))
+
+===============================================================================
+TODO Parametric Macro (complex with separator)
+:skip
+===============================================================================
+
+%sub -- old new %{version}-%{release}
+
+-------------------------------------------------------------------------------

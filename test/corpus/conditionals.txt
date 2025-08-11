@@ -332,41 +332,35 @@ Conditionals (Nested %if with %elif and %else)
 
 (spec
   (if_statement
-    (concatenation
+    condition: (concatenation
       (integer)
       (macro_expansion
         (conditional_expansion
-          (identifier))))
-    (ifarch_statement
-      (arch
+          condition: (identifier))))
+    consequence: (ifarch_statement
+      condition: (arch
         (identifier))
-      (macro_call
-        (macro_simple_expansion
-          (identifier))
-        (word))
-      (macro_call
-        (macro_simple_expansion
-          (identifier))
-        (word))
-      (else_clause
-        (macro_call
-          (macro_simple_expansion
-            (identifier))
-          (word))
-        (macro_call
-          (macro_simple_expansion
-            (identifier))
-          (word)))
+      consequence: (macro_simple_expansion_parametric
+        (identifier)
+        argument: (word))
+      consequence: (macro_simple_expansion_parametric
+        (identifier)
+        argument: (word))
+      alternative: (else_clause
+        body: (macro_simple_expansion_parametric
+          (identifier)
+          argument: (word))
+        body: (macro_simple_expansion_parametric
+          (identifier)
+          argument: (word)))
       (comment))
-    (else_clause
-      (macro_call
-        (macro_simple_expansion
-          (identifier))
-        (word))
-      (macro_call
-        (macro_simple_expansion
-          (identifier))
-        (word)))))
+    alternative: (else_clause
+      body: (macro_simple_expansion_parametric
+        (identifier)
+        argument: (word))
+      body: (macro_simple_expansion_parametric
+        (identifier)
+        argument: (word)))))
 
 ===============================================================================
 Conditionals (%if %{with ..})

@@ -7,9 +7,8 @@ Simple Macro Expansion (Built-in macro without braces)
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (builtin))))
+  (macro_simple_expansion_parametric
+    (builtin)))
 
 ===============================================================================
 Simple Macro Expansion (Custom macro with single argument)
@@ -24,10 +23,9 @@ Simple Macro Expansion (Custom macro with single argument)
 
 (spec
   (comment)
-  (macro_call
-    (macro_simple_expansion
-      (identifier))
-    (word))
+  (macro_simple_expansion_parametric
+    (identifier)
+    argument: (word))
   (comment))
 
 ===============================================================================
@@ -43,11 +41,10 @@ Simple Macro Expansion (Custom macro with multiple arguments)
 
 (spec
   (comment)
-  (macro_call
-    (macro_simple_expansion
-      (identifier))
-    (word)
-    (integer))
+  (macro_simple_expansion_parametric
+    (identifier)
+    argument: (word)
+    argument: (integer))
   (comment))
 
 ===============================================================================
@@ -59,9 +56,8 @@ Simple Macro Expansion (Built-in macro dirname)
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (builtin))))
+  (macro_simple_expansion_parametric
+    (builtin)))
 
 ===============================================================================
 Simple Macro Expansion (Built-in macro upper)
@@ -72,9 +68,8 @@ Simple Macro Expansion (Built-in macro upper)
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (builtin))))
+  (macro_simple_expansion_parametric
+    (builtin)))
 
 ===============================================================================
 Simple Macro Expansion (Built-in macro lower)
@@ -85,9 +80,8 @@ Simple Macro Expansion (Built-in macro lower)
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (builtin))))
+  (macro_simple_expansion_parametric
+    (builtin)))
 
 ===============================================================================
 Simple Macro Expansion (Built-in macro getenv)
@@ -98,75 +92,63 @@ Simple Macro Expansion (Built-in macro getenv)
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (builtin))))
+  (macro_simple_expansion_parametric
+    (builtin)))
 
 ===============================================================================
-Simple Macro Expansion (Custom macro SOURCE0)
+Simple Macro Expansion (Builtin macro SOURCE0)
 ===============================================================================
 
-%SOURCE0
+%build
+cp %SOURCE0 .
 
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (builtin
-        (macro_source)))))
+  (build_scriptlet
+    (section_name)
+    (shell_block
+      (string
+        (string_content))
+      (macro_simple_expansion_parametric
+        (builtin
+          (macro_source))
+        argument: (word)))))
 
 ===============================================================================
-Simple Macro Expansion (Custom macro name)
+Simple Macro Expansion (Custom macro name in tag)
 ===============================================================================
 
-%name
+Name: %pkg_name
 
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (identifier))))
+  (preamble
+    (tags
+      (tag)
+      (macro_simple_expansion
+        (identifier)))))
 
 ===============================================================================
-Simple Macro Expansion (Custom macro version)
+Simple Macro Expansion (Concatenation)
 ===============================================================================
 
-%version
+Source: %name-%version.tar.gz
 
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (identifier))))
-
-===============================================================================
-Simple Macro Expansion (Custom macro release)
-===============================================================================
-
-%release
-
--------------------------------------------------------------------------------
-
-(spec
-  (macro_call
-    (macro_simple_expansion
-      (identifier))))
-
-===============================================================================
-Simple Macro Expansion (Custom macro with underscore)
-===============================================================================
-
-%_bindir
-
--------------------------------------------------------------------------------
-
-(spec
-  (macro_call
-    (macro_simple_expansion
-      (identifier))))
+  (preamble
+    (tags
+      (tag)
+      (concatenation
+        (macro_simple_expansion
+          (identifier))
+        (word)
+        (macro_simple_expansion
+          (identifier))
+        (word)))))
 
 ===============================================================================
 Simple Macro Expansion (Custom macro with numbers)
@@ -177,9 +159,8 @@ Simple Macro Expansion (Custom macro with numbers)
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (identifier))))
+  (macro_simple_expansion_parametric
+    (identifier)))
 
 ===============================================================================
 Simple Macro Expansion (Special variable all arguments)
@@ -190,9 +171,8 @@ Simple Macro Expansion (Special variable all arguments)
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (special_variable_name))))
+  (macro_simple_expansion
+    (special_variable_name)))
 
 ===============================================================================
 Simple Macro Expansion (Special variable quoted arguments)
@@ -203,9 +183,8 @@ Simple Macro Expansion (Special variable quoted arguments)
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (special_variable_name))))
+  (macro_simple_expansion
+    (special_variable_name)))
 
 ===============================================================================
 Simple Macro Expansion (Special variable argument count)
@@ -216,9 +195,8 @@ Simple Macro Expansion (Special variable argument count)
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (special_variable_name))))
+  (macro_simple_expansion
+    (special_variable_name)))
 
 ===============================================================================
 Simple Macro Expansion (Special variable positional argument)
@@ -229,9 +207,8 @@ Simple Macro Expansion (Special variable positional argument)
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (special_variable_name))))
+  (macro_simple_expansion
+    (special_variable_name)))
 
 ===============================================================================
 Simple Macro Expansion (Special variable nil)
@@ -242,9 +219,8 @@ Simple Macro Expansion (Special variable nil)
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (special_variable_name))))
+  (macro_simple_expansion
+    (special_variable_name)))
 
 ===============================================================================
 Simple Macro Expansion (Negation operator with built-in)
@@ -255,12 +231,11 @@ Simple Macro Expansion (Negation operator with built-in)
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (builtin))
-    (macro_expansion
+  (macro_simple_expansion_parametric
+    (builtin)
+    argument: (macro_expansion
       (identifier))
-    (word)))
+    argument: (word)))
 
 ===============================================================================
 Simple Macro Expansion (Negation operator with custom macro)
@@ -271,6 +246,5 @@ Simple Macro Expansion (Negation operator with custom macro)
 -------------------------------------------------------------------------------
 
 (spec
-  (macro_call
-    (macro_simple_expansion
-      (identifier))))
+  (macro_simple_expansion_parametric
+    (identifier)))

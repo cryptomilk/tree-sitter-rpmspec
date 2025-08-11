@@ -56,11 +56,10 @@ module.exports = grammar({
     name: 'rpmspec',
 
     // Grammar conflicts resolution
-    // The macro_call vs string conflict occurs because macro calls can appear
-    // in contexts where strings are also valid, requiring parser lookahead
     conflicts: ($) => [
-        [$.macro_call, $.string],
         [$.expression, $.tags],
+        [$.shell_block, $.string],
+        [$.macro_simple_expansion_parametric],
     ],
 
     // Tokens that may appear anywhere in the language and are typically ignored
@@ -108,8 +107,9 @@ module.exports = grammar({
                 $.macro_undefinition, // %undefine
                 $.setup_macro, // %setup with specific option support
                 $.patch_macro, // %patch with specific option support
-                $.macro_call, // %configure, etc. (general macro calls)
                 $.macro_expansion, // %{name}, %name
+                $.macro_simple_expansion_parametric, // %name [options] [args] - standalone statement
+                $.macro_simple_expansion, // %name - simple expansion
                 $.preamble, // Name:, Version:, etc.
                 $.description, // %description section
                 $.package, // %package subsection
@@ -223,7 +223,7 @@ module.exports = grammar({
                 choice(
                     seq(
                         optional(field('operator', token.immediate('!'))),
-                        choice(alias($.macro_name, $.identifier), $.builtin)
+                        alias($.macro_name, $.identifier)
                     ),
                     $.conditional_expansion,
                     $._special_macro_name
@@ -281,22 +281,103 @@ module.exports = grammar({
             ),
 
         macro_source: ($) =>
-            choice(
-                seq(choice('S', 'SOURCE'), $.integer),
-                token(prec(2, /SOURCE[0-9]+/)),
-                token(prec(2, /S[0-9]+/))
-            ),
+            choice(token(prec(1, /SOURCE[0-9]+/)), token(prec(1, /S[0-9]+/))),
 
         macro_patch: ($) =>
-            choice(
-                seq(choice('P', 'PATCH'), $.integer),
-                token(prec(2, /PATCH[0-9]+/)),
-                token(prec(2, /P[0-9]+/))
-            ),
+            choice(token(prec(1, /PATCH[0-9]+/)), token(prec(1, /P[0-9]+/))),
 
         macro_define: ($) => choice('define', 'global'),
 
         macro_undefine: ($) => 'undefine',
+
+        //// Parametric Macro Expansion: %macro_name [options] [arguments]
+        //
+        // Expands parametric/built-in macros with options and arguments
+        // Syntax: %NAME [OPTIONS] [ARGUMENTS]
+        // Arguments parsed up to string end or next newline
+        //
+        // Examples: %dirname -x /path/to/file, %basename /some/path, %configure --prefix=/usr
+        macro_simple_expansion_parametric: ($) =>
+            seq(
+                '%',
+                choice(
+                    // Builtin macros without arguments
+                    seq(
+                        optional(field('operator', token.immediate('!'))),
+                        $.builtin,
+                        token.immediate(/\r?\n/)
+                    ),
+                    // Builtin macros with arguments - require space after builtin
+                    seq(
+                        optional(field('operator', token.immediate('!'))),
+                        $.builtin,
+                        token.immediate(/\s+/),
+                        repeat1(
+                            choice(
+                                field('option', $.macro_option),
+                                field('argument', $._macro_argument)
+                            )
+                        )
+                    ),
+                    // Regular macros with arguments
+                    seq(
+                        optional(field('operator', token.immediate('!'))),
+                        alias($.macro_name, $.identifier),
+                        token.immediate(/\s+/),
+                        repeat1(
+                            choice(
+                                field('option', $.macro_option),
+                                field('argument', $._macro_argument)
+                            )
+                        ),
+                        token.immediate(/\r?\n/)
+                    ),
+                    // Standalone macro names followed by newline (higher precedence than simple expansion)
+                    prec(
+                        1,
+                        seq(
+                            optional(field('operator', token.immediate('!'))),
+                            alias($.macro_name, $.identifier),
+                            token.immediate(/\r?\n/)
+                        )
+                    )
+                )
+            ),
+
+        // Macro options: short options with optional values
+        // Supports: -x, -p VALUE, --long-option=VALUE
+        macro_option: ($) =>
+            prec.left(
+                choice(
+                    // Short option with immediate value: -p1
+                    token(seq('-', /[a-zA-Z]/, /[a-zA-Z0-9_-]+/)),
+                    // Short option without value: -x
+                    token(seq('-', /[a-zA-Z]/)),
+                    // Long option with equals: --option=value
+                    seq(
+                        '--',
+                        /[a-zA-Z][a-zA-Z0-9_-]*/,
+                        '=',
+                        field('value', $._macro_argument_braced)
+                    )
+                    // Separator: --
+                    // TODO: This doesn't work yet
+                    // token('--')
+                )
+            ),
+
+        // Macro arguments: values that can be passed to parametric macros
+        // Excludes newlines to stop parsing at line end
+        _macro_argument: ($) =>
+            choice($.macro_simple_expansion, $.macro_expansion, $._literal),
+
+        // Macro arguments within braces: excludes closing brace to stop at }
+        _macro_argument_braced: ($) =>
+            choice(
+                $.macro_simple_expansion,
+                $.macro_expansion,
+                $._literal // Use existing literal parsing
+            ),
 
         //// Complex Macro Expansion: %{name}
         //
@@ -311,6 +392,16 @@ module.exports = grammar({
             choice(
                 // %{<builtin>:<argument>}
                 seq($.builtin, ':', field('argument', $._literal)),
+                // %{<builtin> [options] [arguments]} - parametric expansion within braces
+                seq(
+                    $.builtin,
+                    repeat1(
+                        choice(
+                            field('option', $.macro_option),
+                            field('argument', $._macro_argument_braced)
+                        )
+                    )
+                ),
                 // %{<builtin>} - standalone builtin without arguments
                 $.builtin,
                 // %{<name>}
@@ -414,21 +505,6 @@ module.exports = grammar({
                     field('name', alias($.macro_name, $.identifier))
                 )
             ),
-
-        //// Macro call
-        //
-        // %setup -q
-        //
-        macro_call: ($) =>
-            prec.left(
-                seq(
-                    field('name', $.macro_simple_expansion),
-                    repeat(field('argument', $._literal)),
-                    NEWLINE
-                )
-            ),
-
-        _macro_argument_list: ($) => sep1($.concatenation, BLANK),
 
         //// Macro Expression: %[<expression>]
         // TODO Postpone this till the rest works. You don't see them often.
@@ -924,13 +1000,14 @@ module.exports = grammar({
                 repeat1(
                     choice(
                         $._compound_statements, // Conditional blocks (%if, %ifarch)
-                        prec(1, $.macro_expansion), // Macro expansions %{...}
+                        $.macro_expansion, // Macro expansions %{...}
                         $.macro_definition, // Inline %define statements
                         $.macro_undefinition, // Inline %undefine statements
                         $.setup_macro, // %setup with specific option support
                         $.patch_macro, // %patch with specific option support
-                        $.macro_call, // Macro calls like %configure
-                        $.string // Raw shell command text
+                        $.macro_simple_expansion_parametric, // %name [options] [args] - higher precedence when has args
+                        $.macro_simple_expansion, // %name - simple expansion
+                        prec(-1, $.string) // Raw shell command text
                     )
                 )
             ),
