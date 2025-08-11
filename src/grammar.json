@@ -848,7 +848,7 @@
                         "name": "argument",
                         "content": {
                           "type": "SYMBOL",
-                          "name": "_macro_argument_braced"
+                          "name": "_macro_argument"
                         }
                       }
                     ]
@@ -912,7 +912,7 @@
                         "name": "argument",
                         "content": {
                           "type": "SYMBOL",
-                          "name": "_macro_argument_braced"
+                          "name": "_macro_argument"
                         }
                       }
                     ]
@@ -986,7 +986,7 @@
                 "name": "value",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "_macro_argument_braced"
+                  "name": "_macro_argument"
                 }
               }
             ]
@@ -995,23 +995,6 @@
       }
     },
     "_macro_argument": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "macro_simple_expansion"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "macro_expansion"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_literal"
-        }
-      ]
-    },
-    "_macro_argument_braced": {
       "type": "CHOICE",
       "members": [
         {
@@ -1102,7 +1085,7 @@
                     "name": "argument",
                     "content": {
                       "type": "SYMBOL",
-                      "name": "_macro_argument_braced"
+                      "name": "_macro_argument"
                     }
                   }
                 ]

@@ -359,7 +359,7 @@ module.exports = grammar({
                         repeat1(
                             choice(
                                 field('option', $.macro_option),
-                                field('argument', $._macro_argument_braced)
+                                field('argument', $._macro_argument)
                             )
                         )
                     ),
@@ -371,7 +371,7 @@ module.exports = grammar({
                         repeat1(
                             choice(
                                 field('option', $.macro_option),
-                                field('argument', $._macro_argument_braced)
+                                field('argument', $._macro_argument)
                             )
                         )
                     )
@@ -392,7 +392,7 @@ module.exports = grammar({
                         '--',
                         /[a-zA-Z][a-zA-Z0-9_-]*/,
                         '=',
-                        field('value', $._macro_argument_braced)
+                        field('value', $._macro_argument)
                     )
                     // Separator: --
                     // TODO: This doesn't work yet
@@ -404,14 +404,6 @@ module.exports = grammar({
         // Excludes newlines to stop parsing at line end
         _macro_argument: ($) =>
             choice($.macro_simple_expansion, $.macro_expansion, $._literal),
-
-        // Macro arguments within braces: excludes closing brace to stop at }
-        _macro_argument_braced: ($) =>
-            choice(
-                $.macro_simple_expansion,
-                $.macro_expansion,
-                $._literal // Use existing literal parsing
-            ),
 
         //// Complex Macro Expansion: %{name}
         //
@@ -432,7 +424,7 @@ module.exports = grammar({
                     repeat1(
                         choice(
                             field('option', $.macro_option),
-                            field('argument', $._macro_argument_braced)
+                            field('argument', $._macro_argument)
                         )
                     )
                 ),
