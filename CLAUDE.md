@@ -23,6 +23,9 @@ tree-sitter test
 
 # Run tests matching a pattern (regex)
 tree-sitter test -i "pattern"
+
+# Run tests from a specific file
+tree-sitter test --file-name filename.txt
 ```
 
 ### Code Quality
