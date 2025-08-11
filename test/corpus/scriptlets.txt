@@ -63,6 +63,35 @@ Build section (%build)
         (identifier)))))
 
 ===============================================================================
+Conf section (%configure with multiple options)
+===============================================================================
+
+%conf
+%configure \
+  --with-pie \
+  --prefix=%{_prefix} \
+  --libdir=%{_libdir}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (conf_scriptlet
+    (section_name)
+    (shell_block
+      (macro_expansion_call
+        (identifier)
+        (line_continuation)
+        (word)
+        (line_continuation)
+        (word)
+        (macro_expansion
+          (identifier))
+        (line_continuation)
+        (word)
+        (macro_expansion
+          (identifier))))))
+
+===============================================================================
 Prep Section (%setup with flags)
 ===============================================================================
 
