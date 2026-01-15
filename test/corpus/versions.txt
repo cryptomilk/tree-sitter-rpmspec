@@ -82,8 +82,7 @@ Release:        3%{?dist}
             (identifier)))))))
 
 ===============================================================================
-TODO Version (Epoch in conditional dependencies)
-:skip
+Version (Epoch in conditional dependencies)
 ===============================================================================
 
 Name:           tree-sitter-rpmspec
@@ -99,12 +98,18 @@ Requires:       (package >= 2:1.0 or alternative-package)
   (preamble
     (tags
       (dependency_tag)
-      value: (parenthesized_expression
-        (boolean_operator
-          left: (comparison_operator
-            (word)
-            (version))
-          right: (word))))))
+      value: (rich_dependency_list
+        (boolean_dependency
+          (boolean_or_expression
+            left: (dependency
+              name: (dependency_name
+                (word))
+              version: (dependency_version_constraint
+                operator: (dependency_comparison_operator)
+                version: (version)))
+            right: (dependency
+              name: (dependency_name
+                (word)))))))))
 
 ===============================================================================
 Version (Epoch zero explicit)
