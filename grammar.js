@@ -1224,21 +1224,15 @@ module.exports = grammar({
                 $._boolean_operand
             ),
 
-        // IF expression: conditional dependency
+        // IF/UNLESS expression: conditional dependency
         // Examples: pkgA if pkgB, pkgA if pkgB else pkgC
-        //
-        // TODO: Add 'unless' support - currently causes a bizarre parser conflict.
-        // When adding choice('if', 'unless') or a separate boolean_unless_expression,
-        // the completely unrelated patch_long_option rule breaks (--fuzz=0, --backup=X).
-        // Individual keywords work fine ('if' alone, 'unless' alone), but combining
-        // them in any way (choice, separate rules, helper rule) causes the conflict.
-        // This appears to be a tree-sitter state machine issue, not a grammar logic issue.
+        //           pkgA unless pkgB, pkgA unless pkgB else pkgC
         boolean_if_expression: ($) =>
             prec.right(
                 PREC.boolean_if_dep,
                 seq(
                     field('consequence', $._boolean_expression),
-                    'if',
+                    choice('if', 'unless'),
                     field('condition', $._boolean_expression),
                     optional(
                         seq('else', field('alternative', $._boolean_expression))

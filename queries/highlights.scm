@@ -166,6 +166,7 @@
 [
   "if"
   "else"
+  "unless"
   "with"
   "without"
 ] @keyword.operator

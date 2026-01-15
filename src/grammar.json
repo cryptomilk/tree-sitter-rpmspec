@@ -3572,8 +3572,17 @@
             }
           },
           {
-            "type": "STRING",
-            "value": "if"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "if"
+              },
+              {
+                "type": "STRING",
+                "value": "unless"
+              }
+            ]
           },
           {
             "type": "FIELD",

@@ -171,3 +171,75 @@ Requires: (myPkg-backend-mariaDB if mariaDB else sqlite)
               name: (dependency_name
                 (word)))))))))
 
+===============================================================================
+Boolean dependency (simple unless)
+===============================================================================
+
+Requires: (pkgA unless pkgB)
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (rich_dependency_list
+        (boolean_dependency
+          (boolean_if_expression
+            consequence: (dependency
+              name: (dependency_name
+                (word)))
+            condition: (dependency
+              name: (dependency_name
+                (word)))))))))
+
+===============================================================================
+Boolean dependency (unless with else)
+===============================================================================
+
+Requires: (pkgA unless pkgB else pkgC)
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (rich_dependency_list
+        (boolean_dependency
+          (boolean_if_expression
+            consequence: (dependency
+              name: (dependency_name
+                (word)))
+            condition: (dependency
+              name: (dependency_name
+                (word)))
+            alternative: (dependency
+              name: (dependency_name
+                (word)))))))))
+
+===============================================================================
+Boolean dependency (unless with version constraint)
+===============================================================================
+
+Requires: (badpkg unless goodpkg >= 2.0)
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (rich_dependency_list
+        (boolean_dependency
+          (boolean_if_expression
+            consequence: (dependency
+              name: (dependency_name
+                (word)))
+            condition: (dependency
+              name: (dependency_name
+                (word))
+              version: (dependency_version_constraint
+                operator: (dependency_comparison_operator)
+                version: (version)))))))))
+
