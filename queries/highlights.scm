@@ -175,6 +175,9 @@
   "(" @punctuation.bracket
   ")" @punctuation.bracket)
 
+; Dependency tag qualifier (e.g., post in Requires(post):)
+(qualifier) @attribute
+
 ; Macro conditional operators
 [
   "defined"
