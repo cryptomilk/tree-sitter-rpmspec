@@ -170,6 +170,11 @@
   "without"
 ] @keyword.operator
 
+; Boolean dependency parentheses
+(boolean_dependency
+  "(" @punctuation.bracket
+  ")" @punctuation.bracket)
+
 ; Macro conditional operators
 [
   "defined"
