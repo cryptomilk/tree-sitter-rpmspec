@@ -1021,14 +1021,33 @@ module.exports = grammar({
             seq($.dependency, repeat(seq(optional(','), $.dependency))),
 
         // Dependency name
-        // Supports: simple words, macros, and concatenation of both
-        // Examples: foo, %{name}, %{name}-libs, foo%{?_isa}
+        // Supports: simple words, macros, concatenation, and qualifier suffixes
+        // Examples: foo, %{name}, %{name}-libs, perl(Carp), python3dist(pytest)
         dependency_name: ($) =>
+            seq(
+                $._dependency_name_base,
+                optional($.dependency_qualifier_suffix)
+            ),
+
+        // Base part of dependency name (without qualifier suffix)
+        _dependency_name_base: ($) =>
             choice(
                 $._dependency_name_concatenation, // %{name}-libs, foo%{?_isa}
                 $.word, // simple: foo
                 $.macro_expansion, // %{name}
                 $.macro_simple_expansion // %name
+            ),
+
+        // Qualifier suffix for dependencies
+        // Examples: (Carp), (x86-64), (pytest), (abi)
+        dependency_qualifier_suffix: ($) =>
+            seq(
+                token.immediate('('),
+                choice(
+                    $.identifier, // Simple identifier: Carp, pytest
+                    $.word // Allows hyphens: x86-64
+                ),
+                ')'
             ),
 
         // Concatenation of dependency name parts
