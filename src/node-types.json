@@ -232,7 +232,19 @@
             "named": true
           },
           {
+            "type": "boolean_if_expression",
+            "named": true
+          },
+          {
             "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_with_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_without_expression",
             "named": true
           },
           {
@@ -254,7 +266,19 @@
             "named": true
           },
           {
+            "type": "boolean_if_expression",
+            "named": true
+          },
+          {
             "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_with_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_without_expression",
             "named": true
           },
           {
@@ -282,7 +306,19 @@
           "named": true
         },
         {
+          "type": "boolean_if_expression",
+          "named": true
+        },
+        {
           "type": "boolean_or_expression",
+          "named": true
+        },
+        {
+          "type": "boolean_with_expression",
+          "named": true
+        },
+        {
+          "type": "boolean_without_expression",
           "named": true
         },
         {
@@ -290,6 +326,114 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "boolean_if_expression",
+    "named": true,
+    "fields": {
+      "alternative": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "boolean_and_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_dependency",
+            "named": true
+          },
+          {
+            "type": "boolean_if_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_with_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_without_expression",
+            "named": true
+          },
+          {
+            "type": "dependency",
+            "named": true
+          }
+        ]
+      },
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "boolean_and_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_dependency",
+            "named": true
+          },
+          {
+            "type": "boolean_if_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_with_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_without_expression",
+            "named": true
+          },
+          {
+            "type": "dependency",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "boolean_and_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_dependency",
+            "named": true
+          },
+          {
+            "type": "boolean_if_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_with_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_without_expression",
+            "named": true
+          },
+          {
+            "type": "dependency",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -357,7 +501,19 @@
             "named": true
           },
           {
+            "type": "boolean_if_expression",
+            "named": true
+          },
+          {
             "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_with_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_without_expression",
             "named": true
           },
           {
@@ -379,7 +535,167 @@
             "named": true
           },
           {
+            "type": "boolean_if_expression",
+            "named": true
+          },
+          {
             "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_with_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_without_expression",
+            "named": true
+          },
+          {
+            "type": "dependency",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "boolean_with_expression",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "boolean_and_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_dependency",
+            "named": true
+          },
+          {
+            "type": "boolean_if_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_with_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_without_expression",
+            "named": true
+          },
+          {
+            "type": "dependency",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "boolean_and_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_dependency",
+            "named": true
+          },
+          {
+            "type": "boolean_if_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_with_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_without_expression",
+            "named": true
+          },
+          {
+            "type": "dependency",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "boolean_without_expression",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "boolean_and_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_dependency",
+            "named": true
+          },
+          {
+            "type": "boolean_if_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_with_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_without_expression",
+            "named": true
+          },
+          {
+            "type": "dependency",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "boolean_and_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_dependency",
+            "named": true
+          },
+          {
+            "type": "boolean_if_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_with_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_without_expression",
             "named": true
           },
           {
@@ -2743,6 +3059,10 @@
     "named": false
   },
   {
+    "type": "else",
+    "named": false
+  },
+  {
     "type": "error",
     "named": false
   },
@@ -2797,6 +3117,10 @@
   {
     "type": "identifier",
     "named": true
+  },
+  {
+    "type": "if",
+    "named": false
   },
   {
     "type": "interp",

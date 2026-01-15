@@ -39,9 +39,11 @@ const PREC = {
     dependency_concat: 20, // Higher precedence for dependency name/version concatenation
 
     // Boolean dependencies (separate from conditional expression operators)
-    boolean_operand: 21, // Base operand in boolean dependency
+    boolean_if_dep: 21, // 'if'/'unless' conditionals (lowest)
     boolean_or_dep: 22, // 'or' in boolean dependencies
     boolean_and_dep: 23, // 'and' in boolean dependencies (higher than or)
+    boolean_with_dep: 24, // 'with'/'without' modifiers
+    boolean_operand: 25, // Base operand in boolean dependency
 };
 
 /**
@@ -1162,12 +1164,38 @@ module.exports = grammar({
         // Examples: (pkgA or pkgB), (pkgA >= 1.0 and pkgB)
         boolean_dependency: ($) => seq('(', $._boolean_expression, ')'),
 
-        // Boolean expression: or has lower precedence than and
+        // Boolean expression: precedence order (lowest to highest):
+        // if/unless < or < and < with/without
         _boolean_expression: ($) =>
             choice(
+                $.boolean_if_expression,
                 $.boolean_or_expression,
                 $.boolean_and_expression,
+                $.boolean_with_expression,
+                $.boolean_without_expression,
                 $._boolean_operand
+            ),
+
+        // IF expression: conditional dependency
+        // Examples: pkgA if pkgB, pkgA if pkgB else pkgC
+        //
+        // TODO: Add 'unless' support - currently causes a bizarre parser conflict.
+        // When adding choice('if', 'unless') or a separate boolean_unless_expression,
+        // the completely unrelated patch_long_option rule breaks (--fuzz=0, --backup=X).
+        // Individual keywords work fine ('if' alone, 'unless' alone), but combining
+        // them in any way (choice, separate rules, helper rule) causes the conflict.
+        // This appears to be a tree-sitter state machine issue, not a grammar logic issue.
+        boolean_if_expression: ($) =>
+            prec.right(
+                PREC.boolean_if_dep,
+                seq(
+                    field('consequence', $._boolean_expression),
+                    'if',
+                    field('condition', $._boolean_expression),
+                    optional(
+                        seq('else', field('alternative', $._boolean_expression))
+                    )
+                )
             ),
 
         // OR expression: left-associative
@@ -1190,6 +1218,30 @@ module.exports = grammar({
                 seq(
                     field('left', $._boolean_expression),
                     'and',
+                    field('right', $._boolean_expression)
+                )
+            ),
+
+        // WITH expression: require package with specific capability
+        // Example: pkgA with capB
+        boolean_with_expression: ($) =>
+            prec.left(
+                PREC.boolean_with_dep,
+                seq(
+                    field('left', $._boolean_expression),
+                    'with',
+                    field('right', $._boolean_expression)
+                )
+            ),
+
+        // WITHOUT expression: require package without specific capability
+        // Example: pkgA without capB
+        boolean_without_expression: ($) =>
+            prec.left(
+                PREC.boolean_with_dep,
+                seq(
+                    field('left', $._boolean_expression),
+                    'without',
                     field('right', $._boolean_expression)
                 )
             ),

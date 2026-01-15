@@ -3299,6 +3299,10 @@
       "members": [
         {
           "type": "SYMBOL",
+          "name": "boolean_if_expression"
+        },
+        {
+          "type": "SYMBOL",
           "name": "boolean_or_expression"
         },
         {
@@ -3307,9 +3311,71 @@
         },
         {
           "type": "SYMBOL",
+          "name": "boolean_with_expression"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "boolean_without_expression"
+        },
+        {
+          "type": "SYMBOL",
           "name": "_boolean_operand"
         }
       ]
+    },
+    "boolean_if_expression": {
+      "type": "PREC_RIGHT",
+      "value": 21,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "consequence",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_boolean_expression"
+            }
+          },
+          {
+            "type": "STRING",
+            "value": "if"
+          },
+          {
+            "type": "FIELD",
+            "name": "condition",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_boolean_expression"
+            }
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "else"
+                  },
+                  {
+                    "type": "FIELD",
+                    "name": "alternative",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_boolean_expression"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
     },
     "boolean_or_expression": {
       "type": "PREC_LEFT",
@@ -3369,9 +3435,67 @@
         ]
       }
     },
+    "boolean_with_expression": {
+      "type": "PREC_LEFT",
+      "value": 24,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "left",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_boolean_expression"
+            }
+          },
+          {
+            "type": "STRING",
+            "value": "with"
+          },
+          {
+            "type": "FIELD",
+            "name": "right",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_boolean_expression"
+            }
+          }
+        ]
+      }
+    },
+    "boolean_without_expression": {
+      "type": "PREC_LEFT",
+      "value": 24,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "left",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_boolean_expression"
+            }
+          },
+          {
+            "type": "STRING",
+            "value": "without"
+          },
+          {
+            "type": "FIELD",
+            "name": "right",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_boolean_expression"
+            }
+          }
+        ]
+      }
+    },
     "_boolean_operand": {
       "type": "PREC",
-      "value": 21,
+      "value": 25,
       "content": {
         "type": "CHOICE",
         "members": [

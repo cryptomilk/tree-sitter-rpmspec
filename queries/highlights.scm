@@ -162,9 +162,16 @@
 ; Dependency comparison operators
 (dependency_comparison_operator) @operator
 
+; Boolean dependency operators
 [
+  "if"
+  "else"
   "with"
   "without"
+] @keyword.operator
+
+; Macro conditional operators
+[
   "defined"
   "undefined"
 ] @keyword.operator
