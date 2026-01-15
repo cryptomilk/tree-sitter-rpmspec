@@ -189,11 +189,12 @@ module.exports = grammar({
                     $.integer, // 123, 0x1a
                     $.version, // Version literals like 1.2.3
                     $.float, // 1.23
+                    $.version_literal, // v"3:1.2-1" for macro expressions
                     $.parenthesized_expression, // (expr)
                     $.macro_simple_expansion, // %name
                     $.macro_expansion, // %{name}
-                    $.macro_shell_expansion // %(shell command)
-                    // $.macro_expression // %[expression]
+                    $.macro_shell_expansion, // %(shell command)
+                    $.macro_expression // %[expression]
                 )
             ),
 
@@ -567,6 +568,7 @@ module.exports = grammar({
                     $.macro_simple_expansion,
                     $.macro_expansion,
                     $.macro_shell_expansion,
+                    $.macro_expression, // %[expression]
                     $.integer,
                     $.float,
                     $.version,
@@ -592,20 +594,102 @@ module.exports = grammar({
         //// Macro Expression: %[<expression>]
         // Expression expansion with term-level macro expansion
         // Examples: %[3 + 4 * 2], %[1 < 2 ? "yes" : "no"], %[v"2.0" > v"1.0"]
-        macro_expression: ($) => seq('%[', $._macro_expression_body, ']'),
+        // Higher precedence than macro_simple_expansion to match %[ before %
+        macro_expression: ($) =>
+            prec(2, seq(token('%['), $._macro_expression_body, ']')),
 
         // Macro expression body: expressions allowed within macro expressions
         // Includes arithmetic operators that are only allowed in macro contexts
         // (not allowed in %if conditionals)
         _macro_expression_body: ($) =>
             choice(
-                $.ternary_operator, // condition ? a : b
-                $.arithmetic_operator, // +, -, *, / (only in macro expressions)
-                $.comparison_operator, // <, <=, ==, !=, >=, >
-                $.not_operator, // !
-                $.boolean_operator, // &&, ||, and, or
+                $.ternary_operator, // condition ? a : b (lowest precedence)
+                $._macro_expression_operand // all other operators
+            ),
+
+        // Macro expression operands: everything except ternary
+        // Used as operands for the ternary operator to ensure correct precedence
+        _macro_expression_operand: ($) =>
+            choice(
+                $.macro_arithmetic_operator, // +, -, *, /
+                $.macro_comparison_operator, // <, <=, ==, !=, >=, >
+                $.macro_not_operator, // !
+                $.macro_boolean_operator, // &&, ||, and, or
                 $._macro_expression_primary // literals, macros, version literals
             ),
+
+        // Macro-specific boolean operator: &&, ||, and, or
+        // Uses _macro_expression_operand for recursive operands (no ternary in operands)
+        macro_boolean_operator: ($) =>
+            choice(
+                prec.left(
+                    PREC.and,
+                    seq(
+                        field('left', $._macro_expression_operand),
+                        field('operator', choice('&&', 'and')),
+                        field('right', $._macro_expression_operand)
+                    )
+                ),
+                prec.left(
+                    PREC.or,
+                    seq(
+                        field('left', $._macro_expression_operand),
+                        field('operator', choice('||', 'or')),
+                        field('right', $._macro_expression_operand)
+                    )
+                )
+            ),
+
+        // Macro-specific NOT operator: !
+        // Uses _macro_expression_operand for recursive operand
+        macro_not_operator: ($) =>
+            prec(
+                PREC.not,
+                seq('!', field('argument', $._macro_expression_operand))
+            ),
+
+        // Macro-specific comparison operator
+        // Uses _macro_expression_operand for recursive operands
+        macro_comparison_operator: ($) =>
+            prec.left(
+                PREC.compare,
+                seq(
+                    $._macro_expression_operand,
+                    repeat1(
+                        seq(
+                            field(
+                                'operators',
+                                choice('<', '<=', '=', '==', '!=', '>=', '>')
+                            ),
+                            $._macro_expression_operand
+                        )
+                    )
+                )
+            ),
+
+        // Macro-specific arithmetic operator: +, -, *, /
+        // Uses _macro_expression_operand for recursive operands
+        macro_arithmetic_operator: ($) => {
+            const table = [
+                [prec.left, '+', PREC.plus],
+                [prec.left, '-', PREC.plus],
+                [prec.left, '*', PREC.times],
+                [prec.left, '/', PREC.times],
+            ];
+
+            return choice(
+                ...table.map(([fn, operator, precedence]) =>
+                    fn(
+                        precedence,
+                        seq(
+                            field('left', $._macro_expression_operand),
+                            field('operator', operator),
+                            field('right', $._macro_expression_operand)
+                        )
+                    )
+                )
+            );
+        },
 
         // Primary expressions valid in macro expression context
         // Includes version_literal which is only valid in %[...] expressions
@@ -615,9 +699,17 @@ module.exports = grammar({
                 $.quoted_string, // "string"
                 $.integer, // 123
                 $.float, // 1.23
-                $.parenthesized_expression, // (expr)
+                $.macro_parenthesized_expression, // (expr)
                 $.macro_simple_expansion, // %name
                 $.macro_expansion // %{name}
+            ),
+
+        // Macro-specific parenthesized expression
+        // Uses _macro_expression_body for proper grouping in macro contexts
+        macro_parenthesized_expression: ($) =>
+            prec(
+                PREC.parenthesized_expression,
+                seq('(', $._macro_expression_body, ')')
             ),
 
         //// Macro Shell Expansion: %(<shell command>)
@@ -722,11 +814,13 @@ module.exports = grammar({
         // Ternary conditional operator: condition ? consequence : alternative
         // Used in macro expressions: %[expr ? val1 : val2]
         // Right-associative: a ? b : c ? d : e parses as a ? b : (c ? d : e)
+        // Condition uses _macro_expression_operand to avoid precedence issues
+        // Consequence/alternative use _macro_expression_body to allow nested ternary
         ternary_operator: ($) =>
             prec.right(
                 PREC.ternary,
                 seq(
-                    field('condition', $._macro_expression_body),
+                    field('condition', $._macro_expression_operand),
                     '?',
                     field('consequence', $._macro_expression_body),
                     ':',
@@ -1958,13 +2052,9 @@ module.exports = grammar({
         // Version literal for macro expressions: v"3:1.2-1"
         // Used in %[...] expressions for version comparison with RPM algorithm
         // Example: %[ v"3.1.0-1" < v"1.0~alpha-2" ]
+        // The 'v' is followed immediately by '"' (no space allowed)
         version_literal: ($) =>
-            seq(
-                token.immediate('v'),
-                token.immediate('"'),
-                $.quoted_string_content,
-                '"'
-            ),
+            seq('v', token.immediate('"'), $.quoted_string_content, '"'),
 
         // Release literals: RPM release numbers
         // Examples: 1, 2, 1.fc35, 3.el8

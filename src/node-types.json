@@ -34,6 +34,10 @@
         "named": true
       },
       {
+        "type": "macro_expression",
+        "named": true
+      },
+      {
         "type": "macro_shell_expansion",
         "named": true
       },
@@ -51,6 +55,10 @@
       },
       {
         "type": "version",
+        "named": true
+      },
+      {
+        "type": "version_literal",
         "named": true
       },
       {
@@ -1629,6 +1637,352 @@
     }
   },
   {
+    "type": "macro_arithmetic_operator",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro_arithmetic_operator",
+            "named": true
+          },
+          {
+            "type": "macro_boolean_operator",
+            "named": true
+          },
+          {
+            "type": "macro_comparison_operator",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_not_operator",
+            "named": true
+          },
+          {
+            "type": "macro_parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "quoted_string",
+            "named": true
+          },
+          {
+            "type": "version_literal",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "*",
+            "named": false
+          },
+          {
+            "type": "+",
+            "named": false
+          },
+          {
+            "type": "-",
+            "named": false
+          },
+          {
+            "type": "/",
+            "named": false
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro_arithmetic_operator",
+            "named": true
+          },
+          {
+            "type": "macro_boolean_operator",
+            "named": true
+          },
+          {
+            "type": "macro_comparison_operator",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_not_operator",
+            "named": true
+          },
+          {
+            "type": "macro_parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "quoted_string",
+            "named": true
+          },
+          {
+            "type": "version_literal",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "macro_boolean_operator",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro_arithmetic_operator",
+            "named": true
+          },
+          {
+            "type": "macro_boolean_operator",
+            "named": true
+          },
+          {
+            "type": "macro_comparison_operator",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_not_operator",
+            "named": true
+          },
+          {
+            "type": "macro_parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "quoted_string",
+            "named": true
+          },
+          {
+            "type": "version_literal",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "&&",
+            "named": false
+          },
+          {
+            "type": "and",
+            "named": false
+          },
+          {
+            "type": "or",
+            "named": false
+          },
+          {
+            "type": "||",
+            "named": false
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro_arithmetic_operator",
+            "named": true
+          },
+          {
+            "type": "macro_boolean_operator",
+            "named": true
+          },
+          {
+            "type": "macro_comparison_operator",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_not_operator",
+            "named": true
+          },
+          {
+            "type": "macro_parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "quoted_string",
+            "named": true
+          },
+          {
+            "type": "version_literal",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "macro_comparison_operator",
+    "named": true,
+    "fields": {
+      "operators": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "!=",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": "<=",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "==",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": ">=",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "float",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "macro_arithmetic_operator",
+          "named": true
+        },
+        {
+          "type": "macro_boolean_operator",
+          "named": true
+        },
+        {
+          "type": "macro_comparison_operator",
+          "named": true
+        },
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_not_operator",
+          "named": true
+        },
+        {
+          "type": "macro_parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
+          "named": true
+        },
+        {
+          "type": "quoted_string",
+          "named": true
+        },
+        {
+          "type": "version_literal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "macro_definition",
     "named": true,
     "fields": {
@@ -1660,6 +2014,10 @@
           },
           {
             "type": "macro_expansion_call",
+            "named": true
+          },
+          {
+            "type": "macro_expression",
             "named": true
           },
           {
@@ -1825,6 +2183,121 @@
     }
   },
   {
+    "type": "macro_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "float",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "macro_arithmetic_operator",
+          "named": true
+        },
+        {
+          "type": "macro_boolean_operator",
+          "named": true
+        },
+        {
+          "type": "macro_comparison_operator",
+          "named": true
+        },
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_not_operator",
+          "named": true
+        },
+        {
+          "type": "macro_parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
+          "named": true
+        },
+        {
+          "type": "quoted_string",
+          "named": true
+        },
+        {
+          "type": "ternary_operator",
+          "named": true
+        },
+        {
+          "type": "version_literal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "macro_not_operator",
+    "named": true,
+    "fields": {
+      "argument": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro_arithmetic_operator",
+            "named": true
+          },
+          {
+            "type": "macro_boolean_operator",
+            "named": true
+          },
+          {
+            "type": "macro_comparison_operator",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_not_operator",
+            "named": true
+          },
+          {
+            "type": "macro_parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "quoted_string",
+            "named": true
+          },
+          {
+            "type": "version_literal",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "macro_option",
     "named": true,
     "fields": {
@@ -1842,6 +2315,65 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "macro_parenthesized_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "float",
+          "named": true
+        },
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "macro_arithmetic_operator",
+          "named": true
+        },
+        {
+          "type": "macro_boolean_operator",
+          "named": true
+        },
+        {
+          "type": "macro_comparison_operator",
+          "named": true
+        },
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_not_operator",
+          "named": true
+        },
+        {
+          "type": "macro_parenthesized_expression",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
+          "named": true
+        },
+        {
+          "type": "quoted_string",
+          "named": true
+        },
+        {
+          "type": "ternary_operator",
+          "named": true
+        },
+        {
+          "type": "version_literal",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -2480,6 +3012,170 @@
     }
   },
   {
+    "type": "ternary_operator",
+    "named": true,
+    "fields": {
+      "alternative": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro_arithmetic_operator",
+            "named": true
+          },
+          {
+            "type": "macro_boolean_operator",
+            "named": true
+          },
+          {
+            "type": "macro_comparison_operator",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_not_operator",
+            "named": true
+          },
+          {
+            "type": "macro_parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "quoted_string",
+            "named": true
+          },
+          {
+            "type": "ternary_operator",
+            "named": true
+          },
+          {
+            "type": "version_literal",
+            "named": true
+          }
+        ]
+      },
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro_arithmetic_operator",
+            "named": true
+          },
+          {
+            "type": "macro_boolean_operator",
+            "named": true
+          },
+          {
+            "type": "macro_comparison_operator",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_not_operator",
+            "named": true
+          },
+          {
+            "type": "macro_parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "quoted_string",
+            "named": true
+          },
+          {
+            "type": "version_literal",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "float",
+            "named": true
+          },
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro_arithmetic_operator",
+            "named": true
+          },
+          {
+            "type": "macro_boolean_operator",
+            "named": true
+          },
+          {
+            "type": "macro_comparison_operator",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_not_operator",
+            "named": true
+          },
+          {
+            "type": "macro_parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "quoted_string",
+            "named": true
+          },
+          {
+            "type": "ternary_operator",
+            "named": true
+          },
+          {
+            "type": "version_literal",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "text",
     "named": true,
     "fields": {},
@@ -2531,6 +3227,21 @@
     "fields": {}
   },
   {
+    "type": "version_literal",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "quoted_string_content",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "with_operator",
     "named": true,
     "fields": {
@@ -2578,6 +3289,10 @@
   },
   {
     "type": "%(",
+    "named": false
+  },
+  {
+    "type": "%[",
     "named": false
   },
   {
@@ -2761,6 +3476,10 @@
     "named": false
   },
   {
+    "type": "+",
+    "named": false
+  },
+  {
     "type": ",",
     "named": false
   },
@@ -2778,6 +3497,10 @@
   },
   {
     "type": "-n",
+    "named": false
+  },
+  {
+    "type": "/",
     "named": false
   },
   {
@@ -3026,6 +3749,10 @@
   },
   {
     "type": "Z",
+    "named": false
+  },
+  {
+    "type": "]",
     "named": false
   },
   {
@@ -3340,6 +4067,10 @@
   },
   {
     "type": "url2path",
+    "named": false
+  },
+  {
+    "type": "v",
     "named": false
   },
   {

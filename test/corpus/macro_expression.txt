@@ -1,0 +1,151 @@
+===============================================================================
+Macro Expression (simple arithmetic)
+===============================================================================
+
+%define result %[3 + 4]
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    (identifier)
+    (macro_expression
+      (macro_arithmetic_operator
+        (integer)
+        (integer)))))
+
+===============================================================================
+Macro Expression (arithmetic with precedence)
+===============================================================================
+
+%define result %[3 + 4 * 2]
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    (identifier)
+    (macro_expression
+      (macro_arithmetic_operator
+        (integer)
+        (macro_arithmetic_operator
+          (integer)
+          (integer))))))
+
+===============================================================================
+Macro Expression (comparison)
+===============================================================================
+
+%define check %[1 < 2]
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    (identifier)
+    (macro_expression
+      (macro_comparison_operator
+        (integer)
+        (integer)))))
+
+===============================================================================
+Macro Expression (ternary with comparison)
+===============================================================================
+
+%define check %[1 < 2 ? "yes" : "no"]
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    (identifier)
+    (macro_expression
+      (ternary_operator
+        (macro_comparison_operator
+          (integer)
+          (integer))
+        (quoted_string
+          (quoted_string_content))
+        (quoted_string
+          (quoted_string_content))))))
+
+===============================================================================
+Macro Expression (version literal comparison)
+===============================================================================
+
+%define cmp %[v"2.0" > v"1.0"]
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    (identifier)
+    (macro_expression
+      (macro_comparison_operator
+        (version_literal
+          (quoted_string_content))
+        (version_literal
+          (quoted_string_content))))))
+
+===============================================================================
+Macro Expression (version literal with epoch)
+===============================================================================
+
+%define cmp %[v"1:2.0" > v"3.0"]
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    (identifier)
+    (macro_expression
+      (macro_comparison_operator
+        (version_literal
+          (quoted_string_content))
+        (version_literal
+          (quoted_string_content))))))
+
+===============================================================================
+Macro Expression (with macro expansion)
+===============================================================================
+
+%define result %[%{value} + 1]
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    (identifier)
+    (macro_expression
+      (macro_arithmetic_operator
+        (macro_expansion
+          (identifier))
+        (integer)))))
+
+===============================================================================
+Macro Expression (ternary with macro in condition)
+===============================================================================
+
+%define check %[%{flag} ? "enabled" : "disabled"]
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    (identifier)
+    (macro_expression
+      (ternary_operator
+        (macro_expansion
+          (identifier))
+        (quoted_string
+          (quoted_string_content))
+        (quoted_string
+          (quoted_string_content))))))
