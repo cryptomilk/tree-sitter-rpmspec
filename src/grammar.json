@@ -1572,6 +1572,85 @@
         ]
       }
     },
+    "macro_expression": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "%["
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_macro_expression_body"
+        },
+        {
+          "type": "STRING",
+          "value": "]"
+        }
+      ]
+    },
+    "_macro_expression_body": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ternary_operator"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "arithmetic_operator"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "comparison_operator"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "not_operator"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "boolean_operator"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_macro_expression_primary"
+        }
+      ]
+    },
+    "_macro_expression_primary": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "version_literal"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "quoted_string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "integer"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "float"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "parenthesized_expression"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_simple_expansion"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_expansion"
+        }
+      ]
+    },
     "macro_shell_expansion": {
       "type": "PREC",
       "value": 2,
@@ -1820,6 +1899,47 @@
         ]
       }
     },
+    "ternary_operator": {
+      "type": "PREC_RIGHT",
+      "value": 5,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "FIELD",
+            "name": "condition",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_macro_expression_body"
+            }
+          },
+          {
+            "type": "STRING",
+            "value": "?"
+          },
+          {
+            "type": "FIELD",
+            "name": "consequence",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_macro_expression_body"
+            }
+          },
+          {
+            "type": "STRING",
+            "value": ":"
+          },
+          {
+            "type": "FIELD",
+            "name": "alternative",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_macro_expression_body"
+            }
+          }
+        ]
+      }
+    },
     "arithmetic_operator": {
       "type": "CHOICE",
       "members": [
@@ -1834,7 +1954,7 @@
                 "name": "left",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "_primary_expression"
+                  "name": "_macro_expression_primary"
                 }
               },
               {
@@ -1850,7 +1970,7 @@
                 "name": "right",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "_primary_expression"
+                  "name": "_macro_expression_primary"
                 }
               }
             ]
@@ -1867,7 +1987,7 @@
                 "name": "left",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "_primary_expression"
+                  "name": "_macro_expression_primary"
                 }
               },
               {
@@ -1883,7 +2003,7 @@
                 "name": "right",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "_primary_expression"
+                  "name": "_macro_expression_primary"
                 }
               }
             ]
@@ -1900,7 +2020,7 @@
                 "name": "left",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "_primary_expression"
+                  "name": "_macro_expression_primary"
                 }
               },
               {
@@ -1916,7 +2036,7 @@
                 "name": "right",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "_primary_expression"
+                  "name": "_macro_expression_primary"
                 }
               }
             ]
@@ -1933,7 +2053,7 @@
                 "name": "left",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "_primary_expression"
+                  "name": "_macro_expression_primary"
                 }
               },
               {
@@ -1949,7 +2069,7 @@
                 "name": "right",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "_primary_expression"
+                  "name": "_macro_expression_primary"
                 }
               }
             ]

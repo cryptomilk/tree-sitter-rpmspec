@@ -23,6 +23,9 @@
 const PREC = {
     parenthesized_expression: 1, // Lowest precedence for parentheses
 
+    // Ternary operator (lowest precedence after parentheses)
+    ternary: 5, // ? : (right-associative)
+
     // Logical operators (lower precedence)
     or: 10, // ||, or
     and: 11, // &&, and
@@ -587,21 +590,35 @@ module.exports = grammar({
             ),
 
         //// Macro Expression: %[<expression>]
-        // TODO Postpone this till the rest works. You don't see them often.
-        // macro_expression: ($) => seq('%[', $._macro_expression_body, ']'),
+        // Expression expansion with term-level macro expansion
+        // Examples: %[3 + 4 * 2], %[1 < 2 ? "yes" : "no"], %[v"2.0" > v"1.0"]
+        macro_expression: ($) => seq('%[', $._macro_expression_body, ']'),
 
         // Macro expression body: expressions allowed within macro expressions
         // Includes arithmetic operators that are only allowed in macro contexts
-        // _macro_expression_body: ($) =>
-        //     choice(
-        //         $.arithmetic_operator, // +, -, *, / (only in macro expressions)
-        //         $.comparison_operator, // <, <=, ==, !=, >=, >
-        //         $.not_operator, // !
-        //         $.boolean_operator, // &&, ||, and, or
-        //         $.with_operator, // %{with feature}
-        //         $.defined_operator, // %{defined macro}
-        //         $._primary_expression // literals, macros, etc.
-        //     ),
+        // (not allowed in %if conditionals)
+        _macro_expression_body: ($) =>
+            choice(
+                $.ternary_operator, // condition ? a : b
+                $.arithmetic_operator, // +, -, *, / (only in macro expressions)
+                $.comparison_operator, // <, <=, ==, !=, >=, >
+                $.not_operator, // !
+                $.boolean_operator, // &&, ||, and, or
+                $._macro_expression_primary // literals, macros, version literals
+            ),
+
+        // Primary expressions valid in macro expression context
+        // Includes version_literal which is only valid in %[...] expressions
+        _macro_expression_primary: ($) =>
+            choice(
+                $.version_literal, // v"3:1.2-1"
+                $.quoted_string, // "string"
+                $.integer, // 123
+                $.float, // 1.23
+                $.parenthesized_expression, // (expr)
+                $.macro_simple_expansion, // %name
+                $.macro_expansion // %{name}
+            ),
 
         //// Macro Shell Expansion: %(<shell command>)
         // Executes shell command and substitutes output
@@ -702,9 +719,25 @@ module.exports = grammar({
         not_operator: ($) =>
             prec(PREC.not, seq('!', field('argument', $.expression))),
 
+        // Ternary conditional operator: condition ? consequence : alternative
+        // Used in macro expressions: %[expr ? val1 : val2]
+        // Right-associative: a ? b : c ? d : e parses as a ? b : (c ? d : e)
+        ternary_operator: ($) =>
+            prec.right(
+                PREC.ternary,
+                seq(
+                    field('condition', $._macro_expression_body),
+                    '?',
+                    field('consequence', $._macro_expression_body),
+                    ':',
+                    field('alternative', $._macro_expression_body)
+                )
+            ),
+
         // Arithmetic operators: standard mathematical operations
         // Implements proper precedence: *, / before +, -
         // All operators are left-associative
+        // Only valid in macro expressions %[...], not in %if conditionals
         arithmetic_operator: ($) => {
             const table = [
                 [prec.left, '+', PREC.plus], // Addition
@@ -718,9 +751,9 @@ module.exports = grammar({
                     fn(
                         precedence,
                         seq(
-                            field('left', $._primary_expression),
+                            field('left', $._macro_expression_primary),
                             field('operator', operator),
-                            field('right', $._primary_expression)
+                            field('right', $._macro_expression_primary)
                         )
                     )
                 )
