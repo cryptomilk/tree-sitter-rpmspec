@@ -216,6 +216,83 @@
     "fields": {}
   },
   {
+    "type": "boolean_and_expression",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "boolean_and_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_dependency",
+            "named": true
+          },
+          {
+            "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "dependency",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "boolean_and_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_dependency",
+            "named": true
+          },
+          {
+            "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "dependency",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "boolean_dependency",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "boolean_and_expression",
+          "named": true
+        },
+        {
+          "type": "boolean_dependency",
+          "named": true
+        },
+        {
+          "type": "boolean_or_expression",
+          "named": true
+        },
+        {
+          "type": "dependency",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "boolean_operator",
     "named": true,
     "fields": {
@@ -257,6 +334,56 @@
         "types": [
           {
             "type": "expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "boolean_or_expression",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "boolean_and_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_dependency",
+            "named": true
+          },
+          {
+            "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "dependency",
+            "named": true
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "boolean_and_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_dependency",
+            "named": true
+          },
+          {
+            "type": "boolean_or_expression",
+            "named": true
+          },
+          {
+            "type": "dependency",
             "named": true
           }
         ]
@@ -595,6 +722,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "boolean_dependency",
+          "named": true
+        },
         {
           "type": "dependency",
           "named": true

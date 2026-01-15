@@ -1,0 +1,172 @@
+===============================================================================
+Boolean dependency (simple OR)
+===============================================================================
+
+Requires: (pkgA or pkgB)
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (boolean_dependency
+          (boolean_or_expression
+            left: (dependency
+              name: (dependency_name
+                (word)))
+            right: (dependency
+              name: (dependency_name
+                (word)))))))))
+
+===============================================================================
+Boolean dependency (simple AND)
+===============================================================================
+
+Requires: (pkgA and pkgB)
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (boolean_dependency
+          (boolean_and_expression
+            left: (dependency
+              name: (dependency_name
+                (word)))
+            right: (dependency
+              name: (dependency_name
+                (word)))))))))
+
+===============================================================================
+Boolean dependency (AND with version constraint)
+===============================================================================
+
+Requires: (pkgA >= 1.0 and pkgB)
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (boolean_dependency
+          (boolean_and_expression
+            left: (dependency
+              name: (dependency_name
+                (word))
+              version: (dependency_version_constraint
+                operator: (dependency_comparison_operator)
+                version: (version)))
+            right: (dependency
+              name: (dependency_name
+                (word)))))))))
+
+===============================================================================
+Boolean dependency (nested with AND inside OR)
+===============================================================================
+
+Requires: (pkgA or (pkgB and pkgC))
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (boolean_dependency
+          (boolean_or_expression
+            left: (dependency
+              name: (dependency_name
+                (word)))
+            right: (boolean_dependency
+              (boolean_and_expression
+                left: (dependency
+                  name: (dependency_name
+                    (word)))
+                right: (dependency
+                  name: (dependency_name
+                    (word)))))))))))
+
+===============================================================================
+Boolean dependency (chained OR)
+===============================================================================
+
+Requires: (pkgA or pkgB or pkgC)
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (boolean_dependency
+          (boolean_or_expression
+            left: (boolean_or_expression
+              left: (dependency
+                name: (dependency_name
+                  (word)))
+              right: (dependency
+                name: (dependency_name
+                  (word))))
+            right: (dependency
+              name: (dependency_name
+                (word)))))))))
+
+===============================================================================
+Boolean dependency (real-world util-linux example)
+===============================================================================
+
+Requires: (util-linux-core or util-linux)
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (boolean_dependency
+          (boolean_or_expression
+            left: (dependency
+              name: (dependency_name
+                (word)))
+            right: (dependency
+              name: (dependency_name
+                (word)))))))))
+
+===============================================================================
+Boolean dependency (OR with version on both sides)
+===============================================================================
+
+Requires: (pkgA >= 3.2 or pkgB >= 1.0)
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (boolean_dependency
+          (boolean_or_expression
+            left: (dependency
+              name: (dependency_name
+                (word))
+              version: (dependency_version_constraint
+                operator: (dependency_comparison_operator)
+                version: (version)))
+            right: (dependency
+              name: (dependency_name
+                (word))
+              version: (dependency_version_constraint
+                operator: (dependency_comparison_operator)
+                version: (version)))))))))
+

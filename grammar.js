@@ -37,6 +37,11 @@ const PREC = {
 
     // Dependency parsing
     dependency_concat: 20, // Higher precedence for dependency name/version concatenation
+
+    // Boolean dependencies (separate from conditional expression operators)
+    boolean_operand: 21, // Base operand in boolean dependency
+    boolean_or_dep: 22, // 'or' in boolean dependencies
+    boolean_and_dep: 23, // 'and' in boolean dependencies (higher than or)
 };
 
 /**
@@ -1017,8 +1022,15 @@ module.exports = grammar({
 
         // List of dependencies separated by comma and/or whitespace
         // Examples: "python perl", "python, perl", "python >= 3.6, perl"
+        // Also supports boolean dependencies: "(foo or bar), baz"
         dependency_list: ($) =>
-            seq($.dependency, repeat(seq(optional(','), $.dependency))),
+            seq(
+                $._dependency_item,
+                repeat(seq(optional(','), $._dependency_item))
+            ),
+
+        // A single item in a dependency list: regular or boolean
+        _dependency_item: ($) => choice($.dependency, $.boolean_dependency),
 
         // Dependency name
         // Supports: simple words, macros, concatenation, and qualifier suffixes
@@ -1134,6 +1146,63 @@ module.exports = grammar({
                 '=', // Equal
                 '>=', // Greater than or equal
                 '>' // Greater than
+            ),
+
+        ///////////////////////////////////////////////////////////////////////
+        // Boolean Dependencies (Rich Dependencies)
+        //
+        // RPM 4.13+ supports boolean expressions in dependencies:
+        // - Requires: (pkgA or pkgB)
+        // - Requires: (pkgA and pkgB)
+        // - Requires: (pkgA >= 1.0 and pkgB)
+        // - Requires: (pkgA or (pkgB and pkgC))
+        ///////////////////////////////////////////////////////////////////////
+
+        // Boolean dependency: parenthesized boolean expression
+        // Examples: (pkgA or pkgB), (pkgA >= 1.0 and pkgB)
+        boolean_dependency: ($) => seq('(', $._boolean_expression, ')'),
+
+        // Boolean expression: or has lower precedence than and
+        _boolean_expression: ($) =>
+            choice(
+                $.boolean_or_expression,
+                $.boolean_and_expression,
+                $._boolean_operand
+            ),
+
+        // OR expression: left-associative
+        // Examples: pkgA or pkgB, pkgA or pkgB or pkgC
+        boolean_or_expression: ($) =>
+            prec.left(
+                PREC.boolean_or_dep,
+                seq(
+                    field('left', $._boolean_expression),
+                    'or',
+                    field('right', $._boolean_expression)
+                )
+            ),
+
+        // AND expression: higher precedence than OR, left-associative
+        // Examples: pkgA and pkgB, pkgA and pkgB and pkgC
+        boolean_and_expression: ($) =>
+            prec.left(
+                PREC.boolean_and_dep,
+                seq(
+                    field('left', $._boolean_expression),
+                    'and',
+                    field('right', $._boolean_expression)
+                )
+            ),
+
+        // Base operand in boolean expressions
+        // Can be a regular dependency or a nested boolean expression
+        _boolean_operand: ($) =>
+            prec(
+                PREC.boolean_operand,
+                choice(
+                    $.dependency,
+                    $.boolean_dependency // Nested parentheses
+                )
             ),
 
         ///////////////////////////////////////////////////////////////////////
