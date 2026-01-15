@@ -821,7 +821,7 @@ module.exports = grammar({
         elifarch_clause: ($) =>
             seq(
                 '%elifarch',
-                optional(field('consequence', $._literal)),
+                optional(field('condition', $._literal)),
                 token.immediate(NEWLINE),
                 field('consequence', $._conditional_block)
             ),

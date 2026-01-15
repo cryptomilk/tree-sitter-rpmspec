@@ -2371,7 +2371,7 @@
           "members": [
             {
               "type": "FIELD",
-              "name": "consequence",
+              "name": "condition",
               "content": {
                 "type": "SYMBOL",
                 "name": "_literal"
