@@ -57,7 +57,6 @@ module.exports = grammar({
 
     // Grammar conflicts resolution
     conflicts: ($) => [
-        [$.expression, $.tags],
         [$.shell_block, $.string],
         [$.macro_expansion_call],
         [$._macro_expansion_call_nested],
@@ -175,7 +174,7 @@ module.exports = grammar({
                     $.word, // Unquoted words
                     $.quoted_string, // "quoted strings"
                     $.integer, // 123, 0x1a
-                    alias($.dependency_version, $.version), // Full version-release for dependencies
+                    $.version, // Version literals like 1.2.3
                     $.float, // 1.23
                     $.parenthesized_expression, // (expr)
                     $.macro_simple_expansion, // %name
@@ -888,17 +887,11 @@ module.exports = grammar({
                     field('value', $._literal), // Simple values (can contain macros)
                     token.immediate(NEWLINE) // Must end with newline
                 ),
-                // Dependency tags - support both expressions and literals
+                // Dependency tags - use dedicated dependency syntax
                 seq(
                     $.dependency_tag, // Dependency tag name (with optional qualifier)
                     token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
-                    field(
-                        'value',
-                        choice(
-                            $.expression, // For dependencies with version operators
-                            $._literal // For simple values (can contain macros)
-                        )
-                    ),
+                    field('value', $.dependency), // Dependency expression
                     token.immediate(NEWLINE) // Must end with newline
                 )
             ),
@@ -999,6 +992,48 @@ module.exports = grammar({
                 'Prefix', // Installation prefix
                 'Prefixes', // Multiple installation prefixes
                 'RemovePathPostfixes' // Path postfixes to remove
+            ),
+
+        ///////////////////////////////////////////////////////////////////////
+        // DEPENDENCY EXPRESSIONS
+        //
+        // Dependencies have their own syntax separate from general expressions:
+        // - Simple: pkgname
+        // - Versioned: pkgname >= 1.0
+        // - Multiple: pkgA, pkgB
+        // - Boolean: (pkgA or pkgB)
+        ///////////////////////////////////////////////////////////////////////
+
+        // A single dependency: package name with optional version constraint
+        // Examples: python, python >= 3.6, package = 2:1.0.0-1
+        dependency: ($) =>
+            seq(
+                field('name', $.dependency_name),
+                optional(field('version', $.dependency_version_constraint))
+            ),
+
+        // Dependency name
+        // Uses 'word' which allows hyphens (common in package names)
+        // TODO: Add macros, ISA suffixes, file paths, etc.
+        dependency_name: ($) => $.word,
+
+        // Version constraint: comparison operator followed by version
+        // Examples: >= 1.0, = 2:1.0.0-1, < 3.0
+        dependency_version_constraint: ($) =>
+            seq(
+                field('operator', $.dependency_comparison_operator),
+                field('version', alias($.dependency_version, $.version))
+            ),
+
+        // Comparison operators for dependencies
+        // Note: spaces are required around these in RPM syntax
+        dependency_comparison_operator: (_) =>
+            choice(
+                '<', // Less than
+                '<=', // Less than or equal
+                '=', // Equal
+                '>=', // Greater than or equal
+                '>' // Greater than
             ),
 
         ///////////////////////////////////////////////////////////////////////
@@ -1612,8 +1647,7 @@ module.exports = grammar({
                     seq(
                         optional(seq(digits, ':')), // Optional epoch: N:
                         digits,
-                        '.',
-                        digits, // Major.minor version
+                        optional(seq('.', digits)), // Optional minor version
                         optional(/[a-zA-Z0-9+._~]+/), // Optional version suffix (patch, pre-release, etc.)
                         optional(seq('-', /[0-9]+[a-zA-Z0-9+._~]*/)) // Optional release: -release (must start with digit)
                     )

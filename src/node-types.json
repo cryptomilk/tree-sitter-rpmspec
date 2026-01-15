@@ -557,6 +557,52 @@
     }
   },
   {
+    "type": "dependency",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "dependency_name",
+            "named": true
+          }
+        ]
+      },
+      "version": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "dependency_version_constraint",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "dependency_comparison_operator",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "dependency_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "word",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "dependency_tag",
     "named": true,
     "fields": {},
@@ -569,6 +615,32 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "dependency_version_constraint",
+    "named": true,
+    "fields": {
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "dependency_comparison_operator",
+            "named": true
+          }
+        ]
+      },
+      "version": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "version",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1846,7 +1918,15 @@
         "required": true,
         "types": [
           {
-            "type": "expression",
+            "type": "_primary_expression",
+            "named": true
+          },
+          {
+            "type": "concatenation",
+            "named": true
+          },
+          {
+            "type": "dependency",
             "named": true
           }
         ]

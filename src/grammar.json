@@ -232,13 +232,8 @@
             "name": "integer"
           },
           {
-            "type": "ALIAS",
-            "content": {
-              "type": "SYMBOL",
-              "name": "dependency_version"
-            },
-            "named": true,
-            "value": "version"
+            "type": "SYMBOL",
+            "name": "version"
           },
           {
             "type": "SYMBOL",
@@ -2603,17 +2598,8 @@
               "type": "FIELD",
               "name": "value",
               "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "expression"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_literal"
-                  }
-                ]
+                "type": "SYMBOL",
+                "name": "dependency"
               }
             },
             {
@@ -2905,6 +2891,90 @@
         {
           "type": "STRING",
           "value": "RemovePathPostfixes"
+        }
+      ]
+    },
+    "dependency": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "dependency_name"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "version",
+              "content": {
+                "type": "SYMBOL",
+                "name": "dependency_version_constraint"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "dependency_name": {
+      "type": "SYMBOL",
+      "name": "word"
+    },
+    "dependency_version_constraint": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "operator",
+          "content": {
+            "type": "SYMBOL",
+            "name": "dependency_comparison_operator"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "version",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "dependency_version"
+            },
+            "named": true,
+            "value": "version"
+          }
+        }
+      ]
+    },
+    "dependency_comparison_operator": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "STRING",
+          "value": "<="
+        },
+        {
+          "type": "STRING",
+          "value": "="
+        },
+        {
+          "type": "STRING",
+          "value": ">="
+        },
+        {
+          "type": "STRING",
+          "value": ">"
         }
       ]
     },
@@ -4685,15 +4755,28 @@
               }
             },
             {
-              "type": "STRING",
-              "value": "."
-            },
-            {
-              "type": "REPEAT1",
-              "content": {
-                "type": "PATTERN",
-                "value": "[0-9]+_?"
-              }
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "."
+                    },
+                    {
+                      "type": "REPEAT1",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": "[0-9]+_?"
+                      }
+                    }
+                  ]
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             },
             {
               "type": "CHOICE",
@@ -4928,10 +5011,6 @@
     }
   ],
   "conflicts": [
-    [
-      "expression",
-      "tags"
-    ],
     [
       "shell_block",
       "string"

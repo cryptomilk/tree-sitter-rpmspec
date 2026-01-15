@@ -344,13 +344,16 @@ Obsoletes: python3-oldpackage < 0:1.1
 (spec
   (macro_expansion
     (conditional_expansion
-      (identifier)
-      (macro_expansion_call
+      condition: (identifier)
+      consequence: (macro_expansion_call
         (identifier)
-        (word))))
+        argument: (word))))
   (preamble
     (tags
       (dependency_tag)
-      (comparison_operator
-        (word)
-        (version)))))
+      value: (dependency
+        name: (dependency_name
+          (word))
+        version: (dependency_version_constraint
+          operator: (dependency_comparison_operator)
+          version: (version))))))

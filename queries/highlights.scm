@@ -149,6 +149,7 @@
   "!="
   "<"
   "<="
+  "="
   "=="
   ">"
   ">="
@@ -157,6 +158,9 @@
   "or"
   "||"
 ] @operator
+
+; Dependency comparison operators
+(dependency_comparison_operator) @operator
 
 [
   "with"
