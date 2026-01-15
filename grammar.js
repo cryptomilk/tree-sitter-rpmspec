@@ -891,7 +891,7 @@ module.exports = grammar({
                 seq(
                     $.dependency_tag, // Dependency tag name (with optional qualifier)
                     token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
-                    field('value', $.dependency), // Dependency expression
+                    field('value', $.dependency_list), // One or more dependencies
                     token.immediate(NEWLINE) // Must end with newline
                 )
             ),
@@ -1011,6 +1011,11 @@ module.exports = grammar({
                 field('name', $.dependency_name),
                 optional(field('version', $.dependency_version_constraint))
             ),
+
+        // List of dependencies separated by comma and/or whitespace
+        // Examples: "python perl", "python, perl", "python >= 3.6, perl"
+        dependency_list: ($) =>
+            seq($.dependency, repeat(seq(optional(','), $.dependency))),
 
         // Dependency name
         // Uses 'word' which allows hyphens (common in package names)

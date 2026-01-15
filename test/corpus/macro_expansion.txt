@@ -351,9 +351,10 @@ Obsoletes: python3-oldpackage < 0:1.1
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency
-        name: (dependency_name
-          (word))
-        version: (dependency_version_constraint
-          operator: (dependency_comparison_operator)
-          version: (version))))))
+      value: (dependency_list
+        (dependency
+          name: (dependency_name
+            (word))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))

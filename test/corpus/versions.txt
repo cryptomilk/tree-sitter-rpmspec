@@ -35,21 +35,23 @@ BuildRequires:  another-package >= 1:2.0.0
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency
-        name: (dependency_name
-          (word))
-        version: (dependency_version_constraint
-          operator: (dependency_comparison_operator)
-          version: (version)))))
+      value: (dependency_list
+        (dependency
+          name: (dependency_name
+            (word))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version))))))
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency
-        name: (dependency_name
-          (word))
-        version: (dependency_version_constraint
-          operator: (dependency_comparison_operator)
-          version: (version))))))
+      value: (dependency_list
+        (dependency
+          name: (dependency_name
+            (word))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Version (Complex epoch with release)
@@ -121,10 +123,11 @@ Provides:       virtual-package = 0:1.0.0
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency
-        name: (dependency_name
-          (word))
-        version: (dependency_version_constraint
-          operator: (dependency_comparison_operator)
-          version: (version))))))
+      value: (dependency_list
+        (dependency
+          name: (dependency_name
+            (word))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 

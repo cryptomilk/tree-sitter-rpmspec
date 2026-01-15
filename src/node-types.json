@@ -588,6 +588,21 @@
     "fields": {}
   },
   {
+    "type": "dependency_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "dependency",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "dependency_name",
     "named": true,
     "fields": {},
@@ -1926,7 +1941,7 @@
             "named": true
           },
           {
-            "type": "dependency",
+            "type": "dependency_list",
             "named": true
           }
         ]
