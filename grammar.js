@@ -1922,6 +1922,17 @@ module.exports = grammar({
             );
         },
 
+        // Version literal for macro expressions: v"3:1.2-1"
+        // Used in %[...] expressions for version comparison with RPM algorithm
+        // Example: %[ v"3.1.0-1" < v"1.0~alpha-2" ]
+        version_literal: ($) =>
+            seq(
+                token.immediate('v'),
+                token.immediate('"'),
+                $.quoted_string_content,
+                '"'
+            ),
+
         // Release literals: RPM release numbers
         // Examples: 1, 2, 1.fc35, 3.el8
         release: ($) => {

@@ -5547,6 +5547,33 @@
         }
       }
     },
+    "version_literal": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "v"
+          }
+        },
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "\""
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "quoted_string_content"
+        },
+        {
+          "type": "STRING",
+          "value": "\""
+        }
+      ]
+    },
     "release": {
       "type": "TOKEN",
       "content": {
