@@ -358,3 +358,66 @@ Obsoletes: python3-oldpackage < 0:1.1
           version: (dependency_version_constraint
             operator: (dependency_comparison_operator)
             version: (version)))))))
+
+===============================================================================
+Macros (%global with parenthesized string value)
+===============================================================================
+
+%global elf_bits (64bit)
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    name: (identifier)
+    value: (macro_value_text)))
+
+===============================================================================
+Macros (%global with parentheses and macro expansion)
+===============================================================================
+
+%global elf_suffix ()%{elf_bits}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    name: (identifier)
+    value: (macro_value_text)
+    value: (macro_expansion
+      (identifier))))
+
+===============================================================================
+Macros (%global with angle brackets)
+===============================================================================
+
+%global email_addr <user@example.com>
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    name: (identifier)
+    value: (macro_value_text)))
+
+===============================================================================
+Macros (%global with pipe and semicolon)
+===============================================================================
+
+%global filter_cmd cat | grep foo; echo done
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    name: (identifier)
+    value: (word)
+    value: (macro_value_text)
+    value: (word)
+    value: (word)
+    value: (word)
+    value: (word)))

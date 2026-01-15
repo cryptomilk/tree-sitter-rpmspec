@@ -1671,6 +1671,10 @@
             "named": true
           },
           {
+            "type": "macro_value_text",
+            "named": true
+          },
+          {
             "type": "quoted_string",
             "named": true
           },
@@ -3165,6 +3169,10 @@
   {
     "type": "lua",
     "named": false
+  },
+  {
+    "type": "macro_value_text",
+    "named": true
   },
   {
     "type": "macrobody",

@@ -514,7 +514,7 @@ module.exports = grammar({
                         seq('(', optional($.parametric_macro_options), ')')
                     ),
                     token.immediate(BLANK),
-                    field('value', $._body)
+                    field('value', $._macro_value)
                 )
             ),
 
@@ -548,6 +548,28 @@ module.exports = grammar({
                     $.version,
                     $.word,
                     $.quoted_string
+                )
+            ),
+
+        // Macro value: content of a macro definition
+        // More permissive than _body - allows raw text with ();<>|& etc.
+        // Recognizes macro expansions within the value
+        // Example: %global elf_suffix ()%{elf_bits}
+        //   -> macro_value_text: "()"
+        //   -> macro_expansion: %{elf_bits}
+        _macro_value: ($) =>
+            repeat1(
+                choice(
+                    $.macro_expansion_call,
+                    $.macro_simple_expansion,
+                    $.macro_expansion,
+                    $.macro_shell_expansion,
+                    $.integer,
+                    $.float,
+                    $.version,
+                    $.word,
+                    $.quoted_string,
+                    $.macro_value_text // Fallback for text with ();<>|& etc.
                 )
             ),
 
@@ -1829,12 +1851,20 @@ module.exports = grammar({
             ),
 
         // Long patch options: --option=value format
+        // Higher precedence to ensure -- is not consumed by macro_value_text
         patch_long_option: ($) =>
-            seq(
-                '--',
-                choice(
-                    seq('fuzz', '=', field('value', $.integer)), // --fuzz=N
-                    seq('backup', '=', field('value', $._primary_expression)) // --backup=SUF
+            prec(
+                1,
+                seq(
+                    '--',
+                    choice(
+                        seq('fuzz', '=', field('value', $.integer)), // --fuzz=N
+                        seq(
+                            'backup',
+                            '=',
+                            field('value', $._primary_expression)
+                        ) // --backup=SUF
+                    )
                 )
             ),
 
@@ -1981,6 +2011,12 @@ module.exports = grammar({
         // Excludes whitespace and special characters that have syntactic meaning
         // Used for simple identifiers, paths, and unquoted string values
         word: ($) => token(/([^\s"#%{}()<>|&\\])+/),
+
+        // Macro value text: raw text content in macro definitions
+        // More permissive than 'word' - allows ();<>|& etc.
+        // Only stops at: whitespace, %, {, }, #, ", \, or newlines
+        // Used for macro values like: %global elf_bits (64bit)
+        macro_value_text: (_) => token(prec(-1, /[^\s%{}#"\\]+/)),
 
         // String concatenation: automatic joining of adjacent expressions
         // RPM automatically concatenates adjacent values without operators
