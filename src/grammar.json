@@ -2584,8 +2584,85 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "dependency_tag"
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "requires_tag"
+              },
+              "named": true,
+              "value": "dependency_tag"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": ":( |\\t)*"
+              }
+            },
+            {
+              "type": "FIELD",
+              "name": "value",
+              "content": {
+                "type": "SYMBOL",
+                "name": "rich_dependency_list"
+              }
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\r?\\n"
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "weak_requires_tag"
+              },
+              "named": true,
+              "value": "dependency_tag"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": ":( |\\t)*"
+              }
+            },
+            {
+              "type": "FIELD",
+              "name": "value",
+              "content": {
+                "type": "SYMBOL",
+                "name": "rich_dependency_list"
+              }
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\r?\\n"
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "conflicts_tag"
+              },
+              "named": true,
+              "value": "dependency_tag"
             },
             {
               "type": "IMMEDIATE_TOKEN",
@@ -2600,6 +2677,114 @@
               "content": {
                 "type": "SYMBOL",
                 "name": "dependency_list"
+              }
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\r?\\n"
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "provides_tag"
+              },
+              "named": true,
+              "value": "dependency_tag"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": ":( |\\t)*"
+              }
+            },
+            {
+              "type": "FIELD",
+              "name": "value",
+              "content": {
+                "type": "SYMBOL",
+                "name": "dependency_list"
+              }
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\r?\\n"
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "arch_tag"
+              },
+              "named": true,
+              "value": "dependency_tag"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": ":( |\\t)*"
+              }
+            },
+            {
+              "type": "FIELD",
+              "name": "value",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_literal"
+              }
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\r?\\n"
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "legacy_dependency_tag"
+              },
+              "named": true,
+              "value": "dependency_tag"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": ":( |\\t)*"
+              }
+            },
+            {
+              "type": "FIELD",
+              "name": "value",
+              "content": {
+                "type": "SYMBOL",
+                "name": "rich_dependency_list"
               }
             },
             {
@@ -2763,7 +2948,7 @@
         }
       ]
     },
-    "dependency_tag": {
+    "requires_tag": {
       "type": "CHOICE",
       "members": [
         {
@@ -2803,6 +2988,36 @@
         {
           "type": "STRING",
           "value": "BuildRequires"
+        }
+      ]
+    },
+    "weak_requires_tag": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "Recommends"
+        },
+        {
+          "type": "STRING",
+          "value": "Suggests"
+        },
+        {
+          "type": "STRING",
+          "value": "Supplements"
+        },
+        {
+          "type": "STRING",
+          "value": "Enhances"
+        }
+      ]
+    },
+    "conflicts_tag": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "Conflicts"
         },
         {
           "type": "STRING",
@@ -2810,8 +3025,17 @@
         },
         {
           "type": "STRING",
-          "value": "BuildPrereq"
-        },
+          "value": "Obsoletes"
+        }
+      ]
+    },
+    "provides_tag": {
+      "type": "STRING",
+      "value": "Provides"
+    },
+    "arch_tag": {
+      "type": "CHOICE",
+      "members": [
         {
           "type": "STRING",
           "value": "BuildArch"
@@ -2835,22 +3059,15 @@
         {
           "type": "STRING",
           "value": "ExclusiveOS"
-        },
+        }
+      ]
+    },
+    "legacy_dependency_tag": {
+      "type": "CHOICE",
+      "members": [
         {
           "type": "STRING",
-          "value": "Provides"
-        },
-        {
-          "type": "STRING",
-          "value": "Conflicts"
-        },
-        {
-          "type": "STRING",
-          "value": "Obsoletes"
-        },
-        {
-          "type": "STRING",
-          "value": "Requires"
+          "value": "BuildPrereq"
         },
         {
           "type": "STRING",
@@ -2859,22 +3076,6 @@
         {
           "type": "STRING",
           "value": "OrderWithRequires"
-        },
-        {
-          "type": "STRING",
-          "value": "Recommends"
-        },
-        {
-          "type": "STRING",
-          "value": "Suggests"
-        },
-        {
-          "type": "STRING",
-          "value": "Supplements"
-        },
-        {
-          "type": "STRING",
-          "value": "Enhances"
         },
         {
           "type": "STRING",
@@ -2928,7 +3129,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_dependency_item"
+          "name": "dependency"
         },
         {
           "type": "REPEAT",
@@ -2949,14 +3150,47 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "_dependency_item"
+                "name": "dependency"
               }
             ]
           }
         }
       ]
     },
-    "_dependency_item": {
+    "rich_dependency_list": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_rich_dependency_item"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": ","
+                  },
+                  {
+                    "type": "BLANK"
+                  }
+                ]
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_rich_dependency_item"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "_rich_dependency_item": {
       "type": "CHOICE",
       "members": [
         {

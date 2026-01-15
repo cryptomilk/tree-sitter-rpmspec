@@ -10,7 +10,7 @@ Requires: (pkgA if pkgB)
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (boolean_dependency
           (boolean_if_expression
             consequence: (dependency
@@ -32,7 +32,7 @@ Requires: (pkgA if pkgB else pkgC)
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (boolean_dependency
           (boolean_if_expression
             consequence: (dependency
@@ -57,7 +57,7 @@ Requires: (libbpf >= 2:1.4.7 if libbpf)
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (boolean_dependency
           (boolean_if_expression
             consequence: (dependency
@@ -82,7 +82,7 @@ Requires: (pkgA with capB)
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (boolean_dependency
           (boolean_with_expression
             left: (dependency
@@ -104,7 +104,7 @@ Requires: (pkgA without capB)
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (boolean_dependency
           (boolean_without_expression
             left: (dependency
@@ -126,7 +126,7 @@ Requires: ((pkgA with capB) or (pkgB without capA))
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (boolean_dependency
           (boolean_or_expression
             left: (boolean_dependency
@@ -158,7 +158,7 @@ Requires: (myPkg-backend-mariaDB if mariaDB else sqlite)
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (boolean_dependency
           (boolean_if_expression
             consequence: (dependency

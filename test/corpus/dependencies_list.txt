@@ -10,7 +10,7 @@ Requires: python perl ruby
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word)))
@@ -33,7 +33,7 @@ Requires: python, perl, ruby
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word)))
@@ -56,7 +56,7 @@ BuildRequires: libaio-devel, device-mapper-devel >= 1.02.89
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word)))
@@ -79,7 +79,7 @@ Requires: python >= 3.6, perl >= 5.0
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word))
@@ -105,7 +105,7 @@ Requires: python >= 3.6 perl
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word))

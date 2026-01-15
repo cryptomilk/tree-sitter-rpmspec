@@ -10,7 +10,7 @@ Requires: perl(Carp) >= 3.2
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word)
@@ -32,7 +32,7 @@ BuildRequires: python3dist(pytest)
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word)
@@ -51,7 +51,7 @@ Requires: libbar-devel(x86-64) >= 2.2
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word)
@@ -92,7 +92,7 @@ Requires: lua(abi) = %{lua_version}
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word)
@@ -115,7 +115,7 @@ Requires: perl(strict)
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word)
@@ -134,7 +134,7 @@ BuildRequires: pkgconfig(glib-2.0) >= 2.50
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word)

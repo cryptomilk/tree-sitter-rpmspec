@@ -10,7 +10,7 @@ Requires: python
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word)))))))
@@ -27,7 +27,7 @@ BuildRequires: gcc
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word)))))))
@@ -44,7 +44,7 @@ Requires: python >= 3.6
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word))
@@ -64,7 +64,7 @@ Requires: cmake <= 3.20
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word))
@@ -84,7 +84,7 @@ Requires: package = 1.0.0
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word))
@@ -104,7 +104,7 @@ Requires: oldpkg < 2.0
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word))
@@ -124,7 +124,7 @@ Requires: newpkg > 1.0
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word))
@@ -144,7 +144,7 @@ Requires: package = 2:1.0.0
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word))
@@ -164,7 +164,7 @@ Requires: package = 2:1.0.0-1
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word))
@@ -185,7 +185,7 @@ Requires(pre): shadow-utils
     (tags
       (dependency_tag
         (qualifier))
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word)))))))
@@ -203,7 +203,7 @@ Requires(post): systemd >= 250
     (tags
       (dependency_tag
         (qualifier))
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word))
@@ -223,7 +223,7 @@ BuildRequires: cmake >= 3.10
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word))
@@ -317,7 +317,7 @@ Recommends: optional-package
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word)))))))
@@ -334,7 +334,7 @@ Suggests: nice-to-have >= 1.0
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word))

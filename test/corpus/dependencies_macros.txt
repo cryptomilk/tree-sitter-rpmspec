@@ -10,7 +10,7 @@ Requires: %{name} = %{version}
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (macro_expansion
@@ -32,7 +32,7 @@ Requires: %{name}%{?_isa} = %{version}
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (macro_expansion
@@ -57,7 +57,7 @@ Requires: %{name}-libs >= %{version}
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (macro_expansion
@@ -80,7 +80,7 @@ Requires: %{name} = %{version}-%{release}
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (macro_expansion
@@ -104,7 +104,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (macro_expansion
@@ -131,7 +131,7 @@ Requires: foo%{?_isa} >= 1.0
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word)
@@ -154,7 +154,7 @@ Requires: %name = 1.0
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (macro_simple_expansion

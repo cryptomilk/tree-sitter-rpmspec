@@ -897,12 +897,47 @@ module.exports = grammar({
                     field('value', $._literal), // Simple values (can contain macros)
                     token.immediate(NEWLINE) // Must end with newline
                 ),
-                // Dependency tags - use dedicated dependency syntax
+                // Strong dependency tags (Requires, BuildRequires) - full boolean support
                 seq(
-                    $.dependency_tag, // Dependency tag name (with optional qualifier)
-                    token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
-                    field('value', $.dependency_list), // One or more dependencies
-                    token.immediate(NEWLINE) // Must end with newline
+                    alias($.requires_tag, $.dependency_tag),
+                    token.immediate(/:( |\t)*/),
+                    field('value', $.rich_dependency_list), // Supports boolean deps
+                    token.immediate(NEWLINE)
+                ),
+                // Weak dependency tags (Recommends, Suggests, etc.) - full boolean support
+                seq(
+                    alias($.weak_requires_tag, $.dependency_tag),
+                    token.immediate(/:( |\t)*/),
+                    field('value', $.rich_dependency_list), // Supports boolean deps
+                    token.immediate(NEWLINE)
+                ),
+                // Conflicts/Obsoletes tags - NO boolean expressions
+                seq(
+                    alias($.conflicts_tag, $.dependency_tag),
+                    token.immediate(/:( |\t)*/),
+                    field('value', $.dependency_list), // No boolean deps
+                    token.immediate(NEWLINE)
+                ),
+                // Provides tag - NO boolean expressions
+                seq(
+                    alias($.provides_tag, $.dependency_tag),
+                    token.immediate(/:( |\t)*/),
+                    field('value', $.dependency_list), // No boolean deps
+                    token.immediate(NEWLINE)
+                ),
+                // Architecture/OS constraint tags - use literals
+                seq(
+                    alias($.arch_tag, $.dependency_tag),
+                    token.immediate(/:( |\t)*/),
+                    field('value', $._literal), // Simple arch/OS names
+                    token.immediate(NEWLINE)
+                ),
+                // Legacy/deprecated tags - use rich dependency list for compatibility
+                seq(
+                    alias($.legacy_dependency_tag, $.dependency_tag),
+                    token.immediate(/:( |\t)*/),
+                    field('value', $.rich_dependency_list),
+                    token.immediate(NEWLINE)
                 )
             ),
 
@@ -963,41 +998,47 @@ module.exports = grammar({
                 'meta' // Meta-dependency (not runtime)
             ),
 
-        // Dependency and architecture tags: define package relationships
-        // These tags specify dependencies, conflicts, and build constraints
-        dependency_tag: ($) =>
+        // Strong dependency tags: Requires (with qualifier), BuildRequires
+        // These support full boolean dependency syntax (and, or, if, with, without)
+        requires_tag: ($) =>
             choice(
-                // Runtime dependencies (with optional qualifier)
                 seq('Requires', optional(seq('(', $.qualifier, ')'))),
+                'BuildRequires'
+            ),
 
-                // Build-time dependencies and constraints
-                'BuildRequires', // Packages needed to build this package
-                'BuildConflicts', // Packages that conflict during build
+        // Weak dependency tags: Recommends, Suggests, Supplements, Enhances
+        // These also support full boolean dependency syntax
+        weak_requires_tag: ($) =>
+            choice('Recommends', 'Suggests', 'Supplements', 'Enhances'),
+
+        // Conflict/Obsolete tags: Conflicts, BuildConflicts, Obsoletes
+        // These do NOT support boolean expressions - only simple versioned deps
+        conflicts_tag: ($) =>
+            choice('Conflicts', 'BuildConflicts', 'Obsoletes'),
+
+        // Provides tag: provides virtual packages/capabilities
+        // Does NOT support boolean expressions - only simple versioned deps
+        provides_tag: (_) => 'Provides',
+
+        // Architecture/OS constraint tags
+        // These use simple literals (arch names), not dependency lists
+        arch_tag: ($) =>
+            choice(
+                'BuildArch',
+                'BuildArchitectures',
+                'ExcludeArch',
+                'ExclusiveArch',
+                'ExcludeOS',
+                'ExclusiveOS'
+            ),
+
+        // Legacy/deprecated dependency tags
+        // Keep for backwards compatibility
+        legacy_dependency_tag: ($) =>
+            choice(
                 'BuildPrereq', // Build prerequisites (deprecated)
-
-                // Architecture specifications
-                'BuildArch', // Target architecture for build
-                'BuildArchitectures', // Multiple target architectures
-                'ExcludeArch', // Architectures to exclude
-                'ExclusiveArch', // Only build on these architectures
-                'ExcludeOS', // Operating systems to exclude
-                'ExclusiveOS', // Only build on these operating systems
-
-                // Package relationships
-                'Provides', // Virtual packages this provides
-                'Conflicts', // Packages this conflicts with
-                'Obsoletes', // Packages this makes obsolete
-                'Requires', // Runtime dependencies
                 'Prereq', // Prerequisites (deprecated)
                 'OrderWithRequires', // Ordering dependency
-
-                // Weak dependencies (suggestions)
-                'Recommends', // Recommended packages
-                'Suggests', // Suggested packages
-                'Supplements', // Supplement other packages
-                'Enhances', // Enhance other packages
-
-                // Installation and documentation
                 'DocDir', // Documentation directory
                 'Prefix', // Installation prefix
                 'Prefixes', // Multiple installation prefixes
@@ -1022,17 +1063,24 @@ module.exports = grammar({
                 optional(field('version', $.dependency_version_constraint))
             ),
 
-        // List of dependencies separated by comma and/or whitespace
+        // Simple dependency list: NO boolean expressions allowed
+        // Used for Conflicts, Obsoletes, and Provides tags
         // Examples: "python perl", "python, perl", "python >= 3.6, perl"
-        // Also supports boolean dependencies: "(foo or bar), baz"
         dependency_list: ($) =>
+            seq($.dependency, repeat(seq(optional(','), $.dependency))),
+
+        // Rich dependency list: supports boolean expressions (RPM 4.13+)
+        // Used for Requires, BuildRequires, and weak dependency tags
+        // Examples: "(foo or bar), baz", "(pkgA and pkgB)"
+        rich_dependency_list: ($) =>
             seq(
-                $._dependency_item,
-                repeat(seq(optional(','), $._dependency_item))
+                $._rich_dependency_item,
+                repeat(seq(optional(','), $._rich_dependency_item))
             ),
 
-        // A single item in a dependency list: regular or boolean
-        _dependency_item: ($) => choice($.dependency, $.boolean_dependency),
+        // A single item in a rich dependency list: regular or boolean
+        _rich_dependency_item: ($) =>
+            choice($.dependency, $.boolean_dependency),
 
         // Dependency name
         // Supports: simple words, macros, concatenation, and qualifier suffixes

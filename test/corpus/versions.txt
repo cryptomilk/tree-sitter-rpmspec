@@ -35,7 +35,7 @@ BuildRequires:  another-package >= 1:2.0.0
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word))
@@ -45,7 +45,7 @@ BuildRequires:  another-package >= 1:2.0.0
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
+      value: (rich_dependency_list
         (dependency
           name: (dependency_name
             (word))

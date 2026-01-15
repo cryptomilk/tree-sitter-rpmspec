@@ -1039,10 +1039,6 @@
       "required": true,
       "types": [
         {
-          "type": "boolean_dependency",
-          "named": true
-        },
-        {
           "type": "dependency",
           "named": true
         }
@@ -2180,6 +2176,25 @@
     }
   },
   {
+    "type": "rich_dependency_list",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "boolean_dependency",
+          "named": true
+        },
+        {
+          "type": "dependency",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "runtime_scriptlet",
     "named": true,
     "fields": {},
@@ -2432,6 +2447,10 @@
           },
           {
             "type": "dependency_list",
+            "named": true
+          },
+          {
+            "type": "rich_dependency_list",
             "named": true
           }
         ]
@@ -2935,10 +2954,6 @@
   },
   {
     "type": "Prereq",
-    "named": false
-  },
-  {
-    "type": "Provides",
     "named": false
   },
   {

@@ -15,7 +15,7 @@ BuildRequires:  foo
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))))
@@ -37,7 +37,7 @@ BuildRequires:  foo
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))))
@@ -59,7 +59,7 @@ BuildRequires:  magic
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))))
@@ -81,7 +81,7 @@ BuildRequires:  foo
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))))
@@ -106,7 +106,7 @@ BuildRequires:  foo
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))))
@@ -132,7 +132,7 @@ BuildRequires:  foo
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))))
@@ -167,7 +167,7 @@ BuildRequires:  foo
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))))
@@ -192,7 +192,7 @@ BuildRequires:  foo
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))))
@@ -226,7 +226,7 @@ BuildRequires:  foo
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))))
@@ -253,7 +253,7 @@ BuildRequires:  bar
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))
@@ -261,7 +261,7 @@ BuildRequires:  bar
       body: (preamble
         (tags
           (dependency_tag)
-          value: (dependency_list
+          value: (rich_dependency_list
             (dependency
               name: (dependency_name
                 (word)))))))))
@@ -288,7 +288,7 @@ BuildRequires:  bar
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))
@@ -301,7 +301,7 @@ BuildRequires:  bar
       consequence: (preamble
         (tags
           (dependency_tag)
-          value: (dependency_list
+          value: (rich_dependency_list
             (dependency
               name: (dependency_name
                 (word)))))))))
@@ -330,7 +330,7 @@ BuildRequires:  wurst
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))
@@ -343,7 +343,7 @@ BuildRequires:  wurst
       consequence: (preamble
         (tags
           (dependency_tag)
-          value: (dependency_list
+          value: (rich_dependency_list
             (dependency
               name: (dependency_name
                 (word)))))))
@@ -351,7 +351,7 @@ BuildRequires:  wurst
       body: (preamble
         (tags
           (dependency_tag)
-          value: (dependency_list
+          value: (rich_dependency_list
             (dependency
               name: (dependency_name
                 (word)))))))))
@@ -428,7 +428,7 @@ Requires(post): libwbclient
       (tags
         (dependency_tag
           (qualifier))
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))))
@@ -451,7 +451,7 @@ BuildRequires:  foo
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))))
@@ -473,7 +473,7 @@ BuildRequires:  linux-only-package
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))))
@@ -497,7 +497,7 @@ BuildRequires:  arch-specific-package
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))))
@@ -523,7 +523,7 @@ BuildRequires:  generic-package
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
+        value: (rich_dependency_list
           (dependency
             name: (dependency_name
               (word))))))
@@ -532,7 +532,7 @@ BuildRequires:  generic-package
       consequence: (preamble
         (tags
           (dependency_tag)
-          value: (dependency_list
+          value: (rich_dependency_list
             (dependency
               name: (dependency_name
                 (word)))))))
@@ -540,7 +540,7 @@ BuildRequires:  generic-package
       body: (preamble
         (tags
           (dependency_tag)
-          value: (dependency_list
+          value: (rich_dependency_list
             (dependency
               name: (dependency_name
                 (word)))))))))
