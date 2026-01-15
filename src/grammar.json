@@ -2957,8 +2957,114 @@
       ]
     },
     "dependency_name": {
-      "type": "SYMBOL",
-      "name": "word"
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_dependency_name_concatenation"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "word"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_expansion"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_simple_expansion"
+        }
+      ]
+    },
+    "_dependency_name_concatenation": {
+      "type": "PREC_LEFT",
+      "value": 20,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "macro_expansion"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "macro_simple_expansion"
+                  }
+                ]
+              },
+              {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "word"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "macro_expansion"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "macro_simple_expansion"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "word"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "macro_expansion"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "macro_simple_expansion"
+                  }
+                ]
+              },
+              {
+                "type": "REPEAT",
+                "content": {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "word"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "macro_expansion"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "macro_simple_expansion"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
     },
     "dependency_version_constraint": {
       "type": "SEQ",
@@ -2975,16 +3081,113 @@
           "type": "FIELD",
           "name": "version",
           "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "SYMBOL",
-              "name": "dependency_version"
-            },
-            "named": true,
-            "value": "version"
+            "type": "SYMBOL",
+            "name": "_dependency_version_value"
           }
         }
       ]
+    },
+    "_dependency_version_value": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_dependency_version_concatenation"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "dependency_version"
+          },
+          "named": true,
+          "value": "version"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_expansion"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_simple_expansion"
+        }
+      ]
+    },
+    "_dependency_version_concatenation": {
+      "type": "PREC_LEFT",
+      "value": 20,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "dependency_version"
+                },
+                "named": true,
+                "value": "version"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "macro_expansion"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "macro_simple_expansion"
+              }
+            ]
+          },
+          {
+            "type": "REPEAT1",
+            "content": {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "IMMEDIATE_TOKEN",
+                      "content": {
+                        "type": "STRING",
+                        "value": "-"
+                      }
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "dependency_version"
+                      },
+                      "named": true,
+                      "value": "version"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "macro_expansion"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "macro_simple_expansion"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
     },
     "dependency_comparison_operator": {
       "type": "CHOICE",

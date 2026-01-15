@@ -34,6 +34,9 @@ const PREC = {
     // Arithmetic operators (higher precedence)
     plus: 14, // +, -
     times: 15, // *, /
+
+    // Dependency parsing
+    dependency_concat: 20, // Higher precedence for dependency name/version concatenation
 };
 
 /**
@@ -1018,16 +1021,89 @@ module.exports = grammar({
             seq($.dependency, repeat(seq(optional(','), $.dependency))),
 
         // Dependency name
-        // Uses 'word' which allows hyphens (common in package names)
-        // TODO: Add macros, ISA suffixes, file paths, etc.
-        dependency_name: ($) => $.word,
+        // Supports: simple words, macros, and concatenation of both
+        // Examples: foo, %{name}, %{name}-libs, foo%{?_isa}
+        dependency_name: ($) =>
+            choice(
+                $._dependency_name_concatenation, // %{name}-libs, foo%{?_isa}
+                $.word, // simple: foo
+                $.macro_expansion, // %{name}
+                $.macro_simple_expansion // %name
+            ),
+
+        // Concatenation of dependency name parts
+        // Handles: %{name}-libs, foo%{?_isa}, %{name}%{?_isa}
+        // Note: At least one macro must be present for concatenation
+        // (word + word would be two separate dependencies)
+        _dependency_name_concatenation: ($) =>
+            prec.left(
+                PREC.dependency_concat,
+                choice(
+                    // Starts with macro, followed by anything
+                    seq(
+                        choice($.macro_expansion, $.macro_simple_expansion),
+                        repeat1(
+                            choice(
+                                $.word,
+                                $.macro_expansion,
+                                $.macro_simple_expansion
+                            )
+                        )
+                    ),
+                    // Starts with word, must be followed by macro (not another word)
+                    seq(
+                        $.word,
+                        choice($.macro_expansion, $.macro_simple_expansion),
+                        repeat(
+                            choice(
+                                $.word,
+                                $.macro_expansion,
+                                $.macro_simple_expansion
+                            )
+                        )
+                    )
+                )
+            ),
 
         // Version constraint: comparison operator followed by version
-        // Examples: >= 1.0, = 2:1.0.0-1, < 3.0
+        // Examples: >= 1.0, = 2:1.0.0-1, < 3.0, = %{version}-%{release}
         dependency_version_constraint: ($) =>
             seq(
                 field('operator', $.dependency_comparison_operator),
-                field('version', alias($.dependency_version, $.version))
+                field('version', $._dependency_version_value)
+            ),
+
+        // Version value in dependencies - can be literal or macro-based
+        // Examples: 1.0.0, %{version}, %{version}-%{release}
+        _dependency_version_value: ($) =>
+            choice(
+                $._dependency_version_concatenation, // %{version}-%{release}
+                alias($.dependency_version, $.version), // literal: 1.0.0-1.fc35
+                $.macro_expansion, // %{version}
+                $.macro_simple_expansion // %version
+            ),
+
+        // Concatenated version parts (e.g., %{version}-%{release}, 1:%{version})
+        _dependency_version_concatenation: ($) =>
+            prec.left(
+                PREC.dependency_concat,
+                seq(
+                    choice(
+                        alias($.dependency_version, $.version),
+                        $.macro_expansion,
+                        $.macro_simple_expansion
+                    ),
+                    repeat1(
+                        seq(
+                            optional(token.immediate('-')), // hyphen separator
+                            choice(
+                                alias($.dependency_version, $.version),
+                                $.macro_expansion,
+                                $.macro_simple_expansion
+                            )
+                        )
+                    )
+                )
             ),
 
         // Comparison operators for dependencies

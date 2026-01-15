@@ -1,0 +1,164 @@
+===============================================================================
+Macro dependency (simple name macro)
+===============================================================================
+
+Requires: %{name} = %{version}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (dependency
+          name: (dependency_name
+            (macro_expansion
+              (identifier)))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (macro_expansion
+              (identifier))))))))
+
+===============================================================================
+Macro dependency (name with ISA suffix)
+===============================================================================
+
+Requires: %{name}%{?_isa} = %{version}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (dependency
+          name: (dependency_name
+            (macro_expansion
+              (identifier))
+            (macro_expansion
+              (conditional_expansion
+                condition: (identifier))))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (macro_expansion
+              (identifier))))))))
+
+===============================================================================
+Macro dependency (name with literal suffix)
+===============================================================================
+
+Requires: %{name}-libs >= %{version}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (dependency
+          name: (dependency_name
+            (macro_expansion
+              (identifier))
+            (word))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (macro_expansion
+              (identifier))))))))
+
+===============================================================================
+Macro dependency (version with release)
+===============================================================================
+
+Requires: %{name} = %{version}-%{release}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (dependency
+          name: (dependency_name
+            (macro_expansion
+              (identifier)))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (macro_expansion
+              (identifier))
+            version: (macro_expansion
+              (identifier))))))))
+
+===============================================================================
+Macro dependency (full ISA dependency)
+===============================================================================
+
+Requires: %{name}%{?_isa} = %{version}-%{release}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (dependency
+          name: (dependency_name
+            (macro_expansion
+              (identifier))
+            (macro_expansion
+              (conditional_expansion
+                condition: (identifier))))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (macro_expansion
+              (identifier))
+            version: (macro_expansion
+              (identifier))))))))
+
+===============================================================================
+Macro dependency (literal name with macro suffix)
+===============================================================================
+
+Requires: foo%{?_isa} >= 1.0
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (dependency
+          name: (dependency_name
+            (word)
+            (macro_expansion
+              (conditional_expansion
+                condition: (identifier))))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
+
+===============================================================================
+Macro dependency (simple macro expansion in name)
+===============================================================================
+
+Requires: %name = 1.0
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (dependency
+          name: (dependency_name
+            (macro_simple_expansion
+              (identifier)))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
