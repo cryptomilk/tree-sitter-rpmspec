@@ -1077,9 +1077,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "dependency_qualifier_suffix",
+          "named": true
+        },
         {
           "type": "identifier",
           "named": true

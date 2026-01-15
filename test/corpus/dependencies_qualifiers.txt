@@ -143,3 +143,27 @@ BuildRequires: pkgconfig(glib-2.0) >= 2.50
           version: (dependency_version_constraint
             operator: (dependency_comparison_operator)
             version: (version)))))))
+
+===============================================================================
+Qualifier dependency (nested golang bundled)
+===============================================================================
+
+Provides: bundled(golang(golang.org/x/arch)) = 0.18.1
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (dependency
+          name: (dependency_name
+            (word)
+            (dependency_qualifier_suffix
+              (identifier)
+              (dependency_qualifier_suffix
+                (word))))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))

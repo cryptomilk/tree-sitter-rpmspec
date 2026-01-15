@@ -1102,13 +1102,12 @@ module.exports = grammar({
 
         // Qualifier suffix for dependencies
         // Examples: (Carp), (x86-64), (pytest), (abi)
+        // Nested: bundled(golang(golang.org/x/arch))
         dependency_qualifier_suffix: ($) =>
             seq(
                 token.immediate('('),
-                choice(
-                    $.identifier, // Simple identifier: Carp, pytest
-                    $.word // Allows hyphens: x86-64
-                ),
+                choice($.identifier, $.word),
+                optional($.dependency_qualifier_suffix), // Allow nesting
                 ')'
             ),
 
