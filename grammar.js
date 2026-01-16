@@ -199,6 +199,30 @@ module.exports = grammar({
             ),
 
         ///////////////////////////////////////////////////////////////////////
+        // PATH TYPES
+        // Filesystem paths used by path-taking builtins like %{basename:},
+        // %{dirname:}, %{exists:}, etc.
+        // Paths can contain Unicode (Umlauts, etc.) - almost any char except
+        // whitespace and RPM special characters.
+        ///////////////////////////////////////////////////////////////////////
+
+        // Simple path (no macros) - anything except whitespace and RPM delimiters
+        path: (_) => /[^\s{}%]+/,
+
+        // Path that can contain macro expansions
+        // Examples: /usr/share/%{name}, %{_datadir}/foo, /path/with/Ümlauts
+        path_with_macro: ($) =>
+            prec.left(
+                repeat1(
+                    choice(
+                        /[^\s{}%]+/,
+                        $.macro_simple_expansion,
+                        $.macro_expansion
+                    )
+                )
+            ),
+
+        ///////////////////////////////////////////////////////////////////////
         // MACRO SYSTEM
         // RPM's macro system is a powerful text substitution mechanism that
         // allows for:

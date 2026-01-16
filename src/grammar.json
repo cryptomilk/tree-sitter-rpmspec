@@ -266,6 +266,34 @@
         ]
       }
     },
+    "path": {
+      "type": "PATTERN",
+      "value": "[^\\s{}%]+"
+    },
+    "path_with_macro": {
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "REPEAT1",
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "[^\\s{}%]+"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "macro_simple_expansion"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "macro_expansion"
+            }
+          ]
+        }
+      }
+    },
     "macro_name": {
       "type": "PATTERN",
       "value": "[a-zA-Z_][a-zA-Z0-9_]*"
