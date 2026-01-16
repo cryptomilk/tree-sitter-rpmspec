@@ -1,0 +1,117 @@
+# Multi-argument builtin macro tests
+#
+# These builtins take multiple space-separated arguments:
+# - %{gsub STRING PATTERN REPLACEMENT [N]}
+# - %{sub STRING START [END]}
+# - %{rep STRING COUNT [SEPARATOR]}
+#
+# NOTE: Colon syntax does NOT work for these in RPM!
+# %{gsub:hello:l:x} -> ERROR
+#
+# Builtins: gsub, sub, rep
+
+===============================================================================
+Macro Builtin Multi-arg (gsub space-separated)
+===============================================================================
+
+%{gsub hello l x}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (word)
+    argument: (word)
+    argument: (word)))
+
+===============================================================================
+Macro Builtin Multi-arg (gsub with count)
+===============================================================================
+
+%{gsub hello l x 1}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (word)
+    argument: (word)
+    argument: (word)
+    argument: (integer)))
+
+===============================================================================
+Macro Builtin Multi-arg (sub substring)
+===============================================================================
+
+%{sub hello 2 4}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (word)
+    argument: (integer)
+    argument: (integer)))
+
+===============================================================================
+Macro Builtin Multi-arg (sub to end)
+===============================================================================
+
+%{sub hello 2}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (word)
+    argument: (integer)))
+
+===============================================================================
+Macro Builtin Multi-arg (rep repetition)
+===============================================================================
+
+%{rep hello 3}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (word)
+    argument: (integer)))
+
+===============================================================================
+Macro Builtin Multi-arg (rep with separator)
+===============================================================================
+
+%{rep hello 3 "-"}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (word)
+    argument: (integer)
+    argument: (quoted_string
+      (quoted_string_content))))
+
+===============================================================================
+Macro Builtin Multi-arg (parametric gsub)
+===============================================================================
+
+%gsub -p old new text
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion_call
+    (builtin)
+    option: (macro_option)
+    argument: (word)
+    argument: (word)
+    argument: (word)))

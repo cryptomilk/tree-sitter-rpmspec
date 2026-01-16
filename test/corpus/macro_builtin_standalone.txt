@@ -1,0 +1,87 @@
+# Standalone builtin macro tests
+#
+# These builtins take no arguments or have special behavior:
+# - %{rpmversion}  - returns RPM version
+# - %{dump}        - dumps macro definitions
+# - %{trace}       - toggles macro tracing
+# - %{dnl ...}     - delete to newline (brace syntax)
+#
+# Note: %dnl (space) at line start is handled as a comment
+# But %{dnl} and %{dnl:...} brace syntax are valid builtins
+#
+# Builtins: dnl, dump, rpmversion, trace
+
+===============================================================================
+Macro Builtin Standalone (rpmversion)
+===============================================================================
+
+%{rpmversion}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)))
+
+===============================================================================
+Macro Builtin Standalone (dump)
+===============================================================================
+
+%{dump}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)))
+
+===============================================================================
+Macro Builtin Standalone (trace with argument)
+===============================================================================
+
+%{trace:0}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (word)))
+
+===============================================================================
+Macro Builtin Standalone (trace toggle)
+===============================================================================
+
+%{trace}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)))
+
+===============================================================================
+Macro Builtin Standalone (dnl brace syntax)
+===============================================================================
+
+%{dnl foo}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (word)))
+
+===============================================================================
+Macro Builtin Standalone (dnl colon syntax)
+===============================================================================
+
+%{dnl: foo}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (word)))

@@ -2077,6 +2077,14 @@
           {
             "type": "concatenation",
             "named": true
+          },
+          {
+            "type": "path_with_macro",
+            "named": true
+          },
+          {
+            "type": "url_with_macro",
+            "named": true
           }
         ]
       },
@@ -2658,6 +2666,25 @@
     }
   },
   {
+    "type": "path_with_macro",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "preamble",
     "named": true,
     "fields": {},
@@ -3222,6 +3249,25 @@
     }
   },
   {
+    "type": "url_with_macro",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "verify",
     "named": true,
     "fields": {}
@@ -3505,6 +3551,10 @@
   },
   {
     "type": ":",
+    "named": false
+  },
+  {
+    "type": "://",
     "named": false
   },
   {
@@ -3829,6 +3879,10 @@
     "named": false
   },
   {
+    "type": "file",
+    "named": false
+  },
+  {
     "type": "filedigest",
     "named": false
   },
@@ -3837,11 +3891,11 @@
     "named": true
   },
   {
-    "type": "fuzz",
+    "type": "ftp",
     "named": false
   },
   {
-    "type": "getdirconf",
+    "type": "fuzz",
     "named": false
   },
   {
@@ -3862,6 +3916,14 @@
   },
   {
     "type": "gsub",
+    "named": false
+  },
+  {
+    "type": "http",
+    "named": false
+  },
+  {
+    "type": "https",
     "named": false
   },
   {

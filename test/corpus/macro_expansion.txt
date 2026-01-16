@@ -239,7 +239,7 @@ Macros (Function-style Built-in with Colon)
 (spec
   (macro_expansion
     (builtin)
-    (word)))
+    argument: (path_with_macro)))
 
 ===============================================================================
 Macros (Environment Variable Expansion)
@@ -252,7 +252,7 @@ Macros (Environment Variable Expansion)
 (spec
   (macro_expansion
     (builtin)
-    (word)))
+    argument: (word)))
 
 ===============================================================================
 Macros (String Transformation Functions)
@@ -267,15 +267,17 @@ Macros (String Transformation Functions)
 (spec
   (macro_expansion
     (builtin)
-    (word)
-    (word))
+    argument: (concatenation
+      (word)
+      (word)))
   (macro_expansion
     (builtin)
-    (word)
-    (word))
+    argument: (concatenation
+      (word)
+      (word)))
   (macro_expansion
     (builtin)
-    (concatenation
+    argument: (concatenation
       (word)
       (word))))
 
@@ -291,10 +293,10 @@ Macros (Path Operations)
 (spec
   (macro_expansion
     (builtin)
-    (word))
+    argument: (path_with_macro))
   (macro_expansion
     (builtin)
-    (word)))
+    argument: (path_with_macro)))
 
 ===============================================================================
 Macros (Nested Function Calls)
@@ -307,9 +309,9 @@ Macros (Nested Function Calls)
 (spec
   (macro_expansion
     (builtin)
-    (macro_expansion
+    argument: (macro_expansion
       (builtin)
-      (word))))
+      argument: (path_with_macro))))
 
 ===============================================================================
 Macros (Complex Lua with Variables)

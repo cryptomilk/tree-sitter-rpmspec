@@ -211,6 +211,7 @@ module.exports = grammar({
 
         // Path that can contain macro expansions
         // Examples: /usr/share/%{name}, %{_datadir}/foo, /path/with/Ümlauts
+        // prec.left ensures greedy left-to-right matching of path segments
         path_with_macro: ($) =>
             prec.left(
                 repeat1(
@@ -218,6 +219,31 @@ module.exports = grammar({
                         /[^\s{}%]+/,
                         $.macro_simple_expansion,
                         $.macro_expansion
+                    )
+                )
+            ),
+
+        ///////////////////////////////////////////////////////////////////////
+        // URL TYPES
+        // URLs used by url2path builtin to extract path component
+        ///////////////////////////////////////////////////////////////////////
+
+        // URL with optional macro expansions
+        // Examples: https://example.org/%{name}-%{version}.tar.gz
+        // prec.left ensures greedy left-to-right matching of URL segments
+        url_with_macro: ($) =>
+            prec.left(
+                seq(
+                    // Protocol prefix
+                    choice('http', 'https', 'ftp', 'file'),
+                    token.immediate('://'),
+                    // URL body - can contain macros
+                    repeat1(
+                        choice(
+                            /[^\s{}%]+/,
+                            $.macro_simple_expansion,
+                            $.macro_expansion
+                        )
                     )
                 )
             ),
@@ -279,43 +305,114 @@ module.exports = grammar({
 
         // Built-in RPM macros providing utility functions and system information
         // These are predefined macros available in all RPM builds
+        // Categorized by argument type for proper parsing
+
+        // String builtins - take single string argument via colon or space
+        _builtin_string: (_) =>
+            choice(
+                'echo',
+                'error',
+                'expand',
+                'getenv',
+                'getncpus',
+                'len',
+                'lower',
+                'macrobody',
+                'quote',
+                'reverse',
+                'shescape',
+                'shrink',
+                'upper',
+                'verbose',
+                'warn'
+            ),
+
+        // String builtin with colon - combined token for colon syntax
+        _builtin_string_colon: (_) =>
+            token(
+                choice(
+                    'echo:',
+                    'error:',
+                    'expand:',
+                    'getenv:',
+                    'getncpus:',
+                    'len:',
+                    'lower:',
+                    'macrobody:',
+                    'quote:',
+                    'reverse:',
+                    'shescape:',
+                    'shrink:',
+                    'upper:',
+                    'verbose:',
+                    'warn:'
+                )
+            ),
+
+        // Path builtins - take filesystem path argument
+        _builtin_path: (_) =>
+            choice(
+                'basename',
+                'dirname',
+                'exists',
+                'load',
+                'suffix',
+                'uncompress'
+            ),
+
+        // Path builtin with colon - combined token for colon syntax
+        // Ensures no whitespace between builtin name and colon
+        _builtin_path_colon: (_) =>
+            token(
+                choice(
+                    'basename:',
+                    'dirname:',
+                    'exists:',
+                    'load:',
+                    'suffix:',
+                    'uncompress:'
+                )
+            ),
+
+        // URL builtins - take URL argument
+        _builtin_url: (_) => choice('url2path', 'u2p'),
+
+        // URL builtin with colon - combined token for colon syntax
+        _builtin_url_colon: (_) => token(choice('url2path:', 'u2p:')),
+
+        // Multi-argument builtins - require space-separated arguments
+        _builtin_multi_arg: (_) => choice('gsub', 'sub', 'rep'),
+
+        // Standalone builtins - no arguments or special behavior
+        // Note: %dnl (space) is handled as a comment, but %{dnl} brace syntax is valid
+        _builtin_standalone: (_) =>
+            choice('dnl', 'dump', 'rpmversion', 'trace'),
+
+        // All builtins combined - used where we need to match any builtin name
+        // This is aliased to $.builtin in contexts that need all builtins
+        _all_builtins: ($) =>
+            choice(
+                $.macro_source,
+                $.macro_patch,
+                $._builtin_string,
+                $._builtin_path,
+                $._builtin_url,
+                $._builtin_multi_arg,
+                $._builtin_standalone,
+                'expr',
+                'lua'
+            ),
+
+        // Builtin rule for builtins not handled by category-specific rules
+        // String, path, and URL builtins are handled separately in _macro_expansion_body
         builtin: ($) =>
             choice(
                 $.macro_source,
                 $.macro_patch,
-                'basename',
-                'dirname',
-                'dnl',
-                'dump',
-                'echo',
-                'error',
-                'exists',
-                'expand',
-                'expr',
-                'getdirconf',
-                'getenv',
-                'getncpus',
-                'gsub',
-                'len',
-                'load',
-                'lower',
-                'lua',
-                'macrobody',
-                'quote',
-                'rep',
-                'reverse',
-                'rpmversion',
-                'shrink',
-                'sub',
-                'suffix',
-                'trace',
-                'u2p',
-                'shescape',
-                'uncompress',
-                'upper',
-                'url2path',
-                'verbose',
-                'warn'
+                $._builtin_multi_arg,
+                $._builtin_standalone,
+                'expr', // Special: takes expression argument
+                'lua' // Special: takes Lua code argument
             ),
 
         macro_source: ($) =>
@@ -342,15 +439,18 @@ module.exports = grammar({
                 '%',
                 choice(
                     // Builtin macros without arguments
+                    // Uses _all_builtins to recognize all builtin names (string, path, url, etc.)
+                    // even though they're handled separately in _macro_expansion_body for colon syntax
                     seq(
                         optional(field('operator', token.immediate('!'))),
-                        $.builtin,
+                        alias($._all_builtins, $.builtin),
                         token.immediate(NEWLINE)
                     ),
                     // Builtin macros with arguments - require space after builtin
+                    // Uses _all_builtins for same reason as above
                     seq(
                         optional(field('operator', token.immediate('!'))),
-                        $.builtin,
+                        alias($._all_builtins, $.builtin),
                         token.immediate(/\s+/),
                         repeat1(
                             choice(
@@ -385,14 +485,17 @@ module.exports = grammar({
             ),
 
         // Macro calls within braces (like conditional expansions)
+        // Example: %{?foo:%upper hello} - the %upper hello part
         _macro_expansion_call_nested: ($) =>
             seq(
                 '%',
                 choice(
                     // Builtin macros with arguments
+                    // Uses _all_builtins to recognize all builtin names (string, path, url, etc.)
+                    // even though they're handled separately in _macro_expansion_body for colon syntax
                     seq(
                         optional(field('operator', token.immediate('!'))),
-                        $.builtin,
+                        alias($._all_builtins, $.builtin),
                         token.immediate(/\s+/),
                         repeat1(
                             choice(
@@ -454,11 +557,39 @@ module.exports = grammar({
 
         _macro_expansion_body: ($) =>
             choice(
-                // %{<builtin>:<argument>}
-                seq($.builtin, ':', field('argument', $._literal)),
-                // %{<builtin> [options] [arguments]} - parametric expansion within braces
+                // Path builtins: %{basename:/path/to/file}
+                // Combined token ensures no whitespace between builtin and colon
+                seq(
+                    alias($._builtin_path_colon, $.builtin),
+                    field('argument', $.path_with_macro)
+                ),
+                // URL builtins: %{url2path:https://example.org/file}
+                // Combined token ensures no whitespace between builtin and colon
+                seq(
+                    alias($._builtin_url_colon, $.builtin),
+                    field('argument', $.url_with_macro)
+                ),
+                // String builtins: %{upper:hello}
+                // Combined token ensures no whitespace between builtin and colon
+                seq(
+                    alias($._builtin_string_colon, $.builtin),
+                    field('argument', $._literal)
+                ),
+                // Other builtins with colon syntax (expr, lua, etc.)
                 seq(
                     $.builtin,
+                    token.immediate(':'),
+                    field('argument', $._literal)
+                ),
+                // %{<builtin> [options] [arguments]} - parametric expansion within braces
+                // Handles path/string/url builtins with space syntax (not colon)
+                seq(
+                    choice(
+                        $.builtin,
+                        alias($._builtin_path, $.builtin),
+                        alias($._builtin_string, $.builtin),
+                        alias($._builtin_url, $.builtin)
+                    ),
                     repeat1(
                         choice(
                             field('option', $.macro_option),
@@ -467,7 +598,11 @@ module.exports = grammar({
                     )
                 ),
                 // %{<builtin>} - standalone builtin without arguments
+                // Handles path/string/url builtins standalone (no colon, no args)
                 $.builtin,
+                alias($._builtin_path, $.builtin),
+                alias($._builtin_string, $.builtin),
+                alias($._builtin_url, $.builtin),
                 // %{<name>}
                 seq(
                     optional(field('operator', token.immediate('!'))),

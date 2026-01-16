@@ -1,0 +1,63 @@
+# URL builtin macro tests
+#
+# These builtins take a URL argument and extract the path component:
+# - %{url2path:https://example.org/file.tar.gz}  -> /file.tar.gz
+# - %{u2p:ftp://ftp.example.org/pub/file}        -> /pub/file
+#
+# Builtins: url2path, u2p (alias)
+
+===============================================================================
+Macro Builtin URL (url2path https)
+===============================================================================
+
+%{url2path:https://example.org/file.tar.gz}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (url_with_macro)))
+
+===============================================================================
+Macro Builtin URL (url2path file protocol)
+===============================================================================
+
+%{url2path:file:///path/to/file}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (url_with_macro)))
+
+===============================================================================
+Macro Builtin URL (u2p alias)
+===============================================================================
+
+%{u2p:ftp://ftp.example.org/pub/file.tar.gz}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (url_with_macro)))
+
+===============================================================================
+Macro Builtin URL (url2path with macro)
+===============================================================================
+
+%{url2path:https://example.org/%{name}-%{version}.tar.gz}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (url_with_macro
+      (macro_expansion
+        (identifier))
+      (macro_expansion
+        (identifier)))))

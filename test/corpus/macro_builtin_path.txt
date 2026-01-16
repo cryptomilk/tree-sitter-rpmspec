@@ -1,0 +1,155 @@
+# Path builtin macro tests
+#
+# These builtins take a filesystem path argument:
+# - %{builtin:/path/to/file}  -> uses path_with_macro
+# - %{builtin /path/to/file}  -> uses generic argument (space syntax)
+#
+# Builtins: basename, dirname, exists, load, suffix, uncompress
+
+===============================================================================
+Macro Builtin Path (basename simple)
+===============================================================================
+
+%{basename}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)))
+
+===============================================================================
+Macro Builtin Path (basename with path)
+===============================================================================
+
+%{basename:/some/dir/file.suf}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (path_with_macro)))
+
+===============================================================================
+Macro Builtin Path (dirname with path)
+===============================================================================
+
+%{dirname:/some/dir/file.suf}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (path_with_macro)))
+
+===============================================================================
+Macro Builtin Path (exists file check)
+===============================================================================
+
+%{exists:%{builddir}/myflag.txt}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (path_with_macro
+      (macro_expansion
+        (identifier)))))
+
+===============================================================================
+Macro Builtin Path (suffix extraction)
+===============================================================================
+
+%{suffix:myfile.zip}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (path_with_macro)))
+
+===============================================================================
+Macro Builtin Path (uncompress command)
+===============================================================================
+
+%{uncompress:/my/source.tar.gz}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (path_with_macro)))
+
+===============================================================================
+Macro Builtin Path (parametric basename)
+===============================================================================
+
+%basename /some/dir/file.suf
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion_call
+    (builtin)
+    argument: (word)))
+
+===============================================================================
+Macro Builtin Path (parametric dirname multiple)
+===============================================================================
+
+%dirname /path/to/file.txt /another/path
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion_call
+    (builtin)
+    argument: (word)
+    argument: (word)))
+
+===============================================================================
+Macro Builtin Path (within braces with space)
+===============================================================================
+
+%{basename /some/dir/file.suf}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (word)))
+
+===============================================================================
+Macro Builtin Path (within braces with options)
+===============================================================================
+
+%{dirname -x /path/to/file}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    option: (macro_option)
+    argument: (word)))
+
+===============================================================================
+Macro Builtin Path (parametric with macro argument)
+===============================================================================
+
+%basename %{builddir}/file.txt
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion_call
+    (builtin)
+    argument: (macro_expansion
+      (identifier))
+    argument: (word)))
