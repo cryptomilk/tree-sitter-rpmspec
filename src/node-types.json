@@ -2079,7 +2079,31 @@
             "named": true
           },
           {
+            "type": "macro_arithmetic_operator",
+            "named": true
+          },
+          {
+            "type": "macro_boolean_operator",
+            "named": true
+          },
+          {
+            "type": "macro_comparison_operator",
+            "named": true
+          },
+          {
+            "type": "macro_not_operator",
+            "named": true
+          },
+          {
+            "type": "macro_parenthesized_expression",
+            "named": true
+          },
+          {
             "type": "path_with_macro",
+            "named": true
+          },
+          {
+            "type": "ternary_operator",
             "named": true
           },
           {

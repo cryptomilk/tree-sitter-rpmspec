@@ -149,3 +149,50 @@ Macro Expression (ternary with macro in condition)
           (quoted_string_content))
         (quoted_string
           (quoted_string_content))))))
+
+===============================================================================
+Macro Expression (expr builtin simple)
+===============================================================================
+
+%{expr:5+3}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (macro_arithmetic_operator
+      left: (integer)
+      right: (integer))))
+
+===============================================================================
+Macro Expression (expr builtin multiplication)
+===============================================================================
+
+%{expr:5*1024}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (macro_arithmetic_operator
+      left: (integer)
+      right: (integer))))
+
+===============================================================================
+Macro Expression (expr builtin precedence)
+===============================================================================
+
+%{expr:1+2*3}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (macro_arithmetic_operator
+      left: (integer)
+      right: (macro_arithmetic_operator
+        left: (integer)
+        right: (integer)))))

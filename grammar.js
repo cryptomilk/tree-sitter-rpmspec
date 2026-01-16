@@ -575,7 +575,13 @@ module.exports = grammar({
                     alias($._builtin_string_colon, $.builtin),
                     field('argument', $._literal)
                 ),
-                // Other builtins with colon syntax (expr, lua, etc.)
+                // Expression builtin: %{expr:5+3}
+                // Takes expression argument instead of literal
+                seq(
+                    alias(token('expr:'), $.builtin),
+                    field('argument', $._macro_expression_body)
+                ),
+                // Other builtins with colon syntax (lua, etc.)
                 seq(
                     $.builtin,
                     token.immediate(':'),
