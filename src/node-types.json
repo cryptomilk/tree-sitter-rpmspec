@@ -2150,6 +2150,14 @@
           "named": true
         },
         {
+          "type": "macro_patch",
+          "named": true
+        },
+        {
+          "type": "macro_source",
+          "named": true
+        },
+        {
           "type": "special_variable_name",
           "named": true
         },

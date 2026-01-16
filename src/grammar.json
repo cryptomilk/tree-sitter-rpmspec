@@ -1427,6 +1427,72 @@
           "type": "SEQ",
           "members": [
             {
+              "type": "ALIAS",
+              "content": {
+                "type": "TOKEN",
+                "content": {
+                  "type": "STRING",
+                  "value": "S:"
+                }
+              },
+              "named": true,
+              "value": "macro_source"
+            },
+            {
+              "type": "FIELD",
+              "name": "argument",
+              "content": {
+                "type": "ALIAS",
+                "content": {
+                  "type": "IMMEDIATE_TOKEN",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "[0-9]+"
+                  }
+                },
+                "named": true,
+                "value": "integer"
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "TOKEN",
+                "content": {
+                  "type": "STRING",
+                  "value": "P:"
+                }
+              },
+              "named": true,
+              "value": "macro_patch"
+            },
+            {
+              "type": "FIELD",
+              "name": "argument",
+              "content": {
+                "type": "ALIAS",
+                "content": {
+                  "type": "IMMEDIATE_TOKEN",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "[0-9]+"
+                  }
+                },
+                "named": true,
+                "value": "integer"
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
               "type": "SYMBOL",
               "name": "builtin"
             },

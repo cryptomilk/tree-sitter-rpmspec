@@ -581,6 +581,22 @@ module.exports = grammar({
                     alias(token('expr:'), $.builtin),
                     field('argument', $._macro_expression_body)
                 ),
+                // Source colon syntax: %{S:0} - equivalent to %{SOURCE0}
+                seq(
+                    alias(token('S:'), $.macro_source),
+                    field(
+                        'argument',
+                        alias(token.immediate(/[0-9]+/), $.integer)
+                    )
+                ),
+                // Patch colon syntax: %{P:0} - equivalent to %{PATCH0}
+                seq(
+                    alias(token('P:'), $.macro_patch),
+                    field(
+                        'argument',
+                        alias(token.immediate(/[0-9]+/), $.integer)
+                    )
+                ),
                 // Other builtins with colon syntax (lua, etc.)
                 seq(
                     $.builtin,

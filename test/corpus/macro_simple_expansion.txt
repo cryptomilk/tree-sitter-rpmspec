@@ -116,6 +116,68 @@ cp %SOURCE0 .
         argument: (word)))))
 
 ===============================================================================
+Simple Macro Expansion (Source colon syntax S:0)
+===============================================================================
+
+%build
+cp %{S:0} .
+
+-------------------------------------------------------------------------------
+
+(spec
+  (build_scriptlet
+    (section_name)
+    (shell_block
+      (string
+        (string_content))
+      (string
+        (macro_expansion
+          (macro_source)
+          argument: (integer)))
+      (string
+        (string_content)))))
+
+===============================================================================
+Simple Macro Expansion (Patch colon syntax P:1)
+===============================================================================
+
+%build
+%{P:1}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (build_scriptlet
+    (section_name)
+    (shell_block
+      (string
+        (macro_expansion
+          (macro_patch)
+          argument: (integer))))))
+
+===============================================================================
+Simple Macro Expansion (Source colon syntax with larger index)
+===============================================================================
+
+%build
+cp %{S:123} .
+
+-------------------------------------------------------------------------------
+
+(spec
+  (build_scriptlet
+    (section_name)
+    (shell_block
+      (string
+        (string_content))
+      (string
+        (macro_expansion
+          (macro_source)
+          argument: (integer)))
+      (string
+        (string_content)))))
+
+===============================================================================
 Simple Macro Expansion (Custom macro name in tag)
 ===============================================================================
 
