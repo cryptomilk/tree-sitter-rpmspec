@@ -479,6 +479,28 @@ BuildRequires:  linux-only-package
               (word))))))))
 
 ===============================================================================
+Conditionals (%ifos with simple macro expansion)
+===============================================================================
+
+%ifos %myos
+BuildRequires:  os-specific-package
+%endif
+
+-------------------------------------------------------------------------------
+
+(spec
+  (ifos_statement
+    condition: (os
+      (identifier))
+    consequence: (preamble
+      (tags
+        (dependency_tag)
+        value: (rich_dependency_list
+          (dependency
+            name: (dependency_name
+              (word))))))))
+
+===============================================================================
 Conditionals (%ifarch with macro expressions)
 ===============================================================================
 
@@ -493,6 +515,28 @@ BuildRequires:  arch-specific-package
     condition: (arch
       (macro_expansion
         (identifier))
+      (identifier))
+    consequence: (preamble
+      (tags
+        (dependency_tag)
+        value: (rich_dependency_list
+          (dependency
+            name: (dependency_name
+              (word))))))))
+
+===============================================================================
+Conditionals (%ifnarch with simple macro expansion)
+===============================================================================
+
+%ifnarch %ix86
+BuildRequires:  bpftool
+%endif
+
+-------------------------------------------------------------------------------
+
+(spec
+  (ifarch_statement
+    condition: (arch
       (identifier))
     consequence: (preamble
       (tags

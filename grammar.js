@@ -1147,7 +1147,16 @@ module.exports = grammar({
             ),
 
         // %ifarch
-        arch: ($) => repeat1(choice($.macro_expansion, $.identifier)),
+        // Architecture can be: identifier, %{macro}, or %macro (like %ix86)
+        // Note: using inline pattern for %name to avoid GLR conflicts with macro_simple_expansion
+        arch: ($) =>
+            repeat1(
+                choice(
+                    $.macro_expansion,
+                    seq('%', alias($.macro_name, $.identifier)),
+                    $.identifier
+                )
+            ),
 
         ifarch_statement: ($) =>
             seq(
@@ -1170,7 +1179,16 @@ module.exports = grammar({
             ),
 
         // %ifos
-        os: ($) => repeat1(choice($.macro_expansion, $.identifier)),
+        // OS can be: identifier, %{macro}, or %macro
+        // Note: using inline pattern for %name to avoid GLR conflicts with macro_simple_expansion
+        os: ($) =>
+            repeat1(
+                choice(
+                    $.macro_expansion,
+                    seq('%', alias($.macro_name, $.identifier)),
+                    $.identifier
+                )
+            ),
 
         ifos_statement: ($) =>
             seq(

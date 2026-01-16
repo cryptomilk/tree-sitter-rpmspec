@@ -3283,6 +3283,24 @@
             "name": "macro_expansion"
           },
           {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "%"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "macro_name"
+                },
+                "named": true,
+                "value": "identifier"
+              }
+            ]
+          },
+          {
             "type": "SYMBOL",
             "name": "identifier"
           }
@@ -3424,6 +3442,24 @@
           {
             "type": "SYMBOL",
             "name": "macro_expansion"
+          },
+          {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "%"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "macro_name"
+                },
+                "named": true,
+                "value": "identifier"
+              }
+            ]
           },
           {
             "type": "SYMBOL",
