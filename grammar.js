@@ -241,9 +241,8 @@ module.exports = grammar({
         url_with_macro: ($) =>
             prec.left(
                 seq(
-                    // Protocol prefix
-                    choice('http', 'https', 'ftp', 'file'),
-                    token.immediate('://'),
+                    // Protocol prefix as single token to avoid conflicts
+                    token(seq(choice('http', 'https', 'ftp', 'file'), '://')),
                     // URL body - can contain macros
                     repeat1(
                         choice(

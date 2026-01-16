@@ -301,31 +301,36 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "http"
-              },
-              {
-                "type": "STRING",
-                "value": "https"
-              },
-              {
-                "type": "STRING",
-                "value": "ftp"
-              },
-              {
-                "type": "STRING",
-                "value": "file"
-              }
-            ]
-          },
-          {
-            "type": "IMMEDIATE_TOKEN",
+            "type": "TOKEN",
             "content": {
-              "type": "STRING",
-              "value": "://"
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "http"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "https"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "ftp"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "file"
+                    }
+                  ]
+                },
+                {
+                  "type": "STRING",
+                  "value": "://"
+                }
+              ]
             }
           },
           {

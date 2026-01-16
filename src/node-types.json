@@ -3580,10 +3580,6 @@
     "named": false
   },
   {
-    "type": "://",
-    "named": false
-  },
-  {
     "type": "<",
     "named": false
   },
@@ -3909,20 +3905,12 @@
     "named": false
   },
   {
-    "type": "file",
-    "named": false
-  },
-  {
     "type": "filedigest",
     "named": false
   },
   {
     "type": "float",
     "named": true
-  },
-  {
-    "type": "ftp",
-    "named": false
   },
   {
     "type": "fuzz",
@@ -3946,14 +3934,6 @@
   },
   {
     "type": "gsub",
-    "named": false
-  },
-  {
-    "type": "http",
-    "named": false
-  },
-  {
-    "type": "https",
     "named": false
   },
   {
