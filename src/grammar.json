@@ -6945,6 +6945,22 @@
     {
       "type": "SYMBOL",
       "name": "shell_code"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_simple_macro"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_negated_macro"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "special_macro"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "escaped_percent"
     }
   ],
   "inline": [

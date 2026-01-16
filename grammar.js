@@ -98,6 +98,10 @@ module.exports = grammar({
     externals: ($) => [
         $.expand_code, // Raw text inside %{expand:...} with balanced braces
         $.shell_code, // Raw text inside %(...) with balanced parentheses
+        $._simple_macro, // Reserved for future: Simple macro %name
+        $._negated_macro, // Reserved for future: Negated macro %!name
+        $.special_macro, // Special macros: %*, %**, %#, %0-9
+        $.escaped_percent, // Escaped percent: %%
     ],
 
     // Inline rules are flattened in the parse tree to reduce nesting
@@ -287,6 +291,9 @@ module.exports = grammar({
         //
         // The simplest form of macro expansion, directly substituting %name with its value
         // Supports optional negation operator (!) and special variables
+        // Note: External scanner handles:
+        // - %*, %**, %#, %0-9 - special variables (special_macro)
+        // - %% - escaped percent (escaped_percent)
         macro_simple_expansion: ($) =>
             seq(
                 '%',
@@ -301,8 +308,8 @@ module.exports = grammar({
             ),
 
         // Special macro variables for RPM scriptlets and build context
-        // %* - all arguments, %** - all arguments quoted, %# - argument count
-        // %0, %1, %2... - positional arguments, %nil - empty value
+        // Used inside braced macros: %{*}, %{#}, %{0}, etc.
+        // Note: simple form %* is handled by external scanner (special_macro)
         _special_macro_name: ($) =>
             alias(
                 choice('*', '**', '#', /[0-9]+/, 'nil'),

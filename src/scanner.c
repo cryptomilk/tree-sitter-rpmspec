@@ -18,6 +18,8 @@
 #include "tree_sitter/array.h"
 #include "tree_sitter/parser.h"
 
+#include <string.h>
+
 /** @brief String type alias for character arrays */
 typedef Array(char) String;
 
@@ -30,9 +32,168 @@ typedef Array(char) String;
  * IMPORTANT: The order must match the externals array in grammar.js
  */
 enum TokenType {
-    EXPAND_CODE, /**< Raw text inside %{expand:...} with balanced braces */
-    SHELL_CODE,  /**< Raw text inside %(...) with balanced parentheses */
+    EXPAND_CODE,    /**< Raw text inside %{expand:...} with balanced braces */
+    SHELL_CODE,     /**< Raw text inside %(...) with balanced parentheses */
+    SIMPLE_MACRO,   /**< Simple macro expansion: %name */
+    NEGATED_MACRO,  /**< Negated macro expansion: %!name */
+    SPECIAL_MACRO,  /**< Special macro variables: %*, %**, %#, %0-9, %nil */
+    ESCAPED_PERCENT /**< Escaped percent sign: %% */
 };
+
+/**
+ * @brief Check if character is valid identifier start (letter or underscore)
+ */
+static inline bool is_identifier_start(int32_t c)
+{
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+}
+
+/**
+ * @brief Check if character is valid identifier continuation
+ */
+static inline bool is_identifier_char(int32_t c)
+{
+    return is_identifier_start(c) || (c >= '0' && c <= '9');
+}
+
+/**
+ * @brief Check if character is a digit
+ */
+static inline bool is_digit(int32_t c)
+{
+    return c >= '0' && c <= '9';
+}
+
+/**
+ * @brief RPM spec keywords that should not be matched as simple macros
+ *
+ * These are reserved words that have special meaning in RPM specs.
+ * The scanner must NOT match these as SIMPLE_MACRO tokens.
+ */
+static const char *const KEYWORDS[] = {
+    /* Conditionals */
+    "if",
+    "elif",
+    "else",
+    "endif",
+    "ifarch",
+    "ifnarch",
+    "elifarch",
+    "ifos",
+    "ifnos",
+    "elifos",
+    /* Definitions */
+    "define",
+    "global",
+    "undefine",
+    /* Sections */
+    "prep",
+    "build",
+    "install",
+    "check",
+    "files",
+    "changelog",
+    "description",
+    "package",
+    /* Scriptlets */
+    "pre",
+    "post",
+    "preun",
+    "postun",
+    "pretrans",
+    "posttrans",
+    "preuntrans",
+    "postuntrans",
+    /* Triggers */
+    "triggerin",
+    "triggerun",
+    "triggerpostun",
+    "triggerprein",
+    /* Special macros handled by grammar */
+    "setup",
+    "patch",
+    "autosetup",
+    "autopatch",
+    /* Build macros */
+    "configure",
+    "make_build",
+    "make_install",
+    "cmake",
+    "cmake_build",
+    "cmake_install",
+    "meson",
+    "meson_build",
+    "meson_install",
+    /* File directives */
+    "defattr",
+    "attr",
+    "config",
+    "doc",
+    "docdir",
+    "dir",
+    "license",
+    "verify",
+    "ghost",
+    "exclude",
+    /* Builtin string macros */
+    "echo",
+    "error",
+    "expand",
+    "getenv",
+    "getncpus",
+    "len",
+    "lower",
+    "macrobody",
+    "quote",
+    "reverse",
+    "shescape",
+    "shrink",
+    "upper",
+    "verbose",
+    "warn",
+    /* Builtin path macros */
+    "basename",
+    "dirname",
+    "exists",
+    "load",
+    "suffix",
+    "uncompress",
+    /* Builtin URL macros */
+    "url2path",
+    "u2p",
+    /* Builtin multi-arg macros */
+    "gsub",
+    "sub",
+    "rep",
+    /* Builtin standalone macros */
+    "dnl",
+    "dump",
+    "rpmversion",
+    "trace",
+    /* Other builtins */
+    "expr",
+    "lua",
+    /* End marker */
+    NULL,
+};
+
+/**
+ * @brief Check if a string matches an RPM keyword
+ *
+ * @param str The string to check
+ * @param len Length of the string
+ * @return true if str is a keyword, false otherwise
+ */
+static bool is_keyword(const char *str, size_t len)
+{
+    for (const char *const *kw = KEYWORDS; *kw != NULL; kw++) {
+        size_t kw_len = strlen(*kw);
+        if (len == kw_len && strncmp(str, *kw, len) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
 
 /**
  * @brief Represents a literal context for macro parsing
@@ -277,6 +438,153 @@ static bool scan_shell_content(TSLexer *lexer)
 }
 
 /**
+ * @brief Scans a simple macro expansion: %name or %!name
+ *
+ * This function handles simple macro expansions starting with %.
+ * It distinguishes between:
+ * - %% (escaped percent - returns ESCAPED_PERCENT)
+ * - %!name (negated macro - returns NEGATED_MACRO)
+ * - %name (simple macro - returns SIMPLE_MACRO)
+ * - %*, %**, %#, %0-9, %nil (special macros - returns SPECIAL_MACRO)
+ *
+ * Does NOT match:
+ * - %{ (braced macro - handled by grammar)
+ * - %( (shell macro - handled by grammar)
+ * - %[ (expression macro - handled by grammar)
+ *
+ * @param lexer The Tree-sitter lexer instance
+ * @param valid_symbols Array indicating which token types are valid
+ * @return true if a macro token was matched, false otherwise
+ */
+static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
+{
+    /* Must start with % */
+    if (lexer->lookahead != '%') {
+        return false;
+    }
+
+    /* Mark potential token start */
+    lexer->mark_end(lexer);
+    advance(lexer);
+
+    int32_t next = lexer->lookahead;
+
+    switch (next) {
+    case '%':
+        /* %% - escaped percent */
+        if (valid_symbols[ESCAPED_PERCENT]) {
+            advance(lexer);
+            lexer->mark_end(lexer);
+            lexer->result_symbol = ESCAPED_PERCENT;
+            return true;
+        }
+        return false;
+
+    case '{':
+    case '(':
+    case '[':
+        /* Other macro forms - let grammar handle */
+        return false;
+
+    case '!':
+        /* Could be %!name (negated) or %!? (conditional) */
+        if (!valid_symbols[NEGATED_MACRO]) {
+            return false;
+        }
+        advance(lexer);
+        /* Check for %!? which is conditional, not negated macro */
+        if (lexer->lookahead == '?') {
+            return false;
+        }
+        /* Must be followed by identifier */
+        if (!is_identifier_start(lexer->lookahead)) {
+            return false;
+        }
+        /* Consume identifier */
+        while (is_identifier_char(lexer->lookahead)) {
+            advance(lexer);
+        }
+        lexer->mark_end(lexer);
+        lexer->result_symbol = NEGATED_MACRO;
+        return true;
+
+    case '*':
+        /* %* or %** */
+        if (!valid_symbols[SPECIAL_MACRO]) {
+            return false;
+        }
+        advance(lexer);
+        if (lexer->lookahead == '*') {
+            advance(lexer); /* %** */
+        }
+        lexer->mark_end(lexer);
+        lexer->result_symbol = SPECIAL_MACRO;
+        return true;
+
+    case '#':
+        /* %# - argument count */
+        if (!valid_symbols[SPECIAL_MACRO]) {
+            return false;
+        }
+        advance(lexer);
+        lexer->mark_end(lexer);
+        lexer->result_symbol = SPECIAL_MACRO;
+        return true;
+
+    default:
+        /* Check for %0-9 (positional args) */
+        if (is_digit(next)) {
+            if (!valid_symbols[SPECIAL_MACRO]) {
+                return false;
+            }
+            /* Consume all digits */
+            while (is_digit(lexer->lookahead)) {
+                advance(lexer);
+            }
+            lexer->mark_end(lexer);
+            lexer->result_symbol = SPECIAL_MACRO;
+            return true;
+        }
+
+        /* Check for %name (simple macro) */
+        if (is_identifier_start(next)) {
+            if (!valid_symbols[SIMPLE_MACRO]) {
+                return false;
+            }
+
+            /* Buffer the identifier to check for keywords */
+            char id_buf[64];
+            size_t id_len = 0;
+
+            /* Consume identifier while buffering */
+            while (is_identifier_char(lexer->lookahead) &&
+                   id_len < sizeof(id_buf) - 1) {
+                id_buf[id_len++] = (char)lexer->lookahead;
+                advance(lexer);
+            }
+            /* Consume any remaining chars if buffer was too small */
+            while (is_identifier_char(lexer->lookahead)) {
+                advance(lexer);
+                id_len++;
+            }
+            id_buf[id_len < sizeof(id_buf) ? id_len : sizeof(id_buf) - 1] = '\0';
+
+            /* Check if it's a keyword - if so, don't match */
+            if (is_keyword(id_buf, id_len)) {
+                return false;
+            }
+
+            lexer->mark_end(lexer);
+            lexer->result_symbol = SIMPLE_MACRO;
+            return true;
+        }
+
+        /* Not a recognized macro pattern */
+        return false;
+    }
+}
+
+/**
  * @brief Main scanning function for RPM spec tokens
  *
  * This is the primary entry point for token recognition. It attempts to
@@ -294,14 +602,26 @@ rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
 {
     (void)scanner; /* Unused for now */
 
+    /* EXPAND_CODE and SHELL_CODE are contextual - only valid inside
+     * %{expand:...} and %(...) respectively. Check these first. */
     if (valid_symbols[EXPAND_CODE]) {
-        lexer->result_symbol = EXPAND_CODE;
-        return scan_expand_content(lexer);
+        if (scan_expand_content(lexer)) {
+            lexer->result_symbol = EXPAND_CODE;
+            return true;
+        }
     }
 
     if (valid_symbols[SHELL_CODE]) {
-        lexer->result_symbol = SHELL_CODE;
-        return scan_shell_content(lexer);
+        if (scan_shell_content(lexer)) {
+            lexer->result_symbol = SHELL_CODE;
+            return true;
+        }
+    }
+
+    /* Try to scan macro tokens */
+    if (valid_symbols[SIMPLE_MACRO] || valid_symbols[NEGATED_MACRO] ||
+        valid_symbols[SPECIAL_MACRO] || valid_symbols[ESCAPED_PERCENT]) {
+        return scan_macro(lexer, valid_symbols);
     }
 
     return false;
