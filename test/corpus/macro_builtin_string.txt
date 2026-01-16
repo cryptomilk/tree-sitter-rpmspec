@@ -128,10 +128,10 @@ Macro Builtin String (expand macro expansion)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
+    argument: (expand_content
       (macro_expansion
         (identifier))
-      (word)
+      (expand_code)
       (macro_expansion
         (identifier)))))
 

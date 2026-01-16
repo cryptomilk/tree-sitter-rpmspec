@@ -93,6 +93,12 @@ module.exports = grammar({
         $._primary_expression, // Basic expression components
     ],
 
+    // External scanner tokens (implemented in src/scanner.c)
+    // Order must match enum TokenType in scanner.c
+    externals: ($) => [
+        $.expand_code, // Raw text inside %{expand:...} with balanced braces
+    ],
+
     // Inline rules are flattened in the parse tree to reduce nesting
     // This improves the tree structure for syntax highlighting and analysis
     inline: ($) => [
@@ -328,12 +334,12 @@ module.exports = grammar({
             ),
 
         // String builtin with colon - combined token for colon syntax
+        // Note: 'expand:' is handled separately with external scanner for balanced braces
         _builtin_string_colon: (_) =>
             token(
                 choice(
                     'echo:',
                     'error:',
-                    'expand:',
                     'getenv:',
                     'getncpus:',
                     'len:',
@@ -574,6 +580,13 @@ module.exports = grammar({
                 seq(
                     alias($._builtin_string_colon, $.builtin),
                     field('argument', $._literal)
+                ),
+                // Expand builtin: %{expand:...}
+                // Uses external scanner to handle balanced braces in content
+                // expand_content is a container with macros and raw text
+                seq(
+                    alias(token('expand:'), $.builtin),
+                    field('argument', $.expand_content)
                 ),
                 // Expression builtin: %{expr:5+3}
                 // Takes expression argument instead of literal
@@ -936,6 +949,19 @@ module.exports = grammar({
                     )
                 ),
                 ')'
+            ),
+
+        // Expand content: text inside %{expand:...} with balanced braces
+        // Uses external scanner (expand_code) for raw text with brace tracking
+        // Only %{...} macros are parsed (not %name) to limit parser states
+        // NOTE: macro_simple_expansion (%name) was removed because it caused
+        // parser state overflow (>65535 states, uint16_t limit)
+        expand_content: ($) =>
+            repeat1(
+                choice(
+                    $.macro_expansion, // %{name}
+                    $.expand_code // Raw text with balanced braces (external scanner)
+                )
             ),
 
         ///////////////////////////////////////////////////////////////////////

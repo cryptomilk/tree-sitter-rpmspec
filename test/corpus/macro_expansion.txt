@@ -225,10 +225,12 @@ Macros (Nested macro arguments)
 (spec
   (macro_expansion
     (builtin)
-    (macro_expansion
-      (identifier)
+    argument: (expand_content
+      (expand_code)
       (macro_expansion
-        (identifier)))))
+        (identifier)
+        argument: (macro_expansion
+          (identifier))))))
 
 ===============================================================================
 Macros (Function-style Built-in with Colon)

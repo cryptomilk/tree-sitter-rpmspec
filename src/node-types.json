@@ -1328,6 +1328,25 @@
     }
   },
   {
+    "type": "expand_content",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expand_code",
+          "named": true
+        },
+        {
+          "type": "macro_expansion",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "file",
     "named": true,
     "fields": {},
@@ -2076,6 +2095,10 @@
           },
           {
             "type": "concatenation",
+            "named": true
+          },
+          {
+            "type": "expand_content",
             "named": true
           },
           {
@@ -3899,6 +3922,10 @@
   {
     "type": "expand",
     "named": false
+  },
+  {
+    "type": "expand_code",
+    "named": true
   },
   {
     "type": "expr",
