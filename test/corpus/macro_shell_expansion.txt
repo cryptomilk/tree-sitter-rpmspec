@@ -64,9 +64,6 @@ Macro Shell Expansion (Command with Nested Parentheses)
 (spec
   (macro_shell_expansion
     (shell_command
-      (shell_code)
-      (shell_code
-        (shell_code))
       (shell_code))))
 
 ===============================================================================

@@ -31,6 +31,7 @@ typedef Array(char) String;
  */
 enum TokenType {
     EXPAND_CODE, /**< Raw text inside %{expand:...} with balanced braces */
+    SHELL_CODE,  /**< Raw text inside %(...) with balanced parentheses */
 };
 
 /**
@@ -224,6 +225,58 @@ static bool scan_expand_content(TSLexer *lexer)
 }
 
 /**
+ * @brief Scans raw content inside %(...) with balanced parentheses
+ *
+ * This function reads characters until it finds:
+ * - The closing ) at depth 0 (end of shell macro)
+ * - A % character (potential macro start - let grammar handle it)
+ *
+ * It tracks parenthesis nesting depth to handle content like:
+ *   %(test $(echo hello) = hello && echo success)
+ *
+ * By stopping at %, macros inside shell content will be parsed
+ * by the grammar and properly highlighted.
+ *
+ * @param lexer The Tree-sitter lexer instance
+ * @return true if content was successfully scanned, false otherwise
+ */
+static bool scan_shell_content(TSLexer *lexer)
+{
+    int32_t paren_depth = 0;
+    bool has_content = false;
+
+    while (!lexer->eof(lexer)) {
+        int32_t c = lexer->lookahead;
+
+        if (c == '%') {
+            /* Potential macro start - stop and let grammar handle it */
+            break;
+        } else if (c == '(') {
+            /* Nested opening paren - track depth */
+            paren_depth++;
+            has_content = true;
+            advance(lexer);
+        } else if (c == ')') {
+            if (paren_depth == 0) {
+                /* This is the closing paren of %(...) */
+                /* Don't consume it - let the grammar handle it */
+                break;
+            }
+            /* Closing a nested paren */
+            paren_depth--;
+            has_content = true;
+            advance(lexer);
+        } else {
+            /* Any other character is part of the content */
+            has_content = true;
+            advance(lexer);
+        }
+    }
+
+    return has_content;
+}
+
+/**
  * @brief Main scanning function for RPM spec tokens
  *
  * This is the primary entry point for token recognition. It attempts to
@@ -244,6 +297,11 @@ rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
     if (valid_symbols[EXPAND_CODE]) {
         lexer->result_symbol = EXPAND_CODE;
         return scan_expand_content(lexer);
+    }
+
+    if (valid_symbols[SHELL_CODE]) {
+        lexer->result_symbol = SHELL_CODE;
+        return scan_shell_content(lexer);
     }
 
     return false;

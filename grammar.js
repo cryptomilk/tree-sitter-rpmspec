@@ -97,6 +97,7 @@ module.exports = grammar({
     // Order must match enum TokenType in scanner.c
     externals: ($) => [
         $.expand_code, // Raw text inside %{expand:...} with balanced braces
+        $.shell_code, // Raw text inside %(...) with balanced parentheses
     ],
 
     // Inline rules are flattened in the parse tree to reduce nesting
@@ -923,32 +924,16 @@ module.exports = grammar({
             ),
 
         // Shell command: complete shell command content
+        // Uses external scanner (shell_code) for raw text with parenthesis tracking
+        // The scanner handles balanced parentheses and stops at % for macro parsing
+        // shell_code is an external scanner token - see src/scanner.c
         shell_command: ($) =>
             repeat1(
                 choice(
                     $.macro_simple_expansion, // %name
                     $.macro_expansion, // %{name}
-                    $.shell_code, // Raw shell text including spaces, pipes, quotes
-                    alias($.shell_command_parentheses, $.shell_code) // Balanced parentheses
+                    $.shell_code // Raw shell text with balanced parens (external scanner)
                 )
-            ),
-
-        // Raw shell command text - matches everything except % and unbalanced )
-        shell_code: (_) => token(prec(-1, /[^%()]+/)),
-
-        // Balanced parentheses within shell commands
-        shell_command_parentheses: ($) =>
-            seq(
-                '(',
-                repeat(
-                    choice(
-                        $.macro_simple_expansion,
-                        $.macro_expansion,
-                        $.shell_code,
-                        alias($.shell_command_parentheses, $.shell_code)
-                    )
-                ),
-                ')'
             ),
 
         // Expand content: text inside %{expand:...} with balanced braces

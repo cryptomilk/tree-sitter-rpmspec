@@ -2948,29 +2948,6 @@
     }
   },
   {
-    "type": "shell_code",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "macro_expansion",
-          "named": true
-        },
-        {
-          "type": "macro_simple_expansion",
-          "named": true
-        },
-        {
-          "type": "shell_code",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "shell_command",
     "named": true,
     "fields": {},
@@ -4122,6 +4099,10 @@
   },
   {
     "type": "section_name",
+    "named": true
+  },
+  {
+    "type": "shell_code",
     "named": true
   },
   {
