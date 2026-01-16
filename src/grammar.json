@@ -1610,27 +1610,12 @@
           "value": "builtin"
         },
         {
+          "type": "SYMBOL",
+          "name": "conditional_expansion"
+        },
+        {
           "type": "SEQ",
           "members": [
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "FIELD",
-                  "name": "operator",
-                  "content": {
-                    "type": "IMMEDIATE_TOKEN",
-                    "content": {
-                      "type": "STRING",
-                      "value": "!"
-                    }
-                  }
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            },
             {
               "type": "CHOICE",
               "members": [
@@ -1704,10 +1689,6 @@
               }
             }
           ]
-        },
-        {
-          "type": "SYMBOL",
-          "name": "conditional_expansion"
         }
       ]
     },
@@ -1724,21 +1705,26 @@
                 "type": "FIELD",
                 "name": "operator",
                 "content": {
-                  "type": "IMMEDIATE_TOKEN",
+                  "type": "ALIAS",
                   "content": {
-                    "type": "STRING",
-                    "value": "!"
-                  }
+                    "type": "IMMEDIATE_TOKEN",
+                    "content": {
+                      "type": "STRING",
+                      "value": "!?"
+                    }
+                  },
+                  "named": true,
+                  "value": "negation_operator"
                 }
               },
               {
-                "type": "BLANK"
+                "type": "IMMEDIATE_TOKEN",
+                "content": {
+                  "type": "STRING",
+                  "value": "?"
+                }
               }
             ]
-          },
-          {
-            "type": "STRING",
-            "value": "?"
           },
           {
             "type": "FIELD",
@@ -1800,8 +1786,13 @@
                           "name": "macro_expansion"
                         },
                         {
-                          "type": "SYMBOL",
-                          "name": "text"
+                          "type": "ALIAS",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "macro_body_text"
+                          },
+                          "named": true,
+                          "value": "text"
                         }
                       ]
                     }
@@ -6715,6 +6706,67 @@
         "content": {
           "type": "PATTERN",
           "value": "([^\"%\\\\\\r\\n]|\\\\(.|\\r?\\n))+"
+        }
+      }
+    },
+    "macro_body_text": {
+      "type": "PREC",
+      "value": -1,
+      "content": {
+        "type": "REPEAT1",
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "%"
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_macro_body_text_content"
+                  },
+                  "named": true,
+                  "value": "text_content"
+                }
+              ]
+            },
+            {
+              "type": "SYMBOL",
+              "name": "macro_simple_expansion"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "macro_expansion"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "macro_shell_expansion"
+            }
+          ]
+        }
+      }
+    },
+    "_macro_body_text_content": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -1,
+        "content": {
+          "type": "PATTERN",
+          "value": "([^\"%\\\\}\\r\\n]|\\\\(.|\\r?\\n))+"
         }
       }
     },

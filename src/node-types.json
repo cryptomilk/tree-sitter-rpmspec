@@ -946,8 +946,8 @@
         "required": false,
         "types": [
           {
-            "type": "!",
-            "named": false
+            "type": "negation_operator",
+            "named": true
           }
         ]
       }
@@ -2112,16 +2112,6 @@
           }
         ]
       },
-      "operator": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "!",
-            "named": false
-          }
-        ]
-      },
       "option": {
         "multiple": true,
         "required": false,
@@ -3247,6 +3237,10 @@
           "named": true
         },
         {
+          "type": "macro_shell_expansion",
+          "named": true
+        },
+        {
           "type": "macro_simple_expansion",
           "named": true
         },
@@ -4026,6 +4020,10 @@
   {
     "type": "n",
     "named": false
+  },
+  {
+    "type": "negation_operator",
+    "named": true
   },
   {
     "type": "not",

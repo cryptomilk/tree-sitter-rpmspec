@@ -134,6 +134,7 @@ Macros (Conditional macro defintion #1)
 (spec
   (macro_expansion
     (conditional_expansion
+      (negation_operator)
       (identifier)
       (macro_definition
         (builtin)
@@ -154,6 +155,7 @@ Macros (Conditional macro definition #2)
 (spec
   (macro_expansion
     (conditional_expansion
+      (negation_operator)
       (identifier)
       (macro_definition
         (builtin)
@@ -423,3 +425,94 @@ Macros (%global with pipe and semicolon)
     value: (word)
     value: (word)
     value: (word)))
+
+===============================================================================
+Macros (Conditional expansion with text consequence)
+===============================================================================
+
+%{?version_override:1.2.3}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (conditional_expansion
+      condition: (identifier)
+      consequence: (text
+        (text_content)))))
+
+===============================================================================
+Macros (Negated conditional expansion with text consequence)
+===============================================================================
+
+%{!?version_override:258.3}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (conditional_expansion
+      operator: (negation_operator)
+      condition: (identifier)
+      consequence: (text
+        (text_content)))))
+
+===============================================================================
+Macros (Conditional expansion with shell command consequence)
+===============================================================================
+
+%{!?version_override:%(cat meson.version)}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (conditional_expansion
+      operator: (negation_operator)
+      condition: (identifier)
+      consequence: (text
+        (macro_shell_expansion
+          (shell_command
+            (shell_code)))))))
+
+===============================================================================
+Macros (Conditional expansion concatenated with default)
+===============================================================================
+
+%{?version_override}%{!?version_override:258.3}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (conditional_expansion
+      condition: (identifier)))
+  (macro_expansion
+    (conditional_expansion
+      operator: (negation_operator)
+      condition: (identifier)
+      consequence: (text
+        (text_content)))))
+
+===============================================================================
+Macros (Conditional expansion in Version tag)
+===============================================================================
+
+Version: %{?version_override}%{!?version_override:258.3}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (concatenation
+        (macro_expansion
+          (conditional_expansion
+            condition: (identifier)))
+        (macro_expansion
+          (conditional_expansion
+            operator: (negation_operator)
+            condition: (identifier)
+            consequence: (text
+              (text_content))))))))

@@ -625,9 +625,10 @@ module.exports = grammar({
                 alias($._builtin_path, $.builtin),
                 alias($._builtin_string, $.builtin),
                 alias($._builtin_url, $.builtin),
-                // %{<name>}
+                // %{?<name>:<consequence>} - must come before %{<name>} to handle !? correctly
+                $.conditional_expansion,
+                // %{<name>} or %{<name>:arg}
                 seq(
-                    optional(field('operator', token.immediate('!'))),
                     choice(
                         alias($.macro_name, $.identifier),
                         $._special_macro_name
@@ -638,9 +639,7 @@ module.exports = grammar({
                 seq(
                     alias($.macro_name, $.identifier),
                     repeat1(field('argument', $._literal))
-                ),
-                // %{?<name>:<consequence>}
-                $.conditional_expansion
+                )
             ),
 
         //// Conditional Macro Expansion
@@ -654,8 +653,13 @@ module.exports = grammar({
             prec.left(
                 1,
                 seq(
-                    optional(field('operator', token.immediate('!'))),
-                    '?',
+                    choice(
+                        field(
+                            'operator',
+                            alias(token.immediate('!?'), $.negation_operator)
+                        ),
+                        token.immediate('?')
+                    ),
                     field('condition', alias($.macro_name, $.identifier)),
                     optional(
                         seq(
@@ -674,7 +678,7 @@ module.exports = grammar({
                                         $.macro_expansion_call
                                     ),
                                     $.macro_expansion,
-                                    $.text
+                                    alias($.macro_body_text, $.text)
                                 )
                             )
                         )
@@ -2283,6 +2287,31 @@ module.exports = grammar({
         // Supports backslash escaping and line continuations
         // Excludes % " \ characters that have special meaning
         text_content: (_) => token(prec(-1, /([^"%\\\r\n]|\\(.|\r?\n))+/)),
+
+        // Macro body text: text inside macro expansion that excludes }
+        // Used for conditional expansion consequences like %{?name:value}
+        // Must stop at } to not consume the closing brace of macro_expansion
+        macro_body_text: ($) =>
+            prec(
+                -1,
+                repeat1(
+                    choice(
+                        seq(
+                            optional('%'),
+                            alias($._macro_body_text_content, $.text_content)
+                        ),
+                        $.macro_simple_expansion,
+                        $.macro_expansion,
+                        $.macro_shell_expansion
+                    )
+                )
+            ),
+
+        // Text content for inside macro expansions - excludes } and newlines
+        // Pattern: anything except % " \ } \r \n, or escaped characters
+        // Aliased to text_content for consistent syntax highlighting
+        _macro_body_text_content: (_) =>
+            token(prec(-1, /([^"%\\}\r\n]|\\(.|\r?\n))+/)),
 
         // String values: sequences of text and macro expansions
         // Automatically concatenates adjacent elements
