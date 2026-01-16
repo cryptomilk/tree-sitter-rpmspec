@@ -2195,16 +2195,12 @@ module.exports = grammar({
         patch_long_option: ($) =>
             prec(
                 1,
-                seq(
-                    '--',
-                    choice(
-                        seq('fuzz', '=', field('value', $.integer)), // --fuzz=N
-                        seq(
-                            'backup',
-                            '=',
-                            field('value', $._primary_expression)
-                        ) // --backup=SUF
-                    )
+                choice(
+                    seq(token('--fuzz='), field('value', $.integer)), // --fuzz=N
+                    seq(
+                        token('--backup='),
+                        field('value', $._primary_expression)
+                    ) // --backup=SUF
                 )
             ),
 

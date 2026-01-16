@@ -3564,6 +3564,14 @@
     "named": false
   },
   {
+    "type": "--backup=",
+    "named": false
+  },
+  {
+    "type": "--fuzz=",
+    "named": false
+  },
+  {
     "type": "-f",
     "named": false
   },
@@ -3840,10 +3848,6 @@
     "named": false
   },
   {
-    "type": "backup",
-    "named": false
-  },
-  {
     "type": "basename",
     "named": false
   },
@@ -3911,10 +3915,6 @@
   {
     "type": "float",
     "named": true
-  },
-  {
-    "type": "fuzz",
-    "named": false
   },
   {
     "type": "getenv",
