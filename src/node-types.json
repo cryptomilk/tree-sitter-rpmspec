@@ -2386,18 +2386,7 @@
   {
     "type": "macro_simple_expansion",
     "named": true,
-    "fields": {
-      "operator": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "!",
-            "named": false
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": false,
       "required": true,
@@ -2407,11 +2396,15 @@
           "named": true
         },
         {
-          "type": "identifier",
+          "type": "negated_macro",
           "named": true
         },
         {
-          "type": "special_variable_name",
+          "type": "simple_macro",
+          "named": true
+        },
+        {
+          "type": "special_macro",
           "named": true
         }
       ]
@@ -3936,6 +3929,10 @@
     "named": false
   },
   {
+    "type": "negated_macro",
+    "named": true
+  },
+  {
     "type": "negation_operator",
     "named": true
   },
@@ -4024,8 +4021,16 @@
     "named": false
   },
   {
+    "type": "simple_macro",
+    "named": true
+  },
+  {
     "type": "size",
     "named": false
+  },
+  {
+    "type": "special_macro",
+    "named": true
   },
   {
     "type": "special_variable_name",

@@ -357,55 +357,30 @@
       "value": "[a-zA-Z_][a-zA-Z0-9_]*"
     },
     "macro_simple_expansion": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "STRING",
-          "value": "%"
+          "type": "SYMBOL",
+          "name": "simple_macro"
         },
         {
-          "type": "CHOICE",
+          "type": "SYMBOL",
+          "name": "negated_macro"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "special_macro"
+        },
+        {
+          "type": "SEQ",
           "members": [
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "FIELD",
-                      "name": "operator",
-                      "content": {
-                        "type": "IMMEDIATE_TOKEN",
-                        "content": {
-                          "type": "STRING",
-                          "value": "!"
-                        }
-                      }
-                    },
-                    {
-                      "type": "BLANK"
-                    }
-                  ]
-                },
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "macro_name"
-                  },
-                  "named": true,
-                  "value": "identifier"
-                }
-              ]
+              "type": "STRING",
+              "value": "%"
             },
             {
               "type": "SYMBOL",
               "name": "conditional_expansion"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "_special_macro_name"
             }
           ]
         }
@@ -6542,11 +6517,11 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_simple_macro"
+      "name": "simple_macro"
     },
     {
       "type": "SYMBOL",
-      "name": "_negated_macro"
+      "name": "negated_macro"
     },
     {
       "type": "SYMBOL",

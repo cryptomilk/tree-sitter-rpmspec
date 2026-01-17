@@ -18,6 +18,7 @@
 #include "tree_sitter/array.h"
 #include "tree_sitter/parser.h"
 
+#include <ctype.h>
 #include <string.h>
 
 /** @brief String type alias for character arrays */
@@ -65,6 +66,50 @@ static inline bool is_digit(int32_t c)
 }
 
 /**
+ * @brief Skip leading whitespace characters
+ *
+ * Advances the lexer past any whitespace characters without including
+ * them in the token. This allows the scanner to find tokens that appear
+ * after leading newlines or spaces.
+ */
+static inline void skip_whitespace(TSLexer *lexer)
+{
+    while (isspace(lexer->lookahead)) {
+        lexer->advance(lexer, true); /* true = skip (don't include in token) */
+    }
+}
+
+/**
+ * @brief Check if identifier is "nil" (special macro)
+ */
+static inline bool is_nil(const char *id, size_t len)
+{
+    return len == 3 && strncmp(id, "nil", 3) == 0;
+}
+
+/**
+ * @brief Check if identifier is legacy patch macro (patchN where N is digits)
+ *
+ * These are handled by the grammar's patch_legacy_token rule.
+ */
+static inline bool is_patch_legacy(const char *id, size_t len)
+{
+    if (len < 6) { /* "patch" + at least one digit */
+        return false;
+    }
+    if (strncmp(id, "patch", 5) != 0) {
+        return false;
+    }
+    /* Check remaining chars are all digits */
+    for (size_t i = 5; i < len; i++) {
+        if (id[i] < '0' || id[i] > '9') {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
  * @brief RPM spec keywords that should not be matched as simple macros
  *
  * These are reserved words that have special meaning in RPM specs.
@@ -109,21 +154,18 @@ static const char *const KEYWORDS[] = {
     "triggerun",
     "triggerpostun",
     "triggerprein",
+    /* File triggers */
+    "filetriggerin",
+    "filetriggerun",
+    "filetriggerpostun",
+    "transfiletriggerin",
+    "transfiletriggerun",
+    "transfiletriggerpostun",
     /* Special macros handled by grammar */
     "setup",
     "patch",
     "autosetup",
     "autopatch",
-    /* Build macros */
-    "configure",
-    "make_build",
-    "make_install",
-    "cmake",
-    "cmake_build",
-    "cmake_install",
-    "meson",
-    "meson_build",
-    "meson_install",
     /* File directives */
     "defattr",
     "attr",
@@ -458,6 +500,9 @@ static bool scan_shell_content(TSLexer *lexer)
  */
 static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
 {
+    /* Skip leading whitespace so we can match macros after newlines */
+    skip_whitespace(lexer);
+
     /* Must start with % */
     if (lexer->lookahead != '%') {
         return false;
@@ -571,6 +616,21 @@ static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
 
             /* Check if it's a keyword - if so, don't match */
             if (is_keyword(id_buf, id_len)) {
+                return false;
+            }
+
+            /* Check if it's legacy patch syntax (patchN) - let grammar handle */
+            if (is_patch_legacy(id_buf, id_len)) {
+                return false;
+            }
+
+            /* Check if it's "nil" - special macro, not simple macro */
+            if (is_nil(id_buf, id_len)) {
+                if (valid_symbols[SPECIAL_MACRO]) {
+                    lexer->mark_end(lexer);
+                    lexer->result_symbol = SPECIAL_MACRO;
+                    return true;
+                }
                 return false;
             }
 

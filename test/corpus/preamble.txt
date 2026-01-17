@@ -25,7 +25,7 @@ Name:           %complex_name
     (tags
       (tag)
       (macro_simple_expansion
-        (identifier)))))
+        (simple_macro)))))
 
 ===============================================================================
 Preamble (Version tag with complex version string)
@@ -64,7 +64,7 @@ Release:        %autorelease
     (tags
       (tag)
       (macro_simple_expansion
-        (identifier)))))
+        (simple_macro)))))
 
 ===============================================================================
 Preamble (Release tag with conditional macro expansion)
@@ -246,28 +246,3 @@ Patch0:         fix-xyz.patch
     (tags
       (tag)
       (word))))
-
-===============================================================================
-TODO Preamble (Virtual capabilities with complex naming)
-:skip
-===============================================================================
-
-Name:           tree-sitter-rpmspec
-Provides:       virtual(capability-name) = 1.0
-Requires:       capability(feature.subfeature)
-
--------------------------------------------------------------------------------
-
-===============================================================================
-TODO Preamble (Complex macro dependencies with epochs)
-:skip
-===============================================================================
-
-Name:           tree-sitter-rpmspec
-Epoch:          1
-Version:        2.0.0
-Requires:       package = %{epoch}:%{version}-%{release}
-BuildRequires:  tool >= %epoch:%version
-
--------------------------------------------------------------------------------
-

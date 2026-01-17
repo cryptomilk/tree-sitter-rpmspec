@@ -1,6 +1,11 @@
 ; Highlight macro options in parametric expansions
 (macro_option) @variable.parameter
 
+; Simple macro expansion tokens from external scanner
+(simple_macro) @function.macro
+(negated_macro) @function.macro
+(special_macro) @constant
+
 ; Macro expansion rules
 (macro_expansion
   (builtin) @variable.builtin
@@ -24,8 +29,6 @@
   (identifier) @keyword.macro)
 
 ; General punctuation for macros
-(macro_simple_expansion
-  "%" @punctuation.special) @none
 (macro_expansion
   "%{" @punctuation.special
   "}" @punctuation.special) @none

@@ -94,8 +94,8 @@ module.exports = grammar({
     externals: ($) => [
         $.expand_code, // Raw text inside %{expand:...} with balanced braces
         $.shell_code, // Raw text inside %(...) with balanced parentheses
-        $._simple_macro, // Reserved for future: Simple macro %name
-        $._negated_macro, // Reserved for future: Negated macro %!name
+        $.simple_macro, // Simple macro %name (from external scanner)
+        $.negated_macro, // Negated macro %!name (from external scanner)
         $.special_macro, // Special macros: %*, %**, %#, %0-9
         $.escaped_percent, // Escaped percent: %%
     ],
@@ -289,17 +289,17 @@ module.exports = grammar({
         // Note: External scanner handles:
         // - %*, %**, %#, %0-9 - special variables (special_macro)
         // - %% - escaped percent (escaped_percent)
+        // Simple macro expansion using external scanner tokens
+        // - %name: simple_macro from scanner
+        // - %!name: negated_macro from scanner
+        // - %*, %#, %0-9, %nil: special_macro from scanner
+        // - %?name: conditional_expansion still handled by grammar
         macro_simple_expansion: ($) =>
-            seq(
-                '%',
-                choice(
-                    seq(
-                        optional(field('operator', token.immediate('!'))),
-                        alias($.macro_name, $.identifier)
-                    ),
-                    $.conditional_expansion,
-                    $._special_macro_name
-                )
+            choice(
+                $.simple_macro, // %name from scanner
+                $.negated_macro, // %!name from scanner
+                $.special_macro, // %*, %#, etc.
+                seq('%', $.conditional_expansion) // %?name, %!?name
             ),
 
         // Special macro variables for RPM scriptlets and build context

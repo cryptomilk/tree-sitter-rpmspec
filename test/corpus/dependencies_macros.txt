@@ -158,7 +158,7 @@ Requires: %name = 1.0
         (dependency
           name: (dependency_name
             (macro_simple_expansion
-              (identifier)))
+              (simple_macro)))
           version: (dependency_version_constraint
             operator: (dependency_comparison_operator)
             version: (version)))))))

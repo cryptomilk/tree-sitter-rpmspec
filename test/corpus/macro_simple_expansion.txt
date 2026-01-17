@@ -73,7 +73,7 @@ Name: %pkg_name
     (tags
       (tag)
       (macro_simple_expansion
-        (identifier)))))
+        (simple_macro)))))
 
 ===============================================================================
 Simple Macro Expansion (Concatenation)
@@ -89,10 +89,10 @@ Source: %name-%version.tar.gz
       (tag)
       (concatenation
         (macro_simple_expansion
-          (identifier))
+          (simple_macro))
         (word)
         (macro_simple_expansion
-          (identifier))
+          (simple_macro))
         (word)))))
 
 ===============================================================================
@@ -105,7 +105,7 @@ Simple Macro Expansion (Special variable all arguments)
 
 (spec
   (macro_simple_expansion
-    (special_variable_name)))
+    (special_macro)))
 
 ===============================================================================
 Simple Macro Expansion (Special variable quoted arguments)
@@ -117,7 +117,7 @@ Simple Macro Expansion (Special variable quoted arguments)
 
 (spec
   (macro_simple_expansion
-    (special_variable_name)))
+    (special_macro)))
 
 ===============================================================================
 Simple Macro Expansion (Special variable argument count)
@@ -129,7 +129,7 @@ Simple Macro Expansion (Special variable argument count)
 
 (spec
   (macro_simple_expansion
-    (special_variable_name)))
+    (special_macro)))
 
 ===============================================================================
 Simple Macro Expansion (Special variable positional argument)
@@ -141,7 +141,7 @@ Simple Macro Expansion (Special variable positional argument)
 
 (spec
   (macro_simple_expansion
-    (special_variable_name)))
+    (special_macro)))
 
 ===============================================================================
 Simple Macro Expansion (Special variable nil)
@@ -153,4 +153,4 @@ Simple Macro Expansion (Special variable nil)
 
 (spec
   (macro_simple_expansion
-    (special_variable_name)))
+    (special_macro)))
