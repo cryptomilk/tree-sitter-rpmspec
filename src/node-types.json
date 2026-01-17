@@ -120,6 +120,10 @@
         "named": true
       },
       {
+        "type": "macro_parametric_expansion",
+        "named": true
+      },
+      {
         "type": "macro_shell_expansion",
         "named": true
       },
@@ -2298,6 +2302,66 @@
           },
           {
             "type": "concatenation",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "macro_parametric_expansion",
+    "named": true,
+    "fields": {
+      "argument": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "integer",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_expression",
+            "named": true
+          },
+          {
+            "type": "macro_shell_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "quoted_string",
+            "named": true
+          },
+          {
+            "type": "word",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "simple_macro",
+            "named": true
+          }
+        ]
+      },
+      "option": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "macro_option",
             "named": true
           }
         ]

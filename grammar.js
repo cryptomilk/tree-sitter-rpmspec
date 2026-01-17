@@ -128,6 +128,7 @@ module.exports = grammar({
                 $.setup_macro, // %setup with specific option support
                 $.patch_macro, // %patch with specific option support
                 $.macro_expansion, // %{name}, %name
+                $.macro_parametric_expansion, // %name [options] [arguments]
                 $.macro_simple_expansion, // %name - simple expansion
                 $.macro_shell_expansion, // %(shell command)
                 $.preamble, // Name:, Version:, etc.
@@ -296,11 +297,44 @@ module.exports = grammar({
         // - %?name: conditional_expansion still handled by grammar
         macro_simple_expansion: ($) =>
             choice(
-                $.simple_macro, // %name from scanner
-                $.negated_macro, // %!name from scanner
-                $.special_macro, // %*, %#, etc.
+                seq('%', $.simple_macro), // %name
+                seq('%', $.negated_macro), // %!name
+                seq('%', $.special_macro), // %*, %#, etc.
                 seq('%', $.conditional_expansion) // %?name, %!?name
             ),
+
+        // Parametric macro invocation: %name [options] [arguments]
+        // Arguments are parsed until end of line (newline)
+        // Examples: %bcond bzip2 1, %autosetup -p1 -n %{name}
+        // Higher precedence than macro_simple_expansion when arguments follow
+        macro_parametric_expansion: ($) =>
+            prec(
+                1,
+                seq(
+                    '%',
+                    field('name', $.simple_macro),
+                    repeat1($._macro_invocation_argument),
+                    NEWLINE
+                )
+            ),
+
+        // Arguments that can appear in parametric macro invocations
+        _macro_invocation_argument: ($) =>
+            choice(
+                field('option', $.macro_option), // -x, -n
+                field('argument', $.word),
+                field('argument', $.integer),
+                field('argument', $.quoted_string),
+                field('argument', $.macro_expansion), // %{...}
+                field('argument', $.macro_simple_expansion), // %name
+                field('argument', $.macro_expression), // %[...]
+                field('argument', $.macro_shell_expansion) // %(...)
+            ),
+
+        // Macro options: short options only (getopt style)
+        // Examples: -x, -p, -n (single char options from macro definition)
+        // TODO: -- option terminator is tricky to handle (everything after is argument)
+        macro_option: (_) => token(prec(2, /-[a-zA-Z]/)),
 
         // Special macro variables for RPM scriptlets and build context
         // Used inside braced macros: %{*}, %{#}, %{0}, etc.
@@ -556,10 +590,15 @@ module.exports = grammar({
                     ),
                     optional(seq(optional(':'), $.string))
                 ),
-                // %{<name> <argument>}
+                // %{<name> [options] [arguments]}
                 seq(
                     alias($.macro_name, $.identifier),
-                    repeat1(field('argument', $._literal))
+                    repeat1(
+                        choice(
+                            field('option', $.macro_option),
+                            field('argument', $._literal)
+                        )
+                    )
                 )
             ),
 

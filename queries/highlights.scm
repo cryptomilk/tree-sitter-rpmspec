@@ -2,9 +2,30 @@
 (macro_option) @variable.parameter
 
 ; Simple macro expansion tokens from external scanner
-(simple_macro) @function.macro
-(negated_macro) @function.macro
-(special_macro) @constant
+(macro_simple_expansion
+  "%" @punctuation.special
+  (simple_macro) @function.macro)
+(macro_simple_expansion
+  "%" @punctuation.special
+  (negated_macro) @function.macro)
+(macro_simple_expansion
+  "%" @punctuation.special
+  (special_macro) @constant)
+
+; Parametric macro expansion: %name [options] [arguments]
+(macro_parametric_expansion
+  "%" @punctuation.special
+  name: (simple_macro) @function.call
+  option: (macro_option) @variable.parameter
+  argument: (word) @variable.parameter)
+(macro_parametric_expansion
+  "%" @punctuation.special
+  name: (simple_macro) @function.call
+  argument: (integer) @number)
+(macro_parametric_expansion
+  "%" @punctuation.special
+  name: (simple_macro) @function.call
+  argument: (quoted_string) @string)
 
 ; Macro expansion rules
 (macro_expansion

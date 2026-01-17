@@ -480,19 +480,15 @@ static bool scan_shell_content(TSLexer *lexer)
 }
 
 /**
- * @brief Scans a simple macro expansion: %name or %!name
+ * @brief Scans macro content after the % prefix
  *
- * This function handles simple macro expansions starting with %.
- * It distinguishes between:
- * - %% (escaped percent - returns ESCAPED_PERCENT)
- * - %!name (negated macro - returns NEGATED_MACRO)
- * - %name (simple macro - returns SIMPLE_MACRO)
- * - %*, %**, %#, %0-9, %nil (special macros - returns SPECIAL_MACRO)
- *
- * Does NOT match:
- * - %{ (braced macro - handled by grammar)
- * - %( (shell macro - handled by grammar)
- * - %[ (expression macro - handled by grammar)
+ * This function handles the content after % in macro expansions.
+ * The grammar is responsible for matching the % prefix, then calls
+ * the scanner to match the rest:
+ * - % (second %) for escaped percent - returns ESCAPED_PERCENT
+ * - !name for negated macro - returns NEGATED_MACRO
+ * - name for simple macro - returns SIMPLE_MACRO
+ * - *, **, #, 0-9, nil for special macros - returns SPECIAL_MACRO
  *
  * @param lexer The Tree-sitter lexer instance
  * @param valid_symbols Array indicating which token types are valid
@@ -500,23 +496,14 @@ static bool scan_shell_content(TSLexer *lexer)
  */
 static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
 {
-    /* Skip leading whitespace so we can match macros after newlines */
-    skip_whitespace(lexer);
-
-    /* Must start with % */
-    if (lexer->lookahead != '%') {
-        return false;
-    }
+    int32_t c = lexer->lookahead;
 
     /* Mark potential token start */
     lexer->mark_end(lexer);
-    advance(lexer);
 
-    int32_t next = lexer->lookahead;
-
-    switch (next) {
+    switch (c) {
     case '%':
-        /* %% - escaped percent */
+        /* Second % for escaped percent (%%) */
         if (valid_symbols[ESCAPED_PERCENT]) {
             advance(lexer);
             lexer->mark_end(lexer);
@@ -525,19 +512,13 @@ static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
         }
         return false;
 
-    case '{':
-    case '(':
-    case '[':
-        /* Other macro forms - let grammar handle */
-        return false;
-
     case '!':
-        /* Could be %!name (negated) or %!? (conditional) */
+        /* !name for negated macro */
         if (!valid_symbols[NEGATED_MACRO]) {
             return false;
         }
         advance(lexer);
-        /* Check for %!? which is conditional, not negated macro */
+        /* Check for !? which is conditional, not negated macro */
         if (lexer->lookahead == '?') {
             return false;
         }
@@ -554,20 +535,20 @@ static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
         return true;
 
     case '*':
-        /* %* or %** */
+        /* * or ** for special macro */
         if (!valid_symbols[SPECIAL_MACRO]) {
             return false;
         }
         advance(lexer);
         if (lexer->lookahead == '*') {
-            advance(lexer); /* %** */
+            advance(lexer); /* ** */
         }
         lexer->mark_end(lexer);
         lexer->result_symbol = SPECIAL_MACRO;
         return true;
 
     case '#':
-        /* %# - argument count */
+        /* # for argument count */
         if (!valid_symbols[SPECIAL_MACRO]) {
             return false;
         }
@@ -577,8 +558,8 @@ static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
         return true;
 
     default:
-        /* Check for %0-9 (positional args) */
-        if (is_digit(next)) {
+        /* Check for 0-9 (positional args) */
+        if (is_digit(c)) {
             if (!valid_symbols[SPECIAL_MACRO]) {
                 return false;
             }
@@ -591,8 +572,8 @@ static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
             return true;
         }
 
-        /* Check for %name (simple macro) */
-        if (is_identifier_start(next)) {
+        /* Check for identifier (simple macro) */
+        if (is_identifier_start(c)) {
             if (!valid_symbols[SIMPLE_MACRO]) {
                 return false;
             }

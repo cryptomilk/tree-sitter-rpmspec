@@ -1,0 +1,83 @@
+===============================================================================
+Parametric Macro Expansion (bcond with arguments)
+===============================================================================
+
+%bcond bzip2 1
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_parametric_expansion
+    name: (simple_macro)
+    argument: (word)
+    argument: (integer)))
+
+===============================================================================
+Parametric Macro Expansion (bcond with expression)
+===============================================================================
+
+%bcond docs %[%{?__isa_bits} >= 64]
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_parametric_expansion
+    name: (simple_macro)
+    argument: (word)
+    argument: (macro_expression
+      (macro_comparison_operator
+        (macro_expansion
+          (conditional_expansion
+            condition: (identifier)))
+        (integer)))))
+
+===============================================================================
+Parametric Macro Expansion (configure with line continuation)
+===============================================================================
+
+%configure \
+  --prefix=/usr \
+  --libsuffix=64
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_parametric_expansion
+    name: (simple_macro)
+    (line_continuation)
+    argument: (word)
+    (line_continuation)
+    argument: (word)))
+
+===============================================================================
+Parametric Macro Expansion (with short options)
+===============================================================================
+
+%mymacro -p -n value arg1
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_parametric_expansion
+    name: (simple_macro)
+    option: (macro_option)
+    option: (macro_option)
+    argument: (word)
+    argument: (word)))
+
+===============================================================================
+Parametric Macro Expansion (with macro arguments)
+===============================================================================
+
+%mymacro %{name} %{version}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_parametric_expansion
+    name: (simple_macro)
+    argument: (macro_expansion
+      (identifier))
+    argument: (macro_expansion
+      (identifier))))
+
