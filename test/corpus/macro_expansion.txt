@@ -191,30 +191,6 @@ Macros (Complex arguments with quotes)
         (quoted_string_content)))))
 
 ===============================================================================
-Macros (Arguments with escaping)
-===============================================================================
-
-%configure --enable-feature="value with \"quotes\""
-%make_build CFLAGS="-DVERSION=\"%{version}\""
-
--------------------------------------------------------------------------------
-
-(spec
-  (macro_expansion_call
-    (identifier)
-    (word)
-    (quoted_string
-      (quoted_string_content)))
-  (macro_expansion_call
-    (identifier)
-    (word)
-    (quoted_string
-      (quoted_string_content)
-      (macro_expansion
-        (identifier))
-      (quoted_string_content))))
-
-===============================================================================
 Macros (Nested macro arguments)
 ===============================================================================
 
@@ -337,33 +313,6 @@ print("Package: " .. name)
       (macro_expansion
         (identifier))
       (text_content))))
-
-===============================================================================
-Macros (Python Provide and Obsoletes)
-===============================================================================
-
-%{?python_provide:%python_provide python3-package}
-Obsoletes: python3-oldpackage < 0:1.1
-
--------------------------------------------------------------------------------
-
-(spec
-  (macro_expansion
-    (conditional_expansion
-      condition: (identifier)
-      consequence: (macro_expansion_call
-        (identifier)
-        argument: (word))))
-  (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency_list
-        (dependency
-          name: (dependency_name
-            (word))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))))
 
 ===============================================================================
 Macros (%global with parenthesized string value)

@@ -357,60 +357,6 @@ BuildRequires:  wurst
                 (word)))))))))
 
 ===============================================================================
-Conditionals (Nested %if with %elif and %else)
-===============================================================================
-
-%if 0%{?rhel}
-
-%ifarch x86_64
-%bcond_without ceph
-%bcond_without winexe
-%else
-%bcond_with ceph
-%bcond_with winexe
-#endifarch
-%endif
-
-%else
-%bcond_without ceph
-%bcond_without winexe
-%endif
-
--------------------------------------------------------------------------------
-
-(spec
-  (if_statement
-    condition: (concatenation
-      (integer)
-      (macro_expansion
-        (conditional_expansion
-          condition: (identifier))))
-    consequence: (ifarch_statement
-      condition: (arch
-        (identifier))
-      consequence: (macro_expansion_call
-        (identifier)
-        argument: (word))
-      consequence: (macro_expansion_call
-        (identifier)
-        argument: (word))
-      alternative: (else_clause
-        body: (macro_expansion_call
-          (identifier)
-          argument: (word))
-        body: (macro_expansion_call
-          (identifier)
-          argument: (word)))
-      (comment))
-    alternative: (else_clause
-      body: (macro_expansion_call
-        (identifier)
-        argument: (word))
-      body: (macro_expansion_call
-        (identifier)
-        argument: (word)))))
-
-===============================================================================
 Conditionals (%if %{with ..})
 ===============================================================================
 

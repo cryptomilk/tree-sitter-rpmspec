@@ -1,43 +1,4 @@
 ===============================================================================
-Parametric Macro (positional arguments)
-===============================================================================
-
-%define copier() cp %1 %2
-%copier source.txt dest.txt
-
--------------------------------------------------------------------------------
-
-(spec
-  (macro_definition
-    (builtin)
-    name: (identifier)
-    value: (word)
-    value: (macro_simple_expansion
-      (special_variable_name))
-    value: (macro_simple_expansion
-      (special_variable_name)))
-  (macro_expansion_call
-    (identifier)
-    argument: (word)
-    argument: (word)))
-
-===============================================================================
-Parametric Macro (builtin expansion)
-===============================================================================
-
-%define load_default() %load filename
-
--------------------------------------------------------------------------------
-
-(spec
-  (macro_definition
-    (builtin)
-    name: (identifier)
-    value: (macro_expansion_call
-      (builtin)
-      argument: (word))))
-
-===============================================================================
 Parametric Macro (builtin colon syntax)
 ===============================================================================
 

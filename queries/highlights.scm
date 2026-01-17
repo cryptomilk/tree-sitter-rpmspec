@@ -1,20 +1,3 @@
-; Specific parametric macro expansion rules (must come first)
-(macro_expansion_call
-  (builtin) @function.macro)
-
-(macro_expansion_call
-  (identifier) @function.macro)
-
-(macro_expansion_call
-  option: (macro_option) @variable.parameter
-  argument: [
-    (word) @variable.parameter
-    (concatenation
-      (word) @variable.parameter)
-    (macro_expansion) @function.call
-    (macro_simple_expansion) @function.call
-  ])
-
 ; Highlight macro options in parametric expansions
 (macro_option) @variable.parameter
 

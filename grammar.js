@@ -69,11 +69,7 @@ module.exports = grammar({
     name: 'rpmspec',
 
     // Grammar conflicts resolution
-    conflicts: ($) => [
-        [$.shell_block, $.string],
-        [$.macro_expansion_call],
-        [$._macro_expansion_call_nested],
-    ],
+    conflicts: ($) => [[$.shell_block, $.string]],
 
     // Tokens that may appear anywhere in the language and are typically ignored
     // during parsing (whitespace, comments, line continuations)
@@ -132,7 +128,6 @@ module.exports = grammar({
                 $.setup_macro, // %setup with specific option support
                 $.patch_macro, // %patch with specific option support
                 $.macro_expansion, // %{name}, %name
-                $.macro_expansion_call, // %name [options] [args] - standalone statement
                 $.macro_simple_expansion, // %name - simple expansion
                 $.macro_shell_expansion, // %(shell command)
                 $.preamble, // Name:, Version:, etc.
@@ -438,100 +433,6 @@ module.exports = grammar({
 
         macro_undefine: ($) => 'undefine',
 
-        //// Parametric Macro Expansion: %macro_name [options] [arguments]
-        //
-        // Expands parametric/built-in macros with options and arguments
-        // Syntax: %NAME [OPTIONS] [ARGUMENTS]
-        // Arguments parsed up to string end or next newline
-        //
-        // Examples: %dirname -x /path/to/file, %basename /some/path, %configure --prefix=/usr
-        //
-        // TODO: Add support for %-f format specifiers
-        macro_expansion_call: ($) =>
-            seq(
-                '%',
-                choice(
-                    // Builtin macros without arguments
-                    // Uses _all_builtins to recognize all builtin names (string, path, url, etc.)
-                    // even though they're handled separately in _macro_expansion_body for colon syntax
-                    seq(
-                        optional(field('operator', token.immediate('!'))),
-                        alias($._all_builtins, $.builtin),
-                        token.immediate(NEWLINE)
-                    ),
-                    // Builtin macros with arguments - require space after builtin
-                    // Uses _all_builtins for same reason as above
-                    seq(
-                        optional(field('operator', token.immediate('!'))),
-                        alias($._all_builtins, $.builtin),
-                        token.immediate(/\s+/),
-                        repeat1(
-                            choice(
-                                field('option', $.macro_option),
-                                field('argument', $._macro_argument)
-                            )
-                        )
-                    ),
-                    // Regular macros with arguments
-                    seq(
-                        optional(field('operator', token.immediate('!'))),
-                        alias($.macro_name, $.identifier),
-                        token.immediate(/\s+/),
-                        repeat1(
-                            choice(
-                                field('option', $.macro_option),
-                                field('argument', $._macro_argument)
-                            )
-                        ),
-                        token.immediate(NEWLINE)
-                    ),
-                    // Standalone macro names followed by newline (higher precedence than simple expansion)
-                    prec(
-                        1,
-                        seq(
-                            optional(field('operator', token.immediate('!'))),
-                            alias($.macro_name, $.identifier),
-                            token.immediate(NEWLINE)
-                        )
-                    )
-                )
-            ),
-
-        // Macro calls within braces (like conditional expansions)
-        // Example: %{?foo:%upper hello} - the %upper hello part
-        _macro_expansion_call_nested: ($) =>
-            seq(
-                '%',
-                choice(
-                    // Builtin macros with arguments
-                    // Uses _all_builtins to recognize all builtin names (string, path, url, etc.)
-                    // even though they're handled separately in _macro_expansion_body for colon syntax
-                    seq(
-                        optional(field('operator', token.immediate('!'))),
-                        alias($._all_builtins, $.builtin),
-                        token.immediate(/\s+/),
-                        repeat1(
-                            choice(
-                                field('option', $.macro_option),
-                                field('argument', $._macro_argument)
-                            )
-                        )
-                    ),
-                    // Regular macros with arguments
-                    seq(
-                        optional(field('operator', token.immediate('!'))),
-                        alias($.macro_name, $.identifier),
-                        token.immediate(/\s+/),
-                        repeat1(
-                            choice(
-                                field('option', $.macro_option),
-                                field('argument', $._macro_argument)
-                            )
-                        )
-                    )
-                )
-            ),
-
         // Macro options: short options with optional values
         // Supports: -x, -p VALUE, --long-option=VALUE
         macro_option: ($) =>
@@ -693,10 +594,6 @@ module.exports = grammar({
                                     ),
                                     $.macro_undefinition,
                                     $.macro_simple_expansion,
-                                    alias(
-                                        $._macro_expansion_call_nested,
-                                        $.macro_expansion_call
-                                    ),
                                     $.macro_expansion,
                                     alias($.macro_body_text, $.text)
                                 )
@@ -747,7 +644,6 @@ module.exports = grammar({
         _body: ($) =>
             repeat1(
                 choice(
-                    $.macro_expansion_call,
                     $.macro_simple_expansion,
                     $.macro_expansion,
                     $.macro_shell_expansion,
@@ -769,7 +665,6 @@ module.exports = grammar({
         _macro_value: ($) =>
             repeat1(
                 choice(
-                    $.macro_expansion_call,
                     $.macro_simple_expansion,
                     $.macro_expansion,
                     $.macro_shell_expansion,
@@ -1740,7 +1635,6 @@ module.exports = grammar({
                         $.macro_undefinition, // Inline %undefine statements
                         $.setup_macro, // %setup with specific option support
                         $.patch_macro, // %patch with specific option support
-                        $.macro_expansion_call, // %name [options] [args] - higher precedence when has args
                         $.macro_simple_expansion, // %name - simple expansion
                         prec(-1, $.string) // Raw shell command text
                     )

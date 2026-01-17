@@ -120,10 +120,6 @@
         "named": true
       },
       {
-        "type": "macro_expansion_call",
-        "named": true
-      },
-      {
         "type": "macro_shell_expansion",
         "named": true
       },
@@ -921,10 +917,6 @@
           },
           {
             "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_expansion_call",
             "named": true
           },
           {
@@ -2032,10 +2024,6 @@
             "named": true
           },
           {
-            "type": "macro_expansion_call",
-            "named": true
-          },
-          {
             "type": "macro_expression",
             "named": true
           },
@@ -2176,60 +2164,6 @@
         },
         {
           "type": "string",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "macro_expansion_call",
-    "named": true,
-    "fields": {
-      "argument": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "_primary_expression",
-            "named": true
-          },
-          {
-            "type": "concatenation",
-            "named": true
-          }
-        ]
-      },
-      "operator": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "!",
-            "named": false
-          }
-        ]
-      },
-      "option": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "macro_option",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "builtin",
-          "named": true
-        },
-        {
-          "type": "identifier",
           "named": true
         }
       ]
@@ -2918,10 +2852,6 @@
         },
         {
           "type": "macro_expansion",
-          "named": true
-        },
-        {
-          "type": "macro_expansion_call",
           "named": true
         },
         {

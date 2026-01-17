@@ -86,33 +86,6 @@ Macro Builtin Path (uncompress command)
     argument: (path_with_macro)))
 
 ===============================================================================
-Macro Builtin Path (parametric basename)
-===============================================================================
-
-%basename /some/dir/file.suf
-
--------------------------------------------------------------------------------
-
-(spec
-  (macro_expansion_call
-    (builtin)
-    argument: (word)))
-
-===============================================================================
-Macro Builtin Path (parametric dirname multiple)
-===============================================================================
-
-%dirname /path/to/file.txt /another/path
-
--------------------------------------------------------------------------------
-
-(spec
-  (macro_expansion_call
-    (builtin)
-    argument: (word)
-    argument: (word)))
-
-===============================================================================
 Macro Builtin Path (within braces with space)
 ===============================================================================
 
@@ -137,19 +110,4 @@ Macro Builtin Path (within braces with options)
   (macro_expansion
     (builtin)
     option: (macro_option)
-    argument: (word)))
-
-===============================================================================
-Macro Builtin Path (parametric with macro argument)
-===============================================================================
-
-%basename %{builddir}/file.txt
-
--------------------------------------------------------------------------------
-
-(spec
-  (macro_expansion_call
-    (builtin)
-    argument: (macro_expansion
-      (identifier))
     argument: (word)))
