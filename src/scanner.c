@@ -31,14 +31,23 @@ typedef Array(char) String;
  * that can appear in RPM specification files.
  *
  * IMPORTANT: The order must match the externals array in grammar.js
+ *
+ * ORDERING RATIONALE: Tokens are ordered by frequency of occurrence.
+ * During error recovery, tree-sitter may try tokens in order, so placing
+ * the most common tokens first improves recovery behavior:
+ *
+ * 1. SIMPLE_MACRO (%name) - by far the most common pattern (~80% of macros)
+ * 2. Other macro types - less common but still frequent
+ * 3. Conditional tokens - used in control flow
+ * 4. Context-specific tokens (EXPAND_CODE, SHELL_CODE) - rare, only valid
+ *    in specific contexts like %{expand:...} or %(...)
  */
 enum TokenType {
-    EXPAND_CODE,     /**< Raw text inside %{expand:...} with balanced braces */
-    SHELL_CODE,      /**< Raw text inside %(...) with balanced parentheses */
-    SIMPLE_MACRO,    /**< Simple macro expansion: %name */
-    NEGATED_MACRO,   /**< Negated macro expansion: %!name */
-    SPECIAL_MACRO,   /**< Special macro variables: %*, %**, %#, %0-9, %nil */
-    ESCAPED_PERCENT, /**< Escaped percent sign: %% */
+    /* Most common tokens first for better error recovery */
+    SIMPLE_MACRO,     /**< Simple macro expansion: %name */
+    NEGATED_MACRO,    /**< Negated macro expansion: %!name */
+    SPECIAL_MACRO,    /**< Special macro variables: %*, %**, %#, %0-9, %nil */
+    ESCAPED_PERCENT,  /**< Escaped percent sign: %% */
     /* Context-aware conditional tokens for distinguishing top-level vs shell */
     TOP_LEVEL_IF,     /**< %if at top-level or containing section keywords */
     SHELL_IF,         /**< %if inside shell section without section keywords */
@@ -49,7 +58,10 @@ enum TokenType {
     TOP_LEVEL_IFOS,   /**< %ifos at top-level */
     SHELL_IFOS,       /**< %ifos inside shell section */
     TOP_LEVEL_IFNOS,  /**< %ifnos at top-level */
-    SHELL_IFNOS       /**< %ifnos inside shell section */
+    SHELL_IFNOS,      /**< %ifnos inside shell section */
+    /* Context-specific tokens - only valid in specific macro contexts */
+    EXPAND_CODE,      /**< Raw text inside %{expand:...} with balanced braces */
+    SHELL_CODE        /**< Raw text inside %(...) with balanced parentheses */
 };
 
 /**

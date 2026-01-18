@@ -88,11 +88,14 @@ module.exports = grammar({
 
     // External scanner tokens (implemented in src/scanner.c)
     // Order must match enum TokenType in scanner.c
+    //
+    // ORDERING: Tokens are ordered by frequency - most common first.
+    // This improves error recovery behavior since tree-sitter may try
+    // tokens in order. simple_macro (%name) is ~80% of macro usage.
     externals: ($) => [
-        $.expand_code, // Raw text inside %{expand:...} with balanced braces
-        $.shell_code, // Raw text inside %(...) with balanced parentheses
-        $.simple_macro, // Simple macro %name (from external scanner)
-        $.negated_macro, // Negated macro %!name (from external scanner)
+        // Most common tokens first
+        $.simple_macro, // Simple macro %name (most common ~80%)
+        $.negated_macro, // Negated macro %!name
         $.special_macro, // Special macros: %*, %**, %#, %0-9
         $.escaped_percent, // Escaped percent: %%
         // Context-aware conditional tokens
@@ -106,6 +109,9 @@ module.exports = grammar({
         $.shell_ifos, // %ifos inside shell section
         $.top_level_ifnos, // %ifnos at top-level
         $.shell_ifnos, // %ifnos inside shell section
+        // Context-specific tokens (only valid in specific macro contexts)
+        $.expand_code, // Raw text inside %{expand:...} with balanced braces
+        $.shell_code, // Raw text inside %(...) with balanced parentheses
     ],
 
     // Inline rules are flattened in the parse tree to reduce nesting

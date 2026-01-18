@@ -7263,14 +7263,6 @@
   "externals": [
     {
       "type": "SYMBOL",
-      "name": "expand_code"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "shell_code"
-    },
-    {
-      "type": "SYMBOL",
       "name": "simple_macro"
     },
     {
@@ -7324,6 +7316,14 @@
     {
       "type": "SYMBOL",
       "name": "shell_ifnos"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "expand_code"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "shell_code"
     }
   ],
   "inline": [
