@@ -534,3 +534,32 @@ BuildRequires:  generic-package
             (dependency
               name: (dependency_name
                 (word)))))))))
+
+===============================================================================
+Conditionals (%if with runtime scriptlet after shell section)
+===============================================================================
+
+%check
+make test
+
+%if !%{with testsuite}
+%post
+%systemd_post samba.service
+%endif
+
+-------------------------------------------------------------------------------
+
+(spec
+  (check_scriptlet
+    (section_name)
+    (shell_block
+      (shell_content)))
+  (if_statement
+    condition: (not_operator
+      argument: (with_operator
+        (identifier)))
+    consequence: (runtime_scriptlet
+      (shell_block
+        (macro_simple_expansion
+          (simple_macro))
+        (shell_content)))))

@@ -195,8 +195,8 @@
 [
   "%if"
   "%ifarch"
-  "%ifos"
   "%ifnarch"
+  "%ifos"
   "%ifnos"
   "%elif"
   "%elifarch"

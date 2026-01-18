@@ -33,12 +33,23 @@ typedef Array(char) String;
  * IMPORTANT: The order must match the externals array in grammar.js
  */
 enum TokenType {
-    EXPAND_CODE,    /**< Raw text inside %{expand:...} with balanced braces */
-    SHELL_CODE,     /**< Raw text inside %(...) with balanced parentheses */
-    SIMPLE_MACRO,   /**< Simple macro expansion: %name */
-    NEGATED_MACRO,  /**< Negated macro expansion: %!name */
-    SPECIAL_MACRO,  /**< Special macro variables: %*, %**, %#, %0-9, %nil */
-    ESCAPED_PERCENT /**< Escaped percent sign: %% */
+    EXPAND_CODE,     /**< Raw text inside %{expand:...} with balanced braces */
+    SHELL_CODE,      /**< Raw text inside %(...) with balanced parentheses */
+    SIMPLE_MACRO,    /**< Simple macro expansion: %name */
+    NEGATED_MACRO,   /**< Negated macro expansion: %!name */
+    SPECIAL_MACRO,   /**< Special macro variables: %*, %**, %#, %0-9, %nil */
+    ESCAPED_PERCENT, /**< Escaped percent sign: %% */
+    /* Context-aware conditional tokens for distinguishing top-level vs shell */
+    TOP_LEVEL_IF,     /**< %if at top-level or containing section keywords */
+    SHELL_IF,         /**< %if inside shell section without section keywords */
+    TOP_LEVEL_IFARCH, /**< %ifarch at top-level */
+    SHELL_IFARCH,     /**< %ifarch inside shell section */
+    TOP_LEVEL_IFNARCH,/**< %ifnarch at top-level */
+    SHELL_IFNARCH,    /**< %ifnarch inside shell section */
+    TOP_LEVEL_IFOS,   /**< %ifos at top-level */
+    SHELL_IFOS,       /**< %ifos inside shell section */
+    TOP_LEVEL_IFNOS,  /**< %ifnos at top-level */
+    SHELL_IFNOS       /**< %ifnos inside shell section */
 };
 
 /**
@@ -114,6 +125,9 @@ static inline bool is_patch_legacy(const char *id, size_t len)
  *
  * These are reserved words that have special meaning in RPM specs.
  * The scanner must NOT match these as SIMPLE_MACRO tokens.
+ *
+ * Note: Section keywords (prep, build, install, etc.) are in SECTION_KEYWORDS.
+ * The is_keyword() function checks both arrays.
  */
 static const char *const KEYWORDS[] = {
     /* Conditionals */
@@ -131,36 +145,6 @@ static const char *const KEYWORDS[] = {
     "define",
     "global",
     "undefine",
-    /* Sections */
-    "prep",
-    "build",
-    "install",
-    "check",
-    "files",
-    "changelog",
-    "description",
-    "package",
-    /* Scriptlets */
-    "pre",
-    "post",
-    "preun",
-    "postun",
-    "pretrans",
-    "posttrans",
-    "preuntrans",
-    "postuntrans",
-    /* Triggers */
-    "triggerin",
-    "triggerun",
-    "triggerpostun",
-    "triggerprein",
-    /* File triggers */
-    "filetriggerin",
-    "filetriggerun",
-    "filetriggerpostun",
-    "transfiletriggerin",
-    "transfiletriggerun",
-    "transfiletriggerpostun",
     /* Special macros handled by grammar */
     "setup",
     "patch",
@@ -220,7 +204,77 @@ static const char *const KEYWORDS[] = {
 };
 
 /**
- * @brief Check if a string matches an RPM keyword
+ * @brief Check if a string matches any keyword in an array
+ *
+ * @param str The string to check
+ * @param len Length of the string
+ * @param keywords NULL-terminated array of keywords
+ * @return true if str matches a keyword, false otherwise
+ */
+static bool matches_keyword_array(const char *str, size_t len,
+                                  const char *const *keywords)
+{
+    for (const char *const *kw = keywords; *kw != NULL; kw++) {
+        size_t kw_len = strlen(*kw);
+        if (len == kw_len && strncmp(str, *kw, len) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * @brief Section keywords that indicate top-level context
+ *
+ * When a %if body contains any of these keywords, it should be
+ * parsed as a top-level conditional, not a shell-level one.
+ */
+static const char *const SECTION_KEYWORDS[] = {
+    /* Main sections */
+    "prep",
+    "build",
+    "install",
+    "check",
+    "clean",
+    "files",
+    "changelog",
+    "description",
+    "package",
+    /* Runtime scriptlets */
+    "pre",
+    "post",
+    "preun",
+    "postun",
+    "pretrans",
+    "posttrans",
+    "preuntrans",
+    "postuntrans",
+    /* Triggers */
+    "triggerin",
+    "triggerun",
+    "triggerpostun",
+    "triggerprein",
+    /* File triggers */
+    "filetriggerin",
+    "filetriggerun",
+    "filetriggerpostun",
+    "transfiletriggerin",
+    "transfiletriggerun",
+    "transfiletriggerpostun",
+    /* End marker */
+    NULL,
+};
+
+/**
+ * @brief Check if a string matches a section keyword
+ */
+static bool is_section_keyword(const char *str, size_t len)
+{
+    return matches_keyword_array(str, len, SECTION_KEYWORDS);
+}
+
+/**
+ * @brief Check if a string matches an RPM keyword (either regular or section)
  *
  * @param str The string to check
  * @param len Length of the string
@@ -228,12 +282,106 @@ static const char *const KEYWORDS[] = {
  */
 static bool is_keyword(const char *str, size_t len)
 {
-    for (const char *const *kw = KEYWORDS; *kw != NULL; kw++) {
-        size_t kw_len = strlen(*kw);
-        if (len == kw_len && strncmp(str, *kw, len) == 0) {
-            return true;
+    return matches_keyword_array(str, len, KEYWORDS) ||
+           matches_keyword_array(str, len, SECTION_KEYWORDS);
+}
+
+/**
+ * @brief Maximum lines to scan ahead for section keywords
+ *
+ * This bounds the lookahead to avoid pathological cases with very large
+ * conditional blocks. 2000 lines should cover most real-world specs.
+ */
+#define MAX_LOOKAHEAD_LINES 2000
+
+/**
+ * @brief Lookahead to check if %if body contains section keywords
+ *
+ * When we encounter %if inside a shell section, we need to determine
+ * whether it's a shell-level conditional (e.g., if [ -f foo ]; then)
+ * or a top-level conditional containing sections (e.g., %if with %files).
+ *
+ * This function scans ahead until %endif, looking for section keywords.
+ * It tracks conditional nesting to find the matching %endif.
+ *
+ * @param lexer The Tree-sitter lexer (position will be restored)
+ * @return true if the body contains section keywords, false otherwise
+ */
+static bool lookahead_finds_section_keyword(TSLexer *lexer)
+{
+    /* Track nesting depth of conditionals */
+    int32_t nesting = 1; /* We're already inside one %if */
+    int32_t lines_scanned = 0;
+    bool at_line_start = true;
+
+    /* Scan character by character, looking for section keywords */
+    while (!lexer->eof(lexer) && lines_scanned < MAX_LOOKAHEAD_LINES) {
+        int32_t c = lexer->lookahead;
+
+        if (c == '\r' || c == '\n') {
+            /* Newline - next character is at line start */
+            lexer->advance(lexer, false);
+            if (c == '\r' && lexer->lookahead == '\n') {
+                lexer->advance(lexer, false);
+            }
+            at_line_start = true;
+            lines_scanned++;
+            continue;
+        }
+
+        if (c == ' ' || c == '\t') {
+            /* Whitespace at line start - still at line start */
+            lexer->advance(lexer, false);
+            continue;
+        }
+
+        if (c == '%' && at_line_start) {
+            /* Potential keyword at line start */
+            lexer->advance(lexer, false);
+
+            /* Buffer the identifier */
+            char id_buf[32];
+            size_t id_len = 0;
+
+            while (is_identifier_char(lexer->lookahead) &&
+                   id_len < sizeof(id_buf) - 1) {
+                id_buf[id_len++] = (char)lexer->lookahead;
+                lexer->advance(lexer, false);
+            }
+            id_buf[id_len] = '\0';
+
+            if (id_len > 0) {
+                /* Check for %endif (end of conditional) */
+                if (id_len == 5 && strncmp(id_buf, "endif", 5) == 0) {
+                    nesting--;
+                    if (nesting == 0) {
+                        /* Found matching %endif - no section keywords found */
+                        return false;
+                    }
+                }
+                /* Check for nested %if/%ifarch/%ifos */
+                else if ((id_len == 2 && strncmp(id_buf, "if", 2) == 0) ||
+                         (id_len == 6 && strncmp(id_buf, "ifarch", 6) == 0) ||
+                         (id_len == 7 && strncmp(id_buf, "ifnarch", 7) == 0) ||
+                         (id_len == 4 && strncmp(id_buf, "ifos", 4) == 0) ||
+                         (id_len == 5 && strncmp(id_buf, "ifnos", 5) == 0)) {
+                    nesting++;
+                }
+                /* Check for section keywords */
+                else if (is_section_keyword(id_buf, id_len)) {
+                    /* Found a section keyword - this is top-level! */
+                    return true;
+                }
+            }
+            at_line_start = false;
+        } else {
+            /* Other character - not at line start anymore */
+            at_line_start = false;
+            lexer->advance(lexer, false);
         }
     }
+
+    /* Reached EOF or max lines without finding section keyword */
     return false;
 }
 
@@ -293,7 +441,8 @@ static inline unsigned rpmspec_serialize(struct Scanner *scanner, char *buffer)
     if (size + sizeof(uint32_t) > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
         return 0;
     }
-    *(uint32_t *)(buffer + size) = scanner->literal_stack.size;
+    uint32_t stack_size = scanner->literal_stack.size;
+    memcpy(buffer + size, &stack_size, sizeof(uint32_t));
     size += sizeof(uint32_t);
 
     /* Serialize each literal in the stack */
@@ -303,8 +452,8 @@ static inline unsigned rpmspec_serialize(struct Scanner *scanner, char *buffer)
             return 0;
         }
 
-        struct Literal *literal = &scanner->literal_stack.contents[i];
-        *(struct Literal *)(buffer + size) = *literal;
+        memcpy(buffer + size, &scanner->literal_stack.contents[i],
+               sizeof(struct Literal));
         size += sizeof(struct Literal);
     }
 
@@ -326,6 +475,9 @@ static inline void rpmspec_deserialize(struct Scanner *scanner,
                                        const char *buffer,
                                        unsigned length)
 {
+    /* Clear existing stack */
+    array_clear(&scanner->literal_stack);
+
     if (length == 0) {
         return;
     }
@@ -339,9 +491,6 @@ static inline void rpmspec_deserialize(struct Scanner *scanner,
     uint32_t stack_size;
     memcpy(&stack_size, buffer + size, sizeof(stack_size));
     size += sizeof(uint32_t);
-
-    /* Clear existing stack */
-    array_clear(&scanner->literal_stack);
 
     /* Deserialize each literal */
     for (uint32_t i = 0; i < stack_size; i++) {
@@ -607,23 +756,152 @@ static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
 }
 
 /**
+ * @brief Scan for context-aware conditional tokens (%if, %ifarch, %ifos)
+ *
+ * This function determines whether a conditional should be parsed as
+ * top-level or shell-level based on:
+ * 1. Which tokens the grammar says are valid (context)
+ * 2. Lookahead to check if body contains section keywords
+ *
+ * The grammar controls context: if only TOP_LEVEL_* is valid, we're at
+ * top-level. If SHELL_* is also valid, we're in a shell context and
+ * need lookahead to decide.
+ *
+ * @param lexer The Tree-sitter lexer instance
+ * @param valid_symbols Array indicating which token types are valid
+ * @return true if a conditional token was matched, false otherwise
+ */
+static bool scan_conditional(TSLexer *lexer, const bool *valid_symbols)
+{
+    /* Check if any conditional tokens are valid */
+    bool top_if_valid = valid_symbols[TOP_LEVEL_IF];
+    bool shell_if_valid = valid_symbols[SHELL_IF];
+    bool top_ifarch_valid = valid_symbols[TOP_LEVEL_IFARCH];
+    bool shell_ifarch_valid = valid_symbols[SHELL_IFARCH];
+    bool top_ifnarch_valid = valid_symbols[TOP_LEVEL_IFNARCH];
+    bool shell_ifnarch_valid = valid_symbols[SHELL_IFNARCH];
+    bool top_ifos_valid = valid_symbols[TOP_LEVEL_IFOS];
+    bool shell_ifos_valid = valid_symbols[SHELL_IFOS];
+    bool top_ifnos_valid = valid_symbols[TOP_LEVEL_IFNOS];
+    bool shell_ifnos_valid = valid_symbols[SHELL_IFNOS];
+
+    bool any_if_valid = top_if_valid || shell_if_valid;
+    bool any_ifarch_valid = top_ifarch_valid || shell_ifarch_valid;
+    bool any_ifnarch_valid = top_ifnarch_valid || shell_ifnarch_valid;
+    bool any_ifos_valid = top_ifos_valid || shell_ifos_valid;
+    bool any_ifnos_valid = top_ifnos_valid || shell_ifnos_valid;
+
+    if (!any_if_valid && !any_ifarch_valid && !any_ifnarch_valid &&
+        !any_ifos_valid && !any_ifnos_valid) {
+        return false;
+    }
+
+    /* Skip leading whitespace */
+    skip_whitespace(lexer);
+
+    /* Must start with '%' */
+    if (lexer->lookahead != '%') {
+        return false;
+    }
+
+    lexer->mark_end(lexer);
+    lexer->advance(lexer, false); /* consume '%' */
+
+    /* Match the keyword after '%' */
+    char id_buf[16];
+    size_t id_len = 0;
+
+    while (is_identifier_char(lexer->lookahead) && id_len < sizeof(id_buf) - 1) {
+        id_buf[id_len++] = (char)lexer->lookahead;
+        lexer->advance(lexer, false);
+    }
+    id_buf[id_len] = '\0';
+
+    if (id_len == 0) {
+        return false;
+    }
+
+    /* Determine the keyword type and which tokens are valid for it */
+    enum TokenType top_token;
+    enum TokenType shell_token;
+    bool top_valid;
+    bool shell_valid;
+
+    if ((id_len == 2 && strncmp(id_buf, "if", 2) == 0) && any_if_valid) {
+        top_token = TOP_LEVEL_IF;
+        shell_token = SHELL_IF;
+        top_valid = top_if_valid;
+        shell_valid = shell_if_valid;
+    } else if ((id_len == 6 && strncmp(id_buf, "ifarch", 6) == 0) &&
+               any_ifarch_valid) {
+        top_token = TOP_LEVEL_IFARCH;
+        shell_token = SHELL_IFARCH;
+        top_valid = top_ifarch_valid;
+        shell_valid = shell_ifarch_valid;
+    } else if ((id_len == 7 && strncmp(id_buf, "ifnarch", 7) == 0) &&
+               any_ifnarch_valid) {
+        top_token = TOP_LEVEL_IFNARCH;
+        shell_token = SHELL_IFNARCH;
+        top_valid = top_ifnarch_valid;
+        shell_valid = shell_ifnarch_valid;
+    } else if ((id_len == 4 && strncmp(id_buf, "ifos", 4) == 0) &&
+               any_ifos_valid) {
+        top_token = TOP_LEVEL_IFOS;
+        shell_token = SHELL_IFOS;
+        top_valid = top_ifos_valid;
+        shell_valid = shell_ifos_valid;
+    } else if ((id_len == 5 && strncmp(id_buf, "ifnos", 5) == 0) &&
+               any_ifnos_valid) {
+        top_token = TOP_LEVEL_IFNOS;
+        shell_token = SHELL_IFNOS;
+        top_valid = top_ifnos_valid;
+        shell_valid = shell_ifnos_valid;
+    } else {
+        /* Not a conditional keyword we handle */
+        return false;
+    }
+
+    lexer->mark_end(lexer);
+
+    /* Decide which token to emit based on what's valid */
+    if (top_valid && !shell_valid) {
+        /* Only top-level is valid - we're at top-level context */
+        lexer->result_symbol = top_token;
+        return true;
+    }
+
+    if (shell_valid && !top_valid) {
+        /* Only shell is valid - we're in pure shell context */
+        lexer->result_symbol = shell_token;
+        return true;
+    }
+
+    /* Both are valid - need lookahead to decide */
+    if (lookahead_finds_section_keyword(lexer)) {
+        /* Body contains sections - this is a top-level conditional */
+        lexer->result_symbol = top_token;
+    } else {
+        /* Body is pure shell - this is a shell-level conditional */
+        lexer->result_symbol = shell_token;
+    }
+    return true;
+}
+
+/**
  * @brief Main scanning function for RPM spec tokens
  *
  * This is the primary entry point for token recognition. It attempts to
  * identify and parse various RPM spec syntax elements, particularly macro
  * expressions and escape sequences.
  *
- * @param scanner The scanner instance
  * @param lexer The Tree-sitter lexer instance
  * @param valid_symbols Array indicating which token types are valid at this
  * position
  * @return true if a token was successfully recognized, false otherwise
  */
 static inline bool
-rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
+rpmspec_scan(TSLexer *lexer, const bool *valid_symbols)
 {
-    (void)scanner; /* Unused for now */
-
     /* EXPAND_CODE and SHELL_CODE are contextual - only valid inside
      * %{expand:...} and %(...) respectively. Check these first. */
     if (valid_symbols[EXPAND_CODE]) {
@@ -638,6 +916,11 @@ rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
             lexer->result_symbol = SHELL_CODE;
             return true;
         }
+    }
+
+    /* Try to scan context-aware conditional tokens */
+    if (scan_conditional(lexer, valid_symbols)) {
+        return true;
     }
 
     /* Try to scan macro tokens */
@@ -734,7 +1017,7 @@ bool tree_sitter_rpmspec_external_scanner_scan(void *payload,
                                                TSLexer *lexer,
                                                const bool *valid_symbols)
 {
-    struct Scanner *scanner = (struct Scanner *)payload;
+    (void)payload; /* Scanner state not currently used */
 
-    return rpmspec_scan(scanner, lexer, valid_symbols);
+    return rpmspec_scan(lexer, valid_symbols);
 }

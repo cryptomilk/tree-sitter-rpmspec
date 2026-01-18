@@ -95,6 +95,17 @@ module.exports = grammar({
         $.negated_macro, // Negated macro %!name (from external scanner)
         $.special_macro, // Special macros: %*, %**, %#, %0-9
         $.escaped_percent, // Escaped percent: %%
+        // Context-aware conditional tokens
+        $.top_level_if, // %if at top-level or containing section keywords
+        $.shell_if, // %if inside shell section without section keywords
+        $.top_level_ifarch, // %ifarch at top-level
+        $.shell_ifarch, // %ifarch inside shell section
+        $.top_level_ifnarch, // %ifnarch at top-level
+        $.shell_ifnarch, // %ifnarch inside shell section
+        $.top_level_ifos, // %ifos at top-level
+        $.shell_ifos, // %ifos inside shell section
+        $.top_level_ifnos, // %ifnos at top-level
+        $.shell_ifnos, // %ifnos inside shell section
     ],
 
     // Inline rules are flattened in the parse tree to reduce nesting
@@ -102,7 +113,9 @@ module.exports = grammar({
     inline: ($) => [
         $._simple_statements, // Flatten statement types
         $._compound_statements, // Flatten compound statement types
+        $._shell_compound_statements, // Flatten shell compound statement types
         $._conditional_block, // Flatten conditional block contents
+        $._shell_conditional_content, // Flatten shell conditional content
         $._literal, // Flatten literal value types
     ],
 
@@ -1062,15 +1075,50 @@ module.exports = grammar({
                     prec(-1, $._simple_statements),
                     $._compound_statements,
                     $.defattr,
-                    $.file,
-                    prec(-1, $.shell_content) // Shell content in scriptlet conditionals
+                    $.file
+                    // shell_content removed - use _shell_conditional_content for shell contexts
                 )
             ),
 
-        // %if
+        // Content allowed inside shell conditionals (scriptlet context)
+        // Includes shell content, macros, nested conditionals, AND runtime scriptlets
+        // Runtime scriptlets needed for patterns like:
+        //   %check
+        //   make test
+        //   %if !%{with testsuite}
+        //   %post
+        //   %systemd_post samba.service
+        //   %endif
+        _shell_conditional_content: ($) =>
+            repeat1(
+                choice(
+                    $._shell_compound_statements,
+                    $.runtime_scriptlet,
+                    $.macro_definition,
+                    $.macro_undefinition,
+                    $.setup_macro,
+                    $.patch_macro,
+                    $.macro_parametric_expansion,
+                    $.macro_expansion,
+                    $.macro_simple_expansion,
+                    $.macro_shell_expansion,
+                    $.macro_expression,
+                    $.shell_content
+                )
+            ),
+
+        // Shell-specific compound statements (alias to regular names in parse tree)
+        _shell_compound_statements: ($) =>
+            choice(
+                alias($.shell_if_statement, $.if_statement),
+                alias($.shell_ifarch_statement, $.ifarch_statement),
+                alias($.shell_ifos_statement, $.ifos_statement)
+            ),
+
+        // %if - uses external scanner token for context-aware parsing
         if_statement: ($) =>
             seq(
-                '%if',
+                alias($.top_level_if, '%if'), // External scanner, hidden in tree
                 field('condition', $.expression),
                 token.immediate(NEWLINE),
                 optional(field('consequence', $._conditional_block)),
@@ -1095,6 +1143,34 @@ module.exports = grammar({
                 field('body', $._conditional_block)
             ),
 
+        // Shell-specific %if (uses _shell_conditional_content for body)
+        shell_if_statement: ($) =>
+            seq(
+                alias($.shell_if, '%if'), // External scanner, hidden in tree
+                field('condition', $.expression),
+                token.immediate(NEWLINE),
+                optional(field('consequence', $._shell_conditional_content)),
+                repeat(field('alternative', $.shell_elif_clause)),
+                optional(field('alternative', $.shell_else_clause)),
+                '%endif',
+                token.immediate(NEWLINE)
+            ),
+
+        shell_elif_clause: ($) =>
+            seq(
+                '%elif',
+                field('condition', $.expression),
+                token.immediate(NEWLINE),
+                optional(field('consequence', $._shell_conditional_content))
+            ),
+
+        shell_else_clause: ($) =>
+            seq(
+                '%else',
+                token.immediate(NEWLINE),
+                optional(field('body', $._shell_conditional_content))
+            ),
+
         // %ifarch
         // Architecture can be: identifier, %{macro}, or %macro (like %ix86)
         // Note: using inline pattern for %name to avoid GLR conflicts with macro_simple_expansion
@@ -1109,7 +1185,11 @@ module.exports = grammar({
 
         ifarch_statement: ($) =>
             seq(
-                choice('%ifarch', '%ifnarch'),
+                // External scanner tokens aliased to literal for highlighting
+                choice(
+                    alias($.top_level_ifarch, '%ifarch'),
+                    alias($.top_level_ifnarch, '%ifnarch')
+                ),
                 field('condition', $.arch),
                 token.immediate(NEWLINE),
                 optional(field('consequence', $._conditional_block)),
@@ -1141,7 +1221,11 @@ module.exports = grammar({
 
         ifos_statement: ($) =>
             seq(
-                choice('%ifos', '%ifnos'),
+                // External scanner tokens aliased to literal for highlighting
+                choice(
+                    alias($.top_level_ifos, '%ifos'),
+                    alias($.top_level_ifnos, '%ifnos')
+                ),
                 field('condition', $.os),
                 token.immediate(NEWLINE),
                 optional(field('consequence', $._conditional_block)),
@@ -1157,6 +1241,56 @@ module.exports = grammar({
                 optional(field('consequence', $._literal)),
                 token.immediate(NEWLINE),
                 field('consequence', $._conditional_block)
+            ),
+
+        // Shell-specific %ifarch (uses _shell_conditional_content for body)
+        shell_ifarch_statement: ($) =>
+            seq(
+                // External scanner tokens aliased to literal for highlighting
+                choice(
+                    alias($.shell_ifarch, '%ifarch'),
+                    alias($.shell_ifnarch, '%ifnarch')
+                ),
+                field('condition', $.arch),
+                token.immediate(NEWLINE),
+                optional(field('consequence', $._shell_conditional_content)),
+                repeat(field('alternative', $.shell_elifarch_clause)),
+                optional(field('alternative', $.shell_else_clause)),
+                '%endif',
+                token.immediate(NEWLINE)
+            ),
+
+        shell_elifarch_clause: ($) =>
+            seq(
+                '%elifarch',
+                optional(field('condition', $._literal)),
+                token.immediate(NEWLINE),
+                optional(field('consequence', $._shell_conditional_content))
+            ),
+
+        // Shell-specific %ifos (uses _shell_conditional_content for body)
+        shell_ifos_statement: ($) =>
+            seq(
+                // External scanner tokens aliased to literal for highlighting
+                choice(
+                    alias($.shell_ifos, '%ifos'),
+                    alias($.shell_ifnos, '%ifnos')
+                ),
+                field('condition', $.os),
+                token.immediate(NEWLINE),
+                optional(field('consequence', $._shell_conditional_content)),
+                repeat(field('alternative', $.shell_elifos_clause)),
+                optional(field('alternative', $.shell_else_clause)),
+                '%endif',
+                token.immediate(NEWLINE)
+            ),
+
+        shell_elifos_clause: ($) =>
+            seq(
+                '%elifos',
+                optional(field('condition', $._literal)),
+                token.immediate(NEWLINE),
+                optional(field('consequence', $._shell_conditional_content))
             ),
 
         ///////////////////////////////////////////////////////////////////////
@@ -1667,7 +1801,7 @@ module.exports = grammar({
             prec.right(
                 repeat1(
                     choice(
-                        $._compound_statements, // Conditional blocks (%if, %ifarch)
+                        $._shell_compound_statements, // Shell-specific conditionals
                         $.macro_definition, // Inline %define statements
                         $.macro_undefinition, // Inline %undefine statements
                         $.setup_macro, // %setup with specific option support
@@ -1677,7 +1811,7 @@ module.exports = grammar({
                         $.macro_simple_expansion, // %name
                         $.macro_shell_expansion, // %(shell)
                         $.macro_expression, // %[expr]
-                        prec(-1, $.shell_content) // Raw shell text (permissive)
+                        $.shell_content // Raw shell text (no prec needed)
                     )
                 )
             ),
@@ -2301,7 +2435,7 @@ module.exports = grammar({
         // Stops at: %, newline
         // Includes: quotes, backslashes, !, etc. - anything valid in shell
         // Used in shell_block for %prep, %build, %install, etc.
-        shell_content: (_) => token(prec(-1, /[^%\r\n]+/)),
+        shell_content: (_) => token(prec(0, /[^%\r\n]+/)),
 
         // Quoted strings: explicit string literals with macro expansion
         // Allows macro expansion within quotes: "prefix-%{version}-suffix"
