@@ -6021,8 +6021,8 @@
               "value": "%artifact"
             },
             {
-              "type": "STRING",
-              "value": "%config"
+              "type": "SYMBOL",
+              "name": "config_qualifier"
             },
             {
               "type": "STRING",
@@ -6064,6 +6064,72 @@
             "type": "PATTERN",
             "value": "( |\\t)+"
           }
+        }
+      ]
+    },
+    "config_qualifier": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "%config"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "IMMEDIATE_TOKEN",
+                  "content": {
+                    "type": "STRING",
+                    "value": "("
+                  }
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "config_option"
+                },
+                {
+                  "type": "REPEAT",
+                  "content": {
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": ","
+                      },
+                      {
+                        "type": "SYMBOL",
+                        "name": "config_option"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "type": "STRING",
+                  "value": ")"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "config_option": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "noreplace"
+        },
+        {
+          "type": "STRING",
+          "value": "missingok"
         }
       ]
     },

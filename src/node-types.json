@@ -973,6 +973,26 @@
     }
   },
   {
+    "type": "config_option",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "config_qualifier",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "config_option",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "defattr",
     "named": true,
     "fields": {}
@@ -1377,6 +1397,10 @@
       "multiple": false,
       "required": false,
       "types": [
+        {
+          "type": "config_qualifier",
+          "named": true
+        },
         {
           "type": "verify",
           "named": true
@@ -4422,6 +4446,10 @@
     "named": false
   },
   {
+    "type": "missingok",
+    "named": false
+  },
+  {
     "type": "mode",
     "named": false
   },
@@ -4440,6 +4468,10 @@
   {
     "type": "negation_operator",
     "named": true
+  },
+  {
+    "type": "noreplace",
+    "named": false
   },
   {
     "type": "not",

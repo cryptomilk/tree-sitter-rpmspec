@@ -2083,7 +2083,7 @@ module.exports = grammar({
             seq(
                 choice(
                     '%artifact', // Build artifact (build system metadata)
-                    '%config', // Configuration file (preserved on upgrade)
+                    $.config_qualifier, // %config or %config(noreplace) etc.
                     '%dir', // Directory (created if missing)
                     '%doc', // Documentation file
                     '%docdir', // Documentation directory
@@ -2095,6 +2095,24 @@ module.exports = grammar({
                 ),
                 token.immediate(BLANK) // Required whitespace after qualifier
             ),
+
+        // %config directive with optional arguments
+        // Forms: %config, %config(noreplace), %config(missingok), %config(noreplace,missingok)
+        config_qualifier: ($) =>
+            seq(
+                '%config',
+                optional(
+                    seq(
+                        token.immediate('('),
+                        $.config_option,
+                        repeat(seq(',', $.config_option)),
+                        ')'
+                    )
+                )
+            ),
+
+        // Options for %config directive
+        config_option: (_) => choice('noreplace', 'missingok'),
 
         // File entry: individual file with optional attributes and qualifiers
         // Can specify custom permissions, file type, and path
