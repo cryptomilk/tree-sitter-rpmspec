@@ -196,3 +196,24 @@ Macro Expression (expr builtin precedence)
       right: (macro_arithmetic_operator
         left: (integer)
         right: (integer)))))
+
+===============================================================================
+Macro Expression (ternary with concatenation)
+===============================================================================
+
+%[0%{?have_bpf}?"enabled":"disabled"]
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expression
+    (ternary_operator
+      condition: (macro_expression_concatenation
+        (integer)
+        (macro_expansion
+          (conditional_expansion
+            condition: (identifier))))
+      consequence: (quoted_string
+        (quoted_string_content))
+      alternative: (quoted_string
+        (quoted_string_content)))))

@@ -60,6 +60,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "macro_expression"
+        },
+        {
+          "type": "SYMBOL",
           "name": "preamble"
         },
         {
@@ -2206,6 +2210,10 @@
       "members": [
         {
           "type": "SYMBOL",
+          "name": "macro_expression_concatenation"
+        },
+        {
+          "type": "SYMBOL",
           "name": "version_literal"
         },
         {
@@ -2233,6 +2241,35 @@
           "name": "macro_expansion"
         }
       ]
+    },
+    "macro_expression_concatenation": {
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "integer"
+          },
+          {
+            "type": "REPEAT1",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_expansion"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_simple_expansion"
+                }
+              ]
+            }
+          }
+        ]
+      }
     },
     "macro_parenthesized_expression": {
       "type": "PREC",

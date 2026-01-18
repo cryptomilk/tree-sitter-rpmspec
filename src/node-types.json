@@ -120,6 +120,10 @@
         "named": true
       },
       {
+        "type": "macro_expression",
+        "named": true
+      },
+      {
         "type": "macro_parametric_expansion",
         "named": true
       },
@@ -1514,10 +1518,6 @@
             "named": true
           },
           {
-            "type": "macro_expression",
-            "named": true
-          },
-          {
             "type": "shell_content",
             "named": true
           }
@@ -1582,10 +1582,6 @@
             "named": true
           },
           {
-            "type": "macro_expression",
-            "named": true
-          },
-          {
             "type": "shell_content",
             "named": true
           }
@@ -1647,10 +1643,6 @@
           },
           {
             "type": "file",
-            "named": true
-          },
-          {
-            "type": "macro_expression",
             "named": true
           },
           {
@@ -1732,6 +1724,10 @@
             "named": true
           },
           {
+            "type": "macro_expression_concatenation",
+            "named": true
+          },
+          {
             "type": "macro_not_operator",
             "named": true
           },
@@ -1804,6 +1800,10 @@
             "named": true
           },
           {
+            "type": "macro_expression_concatenation",
+            "named": true
+          },
+          {
             "type": "macro_not_operator",
             "named": true
           },
@@ -1857,6 +1857,10 @@
           },
           {
             "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_expression_concatenation",
             "named": true
           },
           {
@@ -1929,6 +1933,10 @@
           },
           {
             "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_expression_concatenation",
             "named": true
           },
           {
@@ -2020,6 +2028,10 @@
         },
         {
           "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_expression_concatenation",
           "named": true
         },
         {
@@ -2154,6 +2166,10 @@
             "named": true
           },
           {
+            "type": "macro_expression_concatenation",
+            "named": true
+          },
+          {
             "type": "macro_not_operator",
             "named": true
           },
@@ -2254,6 +2270,10 @@
           "named": true
         },
         {
+          "type": "macro_expression_concatenation",
+          "named": true
+        },
+        {
           "type": "macro_not_operator",
           "named": true
         },
@@ -2275,6 +2295,29 @@
         },
         {
           "type": "version_literal",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "macro_expression_concatenation",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "integer",
+          "named": true
+        },
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
           "named": true
         }
       ]
@@ -2310,6 +2353,10 @@
           },
           {
             "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_expression_concatenation",
             "named": true
           },
           {
@@ -2446,6 +2493,10 @@
         },
         {
           "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_expression_concatenation",
           "named": true
         },
         {
@@ -3458,6 +3509,10 @@
             "named": true
           },
           {
+            "type": "macro_expression_concatenation",
+            "named": true
+          },
+          {
             "type": "macro_not_operator",
             "named": true
           },
@@ -3512,6 +3567,10 @@
             "named": true
           },
           {
+            "type": "macro_expression_concatenation",
+            "named": true
+          },
+          {
             "type": "macro_not_operator",
             "named": true
           },
@@ -3559,6 +3618,10 @@
           },
           {
             "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_expression_concatenation",
             "named": true
           },
           {

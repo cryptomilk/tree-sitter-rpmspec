@@ -141,6 +141,7 @@ module.exports = grammar({
                 $.macro_parametric_expansion, // %name [options] [arguments]
                 $.macro_simple_expansion, // %name - simple expansion
                 $.macro_shell_expansion, // %(shell command)
+                $.macro_expression, // %[expression]
                 $.preamble, // Name:, Version:, etc.
                 $.description, // %description section
                 $.package, // %package subsection
@@ -844,6 +845,7 @@ module.exports = grammar({
         // Includes version_literal which is only valid in %[...] expressions
         _macro_expression_primary: ($) =>
             choice(
+                $.macro_expression_concatenation, // 0%{?foo} - must be before integer
                 $.version_literal, // v"3:1.2-1"
                 $.quoted_string, // "string"
                 $.integer, // 123
@@ -851,6 +853,17 @@ module.exports = grammar({
                 $.macro_parenthesized_expression, // (expr)
                 $.macro_simple_expansion, // %name
                 $.macro_expansion // %{name}
+            ),
+
+        // Concatenation in macro expressions: 0%{?foo} pattern
+        // Common RPM idiom where 0 is prefixed to conditional macro
+        // Result is "0" if macro undefined, "01" (truthy) if defined
+        macro_expression_concatenation: ($) =>
+            prec.left(
+                seq(
+                    $.integer,
+                    repeat1(choice($.macro_expansion, $.macro_simple_expansion))
+                )
             ),
 
         // Macro-specific parenthesized expression
