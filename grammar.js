@@ -1972,43 +1972,87 @@ module.exports = grammar({
 
         ///////////////////////////////////////////////////////////////////////
         // Triggers (%triggerin, %triggerun, ...)
+        //
+        // Syntax: %trigger{un|in|postun} [[-n] <subpackage>] [-p <program>] -- <trigger>
+        //
+        // Examples:
+        //   %triggerun -- systemd < 256
+        //   %triggerin -n package -p /usr/bin/perl -- fileutils > 3.0, perl < 1.2
         ///////////////////////////////////////////////////////////////////////
 
         trigger: ($) =>
             prec.right(
                 seq(
-                    choice(
-                        '%triggerprein',
-                        '%triggerin',
-                        '%triggerun',
-                        '%triggerpostun'
+                    field(
+                        'type',
+                        choice(
+                            '%triggerprein',
+                            '%triggerin',
+                            '%triggerun',
+                            '%triggerpostun'
+                        )
                     ),
-                    optional(seq(optional('-n'), $._literal)),
+                    optional(field('subpackage', $.trigger_subpackage)),
+                    optional(field('interpreter', $.trigger_interpreter)),
+                    optional(field('condition', $.trigger_condition)),
                     token.immediate(NEWLINE),
                     optional($.shell_block)
                 )
             ),
 
+        // Trigger subpackage: [-n] <name>
+        trigger_subpackage: ($) => seq(optional('-n'), $._literal),
+
+        // Trigger interpreter: -p <program>
+        trigger_interpreter: ($) => seq('-p', $._literal),
+
+        // Trigger condition: -- <dependency_list>
+        trigger_condition: ($) => seq('--', $.dependency_list),
+
         ///////////////////////////////////////////////////////////////////////
         // File triggers (%filetriggerin, %filetriggerun, ...)
+        //
+        // Syntax: %file_trigger_tag [OPTIONS] -- PATHPREFIX...
+        //
+        // Options:
+        //   -n <subpackage>  - subpackage name
+        //   -p <program>     - interpreter program
+        //   -P <priority>    - trigger priority (default 1000000)
+        //
+        // Examples:
+        //   %filetriggerin -- /usr/lib /lib
+        //   %filetriggerin -P 20 -- /usr/lib
+        //   %transfiletriggerin -p /usr/bin/lua -- /usr/share/lua
         ///////////////////////////////////////////////////////////////////////
 
         file_trigger: ($) =>
             prec.right(
                 seq(
-                    choice(
-                        '%filetriggerin',
-                        '%filetriggerun',
-                        '%filetriggerpostun',
-                        '%transfiletriggerin',
-                        '%transfiletriggerun',
-                        '%transfiletriggerpostun'
+                    field(
+                        'type',
+                        choice(
+                            '%filetriggerin',
+                            '%filetriggerun',
+                            '%filetriggerpostun',
+                            '%transfiletriggerin',
+                            '%transfiletriggerun',
+                            '%transfiletriggerpostun'
+                        )
                     ),
-                    optional(seq(optional('-n'), $._literal)),
+                    optional(field('subpackage', $.trigger_subpackage)),
+                    optional(field('interpreter', $.trigger_interpreter)),
+                    optional(field('priority', $.file_trigger_priority)),
+                    optional(field('paths', $.file_trigger_paths)),
                     token.immediate(NEWLINE),
                     optional($.shell_block)
                 )
             ),
+
+        // File trigger priority: -P <number>
+        file_trigger_priority: ($) => seq('-P', $.integer),
+
+        // File trigger paths: -- <path>...
+        file_trigger_paths: ($) => seq('--', repeat1($._literal)),
 
         ///////////////////////////////////////////////////////////////////////
         // FILES SECTION - PACKAGE FILE LISTING

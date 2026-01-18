@@ -19,7 +19,8 @@ Filetriggerin Section (subpackage)
 
 (spec
   (file_trigger
-    (word)))
+    subpackage: (trigger_subpackage
+      (word))))
 
 ===============================================================================
 Filetriggerin Section (package)
@@ -31,7 +32,8 @@ Filetriggerin Section (package)
 
 (spec
   (file_trigger
-    (word)))
+    subpackage: (trigger_subpackage
+      (word))))
 
 ===============================================================================
 Filetriggerin Section (shell)
@@ -44,7 +46,8 @@ cat /dev/urandom
 
 (spec
   (file_trigger
-    (word)
+    subpackage: (trigger_subpackage
+      (word))
     (shell_block
       (shell_content))))
 
@@ -52,17 +55,14 @@ cat /dev/urandom
 Filetriggerin Section (with path patterns)
 ===============================================================================
 
-# FIXME Add support for -- or not?
-%filetriggerin -- /usr/bin/* /usr/sbin/*
+%filetriggerin -- /usr/bin /usr/sbin
 ldconfig
 
 -------------------------------------------------------------------------------
 
 (spec
-  (comment)
   (file_trigger
-    (concatenation
-      (word)
+    paths: (file_trigger_paths
       (word)
       (word))
     (shell_block
@@ -70,28 +70,34 @@ ldconfig
 
 ===============================================================================
 Filetriggerin Section (with priority)
-:skip
 ===============================================================================
 
-# TODO Add -P support
-%filetriggerin -P 1000 -- /etc/systemd/system/*
+%filetriggerin -P 1000 -- /etc/systemd/system
 systemctl daemon-reload
 
 -------------------------------------------------------------------------------
+
+(spec
+  (file_trigger
+    priority: (file_trigger_priority
+      (integer))
+    paths: (file_trigger_paths
+      (word))
+    (shell_block
+      (shell_content))))
 
 ===============================================================================
 Transfiletriggerin Section (with complex patterns)
 ===============================================================================
 
-%transfiletriggerin -- /usr/share/applications/*.desktop
+%transfiletriggerin -- /usr/share/applications
 update-desktop-database
 
 -------------------------------------------------------------------------------
 
 (spec
   (file_trigger
-    (concatenation
-      (word)
+    paths: (file_trigger_paths
       (word))
     (shell_block
       (shell_content))))
@@ -100,7 +106,7 @@ update-desktop-database
 Filetriggerun Section (with multiple patterns)
 ===============================================================================
 
-%filetriggerun -- /usr/lib*/gio/modules/* /usr/lib*/gdk-pixbuf-*/*/loaders/*
+%filetriggerun -- /usr/lib /usr/lib64
 gio-querymodules
 gdk-pixbuf-query-loaders
 
@@ -108,8 +114,7 @@ gdk-pixbuf-query-loaders
 
 (spec
   (file_trigger
-    (concatenation
-      (word)
+    paths: (file_trigger_paths
       (word)
       (word))
     (shell_block

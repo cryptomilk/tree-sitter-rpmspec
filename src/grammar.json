@@ -5704,23 +5704,43 @@
         "type": "SEQ",
         "members": [
           {
+            "type": "FIELD",
+            "name": "type",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "%triggerprein"
+                },
+                {
+                  "type": "STRING",
+                  "value": "%triggerin"
+                },
+                {
+                  "type": "STRING",
+                  "value": "%triggerun"
+                },
+                {
+                  "type": "STRING",
+                  "value": "%triggerpostun"
+                }
+              ]
+            }
+          },
+          {
             "type": "CHOICE",
             "members": [
               {
-                "type": "STRING",
-                "value": "%triggerprein"
+                "type": "FIELD",
+                "name": "subpackage",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "trigger_subpackage"
+                }
               },
               {
-                "type": "STRING",
-                "value": "%triggerin"
-              },
-              {
-                "type": "STRING",
-                "value": "%triggerun"
-              },
-              {
-                "type": "STRING",
-                "value": "%triggerpostun"
+                "type": "BLANK"
               }
             ]
           },
@@ -5728,25 +5748,28 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "-n"
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_literal"
-                  }
-                ]
+                "type": "FIELD",
+                "name": "interpreter",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "trigger_interpreter"
+                }
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "condition",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "trigger_condition"
+                }
               },
               {
                 "type": "BLANK"
@@ -5775,6 +5798,53 @@
         ]
       }
     },
+    "trigger_subpackage": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-n"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_literal"
+        }
+      ]
+    },
+    "trigger_interpreter": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "-p"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_literal"
+        }
+      ]
+    },
+    "trigger_condition": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "--"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "dependency_list"
+        }
+      ]
+    },
     "file_trigger": {
       "type": "PREC_RIGHT",
       "value": 0,
@@ -5782,31 +5852,51 @@
         "type": "SEQ",
         "members": [
           {
+            "type": "FIELD",
+            "name": "type",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "%filetriggerin"
+                },
+                {
+                  "type": "STRING",
+                  "value": "%filetriggerun"
+                },
+                {
+                  "type": "STRING",
+                  "value": "%filetriggerpostun"
+                },
+                {
+                  "type": "STRING",
+                  "value": "%transfiletriggerin"
+                },
+                {
+                  "type": "STRING",
+                  "value": "%transfiletriggerun"
+                },
+                {
+                  "type": "STRING",
+                  "value": "%transfiletriggerpostun"
+                }
+              ]
+            }
+          },
+          {
             "type": "CHOICE",
             "members": [
               {
-                "type": "STRING",
-                "value": "%filetriggerin"
+                "type": "FIELD",
+                "name": "subpackage",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "trigger_subpackage"
+                }
               },
               {
-                "type": "STRING",
-                "value": "%filetriggerun"
-              },
-              {
-                "type": "STRING",
-                "value": "%filetriggerpostun"
-              },
-              {
-                "type": "STRING",
-                "value": "%transfiletriggerin"
-              },
-              {
-                "type": "STRING",
-                "value": "%transfiletriggerun"
-              },
-              {
-                "type": "STRING",
-                "value": "%transfiletriggerpostun"
+                "type": "BLANK"
               }
             ]
           },
@@ -5814,25 +5904,44 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "-n"
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_literal"
-                  }
-                ]
+                "type": "FIELD",
+                "name": "interpreter",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "trigger_interpreter"
+                }
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "priority",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "file_trigger_priority"
+                }
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "paths",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "file_trigger_paths"
+                }
               },
               {
                 "type": "BLANK"
@@ -5860,6 +5969,35 @@
           }
         ]
       }
+    },
+    "file_trigger_priority": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "-P"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "integer"
+        }
+      ]
+    },
+    "file_trigger_paths": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "--"
+        },
+        {
+          "type": "REPEAT1",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_literal"
+          }
+        }
+      ]
     },
     "files": {
       "type": "PREC_RIGHT",

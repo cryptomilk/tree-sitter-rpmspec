@@ -19,7 +19,8 @@ Triggerin Section (subpackage)
 
 (spec
   (trigger
-    (word)))
+    subpackage: (trigger_subpackage
+      (word))))
 
 ===============================================================================
 Triggerin Section (package)
@@ -31,7 +32,8 @@ Triggerin Section (package)
 
 (spec
   (trigger
-    (word)))
+    subpackage: (trigger_subpackage
+      (word))))
 
 ===============================================================================
 Triggerin Section (shell)
@@ -44,6 +46,58 @@ cat /dev/urandom
 
 (spec
   (trigger
-    (word)
+    subpackage: (trigger_subpackage
+      (word))
+    (shell_block
+      (shell_content))))
+
+===============================================================================
+Triggerin Section (with version constraint)
+===============================================================================
+
+%triggerun -- systemd < 256
+
+-------------------------------------------------------------------------------
+
+(spec
+  (trigger
+    condition: (trigger_condition
+      (dependency_list
+        (dependency
+          name: (dependency_name
+            (word))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
+
+===============================================================================
+Triggerin Section (with subpackage and interpreter)
+===============================================================================
+
+%triggerin -n package -p /usr/bin/perl -- fileutils > 3.0, perl < 1.2
+print "I'm in my trigger!\n";
+
+-------------------------------------------------------------------------------
+
+(spec
+  (trigger
+    subpackage: (trigger_subpackage
+      (word))
+    interpreter: (trigger_interpreter
+      (word))
+    condition: (trigger_condition
+      (dependency_list
+        (dependency
+          name: (dependency_name
+            (word))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))
+        (dependency
+          name: (dependency_name
+            (word))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))
     (shell_block
       (shell_content))))
