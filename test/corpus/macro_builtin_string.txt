@@ -136,6 +136,20 @@ Macro Builtin String (expand macro expansion)
         (identifier)))))
 
 ===============================================================================
+Macro Builtin String (expand with escaped percent and special macros)
+===============================================================================
+
+%{expand:%%{?foo_%#:%%bar_%# baz}}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (expand_content
+      (expand_code))))
+
+===============================================================================
 Macro Builtin String (echo output)
 ===============================================================================
 

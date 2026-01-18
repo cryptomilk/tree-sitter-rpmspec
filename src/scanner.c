@@ -81,14 +81,6 @@ static inline bool is_identifier_char(int32_t c)
 }
 
 /**
- * @brief Check if character is a digit
- */
-static inline bool is_digit(int32_t c)
-{
-    return c >= '0' && c <= '9';
-}
-
-/**
  * @brief Skip leading whitespace characters
  *
  * Advances the lexer past any whitespace characters without including
@@ -542,13 +534,48 @@ static bool scan_expand_content(TSLexer *lexer)
         int32_t c = lexer->lookahead;
 
         if (c == '%') {
-            /* Potential macro start - stop and let grammar handle it */
-            break;
+            /* Mark position before % so we can stop here if needed */
+            lexer->mark_end(lexer);
+            advance(lexer);
+            if (lexer->eof(lexer)) {
+                /* Trailing % at EOF - include it */
+                lexer->mark_end(lexer);
+                has_content = true;
+                break;
+            }
+
+            int32_t next = lexer->lookahead;
+            if (next == '%' || next == '#' || next == '*') {
+                /* %%, %#, %* - consume as content (escaped or special macro) */
+                /* These will be re-evaluated after expand */
+                advance(lexer);
+                lexer->mark_end(lexer);
+                has_content = true;
+                continue;
+            } else if (next == '{') {
+                /* %{ - real macro expansion, stop BEFORE the % */
+                /* mark_end was called before %, so token ends there */
+                break;
+            } else if (isdigit(next)) {
+                /* %0-%9 - positional arg, consume as content */
+                while (isdigit(lexer->lookahead)) {
+                    advance(lexer);
+                }
+                lexer->mark_end(lexer);
+                has_content = true;
+                continue;
+            } else {
+                /* Other % sequences - include % and continue */
+                lexer->mark_end(lexer);
+                has_content = true;
+                continue;
+            }
         } else if (c == '{') {
             /* Nested opening brace - track depth */
             brace_depth++;
             has_content = true;
             advance(lexer);
+            lexer->mark_end(lexer);
         } else if (c == '}') {
             if (brace_depth == 0) {
                 /* This is the closing brace of %{expand:...} */
@@ -559,12 +586,17 @@ static bool scan_expand_content(TSLexer *lexer)
             brace_depth--;
             has_content = true;
             advance(lexer);
+            lexer->mark_end(lexer);
         } else {
             /* Any other character is part of the content */
             has_content = true;
             advance(lexer);
+            lexer->mark_end(lexer);
         }
     }
+
+    /* Note: mark_end is called inline after consuming each character/sequence.
+     * This ensures we don't overwrite the mark set before %{ when we break. */
 
     return has_content;
 }
@@ -701,12 +733,12 @@ static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
 
     default:
         /* Check for 0-9 (positional args) */
-        if (is_digit(c)) {
+        if (isdigit(c)) {
             if (!valid_symbols[SPECIAL_MACRO]) {
                 return false;
             }
             /* Consume all digits */
-            while (is_digit(lexer->lookahead)) {
+            while (isdigit(lexer->lookahead)) {
                 advance(lexer);
             }
             lexer->mark_end(lexer);

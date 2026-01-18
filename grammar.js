@@ -910,6 +910,8 @@ module.exports = grammar({
         // Only %{...} macros are parsed (not %name) to limit parser states
         // NOTE: macro_simple_expansion (%name) was removed because it caused
         // parser state overflow (>65535 states, uint16_t limit)
+        // The scanner handles %%, %#, %*, %0-9 as raw content since these
+        // will be re-evaluated after the expand macro runs.
         expand_content: ($) =>
             repeat1(
                 choice(
