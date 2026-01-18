@@ -6547,6 +6547,17 @@
         }
       }
     },
+    "shell_content": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -1,
+        "content": {
+          "type": "PATTERN",
+          "value": "[^%\\r\\n]+"
+        }
+      }
+    },
     "quoted_string": {
       "type": "SEQ",
       "members": [

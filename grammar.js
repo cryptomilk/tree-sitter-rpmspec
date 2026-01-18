@@ -2295,6 +2295,12 @@ module.exports = grammar({
         // Does not include quotes, backslashes, or newlines
         string_content: (_) => token(prec(-1, /([^%\\\r\n])+/)),
 
+        // Shell content: permissive raw text for shell script sections
+        // Stops at: %, newline
+        // Includes: quotes, backslashes, !, etc. - anything valid in shell
+        // Used in shell_block for %prep, %build, %install, etc.
+        shell_content: (_) => token(prec(-1, /[^%\r\n]+/)),
+
         // Quoted strings: explicit string literals with macro expansion
         // Allows macro expansion within quotes: "prefix-%{version}-suffix"
         // Used when whitespace or special characters need to be preserved
