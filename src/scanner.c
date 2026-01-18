@@ -531,9 +531,8 @@ static bool scan_expand_content(TSLexer *lexer)
     bool has_content = false;
 
     while (!lexer->eof(lexer)) {
-        int32_t c = lexer->lookahead;
-
-        if (c == '%') {
+        switch (lexer->lookahead) {
+        case '%':
             /* Mark position before % so we can stop here if needed */
             lexer->mark_end(lexer);
             advance(lexer);
@@ -541,22 +540,33 @@ static bool scan_expand_content(TSLexer *lexer)
                 /* Trailing % at EOF - include it */
                 lexer->mark_end(lexer);
                 has_content = true;
-                break;
+                goto done;
             }
 
-            int32_t next = lexer->lookahead;
-            if (next == '%' || next == '#' || next == '*') {
+            switch (lexer->lookahead) {
+            case '%':
+            case '#':
+            case '*':
                 /* %%, %#, %* - consume as content (escaped or special macro) */
                 /* These will be re-evaluated after expand */
                 advance(lexer);
                 lexer->mark_end(lexer);
                 has_content = true;
                 continue;
-            } else if (next == '{') {
+            case '{':
                 /* %{ - real macro expansion, stop BEFORE the % */
                 /* mark_end was called before %, so token ends there */
-                break;
-            } else if (isdigit(next)) {
+                goto done;
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
                 /* %0-%9 - positional arg, consume as content */
                 while (isdigit(lexer->lookahead)) {
                     advance(lexer);
@@ -564,36 +574,41 @@ static bool scan_expand_content(TSLexer *lexer)
                 lexer->mark_end(lexer);
                 has_content = true;
                 continue;
-            } else {
+            default:
                 /* Other % sequences - include % and continue */
                 lexer->mark_end(lexer);
                 has_content = true;
                 continue;
             }
-        } else if (c == '{') {
+        case '{':
             /* Nested opening brace - track depth */
             brace_depth++;
             has_content = true;
             advance(lexer);
             lexer->mark_end(lexer);
-        } else if (c == '}') {
+            continue;
+        case '}':
             if (brace_depth == 0) {
                 /* This is the closing brace of %{expand:...} */
                 /* Don't consume it - let the grammar handle it */
-                break;
+                goto done;
             }
             /* Closing a nested brace */
             brace_depth--;
             has_content = true;
             advance(lexer);
             lexer->mark_end(lexer);
-        } else {
+            continue;
+        default:
             /* Any other character is part of the content */
             has_content = true;
             advance(lexer);
             lexer->mark_end(lexer);
+            continue;
         }
     }
+
+done:
 
     /* Note: mark_end is called inline after consuming each character/sequence.
      * This ensures we don't overwrite the mark set before %{ when we break. */
@@ -623,33 +638,36 @@ static bool scan_shell_content(TSLexer *lexer)
     bool has_content = false;
 
     while (!lexer->eof(lexer)) {
-        int32_t c = lexer->lookahead;
-
-        if (c == '%') {
+        switch (lexer->lookahead) {
+        case '%':
             /* Potential macro start - stop and let grammar handle it */
-            break;
-        } else if (c == '(') {
+            goto done;
+        case '(':
             /* Nested opening paren - track depth */
             paren_depth++;
             has_content = true;
             advance(lexer);
-        } else if (c == ')') {
+            continue;
+        case ')':
             if (paren_depth == 0) {
                 /* This is the closing paren of %(...) */
                 /* Don't consume it - let the grammar handle it */
-                break;
+                goto done;
             }
             /* Closing a nested paren */
             paren_depth--;
             has_content = true;
             advance(lexer);
-        } else {
+            continue;
+        default:
             /* Any other character is part of the content */
             has_content = true;
             advance(lexer);
+            continue;
         }
     }
 
+done:
     return has_content;
 }
 
