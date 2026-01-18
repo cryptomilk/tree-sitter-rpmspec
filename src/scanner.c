@@ -336,7 +336,8 @@ static inline void rpmspec_deserialize(struct Scanner *scanner,
     if (size + sizeof(uint32_t) > length) {
         return;
     }
-    uint32_t stack_size = *(uint32_t *)(buffer + size);
+    uint32_t stack_size;
+    memcpy(&stack_size, buffer + size, sizeof(stack_size));
     size += sizeof(uint32_t);
 
     /* Clear existing stack */
@@ -348,31 +349,11 @@ static inline void rpmspec_deserialize(struct Scanner *scanner,
             return;
         }
 
-        struct Literal literal = *(struct Literal *)(buffer + size);
+        struct Literal literal;
+        memcpy(&literal, buffer + size, sizeof(literal));
         array_push(&scanner->literal_stack, literal);
         size += sizeof(struct Literal);
     }
-}
-
-/**
- * @brief Attempts to parse the start of a macro expression
- *
- * This function checks if the current position in the lexer represents the
- * beginning of a macro expression (%{, %[, or %() and sets up the literal
- * context accordingly.
- *
- * @param scanner The scanner instance
- * @param lexer The Tree-sitter lexer instance
- * @param literal The literal context to populate if a macro is found
- * @param valid_symbols Array indicating which token types are valid at this
- * position
- * @return true if a macro start was successfully parsed, false otherwise
- */
-static inline bool rpmspec_macro_start(struct Scanner *scanner,
-                                       TSLexer *lexer,
-                                       struct Literal *literal,
-                                       const bool *valid_symbols)
-{
 }
 
 /**
@@ -676,7 +657,7 @@ rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
  *
  * @return A pointer to the newly created scanner instance
  */
-void *tree_sitter_rpmspec_external_scanner_create()
+void *tree_sitter_rpmspec_external_scanner_create(void)
 {
     struct Scanner *scanner = ts_calloc(1, sizeof(struct Scanner));
 

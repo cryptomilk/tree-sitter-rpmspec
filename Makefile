@@ -3,7 +3,7 @@ TS ?= tree-sitter
 default: build
 
 configure:
-	cmake -B build
+	cmake -B build -DPICKY_DEVELOPER=ON
 
 build:
 	$(TS) generate
