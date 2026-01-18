@@ -11,14 +11,11 @@ cp %{S:0} .
   (build_scriptlet
     (section_name)
     (shell_block
-      (string
-        (string_content))
-      (string
-        (macro_expansion
-          (macro_source)
-          argument: (integer)))
-      (string
-        (string_content)))))
+      (shell_content)
+      (macro_expansion
+        (macro_source)
+        argument: (integer))
+      (shell_content))))
 
 ===============================================================================
 Simple Macro Expansion (Patch colon syntax P:1)
@@ -33,10 +30,9 @@ Simple Macro Expansion (Patch colon syntax P:1)
   (build_scriptlet
     (section_name)
     (shell_block
-      (string
-        (macro_expansion
-          (macro_patch)
-          argument: (integer))))))
+      (macro_expansion
+        (macro_patch)
+        argument: (integer)))))
 
 ===============================================================================
 Simple Macro Expansion (Source colon syntax with larger index)
@@ -51,14 +47,11 @@ cp %{S:123} .
   (build_scriptlet
     (section_name)
     (shell_block
-      (string
-        (string_content))
-      (string
-        (macro_expansion
-          (macro_source)
-          argument: (integer)))
-      (string
-        (string_content)))))
+      (shell_content)
+      (macro_expansion
+        (macro_source)
+        argument: (integer))
+      (shell_content))))
 
 ===============================================================================
 Simple Macro Expansion (Custom macro name in tag)

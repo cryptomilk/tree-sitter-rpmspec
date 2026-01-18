@@ -68,9 +68,6 @@ const BLANK = /( |\t)+/; // One or more spaces or tabs
 module.exports = grammar({
     name: 'rpmspec',
 
-    // Grammar conflicts resolution
-    conflicts: ($) => [[$.shell_block, $.string]],
-
     // Tokens that may appear anywhere in the language and are typically ignored
     // during parsing (whitespace, comments, line continuations)
     extras: ($) => [
@@ -1065,7 +1062,8 @@ module.exports = grammar({
                     prec(-1, $._simple_statements),
                     $._compound_statements,
                     $.defattr,
-                    $.file
+                    $.file,
+                    prec(-1, $.shell_content) // Shell content in scriptlet conditionals
                 )
             ),
 
@@ -1664,18 +1662,22 @@ module.exports = grammar({
         // Shell block: executable shell script content in scriptlets
         // Can contain shell commands, macro expansions, and conditional blocks
         // Right precedence allows greedy matching of script content
+        // Uses shell_content instead of string for permissive shell parsing
         shell_block: ($) =>
             prec.right(
                 repeat1(
                     choice(
                         $._compound_statements, // Conditional blocks (%if, %ifarch)
-                        $.macro_expansion, // Macro expansions %{...}
                         $.macro_definition, // Inline %define statements
                         $.macro_undefinition, // Inline %undefine statements
                         $.setup_macro, // %setup with specific option support
                         $.patch_macro, // %patch with specific option support
-                        $.macro_simple_expansion, // %name - simple expansion
-                        prec(-1, $.string) // Raw shell command text
+                        $.macro_parametric_expansion, // %name args (consumes to EOL)
+                        $.macro_expansion, // %{...}
+                        $.macro_simple_expansion, // %name
+                        $.macro_shell_expansion, // %(shell)
+                        $.macro_expression, // %[expr]
+                        prec(-1, $.shell_content) // Raw shell text (permissive)
                     )
                 )
             ),

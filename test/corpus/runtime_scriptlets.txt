@@ -46,8 +46,7 @@ cat /dev/urandom
   (runtime_scriptlet
     (word)
     (shell_block
-      (string
-        (string_content)))))
+      (shell_content))))
 
 ===============================================================================
 Pre Section (custom interpreter)

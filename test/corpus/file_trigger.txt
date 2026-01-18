@@ -46,8 +46,7 @@ cat /dev/urandom
   (file_trigger
     (word)
     (shell_block
-      (string
-        (string_content)))))
+      (shell_content))))
 
 ===============================================================================
 Filetriggerin Section (with path patterns)
@@ -67,8 +66,7 @@ ldconfig
       (word)
       (word))
     (shell_block
-      (string
-        (string_content)))))
+      (shell_content))))
 
 ===============================================================================
 Filetriggerin Section (with priority)
@@ -96,8 +94,7 @@ update-desktop-database
       (word)
       (word))
     (shell_block
-      (string
-        (string_content)))))
+      (shell_content))))
 
 ===============================================================================
 Filetriggerun Section (with multiple patterns)
@@ -116,7 +113,5 @@ gdk-pixbuf-query-loaders
       (word)
       (word))
     (shell_block
-      (string
-        (string_content))
-      (string
-        (string_content)))))
+      (shell_content)
+      (shell_content))))

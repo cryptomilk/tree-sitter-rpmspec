@@ -2839,6 +2839,14 @@
           {
             "type": "SYMBOL",
             "name": "file"
+          },
+          {
+            "type": "PREC",
+            "value": -1,
+            "content": {
+              "type": "SYMBOL",
+              "name": "shell_content"
+            }
           }
         ]
       }
@@ -4668,10 +4676,6 @@
             },
             {
               "type": "SYMBOL",
-              "name": "macro_expansion"
-            },
-            {
-              "type": "SYMBOL",
               "name": "macro_definition"
             },
             {
@@ -4688,14 +4692,30 @@
             },
             {
               "type": "SYMBOL",
+              "name": "macro_parametric_expansion"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "macro_expansion"
+            },
+            {
+              "type": "SYMBOL",
               "name": "macro_simple_expansion"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "macro_shell_expansion"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "macro_expression"
             },
             {
               "type": "PREC",
               "value": -1,
               "content": {
                 "type": "SYMBOL",
-                "name": "string"
+                "name": "shell_content"
               }
             }
           ]
@@ -6655,12 +6675,7 @@
       "name": "line_continuation"
     }
   ],
-  "conflicts": [
-    [
-      "shell_block",
-      "string"
-    ]
-  ],
+  "conflicts": [],
   "precedences": [],
   "externals": [
     {

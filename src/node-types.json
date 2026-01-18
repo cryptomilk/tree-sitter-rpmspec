@@ -1212,6 +1212,10 @@
           {
             "type": "file",
             "named": true
+          },
+          {
+            "type": "shell_content",
+            "named": true
           }
         ]
       }
@@ -1254,6 +1258,10 @@
           {
             "type": "file",
             "named": true
+          },
+          {
+            "type": "shell_content",
+            "named": true
           }
         ]
       }
@@ -1290,6 +1298,10 @@
           {
             "type": "file",
             "named": true
+          },
+          {
+            "type": "shell_content",
+            "named": true
           }
         ]
       }
@@ -1317,6 +1329,10 @@
           },
           {
             "type": "file",
+            "named": true
+          },
+          {
+            "type": "shell_content",
             "named": true
           }
         ]
@@ -1504,6 +1520,10 @@
           {
             "type": "file",
             "named": true
+          },
+          {
+            "type": "shell_content",
+            "named": true
           }
         ]
       }
@@ -1556,6 +1576,10 @@
           {
             "type": "file",
             "named": true
+          },
+          {
+            "type": "shell_content",
+            "named": true
           }
         ]
       }
@@ -1607,6 +1631,10 @@
           },
           {
             "type": "file",
+            "named": true
+          },
+          {
+            "type": "shell_content",
             "named": true
           }
         ]
@@ -2912,6 +2940,18 @@
           "named": true
         },
         {
+          "type": "macro_expression",
+          "named": true
+        },
+        {
+          "type": "macro_parametric_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_shell_expansion",
+          "named": true
+        },
+        {
           "type": "macro_simple_expansion",
           "named": true
         },
@@ -2928,7 +2968,7 @@
           "named": true
         },
         {
-          "type": "string",
+          "type": "shell_content",
           "named": true
         }
       ]
@@ -4074,6 +4114,10 @@
   },
   {
     "type": "shell_code",
+    "named": true
+  },
+  {
+    "type": "shell_content",
     "named": true
   },
   {

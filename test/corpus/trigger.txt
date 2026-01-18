@@ -46,5 +46,4 @@ cat /dev/urandom
   (trigger
     (word)
     (shell_block
-      (string
-        (string_content)))))
+      (shell_content))))

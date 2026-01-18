@@ -164,8 +164,8 @@ static const char *const KEYWORDS[] = {
     /* Special macros handled by grammar */
     "setup",
     "patch",
-    "autosetup",
-    "autopatch",
+    /* Note: autosetup and autopatch are NOT keywords - they are handled
+     * by macro_parametric_expansion as regular parametric macros */
     /* File directives */
     "defattr",
     "attr",
