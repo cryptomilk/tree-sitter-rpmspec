@@ -101,11 +101,28 @@ static inline void skip_whitespace(TSLexer *lexer)
 }
 
 /**
+ * @brief Check if identifier matches a literal string
+ *
+ * Compares a length-prefixed string against a null-terminated literal.
+ * More readable than the raw (len == X && strncmp(...) == 0) pattern.
+ *
+ * @param literal The null-terminated string to compare against
+ * @param id The identifier buffer (not null-terminated)
+ * @param len Length of the identifier
+ * @return true if they match, false otherwise
+ */
+static inline bool strequal(const char *literal, const char *id, size_t len)
+{
+    size_t lit_len = strlen(literal);
+    return len == lit_len && strncmp(id, literal, lit_len) == 0;
+}
+
+/**
  * @brief Check if identifier is "nil" (special macro)
  */
 static inline bool is_nil(const char *id, size_t len)
 {
-    return len == 3 && strncmp(id, "nil", 3) == 0;
+    return strequal("nil", id, len);
 }
 
 /**
@@ -362,7 +379,7 @@ static bool lookahead_finds_section_keyword(TSLexer *lexer)
 
             if (id_len > 0) {
                 /* Check for %endif (end of conditional) */
-                if (id_len == 5 && strncmp(id_buf, "endif", 5) == 0) {
+                if (strequal("endif", id_buf, id_len)) {
                     nesting--;
                     if (nesting == 0) {
                         /* Found matching %endif - no section keywords found */
@@ -370,11 +387,11 @@ static bool lookahead_finds_section_keyword(TSLexer *lexer)
                     }
                 }
                 /* Check for nested %if/%ifarch/%ifos */
-                else if ((id_len == 2 && strncmp(id_buf, "if", 2) == 0) ||
-                         (id_len == 6 && strncmp(id_buf, "ifarch", 6) == 0) ||
-                         (id_len == 7 && strncmp(id_buf, "ifnarch", 7) == 0) ||
-                         (id_len == 4 && strncmp(id_buf, "ifos", 4) == 0) ||
-                         (id_len == 5 && strncmp(id_buf, "ifnos", 5) == 0)) {
+                else if (strequal("if", id_buf, id_len) ||
+                         strequal("ifarch", id_buf, id_len) ||
+                         strequal("ifnarch", id_buf, id_len) ||
+                         strequal("ifos", id_buf, id_len) ||
+                         strequal("ifnos", id_buf, id_len)) {
                     nesting++;
                 }
                 /* Check for section keywords */
@@ -902,39 +919,35 @@ static bool scan_conditional(TSLexer *lexer, const bool *valid_symbols)
     bool shell_valid;
     bool files_valid;
 
-    if ((id_len == 2 && strncmp(id_buf, "if", 2) == 0) && any_if_valid) {
+    if (strequal("if", id_buf, id_len) && any_if_valid) {
         top_token = TOP_LEVEL_IF;
         shell_token = SHELL_IF;
         files_token = FILES_IF;
         top_valid = top_if_valid;
         shell_valid = shell_if_valid;
         files_valid = files_if_valid;
-    } else if ((id_len == 6 && strncmp(id_buf, "ifarch", 6) == 0) &&
-               any_ifarch_valid) {
+    } else if (strequal("ifarch", id_buf, id_len) && any_ifarch_valid) {
         top_token = TOP_LEVEL_IFARCH;
         shell_token = SHELL_IFARCH;
         files_token = FILES_IFARCH;
         top_valid = top_ifarch_valid;
         shell_valid = shell_ifarch_valid;
         files_valid = files_ifarch_valid;
-    } else if ((id_len == 7 && strncmp(id_buf, "ifnarch", 7) == 0) &&
-               any_ifnarch_valid) {
+    } else if (strequal("ifnarch", id_buf, id_len) && any_ifnarch_valid) {
         top_token = TOP_LEVEL_IFNARCH;
         shell_token = SHELL_IFNARCH;
         files_token = FILES_IFNARCH;
         top_valid = top_ifnarch_valid;
         shell_valid = shell_ifnarch_valid;
         files_valid = files_ifnarch_valid;
-    } else if ((id_len == 4 && strncmp(id_buf, "ifos", 4) == 0) &&
-               any_ifos_valid) {
+    } else if (strequal("ifos", id_buf, id_len) && any_ifos_valid) {
         top_token = TOP_LEVEL_IFOS;
         shell_token = SHELL_IFOS;
         files_token = FILES_IFOS;
         top_valid = top_ifos_valid;
         shell_valid = shell_ifos_valid;
         files_valid = files_ifos_valid;
-    } else if ((id_len == 5 && strncmp(id_buf, "ifnos", 5) == 0) &&
-               any_ifnos_valid) {
+    } else if (strequal("ifnos", id_buf, id_len) && any_ifnos_valid) {
         top_token = TOP_LEVEL_IFNOS;
         shell_token = SHELL_IFNOS;
         files_token = FILES_IFNOS;
