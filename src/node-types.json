@@ -2692,26 +2692,6 @@
     }
   },
   {
-    "type": "macro_option",
-    "named": true,
-    "fields": {
-      "value": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "_primary_expression",
-            "named": true
-          },
-          {
-            "type": "concatenation",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "macro_parametric_expansion",
     "named": true,
     "fields": {
@@ -4837,6 +4817,10 @@
   {
     "type": "lua",
     "named": false
+  },
+  {
+    "type": "macro_option",
+    "named": true
   },
   {
     "type": "macro_value_text",

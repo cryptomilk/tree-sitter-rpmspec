@@ -161,43 +161,47 @@
     "line_continuation": {
       "type": "TOKEN",
       "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "\\"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "\r"
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "\n"
-                  }
-                ]
-              },
-              {
-                "type": "STRING",
-                "value": "\u0000"
-              }
-            ]
-          }
-        ]
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "\\"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": "\r"
+                        },
+                        {
+                          "type": "BLANK"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "\n"
+                    }
+                  ]
+                },
+                {
+                  "type": "STRING",
+                  "value": "\u0000"
+                }
+              ]
+            }
+          ]
+        }
       }
     },
     "identifier": {
@@ -519,73 +523,14 @@
       ]
     },
     "macro_option": {
-      "type": "PREC_LEFT",
-      "value": 0,
+      "type": "TOKEN",
       "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "-"
-                },
-                {
-                  "type": "PATTERN",
-                  "value": "[a-zA-Z]"
-                },
-                {
-                  "type": "PATTERN",
-                  "value": "[a-zA-Z0-9_-]+"
-                }
-              ]
-            }
-          },
-          {
-            "type": "TOKEN",
-            "content": {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "-"
-                },
-                {
-                  "type": "PATTERN",
-                  "value": "[a-zA-Z]"
-                }
-              ]
-            }
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "--"
-              },
-              {
-                "type": "PATTERN",
-                "value": "[a-zA-Z][a-zA-Z0-9_-]*"
-              },
-              {
-                "type": "STRING",
-                "value": "="
-              },
-              {
-                "type": "FIELD",
-                "name": "value",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_macro_argument"
-                }
-              }
-            ]
-          }
-        ]
+        "type": "PREC",
+        "value": 2,
+        "content": {
+          "type": "PATTERN",
+          "value": "-[a-zA-Z]"
+        }
       }
     },
     "_special_macro_name": {
@@ -8124,7 +8069,7 @@
       "type": "TOKEN",
       "content": {
         "type": "PREC",
-        "value": 0,
+        "value": -1,
         "content": {
           "type": "PATTERN",
           "value": "[^%\\r\\n]+"

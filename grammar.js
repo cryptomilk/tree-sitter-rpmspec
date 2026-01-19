@@ -195,11 +195,14 @@ module.exports = grammar({
         // Line continuation: backslash at end of line
         line_continuation: (_) =>
             token(
-                seq(
-                    '\\',
-                    choice(
-                        seq(optional('\r'), '\n'), // Backslash-newline
-                        '\0' // Backslash-null (rare)
+                prec(
+                    1,
+                    seq(
+                        '\\',
+                        choice(
+                            seq(optional('\r'), '\n'), // Backslash-newline
+                            '\0' // Backslash-null (rare)
+                        )
                     )
                 )
             ),
@@ -498,28 +501,6 @@ module.exports = grammar({
         macro_define: ($) => choice('define', 'global'),
 
         macro_undefine: ($) => 'undefine',
-
-        // Macro options: short options with optional values
-        // Supports: -x, -p VALUE, --long-option=VALUE
-        macro_option: ($) =>
-            prec.left(
-                choice(
-                    // Short option with immediate value: -p1
-                    token(seq('-', /[a-zA-Z]/, /[a-zA-Z0-9_-]+/)),
-                    // Short option without value: -x
-                    token(seq('-', /[a-zA-Z]/)),
-                    // Long option with equals: --option=value
-                    seq(
-                        '--',
-                        /[a-zA-Z][a-zA-Z0-9_-]*/,
-                        '=',
-                        field('value', $._macro_argument)
-                    )
-                    // Separator: --
-                    // TODO: This doesn't work yet
-                    // token('--')
-                )
-            ),
 
         // Macro arguments: values that can be passed to parametric macros
         // Excludes newlines to stop parsing at line end
@@ -2708,7 +2689,7 @@ module.exports = grammar({
         // Stops at: %, newline
         // Includes: quotes, backslashes, !, etc. - anything valid in shell
         // Used in shell_block for %prep, %build, %install, etc.
-        shell_content: (_) => token(prec(0, /[^%\r\n]+/)),
+        shell_content: (_) => token(prec(-1, /[^%\r\n]+/)),
 
         // Quoted strings: explicit string literals with macro expansion
         // Allows macro expansion within quotes: "prefix-%{version}-suffix"
