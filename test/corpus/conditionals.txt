@@ -563,3 +563,40 @@ make test
         (macro_simple_expansion
           (simple_macro))
         (shell_content)))))
+
+===============================================================================
+Conditionals (%if with nested %files sections)
+===============================================================================
+
+%if %{with feature_x}
+%files x
+/usr/bin/x
+
+%if %{with feature_y}
+%files y
+/usr/bin/y
+%endif
+
+%endif
+
+-------------------------------------------------------------------------------
+
+(spec
+  (if_statement
+    condition: (with_operator
+      (identifier))
+    consequence: (files
+      (section_name)
+      (word)
+      (file
+        (string
+          (string_content)))
+      (if_statement
+        condition: (with_operator
+          (identifier))
+        consequence: (files
+          (section_name)
+          (word)
+          (file
+            (string
+              (string_content))))))))

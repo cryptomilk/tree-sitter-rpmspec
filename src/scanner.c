@@ -59,6 +59,12 @@ enum TokenType {
     SHELL_IFOS,       /**< %ifos inside shell section */
     TOP_LEVEL_IFNOS,  /**< %ifnos at top-level */
     SHELL_IFNOS,      /**< %ifnos inside shell section */
+    /* Files section context tokens */
+    FILES_IF,         /**< %if inside %files section */
+    FILES_IFARCH,     /**< %ifarch inside %files section */
+    FILES_IFNARCH,    /**< %ifnarch inside %files section */
+    FILES_IFOS,       /**< %ifos inside %files section */
+    FILES_IFNOS,      /**< %ifnos inside %files section */
     /* Context-specific tokens - only valid in specific macro contexts */
     EXPAND_CODE,      /**< Raw text inside %{expand:...} with balanced braces */
     SHELL_CODE        /**< Raw text inside %(...) with balanced parentheses */
@@ -838,20 +844,25 @@ static bool scan_conditional(TSLexer *lexer, const bool *valid_symbols)
     /* Check if any conditional tokens are valid */
     bool top_if_valid = valid_symbols[TOP_LEVEL_IF];
     bool shell_if_valid = valid_symbols[SHELL_IF];
+    bool files_if_valid = valid_symbols[FILES_IF];
     bool top_ifarch_valid = valid_symbols[TOP_LEVEL_IFARCH];
     bool shell_ifarch_valid = valid_symbols[SHELL_IFARCH];
+    bool files_ifarch_valid = valid_symbols[FILES_IFARCH];
     bool top_ifnarch_valid = valid_symbols[TOP_LEVEL_IFNARCH];
     bool shell_ifnarch_valid = valid_symbols[SHELL_IFNARCH];
+    bool files_ifnarch_valid = valid_symbols[FILES_IFNARCH];
     bool top_ifos_valid = valid_symbols[TOP_LEVEL_IFOS];
     bool shell_ifos_valid = valid_symbols[SHELL_IFOS];
+    bool files_ifos_valid = valid_symbols[FILES_IFOS];
     bool top_ifnos_valid = valid_symbols[TOP_LEVEL_IFNOS];
     bool shell_ifnos_valid = valid_symbols[SHELL_IFNOS];
+    bool files_ifnos_valid = valid_symbols[FILES_IFNOS];
 
-    bool any_if_valid = top_if_valid || shell_if_valid;
-    bool any_ifarch_valid = top_ifarch_valid || shell_ifarch_valid;
-    bool any_ifnarch_valid = top_ifnarch_valid || shell_ifnarch_valid;
-    bool any_ifos_valid = top_ifos_valid || shell_ifos_valid;
-    bool any_ifnos_valid = top_ifnos_valid || shell_ifnos_valid;
+    bool any_if_valid = top_if_valid || shell_if_valid || files_if_valid;
+    bool any_ifarch_valid = top_ifarch_valid || shell_ifarch_valid || files_ifarch_valid;
+    bool any_ifnarch_valid = top_ifnarch_valid || shell_ifnarch_valid || files_ifnarch_valid;
+    bool any_ifos_valid = top_ifos_valid || shell_ifos_valid || files_ifos_valid;
+    bool any_ifnos_valid = top_ifnos_valid || shell_ifnos_valid || files_ifnos_valid;
 
     if (!any_if_valid && !any_ifarch_valid && !any_ifnarch_valid &&
         !any_ifos_valid && !any_ifnos_valid) {
@@ -886,38 +897,50 @@ static bool scan_conditional(TSLexer *lexer, const bool *valid_symbols)
     /* Determine the keyword type and which tokens are valid for it */
     enum TokenType top_token;
     enum TokenType shell_token;
+    enum TokenType files_token;
     bool top_valid;
     bool shell_valid;
+    bool files_valid;
 
     if ((id_len == 2 && strncmp(id_buf, "if", 2) == 0) && any_if_valid) {
         top_token = TOP_LEVEL_IF;
         shell_token = SHELL_IF;
+        files_token = FILES_IF;
         top_valid = top_if_valid;
         shell_valid = shell_if_valid;
+        files_valid = files_if_valid;
     } else if ((id_len == 6 && strncmp(id_buf, "ifarch", 6) == 0) &&
                any_ifarch_valid) {
         top_token = TOP_LEVEL_IFARCH;
         shell_token = SHELL_IFARCH;
+        files_token = FILES_IFARCH;
         top_valid = top_ifarch_valid;
         shell_valid = shell_ifarch_valid;
+        files_valid = files_ifarch_valid;
     } else if ((id_len == 7 && strncmp(id_buf, "ifnarch", 7) == 0) &&
                any_ifnarch_valid) {
         top_token = TOP_LEVEL_IFNARCH;
         shell_token = SHELL_IFNARCH;
+        files_token = FILES_IFNARCH;
         top_valid = top_ifnarch_valid;
         shell_valid = shell_ifnarch_valid;
+        files_valid = files_ifnarch_valid;
     } else if ((id_len == 4 && strncmp(id_buf, "ifos", 4) == 0) &&
                any_ifos_valid) {
         top_token = TOP_LEVEL_IFOS;
         shell_token = SHELL_IFOS;
+        files_token = FILES_IFOS;
         top_valid = top_ifos_valid;
         shell_valid = shell_ifos_valid;
+        files_valid = files_ifos_valid;
     } else if ((id_len == 5 && strncmp(id_buf, "ifnos", 5) == 0) &&
                any_ifnos_valid) {
         top_token = TOP_LEVEL_IFNOS;
         shell_token = SHELL_IFNOS;
+        files_token = FILES_IFNOS;
         top_valid = top_ifnos_valid;
         shell_valid = shell_ifnos_valid;
+        files_valid = files_ifnos_valid;
     } else {
         /* Not a conditional keyword we handle */
         return false;
@@ -926,19 +949,52 @@ static bool scan_conditional(TSLexer *lexer, const bool *valid_symbols)
     lexer->mark_end(lexer);
 
     /* Decide which token to emit based on what's valid */
-    if (top_valid && !shell_valid) {
+    /*
+     * Priority order for context determination:
+     * 1. Files context - most specific, if files token is valid, we're in %files
+     * 2. Shell context (exclusive) - if only shell is valid
+     * 3. Top-level context (exclusive) - if only top-level is valid
+     * 4. Ambiguous (top + shell) - use lookahead to decide
+     *
+     * For files and shell contexts, we need lookahead to check if the
+     * conditional body contains section keywords. If it does, the conditional
+     * should be parsed as top-level to allow new sections inside it.
+     */
+    if (files_valid && !top_valid && !shell_valid) {
+        /* Only files is valid - check for section keywords */
+        if (lookahead_finds_section_keyword(lexer)) {
+            /* Body contains sections - but we can't emit top_token here
+             * since top_valid is false. This is a grammar ambiguity.
+             * Fall back to files_token and let grammar handle it. */
+            lexer->result_symbol = files_token;
+        } else {
+            lexer->result_symbol = files_token;
+        }
+        return true;
+    }
+
+    if (files_valid && top_valid) {
+        /* Both files and top are valid - prefer files context.
+         * The grammar's _files_conditional_content can handle nested
+         * %files sections, so we don't need lookahead to switch to top-level.
+         * This allows file entries before nested sections to parse correctly. */
+        lexer->result_symbol = files_token;
+        return true;
+    }
+
+    if (top_valid && !shell_valid && !files_valid) {
         /* Only top-level is valid - we're at top-level context */
         lexer->result_symbol = top_token;
         return true;
     }
 
-    if (shell_valid && !top_valid) {
+    if (shell_valid && !top_valid && !files_valid) {
         /* Only shell is valid - we're in pure shell context */
         lexer->result_symbol = shell_token;
         return true;
     }
 
-    /* Both are valid - need lookahead to decide */
+    /* Both top and shell are valid - need lookahead to decide */
     if (lookahead_finds_section_keyword(lexer)) {
         /* Body contains sections - this is a top-level conditional */
         lexer->result_symbol = top_token;

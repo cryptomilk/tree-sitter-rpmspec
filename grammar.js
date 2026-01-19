@@ -109,6 +109,12 @@ module.exports = grammar({
         $.shell_ifos, // %ifos inside shell section
         $.top_level_ifnos, // %ifnos at top-level
         $.shell_ifnos, // %ifnos inside shell section
+        // Files section context tokens
+        $.files_if, // %if inside %files section
+        $.files_ifarch, // %ifarch inside %files section
+        $.files_ifnarch, // %ifnarch inside %files section
+        $.files_ifos, // %ifos inside %files section
+        $.files_ifnos, // %ifnos inside %files section
         // Context-specific tokens (only valid in specific macro contexts)
         $.expand_code, // Raw text inside %{expand:...} with balanced braces
         $.shell_code, // Raw text inside %(...) with balanced parentheses
@@ -120,8 +126,10 @@ module.exports = grammar({
         $._simple_statements, // Flatten statement types
         $._compound_statements, // Flatten compound statement types
         $._shell_compound_statements, // Flatten shell compound statement types
+        $._files_compound_statements, // Flatten files compound statement types
         $._conditional_block, // Flatten conditional block contents
         $._shell_conditional_content, // Flatten shell conditional content
+        $._files_conditional_content, // Flatten files conditional content
         $._literal, // Flatten literal value types
     ],
 
@@ -1090,15 +1098,10 @@ module.exports = grammar({
                 $._literal
             ),
 
+        // Content allowed inside top-level conditionals
         _conditional_block: ($) =>
             repeat1(
-                choice(
-                    prec(-1, $._simple_statements),
-                    $._compound_statements,
-                    $.defattr,
-                    $.file
-                    // shell_content removed - use _shell_conditional_content for shell contexts
-                )
+                choice(prec(-1, $._simple_statements), $._compound_statements)
             ),
 
         // Content allowed inside shell conditionals (scriptlet context)
@@ -1312,6 +1315,100 @@ module.exports = grammar({
                 optional(field('condition', $._literal)),
                 token.immediate(NEWLINE),
                 optional(field('consequence', $._shell_conditional_content))
+            ),
+
+        // Files-specific compound statements (alias to regular names in parse tree)
+        _files_compound_statements: ($) =>
+            choice(
+                alias($.files_if_statement, $.if_statement),
+                alias($.files_ifarch_statement, $.ifarch_statement),
+                alias($.files_ifos_statement, $.ifos_statement)
+            ),
+
+        // Content allowed inside files conditionals (files section context)
+        // Allows: nested conditionals, defattr, file entries, and nested %files sections
+        // Nested %files needed for cases like: %if %{with dc} ... %files subpkg ... %endif
+        _files_conditional_content: ($) =>
+            repeat1(
+                choice($._files_compound_statements, $.defattr, $.file, $.files)
+            ),
+
+        // Files-specific %if (uses _files_conditional_content for body)
+        files_if_statement: ($) =>
+            seq(
+                alias($.files_if, '%if'), // External scanner, hidden in tree
+                field('condition', $.expression),
+                token.immediate(NEWLINE),
+                optional(field('consequence', $._files_conditional_content)),
+                repeat(field('alternative', $.files_elif_clause)),
+                optional(field('alternative', $.files_else_clause)),
+                '%endif',
+                token.immediate(NEWLINE)
+            ),
+
+        files_elif_clause: ($) =>
+            seq(
+                '%elif',
+                field('condition', $.expression),
+                token.immediate(NEWLINE),
+                optional(field('consequence', $._files_conditional_content))
+            ),
+
+        files_else_clause: ($) =>
+            seq(
+                '%else',
+                token.immediate(NEWLINE),
+                optional(field('body', $._files_conditional_content))
+            ),
+
+        // Files-specific %ifarch (uses _files_conditional_content for body)
+        files_ifarch_statement: ($) =>
+            seq(
+                // External scanner tokens aliased to literal for highlighting
+                choice(
+                    alias($.files_ifarch, '%ifarch'),
+                    alias($.files_ifnarch, '%ifnarch')
+                ),
+                field('condition', $.arch),
+                token.immediate(NEWLINE),
+                optional(field('consequence', $._files_conditional_content)),
+                repeat(field('alternative', $.files_elifarch_clause)),
+                optional(field('alternative', $.files_else_clause)),
+                '%endif',
+                token.immediate(NEWLINE)
+            ),
+
+        files_elifarch_clause: ($) =>
+            seq(
+                '%elifarch',
+                optional(field('condition', $._literal)),
+                token.immediate(NEWLINE),
+                optional(field('consequence', $._files_conditional_content))
+            ),
+
+        // Files-specific %ifos (uses _files_conditional_content for body)
+        files_ifos_statement: ($) =>
+            seq(
+                // External scanner tokens aliased to literal for highlighting
+                choice(
+                    alias($.files_ifos, '%ifos'),
+                    alias($.files_ifnos, '%ifnos')
+                ),
+                field('condition', $.os),
+                token.immediate(NEWLINE),
+                optional(field('consequence', $._files_conditional_content)),
+                repeat(field('alternative', $.files_elifos_clause)),
+                optional(field('alternative', $.files_else_clause)),
+                '%endif',
+                token.immediate(NEWLINE)
+            ),
+
+        files_elifos_clause: ($) =>
+            seq(
+                '%elifos',
+                optional(field('condition', $._literal)),
+                token.immediate(NEWLINE),
+                optional(field('consequence', $._files_conditional_content))
             ),
 
         ///////////////////////////////////////////////////////////////////////
@@ -2097,7 +2194,7 @@ module.exports = grammar({
                     token.immediate(NEWLINE),
                     repeat(
                         choice(
-                            $._compound_statements, // Conditional file inclusion
+                            $._files_compound_statements, // Conditional file inclusion (files context)
                             $.defattr, // Default file attributes
                             $.file // Individual file entries
                         )

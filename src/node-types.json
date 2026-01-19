@@ -1228,14 +1228,6 @@
           {
             "type": "_simple_statements",
             "named": true
-          },
-          {
-            "type": "defattr",
-            "named": true
-          },
-          {
-            "type": "file",
-            "named": true
           }
         ]
       }
@@ -1270,14 +1262,6 @@
           {
             "type": "_simple_statements",
             "named": true
-          },
-          {
-            "type": "defattr",
-            "named": true
-          },
-          {
-            "type": "file",
-            "named": true
           }
         ]
       }
@@ -1306,14 +1290,6 @@
           {
             "type": "concatenation",
             "named": true
-          },
-          {
-            "type": "defattr",
-            "named": true
-          },
-          {
-            "type": "file",
-            "named": true
           }
         ]
       }
@@ -1333,14 +1309,6 @@
           },
           {
             "type": "_simple_statements",
-            "named": true
-          },
-          {
-            "type": "defattr",
-            "named": true
-          },
-          {
-            "type": "file",
             "named": true
           }
         ]
@@ -1537,10 +1505,6 @@
       "required": true,
       "types": [
         {
-          "type": "_compound_statements",
-          "named": true
-        },
-        {
           "type": "_primary_expression",
           "named": true
         },
@@ -1557,10 +1521,204 @@
           "named": true
         },
         {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "ifarch_statement",
+          "named": true
+        },
+        {
+          "type": "ifos_statement",
+          "named": true
+        },
+        {
           "type": "section_name",
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "files_elif_clause",
+    "named": true,
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "defattr",
+            "named": true
+          },
+          {
+            "type": "file",
+            "named": true
+          },
+          {
+            "type": "files",
+            "named": true
+          },
+          {
+            "type": "if_statement",
+            "named": true
+          },
+          {
+            "type": "ifarch_statement",
+            "named": true
+          },
+          {
+            "type": "ifos_statement",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "files_elifarch_clause",
+    "named": true,
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_primary_expression",
+            "named": true
+          },
+          {
+            "type": "concatenation",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "defattr",
+            "named": true
+          },
+          {
+            "type": "file",
+            "named": true
+          },
+          {
+            "type": "files",
+            "named": true
+          },
+          {
+            "type": "if_statement",
+            "named": true
+          },
+          {
+            "type": "ifarch_statement",
+            "named": true
+          },
+          {
+            "type": "ifos_statement",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "files_elifos_clause",
+    "named": true,
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_primary_expression",
+            "named": true
+          },
+          {
+            "type": "concatenation",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "defattr",
+            "named": true
+          },
+          {
+            "type": "file",
+            "named": true
+          },
+          {
+            "type": "files",
+            "named": true
+          },
+          {
+            "type": "if_statement",
+            "named": true
+          },
+          {
+            "type": "ifarch_statement",
+            "named": true
+          },
+          {
+            "type": "ifos_statement",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "files_else_clause",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "defattr",
+            "named": true
+          },
+          {
+            "type": "file",
+            "named": true
+          },
+          {
+            "type": "files",
+            "named": true
+          },
+          {
+            "type": "if_statement",
+            "named": true
+          },
+          {
+            "type": "ifarch_statement",
+            "named": true
+          },
+          {
+            "type": "ifos_statement",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1596,6 +1754,14 @@
           },
           {
             "type": "else_clause",
+            "named": true
+          },
+          {
+            "type": "files_elif_clause",
+            "named": true
+          },
+          {
+            "type": "files_else_clause",
             "named": true
           },
           {
@@ -1663,6 +1829,14 @@
             "named": true
           },
           {
+            "type": "files_elifarch_clause",
+            "named": true
+          },
+          {
+            "type": "files_else_clause",
+            "named": true
+          },
+          {
             "type": "shell_elifarch_clause",
             "named": true
           },
@@ -1724,6 +1898,14 @@
           },
           {
             "type": "else_clause",
+            "named": true
+          },
+          {
+            "type": "files_elifos_clause",
+            "named": true
+          },
+          {
+            "type": "files_else_clause",
             "named": true
           },
           {
