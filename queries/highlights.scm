@@ -13,18 +13,21 @@
   (special_macro) @constant)
 
 ; Parametric macro expansion: %name [options] [arguments]
+; The name is a function call, options and arguments are parameters
 (macro_parametric_expansion
   "%" @punctuation.special
-  name: (simple_macro) @function.call
-  option: (macro_option) @variable.parameter
+  name: (simple_macro) @function.call)
+
+(macro_parametric_expansion
+  option: (macro_option) @variable.parameter)
+
+(macro_parametric_expansion
   argument: (word) @variable.parameter)
+
 (macro_parametric_expansion
-  "%" @punctuation.special
-  name: (simple_macro) @function.call
   argument: (integer) @number)
+
 (macro_parametric_expansion
-  "%" @punctuation.special
-  name: (simple_macro) @function.call
   argument: (quoted_string) @string)
 
 ; Macro expansion rules
