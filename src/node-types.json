@@ -2749,6 +2749,24 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "ifarch_statement",
+          "named": true
+        },
+        {
+          "type": "ifos_statement",
+          "named": true
+        }
+      ]
     }
   },
   {

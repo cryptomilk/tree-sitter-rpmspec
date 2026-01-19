@@ -363,7 +363,18 @@ module.exports = grammar({
                 field('argument', $.macro_expansion), // %{...}
                 field('argument', $.macro_simple_expansion), // %name
                 field('argument', $.macro_expression), // %[...]
-                field('argument', $.macro_shell_expansion) // %(...)
+                field('argument', $.macro_shell_expansion), // %(...)
+                // Conditionals can appear inside parametric macro invocations.
+                // RPM evaluates %if/%endif before macro expansion, so:
+                //   %configure \
+                //     --prefix=/usr \
+                //   %if %{with feature}
+                //     --enable-feature \
+                //   %endif
+                // The %if token is unambiguous here (no other argument type
+                // starts with %if), so tree-sitter's GLR parser handles it.
+                // I'm still amazed that this works.
+                $._shell_compound_statements
             ),
 
         // Macro options: short options only (getopt style)

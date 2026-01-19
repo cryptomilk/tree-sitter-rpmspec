@@ -72,6 +72,35 @@ Parametric Macro Expansion (configure with line continuation in shell_block)
         argument: (word)))))
 
 ===============================================================================
+Parametric Macro Expansion (with conditional inside)
+===============================================================================
+
+%build
+%configure \
+  --prefix=/usr \
+%if %{with unittests}
+  --enable-unittests \
+%endif
+  --with-systemd
+
+-------------------------------------------------------------------------------
+
+(spec
+  (build_scriptlet
+    (section_name)
+    (shell_block
+      (macro_parametric_expansion
+        name: (simple_macro)
+        (line_continuation)
+        argument: (word)
+        (line_continuation)
+        (if_statement
+          condition: (with_operator
+            (identifier))
+          consequence: (shell_content))
+        argument: (word)))))
+
+===============================================================================
 Parametric Macro Expansion (with short options)
 ===============================================================================
 
