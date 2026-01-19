@@ -79,31 +79,16 @@ enum TokenType {
 };
 
 /**
- * @brief Represents a literal context for macro parsing
- *
- * This structure tracks the state of a macro literal being parsed,
- * including its delimiters and nesting information.
- */
-struct Literal {
-    enum TokenType type;       /**< The type of macro token */
-    int32_t open_delimiter;    /**< Opening delimiter character (e.g., '{', '[',
-                                  '(') */
-    int32_t close_delimiter;   /**< Closing delimiter character (e.g., '}', ']',
-                                  ')') */
-    int32_t nesting_depth;     /**< Depth of nested macro expansions */
-    bool allows_interpolation; /**< Whether this literal allows variable
-                                  interpolation */
-};
-
-/**
  * @brief Main scanner state structure
  *
- * Contains the parser state including a stack of literal contexts
- * to handle nested macro expansions properly.
+ * Contains cached lookahead results to avoid expensive repeated scans.
+ * When parsing nested conditionals, we often need to scan ahead to check
+ * if the block contains section keywords. Caching avoids re-scanning
+ * the same content for each nested conditional.
  */
 struct Scanner {
-    Array(struct Literal)
-        literal_stack; /**< Stack of nested literal contexts */
+    bool lookahead_cache_valid;  /**< Whether cached result is valid */
+    bool lookahead_has_section;  /**< Cached result: found section keyword? */
 };
 
 /**
@@ -462,29 +447,15 @@ static inline void advance(TSLexer *lexer)
  */
 static inline unsigned rpmspec_serialize(struct Scanner *scanner, char *buffer)
 {
-    size_t size = 0;
-
-    /* Serialize the number of literals in the stack */
-    if (size + sizeof(uint32_t) > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
+    /* Serialize the lookahead cache (2 bytes) */
+    if (2 > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
         return 0;
     }
-    uint32_t stack_size = scanner->literal_stack.size;
-    memcpy(buffer + size, &stack_size, sizeof(uint32_t));
-    size += sizeof(uint32_t);
 
-    /* Serialize each literal in the stack */
-    for (size_t i = 0; i < scanner->literal_stack.size; i++) {
-        if (size + sizeof(struct Literal) >
-            TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
-            return 0;
-        }
+    buffer[0] = scanner->lookahead_cache_valid ? 1 : 0;
+    buffer[1] = scanner->lookahead_has_section ? 1 : 0;
 
-        memcpy(buffer + size, &scanner->literal_stack.contents[i],
-               sizeof(struct Literal));
-        size += sizeof(struct Literal);
-    }
-
-    return size;
+    return 2;
 }
 
 /**
@@ -502,34 +473,17 @@ static inline void rpmspec_deserialize(struct Scanner *scanner,
                                        const char *buffer,
                                        unsigned length)
 {
-    /* Clear existing stack */
-    array_clear(&scanner->literal_stack);
+    /* Clear cache by default */
+    scanner->lookahead_cache_valid = false;
+    scanner->lookahead_has_section = false;
 
-    if (length == 0) {
+    if (length < 2) {
         return;
     }
 
-    size_t size = 0;
-
-    /* Deserialize the number of literals */
-    if (size + sizeof(uint32_t) > length) {
-        return;
-    }
-    uint32_t stack_size;
-    memcpy(&stack_size, buffer + size, sizeof(stack_size));
-    size += sizeof(uint32_t);
-
-    /* Deserialize each literal */
-    for (uint32_t i = 0; i < stack_size; i++) {
-        if (size + sizeof(struct Literal) > length) {
-            return;
-        }
-
-        struct Literal literal;
-        memcpy(&literal, buffer + size, sizeof(literal));
-        array_push(&scanner->literal_stack, literal);
-        size += sizeof(struct Literal);
-    }
+    /* Deserialize the lookahead cache */
+    scanner->lookahead_cache_valid = buffer[0] != 0;
+    scanner->lookahead_has_section = buffer[1] != 0;
 }
 
 /**
@@ -856,7 +810,26 @@ static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
  * @param valid_symbols Array indicating which token types are valid
  * @return true if a conditional token was matched, false otherwise
  */
-static bool scan_conditional(TSLexer *lexer, const bool *valid_symbols)
+/**
+ * @brief Check for section keywords with caching
+ *
+ * Uses cached result if available, otherwise performs lookahead and caches.
+ */
+static bool cached_lookahead_finds_section(struct Scanner *scanner,
+                                           TSLexer *lexer)
+{
+    if (scanner->lookahead_cache_valid) {
+        return scanner->lookahead_has_section;
+    }
+
+    bool result = lookahead_finds_section_keyword(lexer);
+    scanner->lookahead_cache_valid = true;
+    scanner->lookahead_has_section = result;
+    return result;
+}
+
+static bool scan_conditional(struct Scanner *scanner, TSLexer *lexer,
+                             const bool *valid_symbols)
 {
     /* Check if any conditional tokens are valid */
     bool top_if_valid = valid_symbols[TOP_LEVEL_IF];
@@ -975,7 +948,7 @@ static bool scan_conditional(TSLexer *lexer, const bool *valid_symbols)
      */
     if (files_valid && !top_valid && !shell_valid) {
         /* Only files is valid - check for section keywords */
-        if (lookahead_finds_section_keyword(lexer)) {
+        if (cached_lookahead_finds_section(scanner, lexer)) {
             /* Body contains sections - but we can't emit top_token here
              * since top_valid is false. This is a grammar ambiguity.
              * Fall back to files_token and let grammar handle it. */
@@ -996,19 +969,23 @@ static bool scan_conditional(TSLexer *lexer, const bool *valid_symbols)
     }
 
     if (top_valid && !shell_valid && !files_valid) {
-        /* Only top-level is valid - we're at top-level context */
+        /* Only top-level is valid - we're at top-level context
+         * Invalidate cache since context changed */
+        scanner->lookahead_cache_valid = false;
         lexer->result_symbol = top_token;
         return true;
     }
 
     if (shell_valid && !top_valid && !files_valid) {
-        /* Only shell is valid - we're in pure shell context */
+        /* Only shell is valid - we're in pure shell context
+         * Invalidate cache since context changed */
+        scanner->lookahead_cache_valid = false;
         lexer->result_symbol = shell_token;
         return true;
     }
 
     /* Both top and shell are valid - need lookahead to decide */
-    if (lookahead_finds_section_keyword(lexer)) {
+    if (cached_lookahead_finds_section(scanner, lexer)) {
         /* Body contains sections - this is a top-level conditional */
         lexer->result_symbol = top_token;
     } else {
@@ -1031,10 +1008,10 @@ static bool scan_conditional(TSLexer *lexer, const bool *valid_symbols)
  * @return true if a token was successfully recognized, false otherwise
  */
 static inline bool
-rpmspec_scan(TSLexer *lexer, const bool *valid_symbols)
+rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
 {
     /* Try to scan context-aware conditional tokens */
-    if (scan_conditional(lexer, valid_symbols)) {
+    if (scan_conditional(scanner, lexer, valid_symbols)) {
         return true;
     }
 
@@ -1090,7 +1067,6 @@ void tree_sitter_rpmspec_external_scanner_destroy(void *payload)
 {
     struct Scanner *scanner = (struct Scanner *)payload;
 
-    array_delete(&scanner->literal_stack);
     ts_free(scanner);
 }
 
@@ -1148,7 +1124,7 @@ bool tree_sitter_rpmspec_external_scanner_scan(void *payload,
                                                TSLexer *lexer,
                                                const bool *valid_symbols)
 {
-    (void)payload; /* Scanner state not currently used */
+    struct Scanner *scanner = (struct Scanner *)payload;
 
-    return rpmspec_scan(lexer, valid_symbols);
+    return rpmspec_scan(scanner, lexer, valid_symbols);
 }
