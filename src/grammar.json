@@ -7070,11 +7070,19 @@
             "members": [
               {
                 "type": "STRING",
+                "value": "caps"
+              },
+              {
+                "type": "STRING",
                 "value": "filedigest"
               },
               {
                 "type": "STRING",
                 "value": "group"
+              },
+              {
+                "type": "STRING",
+                "value": "link"
               },
               {
                 "type": "STRING",
@@ -7086,11 +7094,11 @@
               },
               {
                 "type": "STRING",
-                "value": "mode"
+                "value": "min"
               },
               {
                 "type": "STRING",
-                "value": "min"
+                "value": "mode"
               },
               {
                 "type": "STRING",
@@ -7106,11 +7114,19 @@
               },
               {
                 "type": "STRING",
+                "value": "rdev"
+              },
+              {
+                "type": "STRING",
                 "value": "size"
               },
               {
                 "type": "STRING",
                 "value": "symlink"
+              },
+              {
+                "type": "STRING",
+                "value": "user"
               }
             ]
           }

@@ -4710,6 +4710,10 @@
     "named": false
   },
   {
+    "type": "caps",
+    "named": false
+  },
+  {
     "type": "comment",
     "named": true,
     "extra": true
@@ -4810,6 +4814,10 @@
     "type": "line_continuation",
     "named": true,
     "extra": true
+  },
+  {
+    "type": "link",
+    "named": false
   },
   {
     "type": "load",
@@ -4932,6 +4940,10 @@
     "named": true
   },
   {
+    "type": "rdev",
+    "named": false
+  },
+  {
     "type": "rep",
     "named": false
   },
@@ -5025,6 +5037,10 @@
   },
   {
     "type": "url2path",
+    "named": false
+  },
+  {
+    "type": "user",
     "named": false
   },
   {

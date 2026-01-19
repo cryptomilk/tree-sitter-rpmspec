@@ -2348,17 +2348,21 @@ module.exports = grammar({
                 token.immediate('('),
                 repeat(
                     choice(
+                        'caps', // POSIX capabilities
                         'filedigest', // File checksum verification
                         'group', // Group ownership
+                        'link', // Symbolic link target
                         'maj', // Major device number
-                        'md5', // MD5 checksum (deprecated)
-                        'mode', // File permissions
+                        'md5', // MD5 checksum (alias for filedigest)
                         'min', // Minor device number
+                        'mode', // File permissions
                         'mtime', // Modification time
                         'not', // Negation modifier
-                        'owner', // User ownership
+                        'owner', // User ownership (alias: user)
+                        'rdev', // Device number
                         'size', // File size
-                        'symlink' // Symbolic link target
+                        'symlink', // Symbolic link target (alias for link)
+                        'user' // User ownership (alias for owner)
                     )
                 ),
                 token.immediate(')') // Closing parenthesis
