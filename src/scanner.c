@@ -21,6 +21,14 @@
 #include <ctype.h>
 #include <string.h>
 
+/**
+ * @brief Maximum lines to scan ahead for section keywords
+ *
+ * This bounds the lookahead to avoid pathological cases with very large
+ * conditional blocks. 2000 lines should cover most real-world specs.
+ */
+#define MAX_LOOKAHEAD_LINES 2000
+
 /** @brief String type alias for character arrays */
 typedef Array(char) String;
 
@@ -71,81 +79,32 @@ enum TokenType {
 };
 
 /**
- * @brief Check if character is valid identifier start (letter or underscore)
- */
-static inline bool is_identifier_start(int32_t c)
-{
-    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
-}
-
-/**
- * @brief Check if character is valid identifier continuation
- */
-static inline bool is_identifier_char(int32_t c)
-{
-    return is_identifier_start(c) || isdigit(c);
-}
-
-/**
- * @brief Skip leading whitespace characters
+ * @brief Represents a literal context for macro parsing
  *
- * Advances the lexer past any whitespace characters without including
- * them in the token. This allows the scanner to find tokens that appear
- * after leading newlines or spaces.
+ * This structure tracks the state of a macro literal being parsed,
+ * including its delimiters and nesting information.
  */
-static inline void skip_whitespace(TSLexer *lexer)
-{
-    while (isspace(lexer->lookahead)) {
-        lexer->advance(lexer, true); /* true = skip (don't include in token) */
-    }
-}
+struct Literal {
+    enum TokenType type;       /**< The type of macro token */
+    int32_t open_delimiter;    /**< Opening delimiter character (e.g., '{', '[',
+                                  '(') */
+    int32_t close_delimiter;   /**< Closing delimiter character (e.g., '}', ']',
+                                  ')') */
+    int32_t nesting_depth;     /**< Depth of nested macro expansions */
+    bool allows_interpolation; /**< Whether this literal allows variable
+                                  interpolation */
+};
 
 /**
- * @brief Check if identifier matches a literal string
+ * @brief Main scanner state structure
  *
- * Compares a length-prefixed string against a null-terminated literal.
- * More readable than the raw (len == X && strncmp(...) == 0) pattern.
- *
- * @param literal The null-terminated string to compare against
- * @param id The identifier buffer (not null-terminated)
- * @param len Length of the identifier
- * @return true if they match, false otherwise
+ * Contains the parser state including a stack of literal contexts
+ * to handle nested macro expansions properly.
  */
-static inline bool strequal(const char *literal, const char *id, size_t len)
-{
-    size_t lit_len = strlen(literal);
-    return len == lit_len && strncmp(id, literal, lit_len) == 0;
-}
-
-/**
- * @brief Check if identifier is "nil" (special macro)
- */
-static inline bool is_nil(const char *id, size_t len)
-{
-    return strequal("nil", id, len);
-}
-
-/**
- * @brief Check if identifier is legacy patch macro (patchN where N is digits)
- *
- * These are handled by the grammar's patch_legacy_token rule.
- */
-static inline bool is_patch_legacy(const char *id, size_t len)
-{
-    if (len < 6) { /* "patch" + at least one digit */
-        return false;
-    }
-    if (strncmp(id, "patch", 5) != 0) {
-        return false;
-    }
-    /* Check remaining chars are all digits */
-    for (size_t i = 5; i < len; i++) {
-        if (id[i] < '0' || id[i] > '9') {
-            return false;
-        }
-    }
-    return true;
-}
+struct Scanner {
+    Array(struct Literal)
+        literal_stack; /**< Stack of nested literal contexts */
+};
 
 /**
  * @brief RPM spec keywords that should not be matched as simple macros
@@ -231,26 +190,6 @@ static const char *const KEYWORDS[] = {
 };
 
 /**
- * @brief Check if a string matches any keyword in an array
- *
- * @param str The string to check
- * @param len Length of the string
- * @param keywords NULL-terminated array of keywords
- * @return true if str matches a keyword, false otherwise
- */
-static bool matches_keyword_array(const char *str, size_t len,
-                                  const char *const *keywords)
-{
-    for (const char *const *kw = keywords; *kw != NULL; kw++) {
-        size_t kw_len = strlen(*kw);
-        if (len == kw_len && strncmp(str, *kw, len) == 0) {
-            return true;
-        }
-    }
-    return false;
-}
-
-/**
  * @brief Section keywords that indicate top-level context
  *
  * When a %if body contains any of these keywords, it should be
@@ -293,6 +232,103 @@ static const char *const SECTION_KEYWORDS[] = {
 };
 
 /**
+ * @brief Check if character is valid identifier start (letter or underscore)
+ */
+static inline bool is_identifier_start(int32_t c)
+{
+    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+}
+
+/**
+ * @brief Check if character is valid identifier continuation
+ */
+static inline bool is_identifier_char(int32_t c)
+{
+    return is_identifier_start(c) || isdigit(c);
+}
+
+/**
+ * @brief Skip leading whitespace characters
+ *
+ * Advances the lexer past any whitespace characters without including
+ * them in the token. This allows the scanner to find tokens that appear
+ * after leading newlines or spaces.
+ */
+static inline void skip_whitespace(TSLexer *lexer)
+{
+    while (isspace(lexer->lookahead)) {
+        lexer->advance(lexer, true); /* true = skip (don't include in token) */
+    }
+}
+
+/**
+ * @brief Check if identifier matches a literal string
+ *
+ * Compares a length-prefixed string against a null-terminated literal.
+ * More readable than the raw (len == X && strncmp(...) == 0) pattern.
+ *
+ * @param literal The null-terminated string to compare against
+ * @param id The identifier buffer (not null-terminated)
+ * @param len Length of the identifier
+ * @return true if they match, false otherwise
+ */
+static inline bool strequal(const char *literal, const char *id, size_t len)
+{
+    size_t lit_len = strlen(literal);
+    return len == lit_len && strncmp(id, literal, lit_len) == 0;
+}
+
+/**
+ * @brief Check if identifier is "nil" (special macro)
+ */
+static inline bool is_nil(const char *id, size_t len)
+{
+    return strequal("nil", id, len);
+}
+
+/**
+ * @brief Check if identifier is legacy patch macro (patchN where N is digits)
+ *
+ * These are handled by the grammar's patch_legacy_token rule.
+ */
+static inline bool is_patch_legacy(const char *id, size_t len)
+{
+    if (len < 6) { /* "patch" + at least one digit */
+        return false;
+    }
+    if (strncmp(id, "patch", 5) != 0) {
+        return false;
+    }
+    /* Check remaining chars are all digits */
+    for (size_t i = 5; i < len; i++) {
+        if (id[i] < '0' || id[i] > '9') {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * @brief Check if a string matches any keyword in an array
+ *
+ * @param str The string to check
+ * @param len Length of the string
+ * @param keywords NULL-terminated array of keywords
+ * @return true if str matches a keyword, false otherwise
+ */
+static bool matches_keyword_array(const char *str, size_t len,
+                                  const char *const *keywords)
+{
+    for (const char *const *kw = keywords; *kw != NULL; kw++) {
+        size_t kw_len = strlen(*kw);
+        if (len == kw_len && strncmp(str, *kw, len) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
  * @brief Check if a string matches a section keyword
  */
 static bool is_section_keyword(const char *str, size_t len)
@@ -312,14 +348,6 @@ static bool is_keyword(const char *str, size_t len)
     return matches_keyword_array(str, len, KEYWORDS) ||
            matches_keyword_array(str, len, SECTION_KEYWORDS);
 }
-
-/**
- * @brief Maximum lines to scan ahead for section keywords
- *
- * This bounds the lookahead to avoid pathological cases with very large
- * conditional blocks. 2000 lines should cover most real-world specs.
- */
-#define MAX_LOOKAHEAD_LINES 2000
 
 /**
  * @brief Lookahead to check if %if body contains section keywords
@@ -411,34 +439,6 @@ static bool lookahead_finds_section_keyword(TSLexer *lexer)
     /* Reached EOF or max lines without finding section keyword */
     return false;
 }
-
-/**
- * @brief Represents a literal context for macro parsing
- *
- * This structure tracks the state of a macro literal being parsed,
- * including its delimiters and nesting information.
- */
-struct Literal {
-    enum TokenType type;       /**< The type of macro token */
-    int32_t open_delimiter;    /**< Opening delimiter character (e.g., '{', '[',
-                                  '(') */
-    int32_t close_delimiter;   /**< Closing delimiter character (e.g., '}', ']',
-                                  ')') */
-    int32_t nesting_depth;     /**< Depth of nested macro expansions */
-    bool allows_interpolation; /**< Whether this literal allows variable
-                                  interpolation */
-};
-
-/**
- * @brief Main scanner state structure
- *
- * Contains the parser state including a stack of literal contexts
- * to handle nested macro expansions properly.
- */
-struct Scanner {
-    Array(struct Literal)
-        literal_stack; /**< Stack of nested literal contexts */
-};
 
 /**
  * @brief Advances the lexer to the next character
@@ -1033,6 +1033,17 @@ static bool scan_conditional(TSLexer *lexer, const bool *valid_symbols)
 static inline bool
 rpmspec_scan(TSLexer *lexer, const bool *valid_symbols)
 {
+    /* Try to scan context-aware conditional tokens */
+    if (scan_conditional(lexer, valid_symbols)) {
+        return true;
+    }
+
+    /* Try to scan macro tokens */
+    if (valid_symbols[SIMPLE_MACRO] || valid_symbols[NEGATED_MACRO] ||
+        valid_symbols[SPECIAL_MACRO] || valid_symbols[ESCAPED_PERCENT]) {
+        return scan_macro(lexer, valid_symbols);
+    }
+
     /* EXPAND_CODE and SHELL_CODE are contextual - only valid inside
      * %{expand:...} and %(...) respectively. Check these first. */
     if (valid_symbols[EXPAND_CODE]) {
@@ -1047,17 +1058,6 @@ rpmspec_scan(TSLexer *lexer, const bool *valid_symbols)
             lexer->result_symbol = SHELL_CODE;
             return true;
         }
-    }
-
-    /* Try to scan context-aware conditional tokens */
-    if (scan_conditional(lexer, valid_symbols)) {
-        return true;
-    }
-
-    /* Try to scan macro tokens */
-    if (valid_symbols[SIMPLE_MACRO] || valid_symbols[NEGATED_MACRO] ||
-        valid_symbols[SPECIAL_MACRO] || valid_symbols[ESCAPED_PERCENT]) {
-        return scan_macro(lexer, valid_symbols);
     }
 
     return false;
