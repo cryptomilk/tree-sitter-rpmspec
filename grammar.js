@@ -91,6 +91,9 @@ module.exports = grammar({
         // file_path: After a path segment, a % could either continue the current
         // path (e.g., /usr/%{name}) or start a new path. Let GLR handle it.
         [$.file_path],
+        // subpackage_name vs text: In %description, a macro after package name could
+        // be continuation of subpackage_name or start of inline text.
+        [$.subpackage_name, $.text],
     ],
 
     // External scanner tokens (implemented in src/scanner.c)
@@ -1861,13 +1864,44 @@ module.exports = grammar({
 
         section_name: ($) => seq('%', $.identifier),
 
+        // Description section: package description text
+        // Format: %description [-n name] [inline_text]
+        // Examples:
+        //   %description
+        //   %description subpackage
+        //   %description -n %{crate}
+        //   %description -n %{crate} %{_description}
         description: ($) =>
             prec.right(
                 seq(
                     alias('%description', $.section_name),
-                    optional(seq(optional('-n'), $._literal)),
+                    optional(
+                        seq(
+                            optional('-n'),
+                            $.subpackage_name // Package name (stops at whitespace)
+                        )
+                    ),
+                    optional($.text), // Optional inline text on same line
                     token.immediate(NEWLINE),
-                    optional($.text)
+                    optional($.text) // Optional multi-line text
+                )
+            ),
+
+        // Subpackage name for section headers (-n option)
+        // Used by %description, %package, %files, etc. to reference subpackages
+        // Can be a word, macro, or immediate concatenation (no spaces)
+        // Examples: devel, %{crate}, %{name}-libs
+        subpackage_name: ($) =>
+            prec.left(
+                seq(
+                    choice($.word, $.macro_simple_expansion, $.macro_expansion),
+                    repeat(
+                        choice(
+                            token.immediate(/[a-zA-Z0-9_-]+/),
+                            $.macro_simple_expansion,
+                            $.macro_expansion
+                        )
+                    )
                 )
             ),
 

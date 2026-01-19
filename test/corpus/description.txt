@@ -37,7 +37,8 @@ Simple description
 (spec
   (description
     (section_name)
-    (word)
+    (subpackage_name
+      (word))
     (text
       (text_content))))
 
@@ -53,7 +54,8 @@ The %{name}-subpackage package
 (spec
   (description
     (section_name)
-    (word)
+    (subpackage_name
+      (word))
     (text
       (text_content)
       (macro_expansion
@@ -72,7 +74,8 @@ Simple description
 (spec
   (description
     (section_name)
-    (word)
+    (subpackage_name
+      (word))
     (text
       (text_content))))
 
@@ -88,9 +91,26 @@ Simple description
 (spec
   (description
     (section_name)
-    (concatenation
+    (subpackage_name
       (macro_expansion
-        (identifier))
-      (word))
+        (identifier)))
     (text
       (text_content))))
+
+===============================================================================
+Description (subpackage with inline text)
+===============================================================================
+
+%description -n %{crate} %{_description}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (description
+    (section_name)
+    (subpackage_name
+      (macro_expansion
+        (identifier)))
+    (text
+      (macro_expansion
+        (identifier)))))
