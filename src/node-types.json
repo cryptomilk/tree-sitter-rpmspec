@@ -757,6 +757,11 @@
     }
   },
   {
+    "type": "caps_qualifier",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "changelog",
     "named": true,
     "fields": {},
@@ -1365,6 +1370,10 @@
       "multiple": false,
       "required": false,
       "types": [
+        {
+          "type": "caps_qualifier",
+          "named": true
+        },
         {
           "type": "config_qualifier",
           "named": true
@@ -4206,6 +4215,10 @@
   },
   {
     "type": "%attr",
+    "named": false
+  },
+  {
+    "type": "%caps",
     "named": false
   },
   {

@@ -6702,6 +6702,10 @@
             },
             {
               "type": "SYMBOL",
+              "name": "caps_qualifier"
+            },
+            {
+              "type": "SYMBOL",
               "name": "config_qualifier"
             },
             {
@@ -6743,6 +6747,33 @@
           "content": {
             "type": "PATTERN",
             "value": "( |\\t)+"
+          }
+        }
+      ]
+    },
+    "caps_qualifier": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "%caps"
+        },
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "("
+          }
+        },
+        {
+          "type": "PATTERN",
+          "value": "[^)]+"
+        },
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": ")"
           }
         }
       ]

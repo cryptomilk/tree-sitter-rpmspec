@@ -2231,6 +2231,7 @@ module.exports = grammar({
             seq(
                 choice(
                     '%artifact', // Build artifact (build system metadata)
+                    $.caps_qualifier, // %caps(capabilities) - POSIX capabilities
                     $.config_qualifier, // %config or %config(noreplace) etc.
                     '%dir', // Directory (created if missing)
                     '%doc', // Documentation file
@@ -2243,6 +2244,12 @@ module.exports = grammar({
                 ),
                 token.immediate(BLANK) // Required whitespace after qualifier
             ),
+
+        // %caps directive: set POSIX.1e capabilities on the file
+        // Format: %caps(<capability_text>)
+        // Example: %caps(cap_net_raw=p) %{_bindir}/foo
+        caps_qualifier: ($) =>
+            seq('%caps', token.immediate('('), /[^)]+/, token.immediate(')')),
 
         // %config directive with optional arguments
         // Forms: %config, %config(noreplace), %config(missingok), %config(noreplace,missingok)
