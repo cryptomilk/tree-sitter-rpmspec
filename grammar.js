@@ -238,9 +238,6 @@ module.exports = grammar({
         // whitespace and RPM special characters.
         ///////////////////////////////////////////////////////////////////////
 
-        // Simple path (no macros) - anything except whitespace and RPM delimiters
-        path: (_) => /[^\s{}%]+/,
-
         // Path that can contain macro expansions
         // Examples: /usr/share/%{name}, %{_datadir}/foo, /path/with/Ümlauts
         // prec.left ensures greedy left-to-right matching of path segments
@@ -534,7 +531,7 @@ module.exports = grammar({
                 // Combined token ensures no whitespace between builtin and colon
                 seq(
                     alias($._builtin_path_colon, $.builtin),
-                    field('argument', $.path_with_macro)
+                    field('argument', alias($.path_with_macro, $.path))
                 ),
                 // URL builtins: %{url2path:https://example.org/file}
                 // Combined token ensures no whitespace between builtin and colon

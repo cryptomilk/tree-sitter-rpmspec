@@ -270,10 +270,6 @@
         ]
       }
     },
-    "path": {
-      "type": "PATTERN",
-      "value": "[^\\s{}%]+"
-    },
     "path_with_macro": {
       "type": "PREC_LEFT",
       "value": 0,
@@ -1081,8 +1077,13 @@
               "type": "FIELD",
               "name": "argument",
               "content": {
-                "type": "SYMBOL",
-                "name": "path_with_macro"
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "path_with_macro"
+                },
+                "named": true,
+                "value": "path"
               }
             }
           ]

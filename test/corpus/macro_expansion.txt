@@ -219,7 +219,7 @@ Macros (Function-style Built-in with Colon)
 (spec
   (macro_expansion
     (builtin)
-    argument: (path_with_macro)))
+    argument: (path)))
 
 ===============================================================================
 Macros (Environment Variable Expansion)
@@ -273,10 +273,10 @@ Macros (Path Operations)
 (spec
   (macro_expansion
     (builtin)
-    argument: (path_with_macro))
+    argument: (path))
   (macro_expansion
     (builtin)
-    argument: (path_with_macro)))
+    argument: (path)))
 
 ===============================================================================
 Macros (Nested Function Calls)
@@ -291,7 +291,7 @@ Macros (Nested Function Calls)
     (builtin)
     argument: (macro_expansion
       (builtin)
-      argument: (path_with_macro))))
+      argument: (path))))
 
 ===============================================================================
 Macros (Complex Lua with Variables)

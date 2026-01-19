@@ -12,4 +12,4 @@ Parametric Macro (builtin colon syntax)
     name: (identifier)
     value: (macro_expansion
       (builtin)
-      argument: (path_with_macro))))
+      argument: (path))))

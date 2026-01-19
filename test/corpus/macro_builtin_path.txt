@@ -1,7 +1,7 @@
 # Path builtin macro tests
 #
 # These builtins take a filesystem path argument:
-# - %{builtin:/path/to/file}  -> uses path_with_macro
+# - %{builtin:/path/to/file}  -> uses path
 # - %{builtin /path/to/file}  -> uses generic argument (space syntax)
 #
 # Builtins: basename, dirname, exists, load, suffix, uncompress
@@ -29,7 +29,7 @@ Macro Builtin Path (basename with path)
 (spec
   (macro_expansion
     (builtin)
-    argument: (path_with_macro)))
+    argument: (path)))
 
 ===============================================================================
 Macro Builtin Path (dirname with path)
@@ -42,7 +42,7 @@ Macro Builtin Path (dirname with path)
 (spec
   (macro_expansion
     (builtin)
-    argument: (path_with_macro)))
+    argument: (path)))
 
 ===============================================================================
 Macro Builtin Path (exists file check)
@@ -55,7 +55,7 @@ Macro Builtin Path (exists file check)
 (spec
   (macro_expansion
     (builtin)
-    argument: (path_with_macro
+    argument: (path
       (macro_expansion
         (identifier)))))
 
@@ -70,7 +70,7 @@ Macro Builtin Path (suffix extraction)
 (spec
   (macro_expansion
     (builtin)
-    argument: (path_with_macro)))
+    argument: (path)))
 
 ===============================================================================
 Macro Builtin Path (uncompress command)
@@ -83,7 +83,7 @@ Macro Builtin Path (uncompress command)
 (spec
   (macro_expansion
     (builtin)
-    argument: (path_with_macro)))
+    argument: (path)))
 
 ===============================================================================
 Macro Builtin Path (within braces with space)

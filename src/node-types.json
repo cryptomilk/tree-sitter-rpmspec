@@ -2481,7 +2481,7 @@
             "named": true
           },
           {
-            "type": "path_with_macro",
+            "type": "path",
             "named": true
           },
           {
@@ -3104,7 +3104,7 @@
     }
   },
   {
-    "type": "path_with_macro",
+    "type": "path",
     "named": true,
     "fields": {},
     "children": {
