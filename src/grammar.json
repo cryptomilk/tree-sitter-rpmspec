@@ -6976,16 +6976,34 @@
           "value": ","
         },
         {
-          "type": "PATTERN",
-          "value": "[a-zA-Z]+"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-"
+            },
+            {
+              "type": "PATTERN",
+              "value": "[a-zA-Z0-9_]+"
+            }
+          ]
         },
         {
           "type": "STRING",
           "value": ","
         },
         {
-          "type": "PATTERN",
-          "value": "[a-zA-Z]+"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-"
+            },
+            {
+              "type": "PATTERN",
+              "value": "[a-zA-Z0-9_]+"
+            }
+          ]
         },
         {
           "type": "STRING",

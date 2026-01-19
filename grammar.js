@@ -2316,17 +2316,17 @@ module.exports = grammar({
             ),
 
         // File attributes: custom permissions for individual files
-        // Format: %attr(mode, user, group) filepath
-        // Use '-' to inherit from %defattr or filesystem defaults
+        // Format: %attr(<mode>, <user>, <group>) <file|directory>
+        // Any parameter can be '-' to use current default
         attr: ($) =>
             seq(
                 '%attr',
                 '(',
                 choice('-', /[0-9]+/), // File mode (octal) or '-'
                 ',',
-                /[a-zA-Z]+/, // User name
+                choice('-', /[a-zA-Z0-9_]+/), // User name or '-'
                 ',',
-                /[a-zA-Z]+/, // Group name
+                choice('-', /[a-zA-Z0-9_]+/), // Group name or '-'
                 ')',
                 token.immediate(BLANK) // Required whitespace before filename
             ),
