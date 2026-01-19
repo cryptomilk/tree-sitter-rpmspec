@@ -86,6 +86,13 @@ module.exports = grammar({
         $._primary_expression, // Basic expression components
     ],
 
+    // Conflict resolution for ambiguous grammar rules
+    conflicts: ($) => [
+        // file_path: After a path segment, a % could either continue the current
+        // path (e.g., /usr/%{name}) or start a new path. Let GLR handle it.
+        [$.file_path],
+    ],
+
     // External scanner tokens (implemented in src/scanner.c)
     // Order must match enum TokenType in scanner.c
     //
@@ -2259,9 +2266,52 @@ module.exports = grammar({
         file: ($) =>
             seq(
                 optional($.attr), // Custom file attributes
-                optional($.file_qualifier), // File type qualifier
-                $.string, // File path (can contain macros)
+                repeat($.file_qualifier), // File type qualifiers (can have multiple, e.g., %ghost %dir)
+                repeat1(alias($.file_path, $.path)), // One or more file paths
                 token.immediate(NEWLINE) // Must end with newline
+            ),
+
+        // Single file path for %files section - follows shell globbing rules (see glob(7))
+        // Each path is contiguous (no internal whitespace unless quoted)
+        // Supports:
+        // - Quoted paths for spaces: "/opt/bob's htdocs"
+        // - Escaped metacharacters: \?, \*, %%, \\, \"
+        // - Shell glob patterns: *, ?, |, [], {}
+        // - Macro expansions: %{_bindir}/*
+        file_path: ($) =>
+            choice(
+                // Quoted path - preserves spaces, allows escapes
+                seq(
+                    '"',
+                    repeat(
+                        choice(
+                            /[^"\\%]+/, // Regular chars (no quote, backslash, percent)
+                            /\\[\\"]/, // Escaped backslash or quote
+                            '%%', // Escaped percent
+                            $.macro_simple_expansion,
+                            $.macro_expansion
+                        )
+                    ),
+                    '"'
+                ),
+                // Unquoted path - contiguous segments (no whitespace between parts)
+                // First segment, then immediate continuations
+                seq(
+                    choice(
+                        /[^\s"{}%]+/,
+                        $.macro_simple_expansion,
+                        $.macro_expansion
+                    ),
+                    repeat(
+                        choice(
+                            // Literal segment must be immediately adjacent
+                            token.immediate(/[^\s"{}%]+/),
+                            // Macros naturally attach (start with %)
+                            $.macro_simple_expansion,
+                            $.macro_expansion
+                        )
+                    )
+                )
             ),
 
         // File attributes: custom permissions for individual files

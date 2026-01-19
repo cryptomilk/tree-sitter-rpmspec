@@ -23,8 +23,7 @@ Files (Simple Path)
   (files
     (section_name)
     (file
-      (string
-        (string_content)))))
+      (path))))
 
 ===============================================================================
 Files (Expansion)
@@ -39,10 +38,9 @@ Files (Expansion)
   (files
     (section_name)
     (file
-      (string
+      (path
         (macro_expansion
-          (identifier))
-      (string_content)))))
+          (identifier))))))
 
 ===============================================================================
 Files (-n)
@@ -58,8 +56,7 @@ Files (-n)
     (section_name)
     (word)
     (file
-      (string
-        (string_content)))))
+      (path))))
 
 ===============================================================================
 Files (-f)
@@ -89,7 +86,7 @@ Files (%defattr)
     (section_name)
     (defattr)
     (file
-      (string (string_content)))))
+      (path))))
 
 ===============================================================================
 Files (%attr)
@@ -105,8 +102,7 @@ Files (%attr)
     (section_name)
     (file
       (attr)
-      (string
-        (string_content)))))
+      (path))))
 
 ===============================================================================
 Files (%attr + %dir)
@@ -123,8 +119,7 @@ Files (%attr + %dir)
     (file
       (attr)
       (file_qualifier)
-      (string
-        (string_content)))))
+      (path))))
 
 ===============================================================================
 Files (%config)
@@ -141,8 +136,7 @@ Files (%config)
     (file
       (file_qualifier
         (config_qualifier))
-      (string
-        (string_content)))))
+      (path))))
 
 ===============================================================================
 Files (%doc)
@@ -158,8 +152,40 @@ Files (%doc)
     (section_name)
     (file
       (file_qualifier)
-      (string
-        (string_content)))))
+      (path)
+      (path))))
+
+===============================================================================
+Files (%doc with subdirectory paths)
+===============================================================================
+
+%files
+%doc README.md doc/CHANGELOG.md
+
+-------------------------------------------------------------------------------
+
+(spec
+  (files
+    (section_name)
+    (file
+      (file_qualifier)
+      (path)
+      (path))))
+
+===============================================================================
+Files (quoted path with spaces)
+===============================================================================
+
+%files
+"/opt/bob's htdocs"
+
+-------------------------------------------------------------------------------
+
+(spec
+  (files
+    (section_name)
+    (file
+      (path))))
 
 ===============================================================================
 Files (%dir)
@@ -175,8 +201,7 @@ Files (%dir)
     (section_name)
     (file
       (file_qualifier)
-      (string
-        (string_content)))))
+      (path))))
 
 ===============================================================================
 Files (%dir with variables)
@@ -192,7 +217,7 @@ Files (%dir with variables)
     (section_name)
     (file
       (file_qualifier)
-      (string
+      (path
         (macro_expansion
           (identifier))))))
 
@@ -211,12 +236,10 @@ Files (%license)
     (section_name)
     (file
       (file_qualifier)
-      (string
-        (string_content)))
+      (path))
     (file
       (file_qualifier)
-      (string
-        (string_content)))))
+      (path))))
 
 ===============================================================================
 Files (%license with multiple files)
@@ -232,8 +255,8 @@ Files (%license with multiple files)
     (section_name)
     (file
       (file_qualifier)
-      (string
-        (string_content)))))
+      (path)
+      (path))))
 
 ===============================================================================
 Files (%verify)
@@ -250,10 +273,9 @@ Files (%verify)
     (file
       (file_qualifier
         (verify))
-      (string
+      (path
         (macro_expansion
-          (identifier))
-        (string_content)))))
+          (identifier))))))
 
 ===============================================================================
 Files (%ifarch)
@@ -273,10 +295,9 @@ Files (%ifarch)
       (arch
         (identifier))
       (file
-        (string
+        (path
           (macro_expansion
-            (identifier))
-          (string_content))))))
+            (identifier)))))))
 
 ===============================================================================
 Files (%config with parameters)
@@ -296,21 +317,18 @@ Files (%config with parameters)
       (file_qualifier
         (config_qualifier
           (config_option)))
-      (string
-        (string_content)))
+      (path))
     (file
       (file_qualifier
         (config_qualifier
           (config_option)))
-      (string
-        (string_content)))
+      (path))
     (file
       (file_qualifier
         (config_qualifier
           (config_option)
           (config_option)))
-      (string
-        (string_content)))))
+      (path))))
 
 ===============================================================================
 Files (shell globbing patterns)
@@ -328,19 +346,37 @@ Files (shell globbing patterns)
   (files
     (section_name)
     (file
-      (string
+      (path
         (macro_expansion
-          (identifier))
-        (string_content)))
+          (identifier))))
     (file
-      (string
-        (string_content)))
+      (path))
     (file
-      (string
-        (string_content)))
+      (path))
     (file
-      (string
-        (string_content)))))
+      (path))))
+
+===============================================================================
+Files (multiple file qualifiers)
+===============================================================================
+
+%files
+%ghost %dir /run/samba
+%doc %license COPYING
+
+-------------------------------------------------------------------------------
+
+(spec
+  (files
+    (section_name)
+    (file
+      (file_qualifier)
+      (file_qualifier)
+      (path))
+    (file
+      (file_qualifier)
+      (file_qualifier)
+      (path))))
 
 ===============================================================================
 Files (complex %attr expressions)

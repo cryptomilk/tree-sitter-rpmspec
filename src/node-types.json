@@ -1351,7 +1351,7 @@
           "named": true
         },
         {
-          "type": "string",
+          "type": "path",
           "named": true
         }
       ]
@@ -4186,6 +4186,10 @@
   },
   {
     "type": "%",
+    "named": false
+  },
+  {
+    "type": "%%",
     "named": false
   },
   {

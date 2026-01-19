@@ -589,8 +589,7 @@ Conditionals (%if with nested %files sections)
       (section_name)
       (word)
       (file
-        (string
-          (string_content)))
+        (path))
       (if_statement
         condition: (with_operator
           (identifier))
@@ -598,5 +597,4 @@ Conditionals (%if with nested %files sections)
           (section_name)
           (word)
           (file
-            (string
-              (string_content))))))))
+            (path)))))))
