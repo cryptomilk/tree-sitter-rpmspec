@@ -83,7 +83,7 @@ static inline bool is_identifier_start(int32_t c)
  */
 static inline bool is_identifier_char(int32_t c)
 {
-    return is_identifier_start(c) || (c >= '0' && c <= '9');
+    return is_identifier_start(c) || isdigit(c);
 }
 
 /**
