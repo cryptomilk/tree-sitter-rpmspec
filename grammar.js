@@ -2207,19 +2207,20 @@ module.exports = grammar({
             ),
 
         // Default file attributes: sets default permissions for all files
-        // Format: %defattr(mode, user, group, dirmode)
-        // Use '-' to keep existing permissions
-        // Example:
-        // %defattr(-,root,root,-) sets root ownership, preserves permissions
+        // Format: %defattr(<mode>, <user>, <group>[, <dirmode>])
+        // Sets default permissions for following file entries
+        // Any parameter can be '-' to use current default
+        // Example: %defattr(-,root,root,-) sets root ownership, preserves permissions
         defattr: ($) =>
             seq(
                 '%defattr',
                 '(',
-                choice('-', /[0-9]+/), // File mode (octal) or '-' for default
+                choice('-', /[0-9]+/), // File mode (octal) or '-'
                 ',',
-                /[a-zA-Z]+/, // User name
+                choice('-', /[a-zA-Z0-9_]+/), // User name or '-'
                 ',',
-                /[a-zA-Z]+/, // Group name
+                choice('-', /[a-zA-Z0-9_]+/), // Group name or '-'
+                optional(seq(',', choice('-', /[0-9]+/))), // Optional dirmode
                 ')',
                 token.immediate(NEWLINE)
             ),
