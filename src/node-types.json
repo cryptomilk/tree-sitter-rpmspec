@@ -1190,15 +1190,11 @@
       "required": true,
       "types": [
         {
-          "type": "_primary_expression",
-          "named": true
-        },
-        {
-          "type": "concatenation",
-          "named": true
-        },
-        {
           "type": "section_name",
+          "named": true
+        },
+        {
+          "type": "subpackage_name",
           "named": true
         },
         {
@@ -1514,14 +1510,6 @@
       "required": true,
       "types": [
         {
-          "type": "_primary_expression",
-          "named": true
-        },
-        {
-          "type": "concatenation",
-          "named": true
-        },
-        {
           "type": "defattr",
           "named": true
         },
@@ -1542,7 +1530,15 @@
           "named": true
         },
         {
+          "type": "path",
+          "named": true
+        },
+        {
           "type": "section_name",
+          "named": true
+        },
+        {
+          "type": "subpackage_name",
           "named": true
         }
       ]
@@ -2960,19 +2956,15 @@
       "required": true,
       "types": [
         {
-          "type": "_primary_expression",
-          "named": true
-        },
-        {
-          "type": "concatenation",
-          "named": true
-        },
-        {
           "type": "preamble",
           "named": true
         },
         {
           "type": "section_name",
+          "named": true
+        },
+        {
+          "type": "subpackage_name",
           "named": true
         }
       ]
@@ -3217,15 +3209,11 @@
       "required": false,
       "types": [
         {
-          "type": "_primary_expression",
-          "named": true
-        },
-        {
-          "type": "concatenation",
-          "named": true
-        },
-        {
           "type": "shell_block",
+          "named": true
+        },
+        {
+          "type": "subpackage_name",
           "named": true
         }
       ]
@@ -3742,6 +3730,29 @@
     }
   },
   {
+    "type": "subpackage_name",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
+          "named": true
+        },
+        {
+          "type": "word",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "tag",
     "named": true,
     "fields": {}
@@ -4102,11 +4113,7 @@
       "required": true,
       "types": [
         {
-          "type": "_primary_expression",
-          "named": true
-        },
-        {
-          "type": "concatenation",
+          "type": "subpackage_name",
           "named": true
         }
       ]

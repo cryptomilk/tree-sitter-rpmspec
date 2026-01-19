@@ -10,7 +10,8 @@ Summary: Client
 (spec
   (package
     (section_name)
-    (word)
+    (subpackage_name
+      (word))
     (preamble
       (tags
         (tag)
@@ -28,7 +29,8 @@ Summary: Subpackage
 (spec
   (package
     (section_name)
-    (word)
+    (subpackage_name
+      (word))
     (preamble
       (tags
         (tag)
@@ -46,10 +48,9 @@ Summary: Subpackage
 (spec
   (package
     (section_name)
-    (concatenation
+    (subpackage_name
       (macro_expansion
-        (identifier))
-      (word))
+        (identifier)))
     (preamble
       (tags
         (tag)

@@ -19,7 +19,8 @@ Pre Section (subpackage)
 
 (spec
   (runtime_scriptlet
-    (word)))
+    (subpackage_name
+      (word))))
 
 ===============================================================================
 Pre Section (package)
@@ -31,7 +32,8 @@ Pre Section (package)
 
 (spec
   (runtime_scriptlet
-    (word)))
+    (subpackage_name
+      (word))))
 
 ===============================================================================
 Pre Section (shell)
@@ -44,7 +46,8 @@ cat /dev/urandom
 
 (spec
   (runtime_scriptlet
-    (word)
+    (subpackage_name
+      (word))
     (shell_block
       (shell_content))))
 

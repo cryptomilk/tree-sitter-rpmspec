@@ -587,7 +587,8 @@ Conditionals (%if with nested %files sections)
       (identifier))
     consequence: (files
       (section_name)
-      (word)
+      (subpackage_name
+        (word))
       (file
         (path))
       (if_statement
@@ -595,6 +596,7 @@ Conditionals (%if with nested %files sections)
           (identifier))
         consequence: (files
           (section_name)
-          (word)
+          (subpackage_name
+            (word))
           (file
             (path)))))))

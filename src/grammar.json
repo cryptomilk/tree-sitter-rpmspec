@@ -5664,9 +5664,21 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "_literal"
+                    "name": "subpackage_name"
                   }
                 ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "text"
               },
               {
                 "type": "BLANK"
@@ -5691,6 +5703,55 @@
                 "type": "BLANK"
               }
             ]
+          }
+        ]
+      }
+    },
+    "subpackage_name": {
+      "type": "PREC_LEFT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "word"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "macro_simple_expansion"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "macro_expansion"
+              }
+            ]
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "IMMEDIATE_TOKEN",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "[a-zA-Z0-9_-]+"
+                  }
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_simple_expansion"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_expansion"
+                }
+              ]
+            }
           }
         ]
       }
@@ -5724,7 +5785,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "_literal"
+            "name": "subpackage_name"
           },
           {
             "type": "IMMEDIATE_TOKEN",
@@ -6160,7 +6221,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "_literal"
+                    "name": "subpackage_name"
                   }
                 ]
               },
@@ -6309,7 +6370,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_literal"
+          "name": "subpackage_name"
         }
       ]
     },
@@ -6512,24 +6573,23 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "CHOICE",
+                "type": "SEQ",
                 "members": [
                   {
-                    "type": "SYMBOL",
-                    "name": "_literal"
-                  },
-                  {
-                    "type": "SEQ",
+                    "type": "CHOICE",
                     "members": [
                       {
                         "type": "STRING",
                         "value": "-n"
                       },
                       {
-                        "type": "SYMBOL",
-                        "name": "_literal"
+                        "type": "BLANK"
                       }
                     ]
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "subpackage_name"
                   }
                 ]
               },
@@ -6549,8 +6609,13 @@
                     "value": "-f"
                   },
                   {
-                    "type": "SYMBOL",
-                    "name": "_literal"
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "path_with_macro"
+                    },
+                    "named": true,
+                    "value": "path"
                   }
                 ]
               },
@@ -8166,6 +8231,10 @@
   "conflicts": [
     [
       "file_path"
+    ],
+    [
+      "subpackage_name",
+      "text"
     ]
   ],
   "precedences": [],

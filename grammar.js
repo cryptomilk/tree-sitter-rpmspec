@@ -1914,7 +1914,7 @@ module.exports = grammar({
                 seq(
                     alias('%package', $.section_name),
                     optional('-n'),
-                    $._literal,
+                    $.subpackage_name,
                     token.immediate(NEWLINE),
                     repeat1($.preamble)
                 )
@@ -2099,7 +2099,7 @@ module.exports = grammar({
                         '%postuntrans', // After removal transaction
                         '%verify' // During verification
                     ),
-                    optional(seq(optional('-n'), $._literal)), // Optional subpackage name
+                    optional(seq(optional('-n'), $.subpackage_name)), // Optional subpackage name
                     token.immediate(NEWLINE),
                     optional($.shell_block) // Shell commands to execute
                 )
@@ -2136,7 +2136,7 @@ module.exports = grammar({
             ),
 
         // Trigger subpackage: [-n] <name>
-        trigger_subpackage: ($) => seq(optional('-n'), $._literal),
+        trigger_subpackage: ($) => seq(optional('-n'), $.subpackage_name),
 
         // Trigger interpreter: -p <program>
         trigger_interpreter: ($) => seq('-p', $._literal),
@@ -2223,12 +2223,12 @@ module.exports = grammar({
                 seq(
                     alias('%files', $.section_name),
                     optional(
-                        choice(
-                            $._literal, // Subpackage name
-                            seq('-n', $._literal) // Explicit subpackage name
+                        seq(
+                            optional('-n'),
+                            $.subpackage_name // Subpackage name
                         )
                     ),
-                    optional(seq('-f', $._literal)), // Read file list from file
+                    optional(seq('-f', alias($.path_with_macro, $.path))), // Read file list from file
                     token.immediate(NEWLINE),
                     repeat(
                         choice(
