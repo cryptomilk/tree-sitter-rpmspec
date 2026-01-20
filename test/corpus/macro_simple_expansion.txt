@@ -147,3 +147,61 @@ Simple Macro Expansion (Special variable nil)
 (spec
   (macro_simple_expansion
     (special_macro)))
+
+===============================================================================
+Simple Macro Expansion (in shell block followed by section)
+===============================================================================
+
+%install
+%make_install
+
+%files
+/usr/bin/foo
+
+-------------------------------------------------------------------------------
+
+(spec
+  (install_scriptlet
+    (section_name)
+    (shell_block
+      (macro_simple_expansion
+        (simple_macro))))
+  (files
+    (section_name)
+    (file
+      (path))))
+
+===============================================================================
+Simple Macro Expansion (in shell block with content before and after)
+===============================================================================
+
+%install
+echo test
+%make_install
+find %{buildroot} -name foo
+
+%files -n lib%{name}
+%license LICENSE
+
+-------------------------------------------------------------------------------
+
+(spec
+  (install_scriptlet
+    (section_name)
+    (shell_block
+      (shell_content)
+      (macro_simple_expansion
+        (simple_macro))
+      (shell_content)
+      (macro_expansion
+        (identifier))
+      (shell_content)))
+  (files
+    (section_name)
+    (subpackage_name
+      (word)
+      (macro_expansion
+        (identifier)))
+    (file
+      (file_qualifier)
+      (path))))

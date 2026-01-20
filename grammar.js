@@ -342,12 +342,17 @@ module.exports = grammar({
         // Arguments are parsed until end of line (newline)
         // Examples: %bcond bzip2 1, %autosetup -p1 -n %{name}
         // Higher precedence than macro_simple_expansion when arguments follow
+        // Note: token.immediate(/[ \t]+/) ensures arguments must start on the
+        // same line as the macro name. Without this, the parser would skip
+        // newlines (via extras) and consume content from subsequent lines as
+        // arguments. Line continuation (\) still works because it's in extras.
         macro_parametric_expansion: ($) =>
             prec(
                 1,
                 seq(
                     '%',
                     field('name', $.simple_macro),
+                    token.immediate(/[ \t]+/), // Same-line whitespace required
                     repeat1($._macro_invocation_argument),
                     NEWLINE
                 )
