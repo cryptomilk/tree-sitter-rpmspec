@@ -546,6 +546,47 @@ Files (multiple file qualifiers)
       (path))))
 
 ===============================================================================
+Files (%ghost %dir before %attr)
+===============================================================================
+
+%files
+%ghost %dir %attr(0755,-,-) /etc/systemd/system/default.target.wants
+
+-------------------------------------------------------------------------------
+
+(spec
+  (files
+    (section_name)
+    (file
+      (file_qualifier)
+      (file_qualifier)
+      (attr)
+      (path))))
+
+===============================================================================
+Files (mixed order of %attr and qualifiers)
+===============================================================================
+
+%files
+%attr(0700,-,-) %ghost %dir /var/lib/machines
+%doc %attr(0644,root,root) README.md
+
+-------------------------------------------------------------------------------
+
+(spec
+  (files
+    (section_name)
+    (file
+      (attr)
+      (file_qualifier)
+      (file_qualifier)
+      (path))
+    (file
+      (file_qualifier)
+      (attr)
+      (path))))
+
+===============================================================================
 Files (complex %attr expressions)
 :skip
 ===============================================================================

@@ -2511,10 +2511,10 @@ module.exports = grammar({
 
         // File entry: individual file with optional attributes and qualifiers
         // Can specify custom permissions, file type, and path
+        // Attributes (%attr) and qualifiers (%ghost, %dir, etc.) can appear in any order
         file: ($) =>
             seq(
-                optional($.attr), // Custom file attributes
-                repeat($.file_qualifier), // File type qualifiers (can have multiple, e.g., %ghost %dir)
+                repeat(choice($.attr, $.file_qualifier)), // Attributes and qualifiers in any order
                 repeat1(alias($.file_path, $.path)), // One or more file paths
                 token.immediate(NEWLINE) // Must end with newline
             ),
