@@ -44,6 +44,12 @@
 (package
   (section_name) @type.definition)
 
+; Sourcelist section
+(sourcelist
+  (section_name) @type.definition)
+(sourcelist
+  (file) @string.special.path)
+
 ; =============================================================================
 ; SCRIPTLETS
 ; =============================================================================
@@ -270,6 +276,9 @@
 
 ; Strings
 (quoted_string) @string
+
+; URLs
+(url) @string.special.url
 
 ; Comments
 (comment) @comment

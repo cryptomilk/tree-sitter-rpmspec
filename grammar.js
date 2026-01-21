@@ -167,6 +167,7 @@ module.exports = grammar({
                 $.preamble, // Name:, Version:, etc.
                 $.description, // %description section
                 $.package, // %package subsection
+                $.sourcelist, // %sourcelist section
                 $.prep_scriptlet, // %prep section
                 $.generate_buildrequires, // %generate_buildrequires section
                 $.conf_scriptlet, // %conf section
@@ -251,12 +252,17 @@ module.exports = grammar({
 
         // Path that can contain macro expansions
         // Examples: /usr/share/%{name}, %{_datadir}/foo, /path/with/Ümlauts
+        // Pattern excludes :// to prevent matching URLs
         // prec.left ensures greedy left-to-right matching of path segments
         path_with_macro: ($) =>
             prec.left(
                 repeat1(
                     choice(
-                        /[^\s{}%]+/,
+                        // Match path segments that don't contain ://
+                        // - Any chars without colon
+                        // - Colon not followed by /
+                        // - Colon-slash not followed by /
+                        /[^\s{}%:]+|:[^\s{}%\/]|:\/[^\s{}%\/]/,
                         $.macro_simple_expansion,
                         $.macro_expansion
                     )
@@ -1899,6 +1905,35 @@ module.exports = grammar({
                     )
                 )
             ),
+
+        ///////////////////////////////////////////////////////////////////////
+        // Preamble Sub-Sections (%sourcelist)
+        ///////////////////////////////////////////////////////////////////////
+
+        // %sourcelist section: list of source files, one per line
+        // Handled like unnumbered Source tags
+        // Example:
+        //   %sourcelist
+        //   https://example.com/foo-1.0.tar.gz
+        //   https://example.com/foo-data-1.0.zip
+        sourcelist: ($) =>
+            prec.right(
+                seq(
+                    alias(token(seq('%sourcelist', NEWLINE)), $.section_name),
+                    optional($._url_or_file_list)
+                )
+            ),
+
+        // URL or file path - reusable for Source:, Patch:, %sourcelist, %patchlist
+        _url_or_file: ($) =>
+            choice(
+                alias($.url_with_macro, $.url),
+                alias($.path_with_macro, $.file)
+            ),
+
+        // List of URLs or file paths, one per line
+        // Used by %sourcelist and %patchlist
+        _url_or_file_list: ($) => repeat1(seq($._url_or_file, NEWLINE)),
 
         ///////////////////////////////////////////////////////////////////////
         // Preamble Sub-Sections (%package)

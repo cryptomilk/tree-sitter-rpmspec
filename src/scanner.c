@@ -191,6 +191,7 @@ static const char *const SECTION_KEYWORDS[] = {
     "changelog",
     "description",
     "package",
+    "sourcelist",
     /* Runtime scriptlets */
     "pre",
     "post",

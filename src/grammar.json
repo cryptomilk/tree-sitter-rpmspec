@@ -68,6 +68,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "sourcelist"
+        },
+        {
+          "type": "SYMBOL",
           "name": "prep_scriptlet"
         },
         {
@@ -276,7 +280,7 @@
           "members": [
             {
               "type": "PATTERN",
-              "value": "[^\\s{}%]+"
+              "value": "[^\\s{}%:]+|:[^\\s{}%\\/]|:\\/[^\\s{}%\\/]"
             },
             {
               "type": "SYMBOL",
@@ -5721,6 +5725,87 @@
                 }
               ]
             }
+          }
+        ]
+      }
+    },
+    "sourcelist": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "TOKEN",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "%sourcelist"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "\\r?\\n"
+                  }
+                ]
+              }
+            },
+            "named": true,
+            "value": "section_name"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_url_or_file_list"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "_url_or_file": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "url_with_macro"
+          },
+          "named": true,
+          "value": "url"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "path_with_macro"
+          },
+          "named": true,
+          "value": "file"
+        }
+      ]
+    },
+    "_url_or_file_list": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_url_or_file"
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\r?\\n"
           }
         ]
       }

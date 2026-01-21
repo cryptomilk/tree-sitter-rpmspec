@@ -156,6 +156,10 @@
         "named": true
       },
       {
+        "type": "sourcelist",
+        "named": true
+      },
+      {
         "type": "trigger",
         "named": true
       }
@@ -1476,7 +1480,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "attr",
@@ -1484,6 +1488,14 @@
         },
         {
           "type": "file_qualifier",
+          "named": true
+        },
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
           "named": true
         },
         {
@@ -3871,6 +3883,29 @@
     }
   },
   {
+    "type": "sourcelist",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "file",
+          "named": true
+        },
+        {
+          "type": "section_name",
+          "named": true
+        },
+        {
+          "type": "url",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "spec",
     "named": true,
     "root": true,
@@ -4298,6 +4333,25 @@
       "types": [
         {
           "type": "subpackage_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "url",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
           "named": true
         }
       ]
