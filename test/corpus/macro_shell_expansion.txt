@@ -81,3 +81,19 @@ Macro Shell Expansion (Complex Command with Multiple Macros)
       (macro_expansion
         (identifier))
       (shell_code))))
+
+===============================================================================
+Macro Shell Expansion (Bash Parameter Expansion with %)
+===============================================================================
+
+%(c=%version; echo "v${c%.*}-stable")
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_shell_expansion
+    (shell_command
+      (shell_code)
+      (macro_simple_expansion
+        (simple_macro))
+      (shell_code))))

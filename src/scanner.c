@@ -227,6 +227,31 @@ static inline bool is_identifier_start(int32_t c)
 }
 
 /**
+ * @brief Check if a character can start a valid macro after %
+ *
+ * Returns true if the character following % could be the start of:
+ * - %% (escaped percent)
+ * - %{...} (braced macro)
+ * - %(...) (shell macro)
+ * - %[...] (expression macro)
+ * - %!name or %!?name (negated/conditional)
+ * - %?name (conditional)
+ * - %name (simple macro - starts with letter or underscore)
+ * - %* or %** (special macro)
+ * - %# (special macro)
+ * - %0-%9 (positional argument)
+ *
+ * @param c The character following %
+ * @return true if this could start a valid macro, false otherwise
+ */
+static inline bool is_macro_start(int32_t c)
+{
+    return c == '%' || c == '{' || c == '(' || c == '[' || c == '!' ||
+           c == '?' || c == '*' || c == '#' || is_identifier_start(c) ||
+           isdigit(c);
+}
+
+/**
  * @brief Check if character is valid identifier continuation
  */
 static inline bool is_identifier_char(int32_t c)
@@ -619,13 +644,32 @@ static bool scan_shell_content(TSLexer *lexer)
     while (!lexer->eof(lexer)) {
         switch (lexer->lookahead) {
         case '%':
-            /* Potential macro start - stop and let grammar handle it */
-            goto done;
+            /* Mark position before % so we can stop here if needed */
+            lexer->mark_end(lexer);
+            advance(lexer);
+            if (lexer->eof(lexer)) {
+                /* Trailing % at EOF - include it as content */
+                lexer->mark_end(lexer);
+                has_content = true;
+                goto done;
+            }
+            /* Check if what follows can start a valid macro */
+            if (is_macro_start(lexer->lookahead)) {
+                /* Real macro start - stop BEFORE the % */
+                /* mark_end was called before %, so token ends there */
+                goto done;
+            }
+            /* Not a valid macro start (e.g., %. in ${var%.*}) */
+            /* Include % as shell content and continue */
+            lexer->mark_end(lexer);
+            has_content = true;
+            continue;
         case '(':
             /* Nested opening paren - track depth */
             paren_depth++;
             has_content = true;
             advance(lexer);
+            lexer->mark_end(lexer);
             continue;
         case ')':
             if (paren_depth == 0) {
@@ -637,11 +681,13 @@ static bool scan_shell_content(TSLexer *lexer)
             paren_depth--;
             has_content = true;
             advance(lexer);
+            lexer->mark_end(lexer);
             continue;
         default:
             /* Any other character is part of the content */
             has_content = true;
             advance(lexer);
+            lexer->mark_end(lexer);
             continue;
         }
     }
