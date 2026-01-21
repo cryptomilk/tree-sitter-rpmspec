@@ -2869,6 +2869,10 @@
           },
           {
             "type": "SYMBOL",
+            "name": "autopatch_macro"
+          },
+          {
+            "type": "SYMBOL",
             "name": "macro_parametric_expansion"
           },
           {
@@ -5803,6 +5807,10 @@
             },
             {
               "type": "SYMBOL",
+              "name": "autopatch_macro"
+            },
+            {
+              "type": "SYMBOL",
               "name": "macro_parametric_expansion"
             },
             {
@@ -7637,6 +7645,156 @@
           }
         }
       ]
+    },
+    "autopatch_macro": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "%"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "autopatch"
+          },
+          "named": true,
+          "value": "builtin"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "autopatch_flag"
+                },
+                "named": true,
+                "value": "autopatch_option"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "autopatch_number_option"
+                },
+                "named": true,
+                "value": "autopatch_option"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "autopatch_argument"
+              }
+            ]
+          }
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\r?\\n"
+        }
+      ]
+    },
+    "autopatch_flag": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "-"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "v"
+            },
+            {
+              "type": "STRING",
+              "value": "q"
+            }
+          ]
+        }
+      ]
+    },
+    "autopatch_number_option": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "-"
+              },
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "p"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "m"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "M"
+                  }
+                ]
+              },
+              {
+                "type": "PATTERN",
+                "value": "[0-9]+"
+              }
+            ]
+          }
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "p"
+                },
+                {
+                  "type": "STRING",
+                  "value": "m"
+                },
+                {
+                  "type": "STRING",
+                  "value": "M"
+                }
+              ]
+            },
+            {
+              "type": "FIELD",
+              "name": "value",
+              "content": {
+                "type": "SYMBOL",
+                "name": "integer"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "autopatch_argument": {
+      "type": "SYMBOL",
+      "name": "integer"
     },
     "patch_legacy_token": {
       "type": "SEQ",

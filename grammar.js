@@ -1117,6 +1117,7 @@ module.exports = grammar({
                     $.setup_macro,
                     $.autosetup_macro,
                     $.patch_macro,
+                    $.autopatch_macro,
                     $.macro_parametric_expansion,
                     $.macro_expansion,
                     $.macro_simple_expansion,
@@ -1957,6 +1958,7 @@ module.exports = grammar({
                         $.setup_macro, // %setup with specific option support
                         $.autosetup_macro, // %autosetup with VCS support
                         $.patch_macro, // %patch with specific option support
+                        $.autopatch_macro, // %autopatch for automatic patching
                         $.macro_parametric_expansion, // %name args (consumes to EOL)
                         $.macro_expansion, // %{...}
                         $.macro_simple_expansion, // %name
@@ -2535,6 +2537,39 @@ module.exports = grammar({
                     )
                 )
             ),
+
+        // %autopatch macro: apply patches automatically
+        // Syntax: %autopatch [options] [arguments]
+        // Options: -v, -q, -p N, -m N, -M N
+        // Arguments: patch numbers (positional)
+        autopatch_macro: ($) =>
+            seq(
+                '%',
+                alias('autopatch', $.builtin),
+                repeat(
+                    choice(
+                        alias($.autopatch_flag, $.autopatch_option), // Flags: -v, -q
+                        alias($.autopatch_number_option, $.autopatch_option), // Number: -p N, -m N, -M N
+                        $.autopatch_argument // Positional patch numbers
+                    )
+                ),
+                NEWLINE
+            ),
+
+        // Autopatch flags (no parameters)
+        autopatch_flag: ($) => seq('-', choice('v', 'q')),
+
+        // Autopatch options that take a number parameter
+        autopatch_number_option: ($) =>
+            choice(
+                // Immediate format: -p1, -m100, -M400
+                token(seq('-', choice('p', 'm', 'M'), /[0-9]+/)),
+                // Spaced format: -p 1, -m 100, -M 400
+                seq('-', choice('p', 'm', 'M'), field('value', $.integer))
+            ),
+
+        // Autopatch arguments: positional patch numbers
+        autopatch_argument: ($) => $.integer,
 
         ///////////////////////////////////////////////////////////////////////
         // Legacy patch token for %patch0, %patch1 etc.

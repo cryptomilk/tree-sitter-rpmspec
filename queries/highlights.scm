@@ -74,6 +74,12 @@
     (autosetup_option) @variable.parameter
   ])
 
+(autopatch_macro
+  [
+    (autopatch_option) @variable.parameter
+    (autopatch_argument) @number
+  ])
+
 (patch_macro
   [
     (patch_option) @variable.parameter

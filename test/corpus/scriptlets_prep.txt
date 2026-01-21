@@ -205,6 +205,64 @@ Prep Section (%autosetup with options)
         (autosetup_option)))))
 
 ===============================================================================
+Prep Section (%autopatch basic)
+===============================================================================
+
+%prep
+%autopatch
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (autopatch_macro
+        (builtin)))))
+
+===============================================================================
+Prep Section (%autopatch with range)
+===============================================================================
+
+%prep
+%autopatch -m 100 -M 200
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (autopatch_macro
+        (builtin)
+        (autopatch_option
+          (integer))
+        (autopatch_option
+          (integer))))))
+
+===============================================================================
+Prep Section (%autopatch with arguments)
+===============================================================================
+
+%prep
+%autopatch 1 4 6
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (autopatch_macro
+        (builtin)
+        (autopatch_argument
+          (integer))
+        (autopatch_argument
+          (integer))
+        (autopatch_argument
+          (integer))))))
+
+===============================================================================
 Prep Section (%patch basic usage)
 ===============================================================================
 

@@ -120,6 +120,7 @@ static const char *const KEYWORDS[] = {
     "setup",
     "autosetup",
     "patch",
+    "autopatch",
     /* File directives */
     "defattr",
     "attr",
