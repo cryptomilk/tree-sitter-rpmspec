@@ -205,6 +205,29 @@ Prep Section (%autosetup with options)
         (autosetup_option)))))
 
 ===============================================================================
+Prep Section (%autosetup with macro-concatenated directory)
+===============================================================================
+
+%prep
+%autosetup -n %{crate}-%{version} -p1
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (autosetup_macro
+        (builtin)
+        (autosetup_option
+          directory: (concatenation
+            (macro_expansion
+              (identifier))
+            (macro_expansion
+              (identifier))))
+        (autosetup_option)))))
+
+===============================================================================
 Prep Section (%autopatch basic)
 ===============================================================================
 

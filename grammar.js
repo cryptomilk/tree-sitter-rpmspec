@@ -2604,7 +2604,22 @@ module.exports = grammar({
             seq(
                 '-',
                 'n', // Set name of build directory
-                field('directory', $._primary_expression)
+                field(
+                    'directory',
+                    choice(
+                        alias($._setup_directory, $.concatenation),
+                        $._primary_expression
+                    )
+                )
+            ),
+
+        // Directory concatenation for setup/autosetup -n option
+        // Handles hyphen-connected parts like %{crate}-%{version}
+        // token.immediate('-') ensures hyphen binds tightly to preceding token
+        _setup_directory: ($) =>
+            seq(
+                $._primary_expression,
+                repeat1(seq(token.immediate('-'), $._primary_expression))
             ),
 
         // %autosetup macro: automated source unpacking and patch application
@@ -2647,7 +2662,17 @@ module.exports = grammar({
 
         // Autosetup name option: -n DIR
         autosetup_name_option: ($) =>
-            seq('-', 'n', field('directory', $._primary_expression)),
+            seq(
+                '-',
+                'n',
+                field(
+                    'directory',
+                    choice(
+                        alias($._setup_directory, $.concatenation),
+                        $._primary_expression
+                    )
+                )
+            ),
 
         // Autosetup patch option: -p N
         autosetup_patch_option: ($) =>

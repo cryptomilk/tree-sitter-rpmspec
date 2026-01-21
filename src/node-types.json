@@ -311,6 +311,10 @@
           {
             "type": "_primary_expression",
             "named": true
+          },
+          {
+            "type": "concatenation",
+            "named": true
           }
         ]
       },
@@ -3840,6 +3844,10 @@
         "types": [
           {
             "type": "_primary_expression",
+            "named": true
+          },
+          {
+            "type": "concatenation",
             "named": true
           }
         ]
