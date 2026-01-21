@@ -2951,7 +2951,8 @@ module.exports = grammar({
                         choice(
                             seq(optional('%'), $.text_content), // Raw text (% is literal)
                             $.macro_simple_expansion, // %macro
-                            $.macro_expansion // %{macro}
+                            $.macro_expansion, // %{macro}
+                            $.macro_shell_expansion // %(shell command)
                         )
                     )
                 )

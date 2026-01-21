@@ -9185,6 +9185,10 @@
                 {
                   "type": "SYMBOL",
                   "name": "macro_expansion"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_shell_expansion"
                 }
               ]
             }
