@@ -2865,6 +2865,10 @@
           "named": true
         },
         {
+          "type": "escaped_percent",
+          "named": true
+        },
+        {
           "type": "negated_macro",
           "named": true
         },
@@ -4754,6 +4758,10 @@
   {
     "type": "error",
     "named": false
+  },
+  {
+    "type": "escaped_percent",
+    "named": true
   },
   {
     "type": "exists",

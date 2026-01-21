@@ -309,15 +309,6 @@ module.exports = grammar({
         // Macro names: alphanumeric identifiers starting with letter or underscore
         macro_name: (_) => /[a-zA-Z_][a-zA-Z0-9_]*/,
 
-        //// Macro Escaping: %%{name}
-        // TODO FIXME Not so important
-        //
-        // macro_escaped: ($) =>
-        //     prec(10, choice(
-        //         seq('%%{', alias($.macro_name, $.identifier), '}'), // %%{name}
-        //         seq('%%', alias($.macro_name, $.identifier)) // %%name
-        //     )),
-
         //// Simple Macro Expansion: %name
         //
         // The simplest form of macro expansion, directly substituting %name with its value
@@ -335,7 +326,8 @@ module.exports = grammar({
                 seq('%', $.simple_macro), // %name
                 seq('%', $.negated_macro), // %!name
                 seq('%', $.special_macro), // %*, %#, etc.
-                seq('%', $.conditional_expansion) // %?name, %!?name
+                seq('%', $.conditional_expansion), // %?name, %!?name
+                seq('%', $.escaped_percent) // %% - escaped percent
             ),
 
         // Parametric macro invocation: %name [options] [arguments]

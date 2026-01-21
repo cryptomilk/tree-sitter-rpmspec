@@ -418,6 +418,19 @@
               "name": "conditional_expansion"
             }
           ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "%"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "escaped_percent"
+            }
+          ]
         }
       ]
     },

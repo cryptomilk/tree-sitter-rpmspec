@@ -1,0 +1,87 @@
+===============================================================================
+Escaped Percent (in shell block)
+===============================================================================
+
+%build
+echo %%{name}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (build_scriptlet
+    (section_name)
+    (shell_block
+      (shell_content)
+      (macro_simple_expansion
+        (escaped_percent))
+      (shell_content))))
+
+===============================================================================
+Escaped Percent (in comment)
+===============================================================================
+
+# This is %%{name} in a comment
+
+-------------------------------------------------------------------------------
+
+(spec
+  (comment))
+
+===============================================================================
+Escaped Percent (simple %% in shell)
+===============================================================================
+
+%build
+echo %%
+
+-------------------------------------------------------------------------------
+
+(spec
+  (build_scriptlet
+    (section_name)
+    (shell_block
+      (shell_content)
+      (macro_simple_expansion
+        (escaped_percent)))))
+
+===============================================================================
+Escaped Percent (multiple escaped in shell)
+===============================================================================
+
+%build
+echo %%{foo} and %%{bar}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (build_scriptlet
+    (section_name)
+    (shell_block
+      (shell_content)
+      (macro_simple_expansion
+        (escaped_percent))
+      (shell_content)
+      (macro_simple_expansion
+        (escaped_percent))
+      (shell_content))))
+
+===============================================================================
+Escaped Percent (mixed with real macro)
+===============================================================================
+
+%build
+echo %%{literal} %{real}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (build_scriptlet
+    (section_name)
+    (shell_block
+      (shell_content)
+      (macro_simple_expansion
+        (escaped_percent))
+      (shell_content)
+      (macro_expansion
+        (identifier)))))
+
