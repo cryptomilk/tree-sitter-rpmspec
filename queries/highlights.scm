@@ -38,6 +38,11 @@
   "(" @punctuation.bracket
   ")" @punctuation.bracket)
 
+; Source tag file paths
+(tags
+  (tag)
+  value: (file) @string.special.path)
+
 ; Description and package sections
 (description
   (section_name) @type.definition)

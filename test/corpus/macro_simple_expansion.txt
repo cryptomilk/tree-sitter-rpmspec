@@ -69,26 +69,6 @@ Name: %pkg_name
         (simple_macro)))))
 
 ===============================================================================
-Simple Macro Expansion (Concatenation)
-===============================================================================
-
-Source: %name-%version.tar.gz
-
--------------------------------------------------------------------------------
-
-(spec
-  (preamble
-    (tags
-      (tag)
-      (concatenation
-        (macro_simple_expansion
-          (simple_macro))
-        (word)
-        (macro_simple_expansion
-          (simple_macro))
-        (word)))))
-
-===============================================================================
 Simple Macro Expansion (Special variable all arguments)
 ===============================================================================
 

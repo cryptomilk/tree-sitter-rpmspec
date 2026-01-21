@@ -4024,7 +4024,15 @@
             "named": true
           },
           {
+            "type": "file",
+            "named": true
+          },
+          {
             "type": "rich_dependency_list",
+            "named": true
+          },
+          {
+            "type": "url",
             "named": true
           }
         ]

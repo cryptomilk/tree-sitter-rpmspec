@@ -191,17 +191,15 @@ Source:         %{name}-%{version}.tar.gz
   (preamble
     (tags
       (tag)
-      (word)))
+      value: (word)))
   (preamble
     (tags
       (tag)
-      (concatenation
+      value: (file
         (macro_expansion
           (identifier))
-        (word)
         (macro_expansion
-          (identifier))
-        (word)))))
+          (identifier))))))
 
 ===============================================================================
 Preamble (Source0 tag with macro expansions)
@@ -216,17 +214,15 @@ Source0:        %{name}-%{version}.tar.gz
   (preamble
     (tags
       (tag)
-      (word)))
+      value: (word)))
   (preamble
     (tags
       (tag)
-      (concatenation
+      value: (file
         (macro_expansion
           (identifier))
-        (word)
         (macro_expansion
-          (identifier))
-        (word)))))
+          (identifier))))))
 
 ===============================================================================
 Preamble (Patch0 tag with filename)

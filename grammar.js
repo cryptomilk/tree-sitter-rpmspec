@@ -1452,11 +1452,18 @@ module.exports = grammar({
         //   Summary: A parser generator tool
         tags: ($) =>
             choice(
-                // Regular tags (Source, Name, etc.) - only support literals
+                // Regular tags (Name, Version, etc.) - only support literals
                 seq(
                     $.tag, // Tag name
                     token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
                     field('value', $._literal), // Simple values (can contain macros)
+                    token.immediate(NEWLINE) // Must end with newline
+                ),
+                // Source tags (Source0, Source1, etc.) - URL or file path
+                seq(
+                    alias($.source_tag, $.tag), // Source tag name
+                    token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
+                    field('value', $._url_or_file), // URL or file path
                     token.immediate(NEWLINE) // Must end with newline
                 ),
                 // Strong dependency tags (Requires, BuildRequires) - full boolean support
@@ -1540,9 +1547,11 @@ module.exports = grammar({
                 // Source and patch control
                 'NoPatch', // Disable specific patches
                 'NoSource', // Exclude sources from SRPM
-                /Patch\d*/, // Patch files: Patch0, Patch1, etc.
-                /Source\d*/ // Source files: Source0, Source1, etc.
+                /Patch\d*/ // Patch files: Patch0, Patch1, etc.
             ),
+
+        // Source tag: Source0, Source1, Source, etc.
+        source_tag: (_) => /Source\d*/,
 
         // Dependency qualifiers: specify when dependencies are needed
         // Used with Requires tag to indicate timing of dependency check
