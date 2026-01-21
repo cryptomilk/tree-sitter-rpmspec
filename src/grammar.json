@@ -1012,7 +1012,7 @@
         }
       ]
     },
-    "macro_define": {
+    "_macro_define": {
       "type": "CHOICE",
       "members": [
         {
@@ -1025,7 +1025,7 @@
         }
       ]
     },
-    "macro_undefine": {
+    "_macro_undefine": {
       "type": "STRING",
       "value": "undefine"
     },
@@ -1621,7 +1621,7 @@
                           "type": "ALIAS",
                           "content": {
                             "type": "SYMBOL",
-                            "name": "macro_body_text"
+                            "name": "_macro_body_text"
                           },
                           "named": true,
                           "value": "text"
@@ -1669,7 +1669,7 @@
             "type": "ALIAS",
             "content": {
               "type": "SYMBOL",
-              "name": "macro_define"
+              "name": "_macro_define"
             },
             "named": true,
             "value": "builtin"
@@ -1876,7 +1876,7 @@
             "type": "ALIAS",
             "content": {
               "type": "SYMBOL",
-              "name": "macro_undefine"
+              "name": "_macro_undefine"
             },
             "named": true,
             "value": "builtin"
@@ -3013,7 +3013,7 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "scriptlet_if_statement"
+            "name": "_scriptlet_if_statement"
           },
           "named": true,
           "value": "if_statement"
@@ -3022,7 +3022,7 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "scriptlet_ifarch_statement"
+            "name": "_scriptlet_ifarch_statement"
           },
           "named": true,
           "value": "ifarch_statement"
@@ -3031,7 +3031,7 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "scriptlet_ifos_statement"
+            "name": "_scriptlet_ifos_statement"
           },
           "named": true,
           "value": "ifos_statement"
@@ -3177,7 +3177,7 @@
         }
       ]
     },
-    "scriptlet_if_statement": {
+    "_scriptlet_if_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -3674,7 +3674,7 @@
         }
       ]
     },
-    "scriptlet_ifarch_statement": {
+    "_scriptlet_ifarch_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -3819,7 +3819,7 @@
         }
       ]
     },
-    "scriptlet_ifos_statement": {
+    "_scriptlet_ifos_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -3971,7 +3971,7 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "files_if_statement"
+            "name": "_files_if_statement"
           },
           "named": true,
           "value": "if_statement"
@@ -3980,7 +3980,7 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "files_ifarch_statement"
+            "name": "_files_ifarch_statement"
           },
           "named": true,
           "value": "ifarch_statement"
@@ -3989,7 +3989,7 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "files_ifos_statement"
+            "name": "_files_ifos_statement"
           },
           "named": true,
           "value": "ifos_statement"
@@ -4020,7 +4020,7 @@
         ]
       }
     },
-    "files_if_statement": {
+    "_files_if_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -4175,7 +4175,7 @@
         }
       ]
     },
-    "files_ifarch_statement": {
+    "_files_ifarch_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -4320,7 +4320,7 @@
         }
       ]
     },
-    "files_ifos_statement": {
+    "_files_ifos_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -4515,7 +4515,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "source_tag"
+                "name": "_source_tag"
               },
               "named": true,
               "value": "tag"
@@ -4551,7 +4551,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "patch_tag"
+                "name": "_patch_tag"
               },
               "named": true,
               "value": "tag"
@@ -4587,7 +4587,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "url_tag"
+                "name": "_url_tag"
               },
               "named": true,
               "value": "tag"
@@ -4628,7 +4628,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "requires_tag"
+                "name": "_requires_tag"
               },
               "named": true,
               "value": "dependency_tag"
@@ -4664,7 +4664,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "weak_requires_tag"
+                "name": "_weak_requires_tag"
               },
               "named": true,
               "value": "dependency_tag"
@@ -4700,7 +4700,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "conflicts_tag"
+                "name": "_conflicts_tag"
               },
               "named": true,
               "value": "dependency_tag"
@@ -4736,7 +4736,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "provides_tag"
+                "name": "_provides_tag"
               },
               "named": true,
               "value": "dependency_tag"
@@ -4772,7 +4772,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "arch_tag"
+                "name": "_arch_tag"
               },
               "named": true,
               "value": "dependency_tag"
@@ -4808,7 +4808,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "legacy_dependency_tag"
+                "name": "_legacy_dependency_tag"
               },
               "named": true,
               "value": "dependency_tag"
@@ -4928,15 +4928,15 @@
         }
       ]
     },
-    "source_tag": {
+    "_source_tag": {
       "type": "PATTERN",
       "value": "Source\\d*"
     },
-    "patch_tag": {
+    "_patch_tag": {
       "type": "PATTERN",
       "value": "Patch\\d*"
     },
-    "url_tag": {
+    "_url_tag": {
       "type": "CHOICE",
       "members": [
         {
@@ -4994,7 +4994,7 @@
         }
       ]
     },
-    "requires_tag": {
+    "_requires_tag": {
       "type": "CHOICE",
       "members": [
         {
@@ -5037,7 +5037,7 @@
         }
       ]
     },
-    "weak_requires_tag": {
+    "_weak_requires_tag": {
       "type": "CHOICE",
       "members": [
         {
@@ -5058,7 +5058,7 @@
         }
       ]
     },
-    "conflicts_tag": {
+    "_conflicts_tag": {
       "type": "CHOICE",
       "members": [
         {
@@ -5075,11 +5075,11 @@
         }
       ]
     },
-    "provides_tag": {
+    "_provides_tag": {
       "type": "STRING",
       "value": "Provides"
     },
-    "arch_tag": {
+    "_arch_tag": {
       "type": "CHOICE",
       "members": [
         {
@@ -5108,7 +5108,7 @@
         }
       ]
     },
-    "legacy_dependency_tag": {
+    "_legacy_dependency_tag": {
       "type": "CHOICE",
       "members": [
         {
@@ -8020,7 +8020,7 @@
                   "type": "ALIAS",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "setup_flag"
+                    "name": "_setup_flag"
                   },
                   "named": true,
                   "value": "macro_option"
@@ -8033,7 +8033,7 @@
                   "type": "ALIAS",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "setup_source_option"
+                    "name": "_setup_source_option"
                   },
                   "named": true,
                   "value": "macro_option"
@@ -8046,7 +8046,7 @@
                   "type": "ALIAS",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "setup_name_option"
+                    "name": "_setup_name_option"
                   },
                   "named": true,
                   "value": "macro_option"
@@ -8061,7 +8061,7 @@
         }
       ]
     },
-    "setup_flag": {
+    "_setup_flag": {
       "type": "SEQ",
       "members": [
         {
@@ -8095,7 +8095,7 @@
         }
       ]
     },
-    "setup_source_option": {
+    "_setup_source_option": {
       "type": "SEQ",
       "members": [
         {
@@ -8125,7 +8125,7 @@
         }
       ]
     },
-    "setup_name_option": {
+    "_setup_name_option": {
       "type": "SEQ",
       "members": [
         {
@@ -8216,7 +8216,7 @@
                   "type": "ALIAS",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "autosetup_flag"
+                    "name": "_autosetup_flag"
                   },
                   "named": true,
                   "value": "macro_option"
@@ -8229,7 +8229,7 @@
                   "type": "ALIAS",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "autosetup_source_option"
+                    "name": "_autosetup_source_option"
                   },
                   "named": true,
                   "value": "macro_option"
@@ -8242,7 +8242,7 @@
                   "type": "ALIAS",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "autosetup_name_option"
+                    "name": "_autosetup_name_option"
                   },
                   "named": true,
                   "value": "macro_option"
@@ -8255,7 +8255,7 @@
                   "type": "ALIAS",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "autosetup_patch_option"
+                    "name": "_autosetup_patch_option"
                   },
                   "named": true,
                   "value": "macro_option"
@@ -8268,7 +8268,7 @@
                   "type": "ALIAS",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "autosetup_vcs_option"
+                    "name": "_autosetup_vcs_option"
                   },
                   "named": true,
                   "value": "macro_option"
@@ -8283,7 +8283,7 @@
         }
       ]
     },
-    "autosetup_flag": {
+    "_autosetup_flag": {
       "type": "SEQ",
       "members": [
         {
@@ -8325,7 +8325,7 @@
         }
       ]
     },
-    "autosetup_source_option": {
+    "_autosetup_source_option": {
       "type": "SEQ",
       "members": [
         {
@@ -8346,7 +8346,7 @@
         }
       ]
     },
-    "autosetup_name_option": {
+    "_autosetup_name_option": {
       "type": "SEQ",
       "members": [
         {
@@ -8381,7 +8381,7 @@
         }
       ]
     },
-    "autosetup_patch_option": {
+    "_autosetup_patch_option": {
       "type": "CHOICE",
       "members": [
         {
@@ -8427,7 +8427,7 @@
         }
       ]
     },
-    "autosetup_vcs_option": {
+    "_autosetup_vcs_option": {
       "type": "SEQ",
       "members": [
         {
@@ -8505,7 +8505,7 @@
                   "type": "ALIAS",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "autopatch_flag"
+                    "name": "_autopatch_flag"
                   },
                   "named": true,
                   "value": "macro_option"
@@ -8518,7 +8518,7 @@
                   "type": "ALIAS",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "autopatch_number_option"
+                    "name": "_autopatch_number_option"
                   },
                   "named": true,
                   "value": "macro_option"
@@ -8528,7 +8528,7 @@
                 "type": "ALIAS",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "autopatch_argument"
+                  "name": "_autopatch_argument"
                 },
                 "named": true,
                 "value": "macro_argument"
@@ -8542,7 +8542,7 @@
         }
       ]
     },
-    "autopatch_flag": {
+    "_autopatch_flag": {
       "type": "SEQ",
       "members": [
         {
@@ -8564,7 +8564,7 @@
         }
       ]
     },
-    "autopatch_number_option": {
+    "_autopatch_number_option": {
       "type": "CHOICE",
       "members": [
         {
@@ -8636,7 +8636,7 @@
         }
       ]
     },
-    "autopatch_argument": {
+    "_autopatch_argument": {
       "type": "SYMBOL",
       "name": "integer"
     },
@@ -8701,7 +8701,7 @@
                     "type": "ALIAS",
                     "content": {
                       "type": "SYMBOL",
-                      "name": "patch_option_flag"
+                      "name": "_patch_option_flag"
                     },
                     "named": true,
                     "value": "macro_option"
@@ -8714,7 +8714,7 @@
                     "type": "ALIAS",
                     "content": {
                       "type": "SYMBOL",
-                      "name": "patch_option_number"
+                      "name": "_patch_option_number"
                     },
                     "named": true,
                     "value": "macro_option"
@@ -8727,7 +8727,7 @@
                     "type": "ALIAS",
                     "content": {
                       "type": "SYMBOL",
-                      "name": "patch_option_string"
+                      "name": "_patch_option_string"
                     },
                     "named": true,
                     "value": "macro_option"
@@ -8737,7 +8737,7 @@
                   "type": "ALIAS",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "patch_argument"
+                    "name": "_patch_argument"
                   },
                   "named": true,
                   "value": "macro_argument"
@@ -8752,11 +8752,11 @@
         ]
       }
     },
-    "patch_argument": {
+    "_patch_argument": {
       "type": "SYMBOL",
       "name": "integer"
     },
-    "patch_option_flag": {
+    "_patch_option_flag": {
       "type": "SEQ",
       "members": [
         {
@@ -8782,7 +8782,7 @@
         }
       ]
     },
-    "patch_option_number": {
+    "_patch_option_number": {
       "type": "CHOICE",
       "members": [
         {
@@ -8854,7 +8854,7 @@
         }
       ]
     },
-    "patch_option_string": {
+    "_patch_option_string": {
       "type": "SEQ",
       "members": [
         {
@@ -9203,7 +9203,7 @@
         }
       }
     },
-    "macro_body_text": {
+    "_macro_body_text": {
       "type": "PREC",
       "value": -1,
       "content": {

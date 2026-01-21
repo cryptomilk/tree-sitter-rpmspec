@@ -731,9 +731,9 @@ module.exports = grammar({
         macro_patch: ($) =>
             choice(token(prec(1, /PATCH[0-9]+/)), token(prec(1, /P[0-9]+/))),
 
-        macro_define: ($) => choice('define', 'global'),
+        _macro_define: (_) => choice('define', 'global'),
 
-        macro_undefine: ($) => 'undefine',
+        _macro_undefine: (_) => 'undefine',
 
         // Macro arguments: values that can be passed to parametric macros
         // Excludes newlines to stop parsing at line end
@@ -894,7 +894,7 @@ module.exports = grammar({
                                     $.macro_undefinition,
                                     $.macro_simple_expansion,
                                     $.macro_expansion,
-                                    alias($.macro_body_text, $.text)
+                                    alias($._macro_body_text, $.text)
                                 )
                             )
                         )
@@ -912,7 +912,7 @@ module.exports = grammar({
             prec.left(
                 seq(
                     '%',
-                    alias($.macro_define, $.builtin),
+                    alias($._macro_define, $.builtin),
                     token.immediate(BLANK),
                     field('name', alias($.macro_name, $.identifier)),
                     optional(
@@ -984,7 +984,7 @@ module.exports = grammar({
             prec.left(
                 seq(
                     '%',
-                    alias($.macro_undefine, $.builtin),
+                    alias($._macro_undefine, $.builtin),
                     token.immediate(BLANK),
                     field('name', alias($.macro_name, $.identifier))
                 )
@@ -1371,9 +1371,9 @@ module.exports = grammar({
         // Scriptlet-specific compound statements (alias to regular names in parse tree)
         _scriptlet_compound_statements: ($) =>
             choice(
-                alias($.scriptlet_if_statement, $.if_statement),
-                alias($.scriptlet_ifarch_statement, $.ifarch_statement),
-                alias($.scriptlet_ifos_statement, $.ifos_statement)
+                alias($._scriptlet_if_statement, $.if_statement),
+                alias($._scriptlet_ifarch_statement, $.ifarch_statement),
+                alias($._scriptlet_ifos_statement, $.ifos_statement)
             ),
 
         // %if - uses external scanner token for context-aware parsing
@@ -1389,7 +1389,7 @@ module.exports = grammar({
         else_clause: makeElseClause(($) => $._conditional_block),
 
         // Scriptlet-specific %if (uses _scriptlet_conditional_content for body)
-        scriptlet_if_statement: makeIfStatement(
+        _scriptlet_if_statement: makeIfStatement(
             ($) => $.scriptlet_if,
             ($) => $._scriptlet_conditional_content,
             ($) => $.scriptlet_elif_clause,
@@ -1452,7 +1452,7 @@ module.exports = grammar({
         elifos_clause: makeElifosClause(($) => $._conditional_block),
 
         // Scriptlet-specific %ifarch (uses _scriptlet_conditional_content for body)
-        scriptlet_ifarch_statement: makeIfarchStatement(
+        _scriptlet_ifarch_statement: makeIfarchStatement(
             ($) => $.scriptlet_ifarch,
             ($) => $.scriptlet_ifnarch,
             ($) => $._scriptlet_conditional_content,
@@ -1466,7 +1466,7 @@ module.exports = grammar({
         ),
 
         // Scriptlet-specific %ifos (uses _scriptlet_conditional_content for body)
-        scriptlet_ifos_statement: makeIfosStatement(
+        _scriptlet_ifos_statement: makeIfosStatement(
             ($) => $.scriptlet_ifos,
             ($) => $.scriptlet_ifnos,
             ($) => $._scriptlet_conditional_content,
@@ -1482,9 +1482,9 @@ module.exports = grammar({
         // Files-specific compound statements (alias to regular names in parse tree)
         _files_compound_statements: ($) =>
             choice(
-                alias($.files_if_statement, $.if_statement),
-                alias($.files_ifarch_statement, $.ifarch_statement),
-                alias($.files_ifos_statement, $.ifos_statement)
+                alias($._files_if_statement, $.if_statement),
+                alias($._files_ifarch_statement, $.ifarch_statement),
+                alias($._files_ifos_statement, $.ifos_statement)
             ),
 
         // Content allowed inside files conditionals (files section context)
@@ -1496,7 +1496,7 @@ module.exports = grammar({
             ),
 
         // Files-specific %if (uses _files_conditional_content for body)
-        files_if_statement: makeIfStatement(
+        _files_if_statement: makeIfStatement(
             ($) => $.files_if,
             ($) => $._files_conditional_content,
             ($) => $.files_elif_clause,
@@ -1515,7 +1515,7 @@ module.exports = grammar({
         ),
 
         // Files-specific %ifarch (uses _files_conditional_content for body)
-        files_ifarch_statement: makeIfarchStatement(
+        _files_ifarch_statement: makeIfarchStatement(
             ($) => $.files_ifarch,
             ($) => $.files_ifnarch,
             ($) => $._files_conditional_content,
@@ -1529,7 +1529,7 @@ module.exports = grammar({
         ),
 
         // Files-specific %ifos (uses _files_conditional_content for body)
-        files_ifos_statement: makeIfosStatement(
+        _files_ifos_statement: makeIfosStatement(
             ($) => $.files_ifos,
             ($) => $.files_ifnos,
             ($) => $._files_conditional_content,
@@ -1583,63 +1583,63 @@ module.exports = grammar({
                 ),
                 // Source tags (Source0, Source1, etc.) - URL or file path
                 seq(
-                    alias($.source_tag, $.tag), // Source tag name
+                    alias($._source_tag, $.tag), // Source tag name
                     token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
                     field('value', $._url_or_file), // URL or file path
                     token.immediate(NEWLINE) // Must end with newline
                 ),
                 // Patch tags (Patch0, Patch1, etc.) - URL or file path
                 seq(
-                    alias($.patch_tag, $.tag), // Patch tag name
+                    alias($._patch_tag, $.tag), // Patch tag name
                     token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
                     field('value', $._url_or_file), // URL or file path
                     token.immediate(NEWLINE) // Must end with newline
                 ),
                 // URL tags (URL, Url, BugUrl) - URL value
                 seq(
-                    alias($.url_tag, $.tag), // URL tag name
+                    alias($._url_tag, $.tag), // URL tag name
                     token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
                     field('value', alias($.url_with_macro, $.url)), // URL value
                     token.immediate(NEWLINE) // Must end with newline
                 ),
                 // Strong dependency tags (Requires, BuildRequires) - full boolean support
                 seq(
-                    alias($.requires_tag, $.dependency_tag),
+                    alias($._requires_tag, $.dependency_tag),
                     token.immediate(/:( |\t)*/),
                     field('value', $.rich_dependency_list), // Supports boolean deps
                     token.immediate(NEWLINE)
                 ),
                 // Weak dependency tags (Recommends, Suggests, etc.) - full boolean support
                 seq(
-                    alias($.weak_requires_tag, $.dependency_tag),
+                    alias($._weak_requires_tag, $.dependency_tag),
                     token.immediate(/:( |\t)*/),
                     field('value', $.rich_dependency_list), // Supports boolean deps
                     token.immediate(NEWLINE)
                 ),
                 // Conflicts/Obsoletes tags - NO boolean expressions
                 seq(
-                    alias($.conflicts_tag, $.dependency_tag),
+                    alias($._conflicts_tag, $.dependency_tag),
                     token.immediate(/:( |\t)*/),
                     field('value', $.dependency_list), // No boolean deps
                     token.immediate(NEWLINE)
                 ),
                 // Provides tag - NO boolean expressions
                 seq(
-                    alias($.provides_tag, $.dependency_tag),
+                    alias($._provides_tag, $.dependency_tag),
                     token.immediate(/:( |\t)*/),
                     field('value', $.dependency_list), // No boolean deps
                     token.immediate(NEWLINE)
                 ),
                 // Architecture/OS constraint tags - use literals
                 seq(
-                    alias($.arch_tag, $.dependency_tag),
+                    alias($._arch_tag, $.dependency_tag),
                     token.immediate(/:( |\t)*/),
                     field('value', $._literal), // Simple arch/OS names
                     token.immediate(NEWLINE)
                 ),
                 // Legacy/deprecated tags - use rich dependency list for compatibility
                 seq(
-                    alias($.legacy_dependency_tag, $.dependency_tag),
+                    alias($._legacy_dependency_tag, $.dependency_tag),
                     token.immediate(/:( |\t)*/),
                     field('value', $.rich_dependency_list),
                     token.immediate(NEWLINE)
@@ -1683,13 +1683,13 @@ module.exports = grammar({
             ),
 
         // Source tag: Source0, Source1, Source, etc.
-        source_tag: (_) => /Source\d*/,
+        _source_tag: (_) => /Source\d*/,
 
         // Patch tag: Patch0, Patch1, Patch, etc.
-        patch_tag: (_) => /Patch\d*/,
+        _patch_tag: (_) => /Patch\d*/,
 
         // URL tag: URL, Url, BugUrl
-        url_tag: (_) => choice('URL', 'Url', 'BugUrl'),
+        _url_tag: (_) => choice('URL', 'Url', 'BugUrl'),
 
         // Dependency qualifiers: specify when dependencies are needed
         // Used with Requires tag to indicate timing of dependency check
@@ -1709,7 +1709,7 @@ module.exports = grammar({
 
         // Strong dependency tags: Requires (with qualifier), BuildRequires
         // These support full boolean dependency syntax (and, or, if, with, without)
-        requires_tag: ($) =>
+        _requires_tag: ($) =>
             choice(
                 seq('Requires', optional(seq('(', $.qualifier, ')'))),
                 'BuildRequires'
@@ -1717,21 +1717,21 @@ module.exports = grammar({
 
         // Weak dependency tags: Recommends, Suggests, Supplements, Enhances
         // These also support full boolean dependency syntax
-        weak_requires_tag: ($) =>
+        _weak_requires_tag: (_) =>
             choice('Recommends', 'Suggests', 'Supplements', 'Enhances'),
 
         // Conflict/Obsolete tags: Conflicts, BuildConflicts, Obsoletes
         // These do NOT support boolean expressions - only simple versioned deps
-        conflicts_tag: ($) =>
+        _conflicts_tag: (_) =>
             choice('Conflicts', 'BuildConflicts', 'Obsoletes'),
 
         // Provides tag: provides virtual packages/capabilities
         // Does NOT support boolean expressions - only simple versioned deps
-        provides_tag: (_) => 'Provides',
+        _provides_tag: (_) => 'Provides',
 
         // Architecture/OS constraint tags
         // These use simple literals (arch names), not dependency lists
-        arch_tag: ($) =>
+        _arch_tag: (_) =>
             choice(
                 'BuildArch',
                 'BuildArchitectures',
@@ -1743,7 +1743,7 @@ module.exports = grammar({
 
         // Legacy/deprecated dependency tags
         // Keep for backwards compatibility
-        legacy_dependency_tag: ($) =>
+        _legacy_dependency_tag: (_) =>
             choice(
                 'BuildPrereq', // Build prerequisites (deprecated)
                 'Prereq', // Prerequisites (deprecated)
@@ -2571,16 +2571,16 @@ module.exports = grammar({
                 repeat(
                     choice(
                         // Simple flags: -c, -C, -D, -T, -q
-                        field('argument', alias($.setup_flag, $.macro_option)),
+                        field('argument', alias($._setup_flag, $.macro_option)),
                         // Source options: -a N, -b N
                         field(
                             'argument',
-                            alias($.setup_source_option, $.macro_option)
+                            alias($._setup_source_option, $.macro_option)
                         ),
                         // Name option: -n DIR
                         field(
                             'argument',
-                            alias($.setup_name_option, $.macro_option)
+                            alias($._setup_name_option, $.macro_option)
                         )
                     )
                 ),
@@ -2588,7 +2588,7 @@ module.exports = grammar({
             ),
 
         // Simple setup flags (no parameters)
-        setup_flag: ($) =>
+        _setup_flag: (_) =>
             seq(
                 '-',
                 choice(
@@ -2601,7 +2601,7 @@ module.exports = grammar({
             ),
 
         // Setup options that take a source number parameter
-        setup_source_option: ($) =>
+        _setup_source_option: ($) =>
             seq(
                 '-',
                 choice('a', 'b'), // -a: unpack after cd, -b: unpack before cd
@@ -2609,7 +2609,7 @@ module.exports = grammar({
             ),
 
         // Setup name option that takes a directory name
-        setup_name_option: ($) =>
+        _setup_name_option: ($) =>
             seq(
                 '-',
                 'n', // Set name of build directory
@@ -2643,27 +2643,27 @@ module.exports = grammar({
                         // Flags: -v, -N, -c, -C, -D, -T, -b
                         field(
                             'argument',
-                            alias($.autosetup_flag, $.macro_option)
+                            alias($._autosetup_flag, $.macro_option)
                         ),
                         // Source: -a N
                         field(
                             'argument',
-                            alias($.autosetup_source_option, $.macro_option)
+                            alias($._autosetup_source_option, $.macro_option)
                         ),
                         // Name: -n DIR
                         field(
                             'argument',
-                            alias($.autosetup_name_option, $.macro_option)
+                            alias($._autosetup_name_option, $.macro_option)
                         ),
                         // Patch: -p N
                         field(
                             'argument',
-                            alias($.autosetup_patch_option, $.macro_option)
+                            alias($._autosetup_patch_option, $.macro_option)
                         ),
                         // VCS: -S <vcs>
                         field(
                             'argument',
-                            alias($.autosetup_vcs_option, $.macro_option)
+                            alias($._autosetup_vcs_option, $.macro_option)
                         )
                     )
                 ),
@@ -2671,7 +2671,7 @@ module.exports = grammar({
             ),
 
         // Autosetup flags (no parameters)
-        autosetup_flag: ($) =>
+        _autosetup_flag: (_) =>
             seq(
                 '-',
                 choice(
@@ -2686,11 +2686,11 @@ module.exports = grammar({
             ),
 
         // Autosetup source option: -a N
-        autosetup_source_option: ($) =>
+        _autosetup_source_option: ($) =>
             seq('-', 'a', field('number', $.integer)),
 
         // Autosetup name option: -n DIR
-        autosetup_name_option: ($) =>
+        _autosetup_name_option: ($) =>
             seq(
                 '-',
                 'n',
@@ -2704,14 +2704,14 @@ module.exports = grammar({
             ),
 
         // Autosetup patch option: -p N
-        autosetup_patch_option: ($) =>
+        _autosetup_patch_option: ($) =>
             choice(
                 token(seq('-', 'p', /[0-9]+/)), // -p1
                 seq('-', 'p', field('value', $.integer)) // -p 1
             ),
 
         // Autosetup VCS option: -S <vcs>
-        autosetup_vcs_option: ($) =>
+        _autosetup_vcs_option: (_) =>
             seq(
                 '-',
                 'S',
@@ -2742,25 +2742,25 @@ module.exports = grammar({
                         // Flags: -v, -q
                         field(
                             'argument',
-                            alias($.autopatch_flag, $.macro_option)
+                            alias($._autopatch_flag, $.macro_option)
                         ),
                         // Number: -p N, -m N, -M N
                         field(
                             'argument',
-                            alias($.autopatch_number_option, $.macro_option)
+                            alias($._autopatch_number_option, $.macro_option)
                         ),
                         // Positional patch numbers
-                        alias($.autopatch_argument, $.macro_argument)
+                        alias($._autopatch_argument, $.macro_argument)
                     )
                 ),
                 NEWLINE
             ),
 
         // Autopatch flags (no parameters)
-        autopatch_flag: ($) => seq('-', choice('v', 'q')),
+        _autopatch_flag: (_) => seq('-', choice('v', 'q')),
 
         // Autopatch options that take a number parameter
-        autopatch_number_option: ($) =>
+        _autopatch_number_option: ($) =>
             choice(
                 // Immediate format: -p1, -m100, -M400
                 token(seq('-', choice('p', 'm', 'M'), /[0-9]+/)),
@@ -2769,7 +2769,7 @@ module.exports = grammar({
             ),
 
         // Autopatch arguments: positional patch numbers
-        autopatch_argument: ($) => $.integer,
+        _autopatch_argument: ($) => $.integer,
 
         ///////////////////////////////////////////////////////////////////////
         // Legacy patch token for %patch0, %patch1 etc.
@@ -2797,20 +2797,20 @@ module.exports = grammar({
                             // Simple flags: -E, -R, -Z
                             field(
                                 'argument',
-                                alias($.patch_option_flag, $.macro_option)
+                                alias($._patch_option_flag, $.macro_option)
                             ),
                             // Number options: -F N, -p N, -P N
                             field(
                                 'argument',
-                                alias($.patch_option_number, $.macro_option)
+                                alias($._patch_option_number, $.macro_option)
                             ),
                             // String options: -b SUF, -d DIR, -o FILE, -z SUF
                             field(
                                 'argument',
-                                alias($.patch_option_string, $.macro_option)
+                                alias($._patch_option_string, $.macro_option)
                             ),
                             // Positional patch numbers
-                            alias($.patch_argument, $.macro_argument)
+                            alias($._patch_argument, $.macro_argument)
                         )
                     ),
                     NEWLINE
@@ -2818,10 +2818,10 @@ module.exports = grammar({
             ),
 
         // Patch arguments: positional patch numbers
-        patch_argument: ($) => $.integer,
+        _patch_argument: ($) => $.integer,
 
         // Patch option flags (no parameters)
-        patch_option_flag: ($) =>
+        _patch_option_flag: (_) =>
             seq(
                 '-',
                 choice(
@@ -2832,7 +2832,7 @@ module.exports = grammar({
             ),
 
         // Patch options that take a number parameter
-        patch_option_number: ($) =>
+        _patch_option_number: ($) =>
             choice(
                 // Immediate format: -p1, -F3, -P2
                 token(seq('-', choice('F', 'p', 'P'), /[0-9]+/)),
@@ -2841,7 +2841,7 @@ module.exports = grammar({
             ),
 
         // Patch options that take a string parameter
-        patch_option_string: ($) =>
+        _patch_option_string: ($) =>
             seq(
                 '-',
                 choice(
@@ -2964,7 +2964,7 @@ module.exports = grammar({
         // Macro body text: text inside macro expansion that excludes }
         // Used for conditional expansion consequences like %{?name:value}
         // Must stop at } to not consume the closing brace of macro_expansion
-        macro_body_text: ($) =>
+        _macro_body_text: ($) =>
             prec(
                 -1,
                 repeat1(
