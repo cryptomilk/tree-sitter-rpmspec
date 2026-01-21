@@ -763,11 +763,12 @@ module.exports = grammar({
                     alias($._builtin_url_colon, $.builtin),
                     field('argument', $.url_with_macro)
                 ),
-                // String builtins: %{upper:hello}
+                // String builtins: %{upper:hello}, %{shrink:...}
+                // Uses expand_content to support nested macros and multi-line content
                 // Combined token ensures no whitespace between builtin and colon
                 seq(
                     alias($._builtin_string_colon, $.builtin),
-                    field('argument', $._literal)
+                    field('argument', $.expand_content)
                 ),
                 // Expand builtin: %{expand:...}
                 // Uses external scanner to handle balanced braces in content

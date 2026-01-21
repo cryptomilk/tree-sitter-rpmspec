@@ -18,7 +18,8 @@ Macro Builtin String (lower case conversion)
 (spec
   (macro_expansion
     (builtin)
-    argument: (word)))
+    argument: (expand_content
+      (expand_code))))
 
 ===============================================================================
 Macro Builtin String (upper case conversion)
@@ -31,7 +32,8 @@ Macro Builtin String (upper case conversion)
 (spec
   (macro_expansion
     (builtin)
-    argument: (word)))
+    argument: (expand_content
+      (expand_code))))
 
 ===============================================================================
 Macro Builtin String (getenv environment variable)
@@ -44,7 +46,8 @@ Macro Builtin String (getenv environment variable)
 (spec
   (macro_expansion
     (builtin)
-    argument: (word)))
+    argument: (expand_content
+      (expand_code))))
 
 ===============================================================================
 Macro Builtin String (quote string with spaces)
@@ -57,9 +60,8 @@ Macro Builtin String (quote string with spaces)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (word))))
+    argument: (expand_content
+      (expand_code))))
 
 ===============================================================================
 Macro Builtin String (shrink whitespace)
@@ -72,10 +74,8 @@ Macro Builtin String (shrink whitespace)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (word)
-      (word))))
+    argument: (expand_content
+      (expand_code))))
 
 ===============================================================================
 Macro Builtin String (len string length)
@@ -88,9 +88,8 @@ Macro Builtin String (len string length)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (word))))
+    argument: (expand_content
+      (expand_code))))
 
 ===============================================================================
 Macro Builtin String (reverse string)
@@ -103,7 +102,8 @@ Macro Builtin String (reverse string)
 (spec
   (macro_expansion
     (builtin)
-    argument: (word)))
+    argument: (expand_content
+      (expand_code))))
 
 ===============================================================================
 Macro Builtin String (getncpus system info)
@@ -160,9 +160,8 @@ Macro Builtin String (echo output)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (word))))
+    argument: (expand_content
+      (expand_code))))
 
 ===============================================================================
 Macro Builtin String (warn warning message)
@@ -175,10 +174,8 @@ Macro Builtin String (warn warning message)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (word)
-      (word))))
+    argument: (expand_content
+      (expand_code))))
 
 ===============================================================================
 Macro Builtin String (error fatal error)
@@ -191,6 +188,43 @@ Macro Builtin String (error fatal error)
 (spec
   (macro_expansion
     (builtin)
-    argument: (concatenation
-      (word)
-      (word))))
+    argument: (expand_content
+      (expand_code))))
+
+===============================================================================
+Macro Builtin String (shrink with nested conditional macro)
+===============================================================================
+
+%{shrink:foo %{?bar:baz} qux}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (expand_content
+      (expand_code)
+      (macro_expansion
+        (conditional_expansion
+          condition: (identifier)
+          consequence: (text
+            (text_content))))
+      (expand_code))))
+
+===============================================================================
+Macro Builtin String (shrink with multi-line content)
+===============================================================================
+
+%{shrink:
+foo
+bar
+baz
+}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (expand_content
+      (expand_code))))

@@ -1140,7 +1140,7 @@
               "name": "argument",
               "content": {
                 "type": "SYMBOL",
-                "name": "_literal"
+                "name": "expand_content"
               }
             }
           ]
