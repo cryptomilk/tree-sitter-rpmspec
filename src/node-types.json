@@ -870,6 +870,10 @@
       "required": true,
       "types": [
         {
+          "type": "scriptlet_augment_option",
+          "named": true
+        },
+        {
           "type": "section_name",
           "named": true
         },
@@ -951,6 +955,10 @@
       "required": true,
       "types": [
         {
+          "type": "scriptlet_augment_option",
+          "named": true
+        },
+        {
           "type": "section_name",
           "named": true
         },
@@ -969,6 +977,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "scriptlet_augment_option",
+          "named": true
+        },
         {
           "type": "section_name",
           "named": true
@@ -1109,6 +1121,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "scriptlet_augment_option",
+          "named": true
+        },
         {
           "type": "section_name",
           "named": true
@@ -1886,6 +1902,10 @@
       "required": true,
       "types": [
         {
+          "type": "scriptlet_augment_option",
+          "named": true
+        },
+        {
           "type": "section_name",
           "named": true
         },
@@ -2168,6 +2188,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "scriptlet_augment_option",
+          "named": true
+        },
         {
           "type": "section_name",
           "named": true
@@ -3330,6 +3354,10 @@
       "required": true,
       "types": [
         {
+          "type": "scriptlet_augment_option",
+          "named": true
+        },
+        {
           "type": "section_name",
           "named": true
         },
@@ -3401,6 +3429,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "scriptlet_augment_option",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "scriptlet_elifarch_clause",
@@ -4691,6 +4724,10 @@
   },
   {
     "type": "-P",
+    "named": false
+  },
+  {
+    "type": "-a",
     "named": false
   },
   {

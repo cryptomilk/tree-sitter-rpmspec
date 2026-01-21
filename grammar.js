@@ -57,6 +57,36 @@ const ANYTHING = /[^\r\n]*/; // Any character except newlines
 const BLANK = /( |\t)+/; // One or more spaces or tabs
 
 /**
+ * Creates a build scriptlet rule with -a (append) and -p (prepend) options
+ *
+ * Build scriptlets support augmentation options since rpm >= 4.20.
+ * This helper generates the grammar rule for scriptlets like %prep, %build,
+ * %install, %check, %clean, %conf, and %generate_buildrequires.
+ *
+ * @param {string} name - The scriptlet name without % prefix (e.g., 'prep', 'build')
+ * @returns {function} A grammar rule function for the scriptlet
+ */
+function buildScriptlet(name) {
+    return ($) =>
+        prec.right(
+            choice(
+                // With options: %name -a or %name -p
+                seq(
+                    alias(token(seq('%' + name, / +/)), $.section_name),
+                    $.scriptlet_augment_option,
+                    token.immediate(NEWLINE),
+                    optional($.shell_block)
+                ),
+                // Without options: %name
+                seq(
+                    alias(token(seq('%' + name, NEWLINE)), $.section_name),
+                    optional($.shell_block)
+                )
+            )
+        );
+}
+
+/**
  * Main grammar definition for RPM spec files
  *
  * The grammar is structured to handle the complex nature of RPM spec files,
@@ -2044,85 +2074,25 @@ module.exports = grammar({
                 )
             ),
 
-        // %prep scriptlet: prepare source code for building
-        // Typically contains %setup (extract sources) and %patch (apply patches)
-        // First scriptlet executed in build process
-        prep_scriptlet: ($) =>
-            prec.right(
-                seq(
-                    alias(token(seq('%prep', NEWLINE)), $.section_name),
-                    optional($.shell_block) // Shell commands for source preparation
-                )
-            ),
+        // Scriptlet augment option: -a (append) or -p (prepend)
+        // Since rpm >= 4.20, scriptlets can be augmented with -a or -p
+        scriptlet_augment_option: (_) => choice('-a', '-p'),
 
-        // %generate_buildrequires scriptlet: dynamically determine build dependencies
-        // Executes before main build, outputs additional BuildRequires to stdout
-        // Used for language-specific dependency resolution (pip, npm, etc.)
-        generate_buildrequires: ($) =>
-            prec.right(
-                seq(
-                    alias(
-                        token(seq('%generate_buildrequires', NEWLINE)),
-                        $.section_name
-                    ),
-                    optional($.shell_block) // Commands to determine dependencies
-                )
-            ),
-
-        // %conf scriptlet: configure build environment (deprecated)
-        // Historically used for autotools configuration
-        // Modern specs typically use %build for configuration
-        conf_scriptlet: ($) =>
-            prec.right(
-                seq(
-                    alias(token(seq('%conf', NEWLINE)), $.section_name),
-                    optional($.shell_block) // Configuration commands
-                )
-            ),
-
-        // %build scriptlet: compile and build the software
-        // Contains commands to configure, compile, and prepare software
-        // Common macros: %configure, %make_build, %cmake_build
-        build_scriptlet: ($) =>
-            prec.right(
-                seq(
-                    alias(token(seq('%build', NEWLINE)), $.section_name),
-                    optional($.shell_block) // Build commands
-                )
-            ),
-
-        // %install scriptlet: install software into build root
-        // Installs files to %{buildroot} directory structure
-        // Common macros: %make_install, %cmake_install
-        install_scriptlet: ($) =>
-            prec.right(
-                seq(
-                    alias(token(seq('%install', NEWLINE)), $.section_name),
-                    optional($.shell_block) // Installation commands
-                )
-            ),
-
-        // %check scriptlet: run test suite
-        // Executes after %install to validate the build
-        // Can be disabled with --nocheck rpmbuild option
-        check_scriptlet: ($) =>
-            prec.right(
-                seq(
-                    alias(token(seq('%check', NEWLINE)), $.section_name),
-                    optional($.shell_block) // Test commands
-                )
-            ),
-
-        // %clean scriptlet: clean up build artifacts (deprecated)
-        // Historically used to remove %{buildroot} after build
-        // Modern RPM automatically cleans build root
-        clean_scriptlet: ($) =>
-            prec.right(
-                seq(
-                    alias(token(seq('%clean', NEWLINE)), $.section_name),
-                    optional($.shell_block) // Cleanup commands
-                )
-            ),
+        // Build scriptlets - all support -a (append) and -p (prepend) options since rpm >= 4.20
+        // %prep: prepare source code for building (extract sources, apply patches)
+        prep_scriptlet: buildScriptlet('prep'),
+        // %generate_buildrequires: dynamically determine build dependencies
+        generate_buildrequires: buildScriptlet('generate_buildrequires'),
+        // %conf: configure build environment (deprecated, use %build)
+        conf_scriptlet: buildScriptlet('conf'),
+        // %build: compile and build the software
+        build_scriptlet: buildScriptlet('build'),
+        // %install: install software into build root
+        install_scriptlet: buildScriptlet('install'),
+        // %check: run test suite
+        check_scriptlet: buildScriptlet('check'),
+        // %clean: clean up build artifacts (deprecated)
+        clean_scriptlet: buildScriptlet('clean'),
 
         ///////////////////////////////////////////////////////////////////////
         // RUNTIME SCRIPTLETS - PACKAGE LIFECYCLE SCRIPTS

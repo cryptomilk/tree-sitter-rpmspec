@@ -1,0 +1,43 @@
+===============================================================================
+Generate Buildrequires Section (Empty)
+===============================================================================
+
+%generate_buildrequires
+
+-------------------------------------------------------------------------------
+
+(spec
+  (generate_buildrequires
+    (section_name)))
+
+===============================================================================
+Generate Buildrequires Section (append option)
+===============================================================================
+
+%generate_buildrequires -a
+echo "appending to generate_buildrequires"
+
+-------------------------------------------------------------------------------
+
+(spec
+  (generate_buildrequires
+    (section_name)
+    (scriptlet_augment_option)
+    (shell_block
+      (shell_content))))
+
+===============================================================================
+Generate Buildrequires Section (prepend option)
+===============================================================================
+
+%generate_buildrequires -p
+echo "prepending to generate_buildrequires"
+
+-------------------------------------------------------------------------------
+
+(spec
+  (generate_buildrequires
+    (section_name)
+    (scriptlet_augment_option)
+    (shell_block
+      (shell_content))))

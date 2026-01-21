@@ -426,3 +426,19 @@ Prep Section (%patch edge cases)
             (quoted_string_content)))
         (patch_option
           (integer))))))
+
+===============================================================================
+Prep Section (prepend option)
+===============================================================================
+
+%prep -p
+echo "pre-prep step"
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (scriptlet_augment_option)
+    (shell_block
+      (shell_content))))
