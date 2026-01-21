@@ -144,6 +144,10 @@
         "named": true
       },
       {
+        "type": "patchlist",
+        "named": true
+      },
+      {
         "type": "preamble",
         "named": true
       },
@@ -3258,6 +3262,29 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "patchlist",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "file",
+          "named": true
+        },
+        {
+          "type": "section_name",
+          "named": true
+        },
+        {
+          "type": "url",
+          "named": true
+        }
+      ]
     }
   },
   {

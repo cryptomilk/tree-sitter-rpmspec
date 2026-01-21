@@ -50,6 +50,12 @@
 (sourcelist
   (file) @string.special.path)
 
+; Patchlist section
+(patchlist
+  (section_name) @type.definition)
+(patchlist
+  (file) @string.special.path)
+
 ; =============================================================================
 ; SCRIPTLETS
 ; =============================================================================

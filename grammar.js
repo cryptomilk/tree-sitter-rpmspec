@@ -168,6 +168,7 @@ module.exports = grammar({
                 $.description, // %description section
                 $.package, // %package subsection
                 $.sourcelist, // %sourcelist section
+                $.patchlist, // %patchlist section
                 $.prep_scriptlet, // %prep section
                 $.generate_buildrequires, // %generate_buildrequires section
                 $.conf_scriptlet, // %conf section
@@ -1907,7 +1908,7 @@ module.exports = grammar({
             ),
 
         ///////////////////////////////////////////////////////////////////////
-        // Preamble Sub-Sections (%sourcelist)
+        // Preamble Sub-Sections (%sourcelist, %patchlist)
         ///////////////////////////////////////////////////////////////////////
 
         // %sourcelist section: list of source files, one per line
@@ -1920,6 +1921,20 @@ module.exports = grammar({
             prec.right(
                 seq(
                     alias(token(seq('%sourcelist', NEWLINE)), $.section_name),
+                    optional($._url_or_file_list)
+                )
+            ),
+
+        // %patchlist section: list of patch files, one per line
+        // Handled like unnumbered Patch tags
+        // Example:
+        //   %patchlist
+        //   fix-build.patch
+        //   https://example.com/security-fix.patch
+        patchlist: ($) =>
+            prec.right(
+                seq(
+                    alias(token(seq('%patchlist', NEWLINE)), $.section_name),
                     optional($._url_or_file_list)
                 )
             ),

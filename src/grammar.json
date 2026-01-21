@@ -72,6 +72,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "patchlist"
+        },
+        {
+          "type": "SYMBOL",
           "name": "prep_scriptlet"
         },
         {
@@ -5745,6 +5749,48 @@
                   {
                     "type": "STRING",
                     "value": "%sourcelist"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "\\r?\\n"
+                  }
+                ]
+              }
+            },
+            "named": true,
+            "value": "section_name"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_url_or_file_list"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "patchlist": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "TOKEN",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "%patchlist"
                   },
                   {
                     "type": "PATTERN",

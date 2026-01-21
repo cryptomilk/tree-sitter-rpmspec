@@ -192,6 +192,7 @@ static const char *const SECTION_KEYWORDS[] = {
     "description",
     "package",
     "sourcelist",
+    "patchlist",
     /* Runtime scriptlets */
     "pre",
     "post",
