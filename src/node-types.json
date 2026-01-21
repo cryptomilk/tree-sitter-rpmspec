@@ -2993,9 +2993,19 @@
     }
   },
   {
-    "type": "patch_flag",
+    "type": "patch_argument",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "integer",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "patch_legacy_token",
@@ -3013,36 +3023,9 @@
     }
   },
   {
-    "type": "patch_long_option",
-    "named": true,
-    "fields": {
-      "value": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "_primary_expression",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "patch_macro",
     "named": true,
-    "fields": {
-      "patch_number": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "integer",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": true,
       "required": true,
@@ -3052,7 +3035,7 @@
           "named": true
         },
         {
-          "type": "patch_flag",
+          "type": "patch_argument",
           "named": true
         },
         {
@@ -3060,43 +3043,19 @@
           "named": true
         },
         {
-          "type": "patch_long_option",
-          "named": true
-        },
-        {
-          "type": "patch_number_option",
-          "named": true
-        },
-        {
-          "type": "patch_string_option",
+          "type": "patch_option",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "patch_number_option",
+    "type": "patch_option",
     "named": true,
     "fields": {
       "value": {
         "multiple": false,
         "required": false,
-        "types": [
-          {
-            "type": "integer",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "patch_string_option",
-    "named": true,
-    "fields": {
-      "value": {
-        "multiple": false,
-        "required": true,
         "types": [
           {
             "type": "_primary_expression",
@@ -4419,14 +4378,6 @@
     "named": false
   },
   {
-    "type": "--backup=",
-    "named": false
-  },
-  {
-    "type": "--fuzz=",
-    "named": false
-  },
-  {
     "type": "-P",
     "named": false
   },
@@ -4726,6 +4677,10 @@
     "type": "comment",
     "named": true,
     "extra": true
+  },
+  {
+    "type": "d",
+    "named": false
   },
   {
     "type": "define",

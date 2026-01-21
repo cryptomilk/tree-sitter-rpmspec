@@ -2474,7 +2474,9 @@ module.exports = grammar({
             seq(alias(token(prec(2, /patch[0-9]+/)), $.builtin)),
 
         // %patch macro: patch application with comprehensive option support
-        // Syntax: %patch [number] [options] or %patch [options]
+        // Syntax: %patch [options] [arguments]
+        // Options: -b SUF, -d DIR, -E, -F N, -o FILE, -p N, -P N, -R, -z SUF, -Z
+        // Arguments: patch numbers (positional)
         // Supports modern (%patch 1, %patch -P1) and legacy (%patch0) syntax
         patch_macro: ($) =>
             prec(
@@ -2484,26 +2486,26 @@ module.exports = grammar({
                     choice(
                         // Legacy syntax: %patch0, %patch1, etc. (direct number attachment)
                         $.patch_legacy_token,
-                        // Modern syntax: %patch [optional number]
-                        seq(
-                            alias('patch', $.builtin),
-                            optional(field('patch_number', $.integer))
-                        )
+                        // Modern syntax: %patch
+                        alias('patch', $.builtin)
                     ),
                     repeat(
                         choice(
-                            $.patch_flag, // Simple flags: -E, -R, -Z
-                            $.patch_number_option, // Number options: -F N, -p N, -P N
-                            $.patch_string_option, // String options: -b SUF, -z SUF, -o FILE
-                            $.patch_long_option // Long options: --fuzz=N, --backup=SUF
+                            alias($.patch_option_flag, $.patch_option), // Simple flags: -E, -R, -Z
+                            alias($.patch_option_number, $.patch_option), // Number options: -F N, -p N, -P N
+                            alias($.patch_option_string, $.patch_option), // String options: -b SUF, -d DIR, -o FILE, -z SUF
+                            $.patch_argument // Positional patch numbers
                         )
                     ),
                     NEWLINE
                 )
             ),
 
-        // Simple patch flags (no parameters)
-        patch_flag: ($) =>
+        // Patch arguments: positional patch numbers
+        patch_argument: ($) => $.integer,
+
+        // Patch option flags (no parameters)
+        patch_option_flag: ($) =>
             seq(
                 '-',
                 choice(
@@ -2514,7 +2516,7 @@ module.exports = grammar({
             ),
 
         // Patch options that take a number parameter
-        patch_number_option: ($) =>
+        patch_option_number: ($) =>
             choice(
                 // Immediate format: -p1, -F3, -P2
                 token(seq('-', choice('F', 'p', 'P'), /[0-9]+/)),
@@ -2523,29 +2525,16 @@ module.exports = grammar({
             ),
 
         // Patch options that take a string parameter
-        patch_string_option: ($) =>
+        patch_option_string: ($) =>
             seq(
                 '-',
                 choice(
                     'b', // Backup with suffix
-                    'z', // Same as -b
-                    'o' // Send output to file
+                    'd', // Change to directory before patching
+                    'o', // Send output to file
+                    'z' // Same as -b
                 ),
                 field('value', $._primary_expression)
-            ),
-
-        // Long patch options: --option=value format
-        // Higher precedence to ensure -- is not consumed by macro_value_text
-        patch_long_option: ($) =>
-            prec(
-                1,
-                choice(
-                    seq(token('--fuzz='), field('value', $.integer)), // --fuzz=N
-                    seq(
-                        token('--backup='),
-                        field('value', $._primary_expression)
-                    ) // --backup=SUF
-                )
             ),
 
         ///////////////////////////////////////////////////////////////////////

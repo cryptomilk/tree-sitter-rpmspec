@@ -7422,34 +7422,13 @@
                 "name": "patch_legacy_token"
               },
               {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "STRING",
-                      "value": "patch"
-                    },
-                    "named": true,
-                    "value": "builtin"
-                  },
-                  {
-                    "type": "CHOICE",
-                    "members": [
-                      {
-                        "type": "FIELD",
-                        "name": "patch_number",
-                        "content": {
-                          "type": "SYMBOL",
-                          "name": "integer"
-                        }
-                      },
-                      {
-                        "type": "BLANK"
-                      }
-                    ]
-                  }
-                ]
+                "type": "ALIAS",
+                "content": {
+                  "type": "STRING",
+                  "value": "patch"
+                },
+                "named": true,
+                "value": "builtin"
               }
             ]
           },
@@ -7459,20 +7438,35 @@
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "SYMBOL",
-                  "name": "patch_flag"
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "patch_option_flag"
+                  },
+                  "named": true,
+                  "value": "patch_option"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "patch_option_number"
+                  },
+                  "named": true,
+                  "value": "patch_option"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "patch_option_string"
+                  },
+                  "named": true,
+                  "value": "patch_option"
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "patch_number_option"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "patch_string_option"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "patch_long_option"
+                  "name": "patch_argument"
                 }
               ]
             }
@@ -7484,7 +7478,11 @@
         ]
       }
     },
-    "patch_flag": {
+    "patch_argument": {
+      "type": "SYMBOL",
+      "name": "integer"
+    },
+    "patch_option_flag": {
       "type": "SEQ",
       "members": [
         {
@@ -7510,7 +7508,7 @@
         }
       ]
     },
-    "patch_number_option": {
+    "patch_option_number": {
       "type": "CHOICE",
       "members": [
         {
@@ -7582,7 +7580,7 @@
         }
       ]
     },
-    "patch_string_option": {
+    "patch_option_string": {
       "type": "SEQ",
       "members": [
         {
@@ -7598,11 +7596,15 @@
             },
             {
               "type": "STRING",
-              "value": "z"
+              "value": "d"
             },
             {
               "type": "STRING",
               "value": "o"
+            },
+            {
+              "type": "STRING",
+              "value": "z"
             }
           ]
         },
@@ -7615,55 +7617,6 @@
           }
         }
       ]
-    },
-    "patch_long_option": {
-      "type": "PREC",
-      "value": 1,
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "TOKEN",
-                "content": {
-                  "type": "STRING",
-                  "value": "--fuzz="
-                }
-              },
-              {
-                "type": "FIELD",
-                "name": "value",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "integer"
-                }
-              }
-            ]
-          },
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "TOKEN",
-                "content": {
-                  "type": "STRING",
-                  "value": "--backup="
-                }
-              },
-              {
-                "type": "FIELD",
-                "name": "value",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "_primary_expression"
-                }
-              }
-            ]
-          }
-        ]
-      }
     },
     "integer": {
       "type": "CHOICE",

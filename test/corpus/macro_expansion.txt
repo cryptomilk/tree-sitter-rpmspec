@@ -170,7 +170,7 @@ Macros (Complex arguments with quotes)
 ===============================================================================
 
 %setup -q -n "package name with spaces"
-%patch0 -p1 --fuzz=0 --backup="file.bak"
+%patch0 -p1 -b "file.bak"
 
 -------------------------------------------------------------------------------
 (spec
@@ -183,10 +183,8 @@ Macros (Complex arguments with quotes)
   (patch_macro
     (patch_legacy_token
       (builtin))
-    (patch_number_option)
-    (patch_long_option
-      (integer))
-    (patch_long_option
+    (patch_option)
+    (patch_option
       (quoted_string
         (quoted_string_content)))))
 

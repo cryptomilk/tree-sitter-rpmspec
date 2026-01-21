@@ -71,10 +71,8 @@
 
 (patch_macro
   [
-    (patch_flag) @variable.parameter
-    (patch_number_option) @variable.parameter
-    (patch_string_option) @variable.parameter
-    (patch_long_option) @variable.parameter
+    (patch_option) @variable.parameter
+    (patch_argument) @number
   ])
 
 [
