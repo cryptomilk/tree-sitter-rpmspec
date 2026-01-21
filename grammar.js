@@ -759,30 +759,31 @@ module.exports = grammar({
                     alias($._macro_define, $.builtin),
                     token.immediate(BLANK),
                     field('name', alias($.macro_name, $.identifier)),
-                    optional(
-                        seq('(', optional($.parametric_macro_options), ')')
-                    ),
-                    token.immediate(BLANK),
+                    optional($.parametric_options),
+                    // Space is required after name/opts, but may be consumed by extras
+                    // when followed by line continuation
                     field('value', $._macro_value)
                 )
             ),
 
-        macro_options: (_) => /[-:a-zA-Z]/,
-
-        // Parametric macro options: defines supported short options for the macro
+        // Parametric macro options in definition: (opts)
+        // Must be immediately after macro name with no space
         // Format: (xyz) where x, y, z are single-letter options that can be passed
-        // Example: %define myhelper(x) enables %myhelper -x arg
+        // Example: %define myhelper(n:) enables %myhelper -n arg
         // Special format ('-') disables default getopt processing
-        parametric_macro_options: ($) =>
-            choice(
-                '-', // Disable default getopt processing
-                repeat1(
+        parametric_options: (_) =>
+            seq(
+                token.immediate('('),
+                optional(
                     choice(
-                        /[a-zA-Z]/, // Single letter options (a-z, A-Z)
-                        ':' // Option parameter separator
+                        '-', // Disable default getopt processing
+                        repeat1(choice(/[a-zA-Z]/, ':'))
                     )
-                )
+                ),
+                ')'
             ),
+
+        macro_options: (_) => /[-:a-zA-Z]/,
 
         _body: ($) =>
             repeat1(
@@ -808,6 +809,7 @@ module.exports = grammar({
         _macro_value: ($) =>
             repeat1(
                 choice(
+                    $.line_continuation, // Allow value to start with line continuation
                     $.macro_simple_expansion,
                     $.macro_expansion,
                     $.macro_shell_expansion,

@@ -2754,6 +2754,10 @@
             "named": true
           },
           {
+            "type": "line_continuation",
+            "named": true
+          },
+          {
             "type": "macro_expansion",
             "named": true
           },
@@ -2797,7 +2801,7 @@
           "named": true
         },
         {
-          "type": "parametric_macro_options",
+          "type": "parametric_options",
           "named": true
         }
       ]
@@ -3638,7 +3642,7 @@
     }
   },
   {
-    "type": "parametric_macro_options",
+    "type": "parametric_options",
     "named": true,
     "fields": {}
   },
@@ -5379,6 +5383,10 @@
   },
   {
     "type": "%endif",
+    "named": false
+  },
+  {
+    "type": "%exclude",
     "named": false
   },
   {

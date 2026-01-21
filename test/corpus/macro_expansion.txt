@@ -79,8 +79,46 @@ Macros (%global function with empty arguments)
 (spec
   (macro_definition
     (builtin)
-    (identifier)
-    (word)))
+    name: (identifier)
+    (parametric_options)
+    value: (word)))
+
+===============================================================================
+Macros (%global function with line continuation)
+===============================================================================
+
+%global myfunc() \
+    echo test
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    name: (identifier)
+    (parametric_options)
+    value: (line_continuation)
+    value: (word)
+    value: (word)))
+
+===============================================================================
+Macros (%global function with value and line continuation)
+===============================================================================
+
+%global myfunc() x \
+echo test
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    name: (identifier)
+    (parametric_options)
+    value: (word)
+    value: (line_continuation)
+    value: (word)
+    value: (word)))
 
 ===============================================================================
 Macros (%global with quoted string)

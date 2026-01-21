@@ -10,6 +10,7 @@ Parametric Macro (builtin colon syntax)
   (macro_definition
     (builtin)
     name: (identifier)
+    (parametric_options)
     value: (macro_expansion
       (builtin)
       argument: (path))))
