@@ -313,14 +313,15 @@ module.exports = grammar({
         $.escaped_percent, // Escaped percent: %%
         // Context-aware conditional tokens
         $.top_level_if, // %if at top-level or containing section keywords
-        $.scriptlet_if, // %if inside scriptlet section without section keywords
         $.top_level_ifarch, // %ifarch at top-level
-        $.scriptlet_ifarch, // %ifarch inside scriptlet section
         $.top_level_ifnarch, // %ifnarch at top-level
-        $.scriptlet_ifnarch, // %ifnarch inside scriptlet section
         $.top_level_ifos, // %ifos at top-level
-        $.scriptlet_ifos, // %ifos inside scriptlet section
         $.top_level_ifnos, // %ifnos at top-level
+        // Scriptlet section context tokens
+        $.scriptlet_if, // %if inside scriptlet section without section keywords
+        $.scriptlet_ifarch, // %ifarch inside scriptlet section
+        $.scriptlet_ifnarch, // %ifnarch inside scriptlet section
+        $.scriptlet_ifos, // %ifos inside scriptlet section
         $.scriptlet_ifnos, // %ifnos inside scriptlet section
         // Files section context tokens
         $.files_if, // %if inside %files section
