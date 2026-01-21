@@ -1473,6 +1473,13 @@ module.exports = grammar({
                     field('value', $._url_or_file), // URL or file path
                     token.immediate(NEWLINE) // Must end with newline
                 ),
+                // URL tags (URL, Url, BugUrl) - URL value
+                seq(
+                    alias($.url_tag, $.tag), // URL tag name
+                    token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
+                    field('value', alias($.url_with_macro, $.url)), // URL value
+                    token.immediate(NEWLINE) // Must end with newline
+                ),
                 // Strong dependency tags (Requires, BuildRequires) - full boolean support
                 seq(
                     alias($.requires_tag, $.dependency_tag),
@@ -1535,9 +1542,6 @@ module.exports = grammar({
                 // Descriptive metadata
                 'Summary', // One-line package description (required)
                 'License', // Package license (required)
-                'URL', // Project homepage URL
-                'Url', // Alternative spelling of URL
-                'BugUrl', // Bug reporting URL
                 'Packager', // Person/organization who packaged it
                 'Vendor', // Vendor/distributor information
                 'Group', // Package category (deprecated)
@@ -1561,6 +1565,9 @@ module.exports = grammar({
 
         // Patch tag: Patch0, Patch1, Patch, etc.
         patch_tag: (_) => /Patch\d*/,
+
+        // URL tag: URL, Url, BugUrl
+        url_tag: (_) => choice('URL', 'Url', 'BugUrl'),
 
         // Dependency qualifiers: specify when dependencies are needed
         // Used with Requires tag to indicate timing of dependency check

@@ -4487,6 +4487,47 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
+                "name": "url_tag"
+              },
+              "named": true,
+              "value": "tag"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": ":( |\\t)*"
+              }
+            },
+            {
+              "type": "FIELD",
+              "name": "value",
+              "content": {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "url_with_macro"
+                },
+                "named": true,
+                "value": "url"
+              }
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\r?\\n"
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
                 "name": "requires_tag"
               },
               "named": true,
@@ -4739,18 +4780,6 @@
         },
         {
           "type": "STRING",
-          "value": "URL"
-        },
-        {
-          "type": "STRING",
-          "value": "Url"
-        },
-        {
-          "type": "STRING",
-          "value": "BugUrl"
-        },
-        {
-          "type": "STRING",
           "value": "Packager"
         },
         {
@@ -4806,6 +4835,23 @@
     "patch_tag": {
       "type": "PATTERN",
       "value": "Patch\\d*"
+    },
+    "url_tag": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "URL"
+        },
+        {
+          "type": "STRING",
+          "value": "Url"
+        },
+        {
+          "type": "STRING",
+          "value": "BugUrl"
+        }
+      ]
     },
     "qualifier": {
       "type": "CHOICE",

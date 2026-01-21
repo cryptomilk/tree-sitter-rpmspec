@@ -172,11 +172,11 @@ URL:            https://gitlab.com/cryptomilk/tree-sitter-rpmspec
   (preamble
     (tags
       (tag)
-      (word)))
+      value: (word)))
   (preamble
     (tags
       (tag)
-      (word))))
+      value: (url))))
 
 ===============================================================================
 Preamble (Source tag with macro expansions)
