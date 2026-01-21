@@ -4451,6 +4451,42 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
+                "name": "patch_tag"
+              },
+              "named": true,
+              "value": "tag"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": ":( |\\t)*"
+              }
+            },
+            {
+              "type": "FIELD",
+              "name": "value",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_url_or_file"
+              }
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\r?\\n"
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
                 "name": "requires_tag"
               },
               "named": true,
@@ -4760,16 +4796,16 @@
         {
           "type": "STRING",
           "value": "NoSource"
-        },
-        {
-          "type": "PATTERN",
-          "value": "Patch\\d*"
         }
       ]
     },
     "source_tag": {
       "type": "PATTERN",
       "value": "Source\\d*"
+    },
+    "patch_tag": {
+      "type": "PATTERN",
+      "value": "Patch\\d*"
     },
     "qualifier": {
       "type": "CHOICE",

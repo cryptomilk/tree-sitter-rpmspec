@@ -237,8 +237,27 @@ Patch0:         fix-xyz.patch
   (preamble
     (tags
       (tag)
-      (word)))
+      value: (word)))
   (preamble
     (tags
       (tag)
-      (word))))
+      value: (file))))
+
+===============================================================================
+Preamble (Patch0 tag with URL)
+===============================================================================
+
+Name:           tree-sitter-rpmspec
+Patch0:         https://example.com/fix-xyz.patch
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (word)))
+  (preamble
+    (tags
+      (tag)
+      value: (url))))

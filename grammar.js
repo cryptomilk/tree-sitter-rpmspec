@@ -1466,6 +1466,13 @@ module.exports = grammar({
                     field('value', $._url_or_file), // URL or file path
                     token.immediate(NEWLINE) // Must end with newline
                 ),
+                // Patch tags (Patch0, Patch1, etc.) - URL or file path
+                seq(
+                    alias($.patch_tag, $.tag), // Patch tag name
+                    token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
+                    field('value', $._url_or_file), // URL or file path
+                    token.immediate(NEWLINE) // Must end with newline
+                ),
                 // Strong dependency tags (Requires, BuildRequires) - full boolean support
                 seq(
                     alias($.requires_tag, $.dependency_tag),
@@ -1546,12 +1553,14 @@ module.exports = grammar({
 
                 // Source and patch control
                 'NoPatch', // Disable specific patches
-                'NoSource', // Exclude sources from SRPM
-                /Patch\d*/ // Patch files: Patch0, Patch1, etc.
+                'NoSource' // Exclude sources from SRPM
             ),
 
         // Source tag: Source0, Source1, Source, etc.
         source_tag: (_) => /Source\d*/,
+
+        // Patch tag: Patch0, Patch1, Patch, etc.
+        patch_tag: (_) => /Patch\d*/,
 
         // Dependency qualifiers: specify when dependencies are needed
         // Used with Requires tag to indicate timing of dependency check
