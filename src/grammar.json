@@ -2829,7 +2829,7 @@
         ]
       }
     },
-    "_shell_conditional_content": {
+    "_scriptlet_conditional_content": {
       "type": "REPEAT1",
       "content": {
         "type": "CHOICE",
@@ -2892,7 +2892,7 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "shell_if_statement"
+            "name": "scriptlet_if_statement"
           },
           "named": true,
           "value": "if_statement"
@@ -2901,7 +2901,7 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "shell_ifarch_statement"
+            "name": "scriptlet_ifarch_statement"
           },
           "named": true,
           "value": "ifarch_statement"
@@ -2910,7 +2910,7 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "shell_ifos_statement"
+            "name": "scriptlet_ifos_statement"
           },
           "named": true,
           "value": "ifos_statement"
@@ -3056,14 +3056,14 @@
         }
       ]
     },
-    "shell_if_statement": {
+    "scriptlet_if_statement": {
       "type": "SEQ",
       "members": [
         {
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "shell_if"
+            "name": "scriptlet_if"
           },
           "named": false,
           "value": "%if"
@@ -3091,7 +3091,7 @@
               "name": "consequence",
               "content": {
                 "type": "SYMBOL",
-                "name": "_shell_conditional_content"
+                "name": "_scriptlet_conditional_content"
               }
             },
             {
@@ -3169,7 +3169,7 @@
               "name": "consequence",
               "content": {
                 "type": "SYMBOL",
-                "name": "_shell_conditional_content"
+                "name": "_scriptlet_conditional_content"
               }
             },
             {
@@ -3201,7 +3201,7 @@
               "name": "body",
               "content": {
                 "type": "SYMBOL",
-                "name": "_shell_conditional_content"
+                "name": "_scriptlet_conditional_content"
               }
             },
             {
@@ -3553,7 +3553,7 @@
         }
       ]
     },
-    "shell_ifarch_statement": {
+    "scriptlet_ifarch_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -3563,7 +3563,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "shell_ifarch"
+                "name": "scriptlet_ifarch"
               },
               "named": false,
               "value": "%ifarch"
@@ -3572,7 +3572,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "shell_ifnarch"
+                "name": "scriptlet_ifnarch"
               },
               "named": false,
               "value": "%ifnarch"
@@ -3602,7 +3602,7 @@
               "name": "consequence",
               "content": {
                 "type": "SYMBOL",
-                "name": "_shell_conditional_content"
+                "name": "_scriptlet_conditional_content"
               }
             },
             {
@@ -3617,7 +3617,7 @@
             "name": "alternative",
             "content": {
               "type": "SYMBOL",
-              "name": "shell_elifarch_clause"
+              "name": "scriptlet_elifarch_clause"
             }
           }
         },
@@ -3650,7 +3650,7 @@
         }
       ]
     },
-    "shell_elifarch_clause": {
+    "scriptlet_elifarch_clause": {
       "type": "SEQ",
       "members": [
         {
@@ -3688,7 +3688,7 @@
               "name": "consequence",
               "content": {
                 "type": "SYMBOL",
-                "name": "_shell_conditional_content"
+                "name": "_scriptlet_conditional_content"
               }
             },
             {
@@ -3698,7 +3698,7 @@
         }
       ]
     },
-    "shell_ifos_statement": {
+    "scriptlet_ifos_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -3708,7 +3708,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "shell_ifos"
+                "name": "scriptlet_ifos"
               },
               "named": false,
               "value": "%ifos"
@@ -3717,7 +3717,7 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
-                "name": "shell_ifnos"
+                "name": "scriptlet_ifnos"
               },
               "named": false,
               "value": "%ifnos"
@@ -3747,7 +3747,7 @@
               "name": "consequence",
               "content": {
                 "type": "SYMBOL",
-                "name": "_shell_conditional_content"
+                "name": "_scriptlet_conditional_content"
               }
             },
             {
@@ -3762,7 +3762,7 @@
             "name": "alternative",
             "content": {
               "type": "SYMBOL",
-              "name": "shell_elifos_clause"
+              "name": "scriptlet_elifos_clause"
             }
           }
         },
@@ -3795,7 +3795,7 @@
         }
       ]
     },
-    "shell_elifos_clause": {
+    "scriptlet_elifos_clause": {
       "type": "SEQ",
       "members": [
         {
@@ -3833,7 +3833,7 @@
               "name": "consequence",
               "content": {
                 "type": "SYMBOL",
-                "name": "_shell_conditional_content"
+                "name": "_scriptlet_conditional_content"
               }
             },
             {
@@ -8217,7 +8217,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "shell_if"
+      "name": "scriptlet_if"
     },
     {
       "type": "SYMBOL",
@@ -8225,7 +8225,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "shell_ifarch"
+      "name": "scriptlet_ifarch"
     },
     {
       "type": "SYMBOL",
@@ -8233,7 +8233,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "shell_ifnarch"
+      "name": "scriptlet_ifnarch"
     },
     {
       "type": "SYMBOL",
@@ -8241,7 +8241,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "shell_ifos"
+      "name": "scriptlet_ifos"
     },
     {
       "type": "SYMBOL",
@@ -8249,7 +8249,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "shell_ifnos"
+      "name": "scriptlet_ifnos"
     },
     {
       "type": "SYMBOL",
@@ -8286,7 +8286,7 @@
     "_shell_compound_statements",
     "_files_compound_statements",
     "_conditional_block",
-    "_shell_conditional_content",
+    "_scriptlet_conditional_content",
     "_files_conditional_content",
     "_literal"
   ],

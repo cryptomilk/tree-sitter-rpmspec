@@ -96,7 +96,7 @@ The scanner emits different tokens based on context:
 | Context | Token | Example |
 |---------|-------|---------|
 | Top-level | `top_level_if` | `%if` containing `%install` |
-| Shell scriptlet | `shell_if` | `%if` inside `%build` with only shell code |
+| Shell scriptlet | `scriptlet_if` | `%if` inside `%build` with only shell code |
 | Files section | `files_if` | `%if` inside `%files` with only file entries |
 
 This allows the grammar to use different rules for conditional bodies:

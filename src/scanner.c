@@ -56,17 +56,17 @@ enum TokenType {
     NEGATED_MACRO,    /**< Negated macro expansion: %!name */
     SPECIAL_MACRO,    /**< Special macro variables: %*, %**, %#, %0-9, %nil */
     ESCAPED_PERCENT,  /**< Escaped percent sign: %% */
-    /* Context-aware conditional tokens for distinguishing top-level vs shell */
+    /* Context-aware conditional tokens for distinguishing top-level vs scriptlet */
     TOP_LEVEL_IF,     /**< %if at top-level or containing section keywords */
-    SHELL_IF,         /**< %if inside shell section without section keywords */
+    SCRIPTLET_IF,         /**< %if inside scriptlet section without section keywords */
     TOP_LEVEL_IFARCH, /**< %ifarch at top-level */
-    SHELL_IFARCH,     /**< %ifarch inside shell section */
+    SCRIPTLET_IFARCH,     /**< %ifarch inside scriptlet section */
     TOP_LEVEL_IFNARCH,/**< %ifnarch at top-level */
-    SHELL_IFNARCH,    /**< %ifnarch inside shell section */
+    SCRIPTLET_IFNARCH,    /**< %ifnarch inside scriptlet section */
     TOP_LEVEL_IFOS,   /**< %ifos at top-level */
-    SHELL_IFOS,       /**< %ifos inside shell section */
+    SCRIPTLET_IFOS,       /**< %ifos inside scriptlet section */
     TOP_LEVEL_IFNOS,  /**< %ifnos at top-level */
-    SHELL_IFNOS,      /**< %ifnos inside shell section */
+    SCRIPTLET_IFNOS,      /**< %ifnos inside scriptlet section */
     /* Files section context tokens */
     FILES_IF,         /**< %if inside %files section */
     FILES_IFARCH,     /**< %ifarch inside %files section */
@@ -178,7 +178,7 @@ static const char *const KEYWORDS[] = {
  * @brief Section keywords that indicate top-level context
  *
  * When a %if body contains any of these keywords, it should be
- * parsed as a top-level conditional, not a shell-level one.
+ * parsed as a top-level conditional, not a scriptlet-level one.
  */
 static const char *const SECTION_KEYWORDS[] = {
     /* Main sections */
@@ -337,8 +337,8 @@ static bool is_keyword(const char *str, size_t len)
 /**
  * @brief Lookahead to check if %if body contains section keywords
  *
- * When we encounter %if inside a shell section, we need to determine
- * whether it's a shell-level conditional (e.g., if [ -f foo ]; then)
+ * When we encounter %if inside a scriptlet section, we need to determine
+ * whether it's a scriptlet-level conditional (e.g., if [ -f foo ]; then)
  * or a top-level conditional containing sections (e.g., %if with %files).
  *
  * This function scans ahead until %endif, looking for section keywords.
@@ -798,12 +798,12 @@ static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
  * @brief Scan for context-aware conditional tokens (%if, %ifarch, %ifos)
  *
  * This function determines whether a conditional should be parsed as
- * top-level or shell-level based on:
+ * top-level or scriptlet-level based on:
  * 1. Which tokens the grammar says are valid (context)
  * 2. Lookahead to check if body contains section keywords
  *
  * The grammar controls context: if only TOP_LEVEL_* is valid, we're at
- * top-level. If SHELL_* is also valid, we're in a shell context and
+ * top-level. If scriptlet_* is also valid, we're in a scriptlet context and
  * need lookahead to decide.
  *
  * @param lexer The Tree-sitter lexer instance
@@ -833,26 +833,26 @@ static bool scan_conditional(struct Scanner *scanner, TSLexer *lexer,
 {
     /* Check if any conditional tokens are valid */
     bool top_if_valid = valid_symbols[TOP_LEVEL_IF];
-    bool shell_if_valid = valid_symbols[SHELL_IF];
+    bool scriptlet_if_valid = valid_symbols[SCRIPTLET_IF];
     bool files_if_valid = valid_symbols[FILES_IF];
     bool top_ifarch_valid = valid_symbols[TOP_LEVEL_IFARCH];
-    bool shell_ifarch_valid = valid_symbols[SHELL_IFARCH];
+    bool scriptlet_ifarch_valid = valid_symbols[SCRIPTLET_IFARCH];
     bool files_ifarch_valid = valid_symbols[FILES_IFARCH];
     bool top_ifnarch_valid = valid_symbols[TOP_LEVEL_IFNARCH];
-    bool shell_ifnarch_valid = valid_symbols[SHELL_IFNARCH];
+    bool scriptlet_ifnarch_valid = valid_symbols[SCRIPTLET_IFNARCH];
     bool files_ifnarch_valid = valid_symbols[FILES_IFNARCH];
     bool top_ifos_valid = valid_symbols[TOP_LEVEL_IFOS];
-    bool shell_ifos_valid = valid_symbols[SHELL_IFOS];
+    bool scriptlet_ifos_valid = valid_symbols[SCRIPTLET_IFOS];
     bool files_ifos_valid = valid_symbols[FILES_IFOS];
     bool top_ifnos_valid = valid_symbols[TOP_LEVEL_IFNOS];
-    bool shell_ifnos_valid = valid_symbols[SHELL_IFNOS];
+    bool scriptlet_ifnos_valid = valid_symbols[SCRIPTLET_IFNOS];
     bool files_ifnos_valid = valid_symbols[FILES_IFNOS];
 
-    bool any_if_valid = top_if_valid || shell_if_valid || files_if_valid;
-    bool any_ifarch_valid = top_ifarch_valid || shell_ifarch_valid || files_ifarch_valid;
-    bool any_ifnarch_valid = top_ifnarch_valid || shell_ifnarch_valid || files_ifnarch_valid;
-    bool any_ifos_valid = top_ifos_valid || shell_ifos_valid || files_ifos_valid;
-    bool any_ifnos_valid = top_ifnos_valid || shell_ifnos_valid || files_ifnos_valid;
+    bool any_if_valid = top_if_valid || scriptlet_if_valid || files_if_valid;
+    bool any_ifarch_valid = top_ifarch_valid || scriptlet_ifarch_valid || files_ifarch_valid;
+    bool any_ifnarch_valid = top_ifnarch_valid || scriptlet_ifnarch_valid || files_ifnarch_valid;
+    bool any_ifos_valid = top_ifos_valid || scriptlet_ifos_valid || files_ifos_valid;
+    bool any_ifnos_valid = top_ifnos_valid || scriptlet_ifnos_valid || files_ifnos_valid;
 
     if (!any_if_valid && !any_ifarch_valid && !any_ifnarch_valid &&
         !any_ifos_valid && !any_ifnos_valid) {
@@ -886,46 +886,46 @@ static bool scan_conditional(struct Scanner *scanner, TSLexer *lexer,
 
     /* Determine the keyword type and which tokens are valid for it */
     enum TokenType top_token;
-    enum TokenType shell_token;
+    enum TokenType scriptlet_token;
     enum TokenType files_token;
     bool top_valid;
-    bool shell_valid;
+    bool scriptlet_valid;
     bool files_valid;
 
     if (strequal("if", id_buf, id_len) && any_if_valid) {
         top_token = TOP_LEVEL_IF;
-        shell_token = SHELL_IF;
+        scriptlet_token = SCRIPTLET_IF;
         files_token = FILES_IF;
         top_valid = top_if_valid;
-        shell_valid = shell_if_valid;
+        scriptlet_valid = scriptlet_if_valid;
         files_valid = files_if_valid;
     } else if (strequal("ifarch", id_buf, id_len) && any_ifarch_valid) {
         top_token = TOP_LEVEL_IFARCH;
-        shell_token = SHELL_IFARCH;
+        scriptlet_token = SCRIPTLET_IFARCH;
         files_token = FILES_IFARCH;
         top_valid = top_ifarch_valid;
-        shell_valid = shell_ifarch_valid;
+        scriptlet_valid = scriptlet_ifarch_valid;
         files_valid = files_ifarch_valid;
     } else if (strequal("ifnarch", id_buf, id_len) && any_ifnarch_valid) {
         top_token = TOP_LEVEL_IFNARCH;
-        shell_token = SHELL_IFNARCH;
+        scriptlet_token = SCRIPTLET_IFNARCH;
         files_token = FILES_IFNARCH;
         top_valid = top_ifnarch_valid;
-        shell_valid = shell_ifnarch_valid;
+        scriptlet_valid = scriptlet_ifnarch_valid;
         files_valid = files_ifnarch_valid;
     } else if (strequal("ifos", id_buf, id_len) && any_ifos_valid) {
         top_token = TOP_LEVEL_IFOS;
-        shell_token = SHELL_IFOS;
+        scriptlet_token = SCRIPTLET_IFOS;
         files_token = FILES_IFOS;
         top_valid = top_ifos_valid;
-        shell_valid = shell_ifos_valid;
+        scriptlet_valid = scriptlet_ifos_valid;
         files_valid = files_ifos_valid;
     } else if (strequal("ifnos", id_buf, id_len) && any_ifnos_valid) {
         top_token = TOP_LEVEL_IFNOS;
-        shell_token = SHELL_IFNOS;
+        scriptlet_token = SCRIPTLET_IFNOS;
         files_token = FILES_IFNOS;
         top_valid = top_ifnos_valid;
-        shell_valid = shell_ifnos_valid;
+        scriptlet_valid = scriptlet_ifnos_valid;
         files_valid = files_ifnos_valid;
     } else {
         /* Not a conditional keyword we handle */
@@ -938,15 +938,15 @@ static bool scan_conditional(struct Scanner *scanner, TSLexer *lexer,
     /*
      * Priority order for context determination:
      * 1. Files context - most specific, if files token is valid, we're in %files
-     * 2. Shell context (exclusive) - if only shell is valid
+     * 2. Scriptlet context (exclusive) - if only scriptlet is valid
      * 3. Top-level context (exclusive) - if only top-level is valid
-     * 4. Ambiguous (top + shell) - use lookahead to decide
+     * 4. Ambiguous (top + scriptlet) - use lookahead to decide
      *
-     * For files and shell contexts, we need lookahead to check if the
+     * For files and scriptlet contexts, we need lookahead to check if the
      * conditional body contains section keywords. If it does, the conditional
      * should be parsed as top-level to allow new sections inside it.
      */
-    if (files_valid && !top_valid && !shell_valid) {
+    if (files_valid && !top_valid && !scriptlet_valid) {
         /* Only files is valid - check for section keywords */
         if (cached_lookahead_finds_section(scanner, lexer)) {
             /* Body contains sections - but we can't emit top_token here
@@ -968,7 +968,7 @@ static bool scan_conditional(struct Scanner *scanner, TSLexer *lexer,
         return true;
     }
 
-    if (top_valid && !shell_valid && !files_valid) {
+    if (top_valid && !scriptlet_valid && !files_valid) {
         /* Only top-level is valid - we're at top-level context
          * Invalidate cache since context changed */
         scanner->lookahead_cache_valid = false;
@@ -976,21 +976,21 @@ static bool scan_conditional(struct Scanner *scanner, TSLexer *lexer,
         return true;
     }
 
-    if (shell_valid && !top_valid && !files_valid) {
-        /* Only shell is valid - we're in pure shell context
+    if (scriptlet_valid && !top_valid && !files_valid) {
+        /* Only scriptlet is valid - we're in pure scriptlet context
          * Invalidate cache since context changed */
         scanner->lookahead_cache_valid = false;
-        lexer->result_symbol = shell_token;
+        lexer->result_symbol = scriptlet_token;
         return true;
     }
 
-    /* Both top and shell are valid - need lookahead to decide */
+    /* Both top and scriptlet are valid - need lookahead to decide */
     if (cached_lookahead_finds_section(scanner, lexer)) {
         /* Body contains sections - this is a top-level conditional */
         lexer->result_symbol = top_token;
     } else {
-        /* Body is pure shell - this is a shell-level conditional */
-        lexer->result_symbol = shell_token;
+        /* Body is pure scriptlet - this is a scriptlet-level conditional */
+        lexer->result_symbol = scriptlet_token;
     }
     return true;
 }

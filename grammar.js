@@ -110,15 +110,15 @@ module.exports = grammar({
         $.escaped_percent, // Escaped percent: %%
         // Context-aware conditional tokens
         $.top_level_if, // %if at top-level or containing section keywords
-        $.shell_if, // %if inside shell section without section keywords
+        $.scriptlet_if, // %if inside scriptlet section without section keywords
         $.top_level_ifarch, // %ifarch at top-level
-        $.shell_ifarch, // %ifarch inside shell section
+        $.scriptlet_ifarch, // %ifarch inside scriptlet section
         $.top_level_ifnarch, // %ifnarch at top-level
-        $.shell_ifnarch, // %ifnarch inside shell section
+        $.scriptlet_ifnarch, // %ifnarch inside scriptlet section
         $.top_level_ifos, // %ifos at top-level
-        $.shell_ifos, // %ifos inside shell section
+        $.scriptlet_ifos, // %ifos inside scriptlet section
         $.top_level_ifnos, // %ifnos at top-level
-        $.shell_ifnos, // %ifnos inside shell section
+        $.scriptlet_ifnos, // %ifnos inside scriptlet section
         // Files section context tokens
         $.files_if, // %if inside %files section
         $.files_ifarch, // %ifarch inside %files section
@@ -138,7 +138,7 @@ module.exports = grammar({
         $._shell_compound_statements, // Flatten shell compound statement types
         $._files_compound_statements, // Flatten files compound statement types
         $._conditional_block, // Flatten conditional block contents
-        $._shell_conditional_content, // Flatten shell conditional content
+        $._scriptlet_conditional_content, // Flatten shell conditional content
         $._files_conditional_content, // Flatten files conditional content
         $._literal, // Flatten literal value types
     ],
@@ -1117,7 +1117,7 @@ module.exports = grammar({
         //   %post
         //   %systemd_post samba.service
         //   %endif
-        _shell_conditional_content: ($) =>
+        _scriptlet_conditional_content: ($) =>
             repeat1(
                 choice(
                     $._shell_compound_statements,
@@ -1138,9 +1138,9 @@ module.exports = grammar({
         // Shell-specific compound statements (alias to regular names in parse tree)
         _shell_compound_statements: ($) =>
             choice(
-                alias($.shell_if_statement, $.if_statement),
-                alias($.shell_ifarch_statement, $.ifarch_statement),
-                alias($.shell_ifos_statement, $.ifos_statement)
+                alias($.scriptlet_if_statement, $.if_statement),
+                alias($.scriptlet_ifarch_statement, $.ifarch_statement),
+                alias($.scriptlet_ifos_statement, $.ifos_statement)
             ),
 
         // %if - uses external scanner token for context-aware parsing
@@ -1171,13 +1171,15 @@ module.exports = grammar({
                 field('body', $._conditional_block)
             ),
 
-        // Shell-specific %if (uses _shell_conditional_content for body)
-        shell_if_statement: ($) =>
+        // Shell-specific %if (uses _scriptlet_conditional_content for body)
+        scriptlet_if_statement: ($) =>
             seq(
-                alias($.shell_if, '%if'), // External scanner, hidden in tree
+                alias($.scriptlet_if, '%if'), // External scanner, hidden in tree
                 field('condition', $.expression),
                 token.immediate(NEWLINE),
-                optional(field('consequence', $._shell_conditional_content)),
+                optional(
+                    field('consequence', $._scriptlet_conditional_content)
+                ),
                 repeat(field('alternative', $.shell_elif_clause)),
                 optional(field('alternative', $.shell_else_clause)),
                 '%endif',
@@ -1189,14 +1191,14 @@ module.exports = grammar({
                 '%elif',
                 field('condition', $.expression),
                 token.immediate(NEWLINE),
-                optional(field('consequence', $._shell_conditional_content))
+                optional(field('consequence', $._scriptlet_conditional_content))
             ),
 
         shell_else_clause: ($) =>
             seq(
                 '%else',
                 token.immediate(NEWLINE),
-                optional(field('body', $._shell_conditional_content))
+                optional(field('body', $._scriptlet_conditional_content))
             ),
 
         // %ifarch
@@ -1271,54 +1273,58 @@ module.exports = grammar({
                 field('consequence', $._conditional_block)
             ),
 
-        // Shell-specific %ifarch (uses _shell_conditional_content for body)
-        shell_ifarch_statement: ($) =>
+        // Shell-specific %ifarch (uses _scriptlet_conditional_content for body)
+        scriptlet_ifarch_statement: ($) =>
             seq(
                 // External scanner tokens aliased to literal for highlighting
                 choice(
-                    alias($.shell_ifarch, '%ifarch'),
-                    alias($.shell_ifnarch, '%ifnarch')
+                    alias($.scriptlet_ifarch, '%ifarch'),
+                    alias($.scriptlet_ifnarch, '%ifnarch')
                 ),
                 field('condition', $.arch),
                 token.immediate(NEWLINE),
-                optional(field('consequence', $._shell_conditional_content)),
-                repeat(field('alternative', $.shell_elifarch_clause)),
+                optional(
+                    field('consequence', $._scriptlet_conditional_content)
+                ),
+                repeat(field('alternative', $.scriptlet_elifarch_clause)),
                 optional(field('alternative', $.shell_else_clause)),
                 '%endif',
                 token.immediate(NEWLINE)
             ),
 
-        shell_elifarch_clause: ($) =>
+        scriptlet_elifarch_clause: ($) =>
             seq(
                 '%elifarch',
                 optional(field('condition', $._literal)),
                 token.immediate(NEWLINE),
-                optional(field('consequence', $._shell_conditional_content))
+                optional(field('consequence', $._scriptlet_conditional_content))
             ),
 
-        // Shell-specific %ifos (uses _shell_conditional_content for body)
-        shell_ifos_statement: ($) =>
+        // Shell-specific %ifos (uses _scriptlet_conditional_content for body)
+        scriptlet_ifos_statement: ($) =>
             seq(
                 // External scanner tokens aliased to literal for highlighting
                 choice(
-                    alias($.shell_ifos, '%ifos'),
-                    alias($.shell_ifnos, '%ifnos')
+                    alias($.scriptlet_ifos, '%ifos'),
+                    alias($.scriptlet_ifnos, '%ifnos')
                 ),
                 field('condition', $.os),
                 token.immediate(NEWLINE),
-                optional(field('consequence', $._shell_conditional_content)),
-                repeat(field('alternative', $.shell_elifos_clause)),
+                optional(
+                    field('consequence', $._scriptlet_conditional_content)
+                ),
+                repeat(field('alternative', $.scriptlet_elifos_clause)),
                 optional(field('alternative', $.shell_else_clause)),
                 '%endif',
                 token.immediate(NEWLINE)
             ),
 
-        shell_elifos_clause: ($) =>
+        scriptlet_elifos_clause: ($) =>
             seq(
                 '%elifos',
                 optional(field('condition', $._literal)),
                 token.immediate(NEWLINE),
-                optional(field('consequence', $._shell_conditional_content))
+                optional(field('consequence', $._scriptlet_conditional_content))
             ),
 
         // Files-specific compound statements (alias to regular names in parse tree)

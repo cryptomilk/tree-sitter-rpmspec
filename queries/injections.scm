@@ -28,16 +28,16 @@
 (shell_else_clause (shell_content) @injection.content
   (#set! injection.language "bash"))
 
-; ifarch conditionals use shell_elifarch_clause
+; ifarch conditionals use scriptlet_elifarch_clause
 (ifarch_statement (shell_content) @injection.content
   (#set! injection.language "bash"))
-(shell_elifarch_clause (shell_content) @injection.content
+(scriptlet_elifarch_clause (shell_content) @injection.content
   (#set! injection.language "bash"))
 
-; ifos conditionals use shell_elifos_clause
+; ifos conditionals use scriptlet_elifos_clause
 (ifos_statement (shell_content) @injection.content
   (#set! injection.language "bash"))
-(shell_elifos_clause (shell_content) @injection.content
+(scriptlet_elifos_clause (shell_content) @injection.content
   (#set! injection.language "bash"))
 
 ; Inject bash into shell command expansions %(...)
