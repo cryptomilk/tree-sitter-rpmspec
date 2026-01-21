@@ -168,3 +168,24 @@ Parametric Macro Expansion (with option terminator and pass-through)
         argument: (word)
         argument: (word)))))
 
+===============================================================================
+Parametric Macro Expansion (macro inside shell subcommand is simple)
+===============================================================================
+
+%build
+KCFLAGS="-fno-pie -fdebug-prefix-map=$(%python3 -c '%find_vmlinux_h')"
+
+-------------------------------------------------------------------------------
+
+(spec
+  (build_scriptlet
+    (section_name)
+    (shell_block
+      (shell_content)
+      (macro_simple_expansion
+        (simple_macro))
+      (shell_content)
+      (macro_simple_expansion
+        (simple_macro))
+      (shell_content))))
+

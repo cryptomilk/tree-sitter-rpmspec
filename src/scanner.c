@@ -63,8 +63,10 @@ typedef Array(char) String;
  */
 enum TokenType {
     /* Most common tokens first for better error recovery */
-    SIMPLE_MACRO,    /**< Simple macro expansion: %name */
-    NEGATED_MACRO,   /**< Negated macro expansion: %!name */
+    SIMPLE_MACRO,          /**< Simple macro expansion: %name */
+    PARAMETRIC_MACRO_NAME, /**< Macro name at line start for parametric
+                              expansion */
+    NEGATED_MACRO,         /**< Negated macro expansion: %!name */
     SPECIAL_MACRO,   /**< Special macro variables: %*, %**, %#, %0-9, %nil */
     ESCAPED_PERCENT, /**< Escaped percent sign: %% */
     /* Context-aware conditional tokens for distinguishing top-level vs
@@ -152,6 +154,9 @@ static const char *const KEYWORDS[] = {
     "verify",
     "ghost",
     "exclude",
+    "artifact",
+    "missingok",
+    "readme",
     /* Builtin string macros */
     "echo",
     "error",
@@ -203,6 +208,8 @@ static const char *const KEYWORDS[] = {
 static const char *const SECTION_KEYWORDS[] = {
     /* Main sections */
     "prep",
+    "generate_buildrequires",
+    "conf",
     "build",
     "install",
     "check",
@@ -281,6 +288,17 @@ static inline bool is_macro_start(int32_t c)
 static inline bool is_identifier_char(int32_t c)
 {
     return is_identifier_start(c) || isdigit(c);
+}
+
+/**
+ * @brief Check if character is horizontal whitespace (space or tab)
+ *
+ * Unlike isspace(), this excludes newlines and other vertical whitespace.
+ * Used for same-line whitespace checks.
+ */
+static inline bool is_horizontal_space(int32_t c)
+{
+    return c == ' ' || c == '\t';
 }
 
 /**
@@ -825,22 +843,6 @@ static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
 }
 
 /**
- * @brief Scan for context-aware conditional tokens (%if, %ifarch, %ifos)
- *
- * This function determines whether a conditional should be parsed as
- * top-level or scriptlet-level based on:
- * 1. Which tokens the grammar says are valid (context)
- * 2. Lookahead to check if body contains section keywords
- *
- * The grammar controls context: if only TOP_LEVEL_* is valid, we're at
- * top-level. If scriptlet_* is also valid, we're in a scriptlet context and
- * need lookahead to decide.
- *
- * @param lexer The Tree-sitter lexer instance
- * @param valid_symbols Array indicating which token types are valid
- * @return true if a conditional token was matched, false otherwise
- */
-/**
  * @brief Check for section keywords with caching
  *
  * Uses cached result if available, otherwise performs lookahead and caches.
@@ -985,118 +987,303 @@ static bool any_conditional_valid(const bool *valid_symbols)
     return false;
 }
 
-static bool scan_conditional(struct Scanner *scanner,
-                             TSLexer *lexer,
-                             const bool *valid_symbols)
-{
-    if (!any_conditional_valid(valid_symbols)) {
-        return false;
-    }
-
-    /* Skip leading whitespace */
-    skip_whitespace(lexer);
-
-    /* Must start with '%' */
-    if (lexer->lookahead != '%') {
-        return false;
-    }
-
-    lexer->mark_end(lexer);
-    lexer->advance(lexer, false); /* consume '%' */
-
-    /* Match the keyword after '%' */
-    char id_buf[16];
-    size_t id_len = 0;
-
-    while (is_identifier_char(lexer->lookahead) &&
-           id_len < sizeof(id_buf) - 1) {
-        id_buf[id_len++] = (char)lexer->lookahead;
-        lexer->advance(lexer, false);
-    }
-    id_buf[id_len] = '\0';
-
-    if (id_len == 0) {
-        return false;
-    }
-
-    /* Look up keyword and build context tokens */
-    struct CondTokens ctx = {0};
-    bool found = false;
-
-    for (size_t i = 0; i < NUM_COND_KEYWORDS; i++) {
-        const struct CondKeyword *kw = &COND_KEYWORDS[i];
-        if (strequal(kw->name, id_buf, id_len)) {
-            ctx.top = kw->top;
-            ctx.subsection = kw->subsection;
-            ctx.scriptlet = kw->scriptlet;
-            ctx.files = kw->files;
-            ctx.top_valid = valid_symbols[kw->top];
-            ctx.subsection_valid = valid_symbols[kw->subsection];
-            ctx.scriptlet_valid = valid_symbols[kw->scriptlet];
-            ctx.files_valid = valid_symbols[kw->files];
-
-            /* Check if any context is valid for this keyword */
-            if (ctx.top_valid || ctx.subsection_valid || ctx.scriptlet_valid ||
-                ctx.files_valid) {
-                found = true;
-            }
-            break;
-        }
-    }
-
-    if (!found) {
-        return false;
-    }
-
-    lexer->mark_end(lexer);
-    lexer->result_symbol = select_conditional_token_type(scanner, lexer, &ctx);
-    return true;
-}
-
 /* ========================================================================== */
 /* MAIN SCAN LOGIC                                                            */
 /* ========================================================================== */
 
 /**
+ * @brief Check if identifier is a conditional keyword
+ */
+static bool is_cond_keyword(const char *id, size_t len)
+{
+    for (size_t i = 0; i < NUM_COND_KEYWORDS; i++) {
+        if (strequal(COND_KEYWORDS[i].name, id, len)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * @brief Try to match a conditional keyword token
+ *
+ * @param scanner The scanner state
+ * @param lexer The lexer
+ * @param valid_symbols Valid token types
+ * @param keyword The keyword that was peeked
+ * @param keyword_len Length of the keyword
+ * @return true if a conditional token was matched
+ */
+static bool try_scan_conditional(struct Scanner *scanner,
+                                 TSLexer *lexer,
+                                 const bool *valid_symbols,
+                                 const char *keyword,
+                                 size_t keyword_len)
+{
+    for (size_t i = 0; i < NUM_COND_KEYWORDS; i++) {
+        const struct CondKeyword *kw = &COND_KEYWORDS[i];
+
+        if (!strequal(kw->name, keyword, keyword_len)) {
+            continue;
+        }
+
+        struct CondTokens ctx = {
+            .top = kw->top,
+            .subsection = kw->subsection,
+            .scriptlet = kw->scriptlet,
+            .files = kw->files,
+            .top_valid = valid_symbols[kw->top],
+            .subsection_valid = valid_symbols[kw->subsection],
+            .scriptlet_valid = valid_symbols[kw->scriptlet],
+            .files_valid = valid_symbols[kw->files],
+        };
+
+        if (!ctx.top_valid && !ctx.subsection_valid && !ctx.scriptlet_valid &&
+            !ctx.files_valid) {
+            return false;
+        }
+
+        lexer->mark_end(lexer);
+        lexer->result_symbol =
+            select_conditional_token_type(scanner, lexer, &ctx);
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * @brief Try to match a parametric macro name token
+ *
+ * Parametric macros are only matched at line start to avoid ambiguity
+ * with simple macros inside shell subcommands like $(%python3 -c '...').
+ *
+ * @param lexer The lexer
+ * @param at_line_start Whether we're at the start of a line
+ * @param keyword The keyword that was peeked
+ * @param keyword_len Length of the keyword
+ * @return true if a parametric macro token was matched
+ */
+static bool try_scan_parametric_macro(TSLexer *lexer,
+                                      bool at_line_start,
+                                      const char *keyword,
+                                      size_t keyword_len)
+{
+    /* Only match at line start */
+    if (!at_line_start) {
+        return false;
+    }
+
+    /* Exclude reserved keywords */
+    if (is_keyword(keyword, keyword_len) ||
+        is_patch_legacy(keyword, keyword_len) || is_nil(keyword, keyword_len)) {
+        return false;
+    }
+
+    /* Must be followed by horizontal whitespace (arguments) */
+    if (!is_horizontal_space(lexer->lookahead)) {
+        return false;
+    }
+
+    lexer->mark_end(lexer);
+    lexer->result_symbol = PARAMETRIC_MACRO_NAME;
+    return true;
+}
+
+/**
+ * @brief Consume '%' and read the following identifier
+ *
+ * Reads a percent-prefixed identifier from the lexer, consuming both the '%'
+ * and the identifier characters. This is used to peek at what keyword follows
+ * '%' so we can route to the correct token handler (conditional vs parametric
+ * macro vs simple macro).
+ *
+ * Example: For input `%configure --prefix=/usr`
+ *   - Consumes: `%configure`
+ *   - Returns: id_buf = "configure", id_len = 9
+ *   - Lexer position: at the space before `--prefix`
+ *
+ * Note: If the identifier is longer than buf_size, it will still be fully
+ * consumed from the lexer, but id_buf will be truncated. The id_len will
+ * reflect the true length.
+ *
+ * @param lexer The lexer (will be advanced past '%' and identifier)
+ * @param id_buf Buffer to store the identifier (without '%')
+ * @param buf_size Size of id_buf
+ * @param[out] id_len Actual length of the identifier
+ * @return true if '%' followed by a valid identifier was found
+ */
+static bool consume_percent_and_identifier(TSLexer *lexer,
+                                           char *id_buf,
+                                           size_t buf_size,
+                                           size_t *id_len)
+{
+    *id_len = 0;
+
+    if (lexer->lookahead != '%') {
+        return false;
+    }
+
+    lexer->advance(lexer, false); /* consume '%' */
+
+    if (!is_identifier_start(lexer->lookahead)) {
+        return false;
+    }
+
+    /* Read the identifier */
+    while (is_identifier_char(lexer->lookahead) && *id_len < buf_size - 1) {
+        id_buf[(*id_len)++] = (char)lexer->lookahead;
+        lexer->advance(lexer, false);
+    }
+
+    /* Consume any remaining chars if buffer was too small */
+    while (is_identifier_char(lexer->lookahead)) {
+        lexer->advance(lexer, false);
+        (*id_len)++;
+    }
+
+    id_buf[*id_len < buf_size ? *id_len : buf_size - 1] = '\0';
+    return *id_len > 0;
+}
+
+/**
+ * @brief Skip whitespace and track line crossings
+ *
+ * Advances the lexer past any whitespace characters while tracking whether
+ * a newline was crossed. This is needed for parametric macro detection.
+ *
+ * @param lexer The lexer
+ * @param[in,out] at_line_start Set to true if a newline is crossed
+ */
+static void skip_whitespace_track_newline(TSLexer *lexer, bool *at_line_start)
+{
+    while (isspace(lexer->lookahead)) {
+        if (lexer->lookahead == '\n' || lexer->lookahead == '\r') {
+            *at_line_start = true;
+        }
+        lexer->advance(lexer, true);
+    }
+}
+
+/**
  * @brief Main scanning function for RPM spec tokens
  *
- * This is the primary entry point for token recognition. It attempts to
- * identify and parse various RPM spec syntax elements, particularly macro
- * expressions and escape sequences.
+ * This is the primary entry point for external token recognition. It handles
+ * tokens that cannot be expressed in the grammar DSL alone, such as tokens
+ * requiring keyword exclusion, context-aware lookahead, or balanced delimiter
+ * tracking.
  *
- * @param lexer The Tree-sitter lexer instance
- * @param valid_symbols Array indicating which token types are valid at this
- * position
- * @return true if a token was successfully recognized, false otherwise
+ * Token categories (in priority order):
+ *
+ * 1. **Percent-prefixed tokens** (conditionals, parametric macros)
+ *    Scanner consumes the '%' as part of the token:
+ *    - Conditionals: `%if`, `%ifarch`, `%else`, `%endif`, etc.
+ *    - Parametric macros: `%configure --prefix=/usr` (only at line start)
+ *
+ *    These require peeking at the keyword after '%' to route correctly.
+ *    Conditionals have priority over parametric macros.
+ *    MUST be checked first so section keywords are recognized during
+ *    error recovery.
+ *
+ * 2. **Simple macro tokens** (SIMPLE_MACRO, NEGATED_MACRO, etc.)
+ *    Grammar handles '%', scanner matches the identifier:
+ *    - `%name` -> grammar matches '%', scanner matches 'name'
+ *    - `%{name}` -> handled entirely by grammar
+ *
+ * 3. **Contextual tokens** (EXPAND_CODE, SHELL_CODE)
+ *    Only valid inside specific constructs:
+ *    - EXPAND_CODE: inside `%{expand:...}`
+ *    - SHELL_CODE: inside `%(...)`
+ *
+ *    These are checked LAST because they are greedy and would consume
+ *    section keywords during error recovery if checked earlier.
+ *
+ * @param scanner The scanner state (for lookahead caching)
+ * @param lexer The tree-sitter lexer
+ * @param valid_symbols Array indicating which tokens are valid at this position
+ * @return true if a token was matched, false otherwise
  */
 static inline bool
 rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
 {
-    /* Try to scan context-aware conditional tokens */
-    if (scan_conditional(scanner, lexer, valid_symbols)) {
-        return true;
+    /*
+     * 1. Percent-prefixed tokens - scanner handles the '%'
+     *
+     * Conditionals (%if, %else, etc.) and parametric macros (%configure).
+     * Must be checked early so section keywords are recognized during
+     * error recovery, preventing EXPAND_CODE/SHELL_CODE from consuming
+     * too much content.
+     */
+    bool conditionals_valid = any_conditional_valid(valid_symbols);
+    bool parametric_valid = valid_symbols[PARAMETRIC_MACRO_NAME];
+
+    if (conditionals_valid || parametric_valid) {
+        bool at_line_start = (lexer->get_column(lexer) == 0);
+
+        skip_whitespace_track_newline(lexer, &at_line_start);
+
+        if (lexer->lookahead == '%') {
+            lexer->mark_end(lexer);
+
+            char keyword[64];
+            size_t keyword_len = 0;
+
+            if (consume_percent_and_identifier(lexer,
+                                               keyword,
+                                               sizeof(keyword),
+                                               &keyword_len)) {
+                /* Try conditional first (higher priority) */
+                if (conditionals_valid &&
+                    is_cond_keyword(keyword, keyword_len)) {
+                    if (try_scan_conditional(scanner,
+                                             lexer,
+                                             valid_symbols,
+                                             keyword,
+                                             keyword_len)) {
+                        return true;
+                    }
+                }
+
+                /* Try parametric macro */
+                if (parametric_valid) {
+                    if (try_scan_parametric_macro(lexer,
+                                                  at_line_start,
+                                                  keyword,
+                                                  keyword_len)) {
+                        return true;
+                    }
+                }
+            }
+        }
     }
 
-    /* Try to scan macro tokens */
-    if (valid_symbols[SIMPLE_MACRO] || valid_symbols[NEGATED_MACRO] ||
-        valid_symbols[SPECIAL_MACRO] || valid_symbols[ESCAPED_PERCENT]) {
+    /*
+     * 2. Simple macro tokens - grammar handles '%', scanner matches identifier
+     */
+    bool macros_valid =
+        valid_symbols[SIMPLE_MACRO] || valid_symbols[NEGATED_MACRO] ||
+        valid_symbols[SPECIAL_MACRO] || valid_symbols[ESCAPED_PERCENT];
+
+    if (macros_valid) {
         return scan_macro(lexer, valid_symbols);
     }
 
-    /* EXPAND_CODE and SHELL_CODE are contextual - only valid inside
-     * %{expand:...} and %(...) respectively. Check these first. */
-    if (valid_symbols[EXPAND_CODE]) {
-        if (scan_expand_content(lexer)) {
-            lexer->result_symbol = EXPAND_CODE;
-            return true;
-        }
+    /*
+     * 3. Contextual content tokens - only valid inside specific constructs
+     *
+     * These are checked LAST because they are greedy and would consume
+     * section keywords during error recovery if checked earlier.
+     * - EXPAND_CODE: content inside %{expand:...}
+     * - SHELL_CODE: content inside %(...)
+     */
+    if (valid_symbols[EXPAND_CODE] && scan_expand_content(lexer)) {
+        lexer->result_symbol = EXPAND_CODE;
+        return true;
     }
 
-    if (valid_symbols[SHELL_CODE]) {
-        if (scan_shell_content(lexer)) {
-            lexer->result_symbol = SHELL_CODE;
-            return true;
-        }
+    if (valid_symbols[SHELL_CODE] && scan_shell_content(lexer)) {
+        lexer->result_symbol = SHELL_CODE;
+        return true;
     }
 
     return false;

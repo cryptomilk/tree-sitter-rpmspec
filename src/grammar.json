@@ -441,15 +441,16 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "STRING",
-            "value": "%"
-          },
-          {
             "type": "FIELD",
             "name": "name",
             "content": {
-              "type": "SYMBOL",
-              "name": "simple_macro"
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "parametric_macro_name"
+              },
+              "named": true,
+              "value": "simple_macro"
             }
           },
           {
@@ -11329,6 +11330,10 @@
     {
       "type": "SYMBOL",
       "name": "simple_macro"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "parametric_macro_name"
     },
     {
       "type": "SYMBOL",

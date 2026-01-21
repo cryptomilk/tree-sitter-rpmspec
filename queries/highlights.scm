@@ -195,8 +195,8 @@
 ; Parametric macro expansion (%name [options] [arguments])
 ; -----------------------------------------------------------------------------
 
+; Note: parametric_macro_name includes the '%' prefix and is aliased to simple_macro
 (macro_parametric_expansion
-  "%" @punctuation.special
   name: (simple_macro) @function.call)
 
 (macro_parametric_expansion

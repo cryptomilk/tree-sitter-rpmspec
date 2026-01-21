@@ -135,6 +135,7 @@ module.exports = grammar({
     externals: ($) => [
         // Most common tokens first
         $.simple_macro, // Simple macro %name (most common ~80%)
+        $.parametric_macro_name, // %name at line start for parametric expansion
         $.negated_macro, // Negated macro %!name
         $.special_macro, // Special macros: %*, %**, %#, %0-9
         $.escaped_percent, // Escaped percent: %%
@@ -381,12 +382,20 @@ module.exports = grammar({
         // newlines (via extras) and consume content from subsequent lines as
         // arguments. Line continuation (\) still works because it's in extras.
         // After --, only arguments are allowed (no more options or terminators)
+        // Parametric macro expansion: %name with arguments
+        // Uses parametric_macro_name (external scanner) which only matches when:
+        // 1. At line start (column 0 or after whitespace following newline)
+        // 2. Followed by same-line whitespace and actual arguments
+        // This prevents matching %name inside expressions like $(%python3 -c 'foo')
+        // Aliased to simple_macro for consistent naming in parse tree
         macro_parametric_expansion: ($) =>
             prec(
                 1,
                 seq(
-                    '%',
-                    field('name', $.simple_macro),
+                    field(
+                        'name',
+                        alias($.parametric_macro_name, $.simple_macro)
+                    ),
                     token.immediate(/[ \t]+/), // Same-line whitespace required
                     repeat($._macro_invocation_argument),
                     optional(

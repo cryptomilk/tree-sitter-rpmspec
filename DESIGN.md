@@ -201,6 +201,27 @@ The grammar uses `macro_parametric_expansion` with higher precedence when
 arguments follow a macro name on the same line. Without arguments,
 `macro_simple_expansion` matches instead.
 
+#### The Ambiguity Problem
+
+Consider this line inside a shell scriptlet:
+
+```spec
+CFLAGS="$(%python3 -c '%find_vmlinux_h')"
+```
+
+When the parser sees `%python3 -c`, it cannot know whether:
+- `%python3` is a **parametric macro** with `-c` as an option
+- `%python3` is a **simple macro** and `-c` is a shell argument
+
+RPM resolves this at runtime by checking if the macro is defined as a function.
+We cannot do that - we're a static parser without access to macro definitions.
+
+**Design decision**: Parametric macro expansion (`%name args`) only matches at
+line start. Inside expressions like `$(...)`, only simple expansion matches.
+
+This means `%configure --prefix=/usr` on its own line is parametric, but
+`$(%python3 -c 'foo')` treats `%python3` as simple expansion.
+
 #### The Concatenation Problem
 
 Macros can be concatenated with literal text:
