@@ -1431,6 +1431,20 @@
     "type": "elifos_clause",
     "named": true,
     "fields": {
+      "condition": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_primary_expression",
+            "named": true
+          },
+          {
+            "type": "concatenation",
+            "named": true
+          }
+        ]
+      },
       "consequence": {
         "multiple": true,
         "required": true,
@@ -1440,15 +1454,7 @@
             "named": true
           },
           {
-            "type": "_primary_expression",
-            "named": true
-          },
-          {
             "type": "_simple_statements",
-            "named": true
-          },
-          {
-            "type": "concatenation",
             "named": true
           }
         ]
@@ -1941,11 +1947,11 @@
             "named": true
           },
           {
-            "type": "shell_elif_clause",
+            "type": "scriptlet_elif_clause",
             "named": true
           },
           {
-            "type": "shell_else_clause",
+            "type": "scriptlet_else_clause",
             "named": true
           }
         ]
@@ -2033,7 +2039,7 @@
             "named": true
           },
           {
-            "type": "shell_else_clause",
+            "type": "scriptlet_else_clause",
             "named": true
           }
         ]
@@ -2121,7 +2127,7 @@
             "named": true
           },
           {
-            "type": "shell_else_clause",
+            "type": "scriptlet_else_clause",
             "named": true
           }
         ]
@@ -3436,6 +3442,92 @@
     "fields": {}
   },
   {
+    "type": "scriptlet_elif_clause",
+    "named": true,
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "autopatch_macro",
+            "named": true
+          },
+          {
+            "type": "autosetup_macro",
+            "named": true
+          },
+          {
+            "type": "if_statement",
+            "named": true
+          },
+          {
+            "type": "ifarch_statement",
+            "named": true
+          },
+          {
+            "type": "ifos_statement",
+            "named": true
+          },
+          {
+            "type": "macro_definition",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_expression",
+            "named": true
+          },
+          {
+            "type": "macro_parametric_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_shell_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_undefinition",
+            "named": true
+          },
+          {
+            "type": "patch_macro",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet",
+            "named": true
+          },
+          {
+            "type": "setup_macro",
+            "named": true
+          },
+          {
+            "type": "shell_content",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "scriptlet_elifarch_clause",
     "named": true,
     "fields": {
@@ -3544,6 +3636,82 @@
         ]
       },
       "consequence": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "autopatch_macro",
+            "named": true
+          },
+          {
+            "type": "autosetup_macro",
+            "named": true
+          },
+          {
+            "type": "if_statement",
+            "named": true
+          },
+          {
+            "type": "ifarch_statement",
+            "named": true
+          },
+          {
+            "type": "ifos_statement",
+            "named": true
+          },
+          {
+            "type": "macro_definition",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_expression",
+            "named": true
+          },
+          {
+            "type": "macro_parametric_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_shell_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_undefinition",
+            "named": true
+          },
+          {
+            "type": "patch_macro",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet",
+            "named": true
+          },
+          {
+            "type": "setup_macro",
+            "named": true
+          },
+          {
+            "type": "shell_content",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "scriptlet_else_clause",
+    "named": true,
+    "fields": {
+      "body": {
         "multiple": true,
         "required": false,
         "types": [
@@ -3778,168 +3946,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "shell_elif_clause",
-    "named": true,
-    "fields": {
-      "condition": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "expression",
-            "named": true
-          }
-        ]
-      },
-      "consequence": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "autopatch_macro",
-            "named": true
-          },
-          {
-            "type": "autosetup_macro",
-            "named": true
-          },
-          {
-            "type": "if_statement",
-            "named": true
-          },
-          {
-            "type": "ifarch_statement",
-            "named": true
-          },
-          {
-            "type": "ifos_statement",
-            "named": true
-          },
-          {
-            "type": "macro_definition",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_expression",
-            "named": true
-          },
-          {
-            "type": "macro_parametric_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_shell_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_undefinition",
-            "named": true
-          },
-          {
-            "type": "patch_macro",
-            "named": true
-          },
-          {
-            "type": "runtime_scriptlet",
-            "named": true
-          },
-          {
-            "type": "setup_macro",
-            "named": true
-          },
-          {
-            "type": "shell_content",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "shell_else_clause",
-    "named": true,
-    "fields": {
-      "body": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "autopatch_macro",
-            "named": true
-          },
-          {
-            "type": "autosetup_macro",
-            "named": true
-          },
-          {
-            "type": "if_statement",
-            "named": true
-          },
-          {
-            "type": "ifarch_statement",
-            "named": true
-          },
-          {
-            "type": "ifos_statement",
-            "named": true
-          },
-          {
-            "type": "macro_definition",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_expression",
-            "named": true
-          },
-          {
-            "type": "macro_parametric_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_shell_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_undefinition",
-            "named": true
-          },
-          {
-            "type": "patch_macro",
-            "named": true
-          },
-          {
-            "type": "runtime_scriptlet",
-            "named": true
-          },
-          {
-            "type": "setup_macro",
-            "named": true
-          },
-          {
-            "type": "shell_content",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {

@@ -87,6 +87,179 @@ function buildScriptlet(name) {
 }
 
 /**
+ * Creates an %if statement rule for different contexts
+ *
+ * @param {function} tokenRule - Function returning the scanner token (e.g., $.top_level_if)
+ * @param {function} contentRule - Function returning the content rule (e.g., $._conditional_block)
+ * @param {function} elifRule - Function returning the elif clause rule
+ * @param {function} elseRule - Function returning the else clause rule
+ * @param {boolean} optionalContent - Whether content is optional (true for scriptlet/files contexts)
+ * @returns {function} A grammar rule function for the if statement
+ */
+function makeIfStatement(
+    tokenRule,
+    contentRule,
+    elifRule,
+    elseRule,
+    optionalContent = false
+) {
+    return ($) =>
+        seq(
+            alias(tokenRule($), '%if'),
+            field('condition', $.expression),
+            token.immediate(NEWLINE),
+            optionalContent
+                ? optional(field('consequence', contentRule($)))
+                : optional(field('consequence', contentRule($))),
+            repeat(field('alternative', elifRule($))),
+            optional(field('alternative', elseRule($))),
+            '%endif',
+            token.immediate(NEWLINE)
+        );
+}
+
+/**
+ * Creates an %ifarch/%ifnarch statement rule for different contexts
+ *
+ * @param {function} ifarchToken - Function returning the %ifarch scanner token
+ * @param {function} ifnarchToken - Function returning the %ifnarch scanner token
+ * @param {function} contentRule - Function returning the content rule
+ * @param {function} elifRule - Function returning the elifarch clause rule
+ * @param {function} elseRule - Function returning the else clause rule
+ * @returns {function} A grammar rule function for the ifarch statement
+ */
+function makeIfarchStatement(
+    ifarchToken,
+    ifnarchToken,
+    contentRule,
+    elifRule,
+    elseRule
+) {
+    return ($) =>
+        seq(
+            choice(
+                alias(ifarchToken($), '%ifarch'),
+                alias(ifnarchToken($), '%ifnarch')
+            ),
+            field('condition', $.arch),
+            token.immediate(NEWLINE),
+            optional(field('consequence', contentRule($))),
+            repeat(field('alternative', elifRule($))),
+            optional(field('alternative', elseRule($))),
+            '%endif',
+            token.immediate(NEWLINE)
+        );
+}
+
+/**
+ * Creates an %ifos/%ifnos statement rule for different contexts
+ *
+ * @param {function} ifosToken - Function returning the %ifos scanner token
+ * @param {function} ifnosToken - Function returning the %ifnos scanner token
+ * @param {function} contentRule - Function returning the content rule
+ * @param {function} elifRule - Function returning the elifos clause rule
+ * @param {function} elseRule - Function returning the else clause rule
+ * @returns {function} A grammar rule function for the ifos statement
+ */
+function makeIfosStatement(
+    ifosToken,
+    ifnosToken,
+    contentRule,
+    elifRule,
+    elseRule
+) {
+    return ($) =>
+        seq(
+            choice(
+                alias(ifosToken($), '%ifos'),
+                alias(ifnosToken($), '%ifnos')
+            ),
+            field('condition', $.os),
+            token.immediate(NEWLINE),
+            optional(field('consequence', contentRule($))),
+            repeat(field('alternative', elifRule($))),
+            optional(field('alternative', elseRule($))),
+            '%endif',
+            token.immediate(NEWLINE)
+        );
+}
+
+/**
+ * Creates an %elif clause rule for different contexts
+ *
+ * @param {function} contentRule - Function returning the content rule
+ * @param {boolean} optionalContent - Whether content is optional
+ * @returns {function} A grammar rule function for the elif clause
+ */
+function makeElifClause(contentRule, optionalContent = false) {
+    return ($) =>
+        seq(
+            '%elif',
+            field('condition', $.expression),
+            token.immediate(NEWLINE),
+            optionalContent
+                ? optional(field('consequence', contentRule($)))
+                : field('consequence', contentRule($))
+        );
+}
+
+/**
+ * Creates an %elifarch clause rule for different contexts
+ *
+ * @param {function} contentRule - Function returning the content rule
+ * @param {boolean} optionalContent - Whether content is optional
+ * @returns {function} A grammar rule function for the elifarch clause
+ */
+function makeElifarchClause(contentRule, optionalContent = false) {
+    return ($) =>
+        seq(
+            '%elifarch',
+            optional(field('condition', $._literal)),
+            token.immediate(NEWLINE),
+            optionalContent
+                ? optional(field('consequence', contentRule($)))
+                : field('consequence', contentRule($))
+        );
+}
+
+/**
+ * Creates an %elifos clause rule for different contexts
+ *
+ * @param {function} contentRule - Function returning the content rule
+ * @param {boolean} optionalContent - Whether content is optional
+ * @returns {function} A grammar rule function for the elifos clause
+ */
+function makeElifosClause(contentRule, optionalContent = false) {
+    return ($) =>
+        seq(
+            '%elifos',
+            optional(field('condition', $._literal)),
+            token.immediate(NEWLINE),
+            optionalContent
+                ? optional(field('consequence', contentRule($)))
+                : field('consequence', contentRule($))
+        );
+}
+
+/**
+ * Creates an %else clause rule for different contexts
+ *
+ * @param {function} contentRule - Function returning the content rule
+ * @param {boolean} optionalContent - Whether content is optional
+ * @returns {function} A grammar rule function for the else clause
+ */
+function makeElseClause(contentRule, optionalContent = false) {
+    return ($) =>
+        seq(
+            '%else',
+            token.immediate(NEWLINE),
+            optionalContent
+                ? optional(field('body', contentRule($)))
+                : field('body', contentRule($))
+        );
+}
+
+/**
  * Main grammar definition for RPM spec files
  *
  * The grammar is structured to handle the complex nature of RPM spec files,
@@ -165,7 +338,7 @@ module.exports = grammar({
     inline: ($) => [
         $._simple_statements, // Flatten statement types
         $._compound_statements, // Flatten compound statement types
-        $._shell_compound_statements, // Flatten shell compound statement types
+        $._scriptlet_compound_statements, // Flatten shell compound statement types
         $._files_compound_statements, // Flatten files compound statement types
         $._conditional_block, // Flatten conditional block contents
         $._scriptlet_conditional_content, // Flatten shell conditional content
@@ -406,7 +579,7 @@ module.exports = grammar({
                 // The %if token is unambiguous here (no other argument type
                 // starts with %if), so tree-sitter's GLR parser handles it.
                 // I'm still amazed that this works.
-                $._shell_compound_statements
+                $._scriptlet_compound_statements
             ),
 
         // Macro options: short options only (getopt style)
@@ -1147,7 +1320,7 @@ module.exports = grammar({
         _scriptlet_conditional_content: ($) =>
             repeat1(
                 choice(
-                    $._shell_compound_statements,
+                    $._scriptlet_compound_statements,
                     $.runtime_scriptlet,
                     $.macro_definition,
                     $.macro_undefinition,
@@ -1164,8 +1337,8 @@ module.exports = grammar({
                 )
             ),
 
-        // Shell-specific compound statements (alias to regular names in parse tree)
-        _shell_compound_statements: ($) =>
+        // Scriptlet-specific compound statements (alias to regular names in parse tree)
+        _scriptlet_compound_statements: ($) =>
             choice(
                 alias($.scriptlet_if_statement, $.if_statement),
                 alias($.scriptlet_ifarch_statement, $.ifarch_statement),
@@ -1173,62 +1346,35 @@ module.exports = grammar({
             ),
 
         // %if - uses external scanner token for context-aware parsing
-        if_statement: ($) =>
-            seq(
-                alias($.top_level_if, '%if'), // External scanner, hidden in tree
-                field('condition', $.expression),
-                token.immediate(NEWLINE),
-                optional(field('consequence', $._conditional_block)),
-                repeat(field('alternative', $.elif_clause)),
-                optional(field('alternative', $.else_clause)),
-                '%endif',
-                token.immediate(NEWLINE)
-            ),
+        if_statement: makeIfStatement(
+            ($) => $.top_level_if,
+            ($) => $._conditional_block,
+            ($) => $.elif_clause,
+            ($) => $.else_clause
+        ),
 
-        elif_clause: ($) =>
-            seq(
-                '%elif',
-                field('condition', $.expression),
-                token.immediate(NEWLINE),
-                field('consequence', $._conditional_block)
-            ),
+        elif_clause: makeElifClause(($) => $._conditional_block),
 
-        else_clause: ($) =>
-            seq(
-                '%else',
-                token.immediate(NEWLINE),
-                field('body', $._conditional_block)
-            ),
+        else_clause: makeElseClause(($) => $._conditional_block),
 
-        // Shell-specific %if (uses _scriptlet_conditional_content for body)
-        scriptlet_if_statement: ($) =>
-            seq(
-                alias($.scriptlet_if, '%if'), // External scanner, hidden in tree
-                field('condition', $.expression),
-                token.immediate(NEWLINE),
-                optional(
-                    field('consequence', $._scriptlet_conditional_content)
-                ),
-                repeat(field('alternative', $.shell_elif_clause)),
-                optional(field('alternative', $.shell_else_clause)),
-                '%endif',
-                token.immediate(NEWLINE)
-            ),
+        // Scriptlet-specific %if (uses _scriptlet_conditional_content for body)
+        scriptlet_if_statement: makeIfStatement(
+            ($) => $.scriptlet_if,
+            ($) => $._scriptlet_conditional_content,
+            ($) => $.scriptlet_elif_clause,
+            ($) => $.scriptlet_else_clause,
+            true
+        ),
 
-        shell_elif_clause: ($) =>
-            seq(
-                '%elif',
-                field('condition', $.expression),
-                token.immediate(NEWLINE),
-                optional(field('consequence', $._scriptlet_conditional_content))
-            ),
+        scriptlet_elif_clause: makeElifClause(
+            ($) => $._scriptlet_conditional_content,
+            true
+        ),
 
-        shell_else_clause: ($) =>
-            seq(
-                '%else',
-                token.immediate(NEWLINE),
-                optional(field('body', $._scriptlet_conditional_content))
-            ),
+        scriptlet_else_clause: makeElseClause(
+            ($) => $._scriptlet_conditional_content,
+            true
+        ),
 
         // %ifarch
         // Architecture can be: identifier, %{macro}, or %macro (like %ix86)
@@ -1242,29 +1388,15 @@ module.exports = grammar({
                 )
             ),
 
-        ifarch_statement: ($) =>
-            seq(
-                // External scanner tokens aliased to literal for highlighting
-                choice(
-                    alias($.top_level_ifarch, '%ifarch'),
-                    alias($.top_level_ifnarch, '%ifnarch')
-                ),
-                field('condition', $.arch),
-                token.immediate(NEWLINE),
-                optional(field('consequence', $._conditional_block)),
-                repeat(field('alternative', $.elifarch_clause)),
-                optional(field('alternative', $.else_clause)),
-                '%endif',
-                token.immediate(NEWLINE)
-            ),
+        ifarch_statement: makeIfarchStatement(
+            ($) => $.top_level_ifarch,
+            ($) => $.top_level_ifnarch,
+            ($) => $._conditional_block,
+            ($) => $.elifarch_clause,
+            ($) => $.else_clause
+        ),
 
-        elifarch_clause: ($) =>
-            seq(
-                '%elifarch',
-                optional(field('condition', $._literal)),
-                token.immediate(NEWLINE),
-                field('consequence', $._conditional_block)
-            ),
+        elifarch_clause: makeElifarchClause(($) => $._conditional_block),
 
         // %ifos
         // OS can be: identifier, %{macro}, or %macro
@@ -1278,83 +1410,43 @@ module.exports = grammar({
                 )
             ),
 
-        ifos_statement: ($) =>
-            seq(
-                // External scanner tokens aliased to literal for highlighting
-                choice(
-                    alias($.top_level_ifos, '%ifos'),
-                    alias($.top_level_ifnos, '%ifnos')
-                ),
-                field('condition', $.os),
-                token.immediate(NEWLINE),
-                optional(field('consequence', $._conditional_block)),
-                repeat(field('alternative', $.elifos_clause)),
-                optional(field('alternative', $.else_clause)),
-                '%endif',
-                token.immediate(NEWLINE)
-            ),
+        ifos_statement: makeIfosStatement(
+            ($) => $.top_level_ifos,
+            ($) => $.top_level_ifnos,
+            ($) => $._conditional_block,
+            ($) => $.elifos_clause,
+            ($) => $.else_clause
+        ),
 
-        elifos_clause: ($) =>
-            seq(
-                '%elifos',
-                optional(field('consequence', $._literal)),
-                token.immediate(NEWLINE),
-                field('consequence', $._conditional_block)
-            ),
+        elifos_clause: makeElifosClause(($) => $._conditional_block),
 
-        // Shell-specific %ifarch (uses _scriptlet_conditional_content for body)
-        scriptlet_ifarch_statement: ($) =>
-            seq(
-                // External scanner tokens aliased to literal for highlighting
-                choice(
-                    alias($.scriptlet_ifarch, '%ifarch'),
-                    alias($.scriptlet_ifnarch, '%ifnarch')
-                ),
-                field('condition', $.arch),
-                token.immediate(NEWLINE),
-                optional(
-                    field('consequence', $._scriptlet_conditional_content)
-                ),
-                repeat(field('alternative', $.scriptlet_elifarch_clause)),
-                optional(field('alternative', $.shell_else_clause)),
-                '%endif',
-                token.immediate(NEWLINE)
-            ),
+        // Scriptlet-specific %ifarch (uses _scriptlet_conditional_content for body)
+        scriptlet_ifarch_statement: makeIfarchStatement(
+            ($) => $.scriptlet_ifarch,
+            ($) => $.scriptlet_ifnarch,
+            ($) => $._scriptlet_conditional_content,
+            ($) => $.scriptlet_elifarch_clause,
+            ($) => $.scriptlet_else_clause
+        ),
 
-        scriptlet_elifarch_clause: ($) =>
-            seq(
-                '%elifarch',
-                optional(field('condition', $._literal)),
-                token.immediate(NEWLINE),
-                optional(field('consequence', $._scriptlet_conditional_content))
-            ),
+        scriptlet_elifarch_clause: makeElifarchClause(
+            ($) => $._scriptlet_conditional_content,
+            true
+        ),
 
-        // Shell-specific %ifos (uses _scriptlet_conditional_content for body)
-        scriptlet_ifos_statement: ($) =>
-            seq(
-                // External scanner tokens aliased to literal for highlighting
-                choice(
-                    alias($.scriptlet_ifos, '%ifos'),
-                    alias($.scriptlet_ifnos, '%ifnos')
-                ),
-                field('condition', $.os),
-                token.immediate(NEWLINE),
-                optional(
-                    field('consequence', $._scriptlet_conditional_content)
-                ),
-                repeat(field('alternative', $.scriptlet_elifos_clause)),
-                optional(field('alternative', $.shell_else_clause)),
-                '%endif',
-                token.immediate(NEWLINE)
-            ),
+        // Scriptlet-specific %ifos (uses _scriptlet_conditional_content for body)
+        scriptlet_ifos_statement: makeIfosStatement(
+            ($) => $.scriptlet_ifos,
+            ($) => $.scriptlet_ifnos,
+            ($) => $._scriptlet_conditional_content,
+            ($) => $.scriptlet_elifos_clause,
+            ($) => $.scriptlet_else_clause
+        ),
 
-        scriptlet_elifos_clause: ($) =>
-            seq(
-                '%elifos',
-                optional(field('condition', $._literal)),
-                token.immediate(NEWLINE),
-                optional(field('consequence', $._scriptlet_conditional_content))
-            ),
+        scriptlet_elifos_clause: makeElifosClause(
+            ($) => $._scriptlet_conditional_content,
+            true
+        ),
 
         // Files-specific compound statements (alias to regular names in parse tree)
         _files_compound_statements: ($) =>
@@ -1373,82 +1465,51 @@ module.exports = grammar({
             ),
 
         // Files-specific %if (uses _files_conditional_content for body)
-        files_if_statement: ($) =>
-            seq(
-                alias($.files_if, '%if'), // External scanner, hidden in tree
-                field('condition', $.expression),
-                token.immediate(NEWLINE),
-                optional(field('consequence', $._files_conditional_content)),
-                repeat(field('alternative', $.files_elif_clause)),
-                optional(field('alternative', $.files_else_clause)),
-                '%endif',
-                token.immediate(NEWLINE)
-            ),
+        files_if_statement: makeIfStatement(
+            ($) => $.files_if,
+            ($) => $._files_conditional_content,
+            ($) => $.files_elif_clause,
+            ($) => $.files_else_clause,
+            true
+        ),
 
-        files_elif_clause: ($) =>
-            seq(
-                '%elif',
-                field('condition', $.expression),
-                token.immediate(NEWLINE),
-                optional(field('consequence', $._files_conditional_content))
-            ),
+        files_elif_clause: makeElifClause(
+            ($) => $._files_conditional_content,
+            true
+        ),
 
-        files_else_clause: ($) =>
-            seq(
-                '%else',
-                token.immediate(NEWLINE),
-                optional(field('body', $._files_conditional_content))
-            ),
+        files_else_clause: makeElseClause(
+            ($) => $._files_conditional_content,
+            true
+        ),
 
         // Files-specific %ifarch (uses _files_conditional_content for body)
-        files_ifarch_statement: ($) =>
-            seq(
-                // External scanner tokens aliased to literal for highlighting
-                choice(
-                    alias($.files_ifarch, '%ifarch'),
-                    alias($.files_ifnarch, '%ifnarch')
-                ),
-                field('condition', $.arch),
-                token.immediate(NEWLINE),
-                optional(field('consequence', $._files_conditional_content)),
-                repeat(field('alternative', $.files_elifarch_clause)),
-                optional(field('alternative', $.files_else_clause)),
-                '%endif',
-                token.immediate(NEWLINE)
-            ),
+        files_ifarch_statement: makeIfarchStatement(
+            ($) => $.files_ifarch,
+            ($) => $.files_ifnarch,
+            ($) => $._files_conditional_content,
+            ($) => $.files_elifarch_clause,
+            ($) => $.files_else_clause
+        ),
 
-        files_elifarch_clause: ($) =>
-            seq(
-                '%elifarch',
-                optional(field('condition', $._literal)),
-                token.immediate(NEWLINE),
-                optional(field('consequence', $._files_conditional_content))
-            ),
+        files_elifarch_clause: makeElifarchClause(
+            ($) => $._files_conditional_content,
+            true
+        ),
 
         // Files-specific %ifos (uses _files_conditional_content for body)
-        files_ifos_statement: ($) =>
-            seq(
-                // External scanner tokens aliased to literal for highlighting
-                choice(
-                    alias($.files_ifos, '%ifos'),
-                    alias($.files_ifnos, '%ifnos')
-                ),
-                field('condition', $.os),
-                token.immediate(NEWLINE),
-                optional(field('consequence', $._files_conditional_content)),
-                repeat(field('alternative', $.files_elifos_clause)),
-                optional(field('alternative', $.files_else_clause)),
-                '%endif',
-                token.immediate(NEWLINE)
-            ),
+        files_ifos_statement: makeIfosStatement(
+            ($) => $.files_ifos,
+            ($) => $.files_ifnos,
+            ($) => $._files_conditional_content,
+            ($) => $.files_elifos_clause,
+            ($) => $.files_else_clause
+        ),
 
-        files_elifos_clause: ($) =>
-            seq(
-                '%elifos',
-                optional(field('condition', $._literal)),
-                token.immediate(NEWLINE),
-                optional(field('consequence', $._files_conditional_content))
-            ),
+        files_elifos_clause: makeElifosClause(
+            ($) => $._files_conditional_content,
+            true
+        ),
 
         ///////////////////////////////////////////////////////////////////////
         // PREAMBLE SECTION - PACKAGE METADATA
@@ -2057,7 +2118,7 @@ module.exports = grammar({
             prec.right(
                 repeat1(
                     choice(
-                        $._shell_compound_statements, // Shell-specific conditionals
+                        $._scriptlet_compound_statements, // Scriptlet-specific conditionals
                         $.macro_definition, // Inline %define statements
                         $.macro_undefinition, // Inline %undefine statements
                         $.setup_macro, // %setup with specific option support

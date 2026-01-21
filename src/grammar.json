@@ -542,7 +542,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_shell_compound_statements"
+          "name": "_scriptlet_compound_statements"
         }
       ]
     },
@@ -2849,7 +2849,7 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "_shell_compound_statements"
+            "name": "_scriptlet_compound_statements"
           },
           {
             "type": "SYMBOL",
@@ -2906,7 +2906,7 @@
         ]
       }
     },
-    "_shell_compound_statements": {
+    "_scriptlet_compound_statements": {
       "type": "CHOICE",
       "members": [
         {
@@ -3127,7 +3127,7 @@
             "name": "alternative",
             "content": {
               "type": "SYMBOL",
-              "name": "shell_elif_clause"
+              "name": "scriptlet_elif_clause"
             }
           }
         },
@@ -3139,7 +3139,7 @@
               "name": "alternative",
               "content": {
                 "type": "SYMBOL",
-                "name": "shell_else_clause"
+                "name": "scriptlet_else_clause"
               }
             },
             {
@@ -3160,7 +3160,7 @@
         }
       ]
     },
-    "shell_elif_clause": {
+    "scriptlet_elif_clause": {
       "type": "SEQ",
       "members": [
         {
@@ -3200,7 +3200,7 @@
         }
       ]
     },
-    "shell_else_clause": {
+    "scriptlet_else_clause": {
       "type": "SEQ",
       "members": [
         {
@@ -3546,7 +3546,7 @@
           "members": [
             {
               "type": "FIELD",
-              "name": "consequence",
+              "name": "condition",
               "content": {
                 "type": "SYMBOL",
                 "name": "_literal"
@@ -3650,7 +3650,7 @@
               "name": "alternative",
               "content": {
                 "type": "SYMBOL",
-                "name": "shell_else_clause"
+                "name": "scriptlet_else_clause"
               }
             },
             {
@@ -3795,7 +3795,7 @@
               "name": "alternative",
               "content": {
                 "type": "SYMBOL",
-                "name": "shell_else_clause"
+                "name": "scriptlet_else_clause"
               }
             },
             {
@@ -6032,7 +6032,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_shell_compound_statements"
+              "name": "_scriptlet_compound_statements"
             },
             {
               "type": "SYMBOL",
@@ -9302,7 +9302,7 @@
   "inline": [
     "_simple_statements",
     "_compound_statements",
-    "_shell_compound_statements",
+    "_scriptlet_compound_statements",
     "_files_compound_statements",
     "_conditional_block",
     "_scriptlet_conditional_content",

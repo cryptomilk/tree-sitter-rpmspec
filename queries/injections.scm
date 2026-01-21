@@ -23,9 +23,9 @@
 ; Note: shell_if_statement is aliased to if_statement in parse tree
 (if_statement (shell_content) @injection.content
   (#set! injection.language "bash"))
-(shell_elif_clause (shell_content) @injection.content
+(scriptlet_elif_clause (shell_content) @injection.content
   (#set! injection.language "bash"))
-(shell_else_clause (shell_content) @injection.content
+(scriptlet_else_clause (shell_content) @injection.content
   (#set! injection.language "bash"))
 
 ; ifarch conditionals use scriptlet_elifarch_clause
