@@ -1115,6 +1115,7 @@ module.exports = grammar({
                     $.macro_definition,
                     $.macro_undefinition,
                     $.setup_macro,
+                    $.autosetup_macro,
                     $.patch_macro,
                     $.macro_parametric_expansion,
                     $.macro_expansion,
@@ -1954,6 +1955,7 @@ module.exports = grammar({
                         $.macro_definition, // Inline %define statements
                         $.macro_undefinition, // Inline %undefine statements
                         $.setup_macro, // %setup with specific option support
+                        $.autosetup_macro, // %autosetup with VCS support
                         $.patch_macro, // %patch with specific option support
                         $.macro_parametric_expansion, // %name args (consumes to EOL)
                         $.macro_expansion, // %{...}
@@ -2464,6 +2466,74 @@ module.exports = grammar({
                 '-',
                 'n', // Set name of build directory
                 field('directory', $._primary_expression)
+            ),
+
+        // %autosetup macro: automated source unpacking and patch application
+        // Syntax: %autosetup [options]
+        // Options: -v, -N, -c, -C, -D, -T, -a N, -b, -n DIR, -p N, -S <vcs>
+        autosetup_macro: ($) =>
+            seq(
+                '%',
+                alias('autosetup', $.builtin),
+                repeat(
+                    choice(
+                        alias($.autosetup_flag, $.autosetup_option), // Flags: -v, -N, -c, -C, -D, -T, -b
+                        alias($.autosetup_source_option, $.autosetup_option), // Source: -a N
+                        alias($.autosetup_name_option, $.autosetup_option), // Name: -n DIR
+                        alias($.autosetup_patch_option, $.autosetup_option), // Patch: -p N
+                        alias($.autosetup_vcs_option, $.autosetup_option) // VCS: -S <vcs>
+                    )
+                ),
+                NEWLINE
+            ),
+
+        // Autosetup flags (no parameters)
+        autosetup_flag: ($) =>
+            seq(
+                '-',
+                choice(
+                    'v', // Verbose operation
+                    'N', // Disable automatic patch application
+                    'c', // Create build directory before unpacking
+                    'C', // Create build directory, strip top-level
+                    'D', // Do not delete build directory
+                    'T', // Skip default unpacking of first source
+                    'b' // Backup (accepted but ignored)
+                )
+            ),
+
+        // Autosetup source option: -a N
+        autosetup_source_option: ($) =>
+            seq('-', 'a', field('number', $.integer)),
+
+        // Autosetup name option: -n DIR
+        autosetup_name_option: ($) =>
+            seq('-', 'n', field('directory', $._primary_expression)),
+
+        // Autosetup patch option: -p N
+        autosetup_patch_option: ($) =>
+            choice(
+                token(seq('-', 'p', /[0-9]+/)), // -p1
+                seq('-', 'p', field('value', $.integer)) // -p 1
+            ),
+
+        // Autosetup VCS option: -S <vcs>
+        autosetup_vcs_option: ($) =>
+            seq(
+                '-',
+                'S',
+                field(
+                    'vcs',
+                    choice(
+                        'git',
+                        'git_am',
+                        'hg',
+                        'bzr',
+                        'quilt',
+                        'patch',
+                        'gendiff'
+                    )
+                )
             ),
 
         ///////////////////////////////////////////////////////////////////////

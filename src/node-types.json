@@ -220,6 +220,95 @@
     "fields": {}
   },
   {
+    "type": "autosetup_macro",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "autosetup_option",
+          "named": true
+        },
+        {
+          "type": "builtin",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "autosetup_option",
+    "named": true,
+    "fields": {
+      "directory": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_primary_expression",
+            "named": true
+          }
+        ]
+      },
+      "number": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "integer",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "integer",
+            "named": true
+          }
+        ]
+      },
+      "vcs": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "bzr",
+            "named": false
+          },
+          {
+            "type": "gendiff",
+            "named": false
+          },
+          {
+            "type": "git",
+            "named": false
+          },
+          {
+            "type": "git_am",
+            "named": false
+          },
+          {
+            "type": "hg",
+            "named": false
+          },
+          {
+            "type": "patch",
+            "named": false
+          },
+          {
+            "type": "quilt",
+            "named": false
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "boolean_and_expression",
     "named": true,
     "fields": {
@@ -1794,6 +1883,10 @@
             "named": true
           },
           {
+            "type": "autosetup_macro",
+            "named": true
+          },
+          {
             "type": "defattr",
             "named": true
           },
@@ -1874,6 +1967,10 @@
             "named": true
           },
           {
+            "type": "autosetup_macro",
+            "named": true
+          },
+          {
             "type": "defattr",
             "named": true
           },
@@ -1951,6 +2048,10 @@
           },
           {
             "type": "_simple_statements",
+            "named": true
+          },
+          {
+            "type": "autosetup_macro",
             "named": true
           },
           {
@@ -3219,6 +3320,10 @@
         "required": false,
         "types": [
           {
+            "type": "autosetup_macro",
+            "named": true
+          },
+          {
             "type": "if_statement",
             "named": true
           },
@@ -3300,6 +3405,10 @@
         "multiple": true,
         "required": false,
         "types": [
+          {
+            "type": "autosetup_macro",
+            "named": true
+          },
           {
             "type": "if_statement",
             "named": true
@@ -3440,6 +3549,10 @@
       "required": true,
       "types": [
         {
+          "type": "autosetup_macro",
+          "named": true
+        },
+        {
           "type": "if_statement",
           "named": true
         },
@@ -3536,6 +3649,10 @@
         "required": false,
         "types": [
           {
+            "type": "autosetup_macro",
+            "named": true
+          },
+          {
             "type": "if_statement",
             "named": true
           },
@@ -3603,6 +3720,10 @@
         "multiple": true,
         "required": false,
         "types": [
+          {
+            "type": "autosetup_macro",
+            "named": true
+          },
           {
             "type": "if_statement",
             "named": true
@@ -4558,6 +4679,10 @@
     "named": false
   },
   {
+    "type": "N",
+    "named": false
+  },
+  {
     "type": "Name",
     "named": false
   },
@@ -4615,6 +4740,10 @@
   },
   {
     "type": "Requires",
+    "named": false
+  },
+  {
+    "type": "S",
     "named": false
   },
   {
@@ -4679,6 +4808,10 @@
   },
   {
     "type": "basename",
+    "named": false
+  },
+  {
+    "type": "bzr",
     "named": false
   },
   {
@@ -4759,11 +4892,23 @@
     "named": true
   },
   {
+    "type": "gendiff",
+    "named": false
+  },
+  {
     "type": "getenv",
     "named": false
   },
   {
     "type": "getncpus",
+    "named": false
+  },
+  {
+    "type": "git",
+    "named": false
+  },
+  {
+    "type": "git_am",
     "named": false
   },
   {
@@ -4776,6 +4921,10 @@
   },
   {
     "type": "gsub",
+    "named": false
+  },
+  {
+    "type": "hg",
     "named": false
   },
   {
@@ -4892,6 +5041,10 @@
     "named": false
   },
   {
+    "type": "patch",
+    "named": false
+  },
+  {
     "type": "post",
     "named": false
   },
@@ -4917,6 +5070,10 @@
   },
   {
     "type": "q",
+    "named": false
+  },
+  {
+    "type": "quilt",
     "named": false
   },
   {

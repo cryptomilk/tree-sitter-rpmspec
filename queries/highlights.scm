@@ -69,6 +69,11 @@
       directory: (_) @string) @variable.parameter)
   ])
 
+(autosetup_macro
+  [
+    (autosetup_option) @variable.parameter
+  ])
+
 (patch_macro
   [
     (patch_option) @variable.parameter

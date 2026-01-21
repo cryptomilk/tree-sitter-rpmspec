@@ -2861,6 +2861,10 @@
           },
           {
             "type": "SYMBOL",
+            "name": "autosetup_macro"
+          },
+          {
+            "type": "SYMBOL",
             "name": "patch_macro"
           },
           {
@@ -5791,6 +5795,10 @@
             },
             {
               "type": "SYMBOL",
+              "name": "autosetup_macro"
+            },
+            {
+              "type": "SYMBOL",
               "name": "patch_macro"
             },
             {
@@ -7371,6 +7379,261 @@
           "content": {
             "type": "SYMBOL",
             "name": "_primary_expression"
+          }
+        }
+      ]
+    },
+    "autosetup_macro": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "%"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "autosetup"
+          },
+          "named": true,
+          "value": "builtin"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "autosetup_flag"
+                },
+                "named": true,
+                "value": "autosetup_option"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "autosetup_source_option"
+                },
+                "named": true,
+                "value": "autosetup_option"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "autosetup_name_option"
+                },
+                "named": true,
+                "value": "autosetup_option"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "autosetup_patch_option"
+                },
+                "named": true,
+                "value": "autosetup_option"
+              },
+              {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "autosetup_vcs_option"
+                },
+                "named": true,
+                "value": "autosetup_option"
+              }
+            ]
+          }
+        },
+        {
+          "type": "PATTERN",
+          "value": "\\r?\\n"
+        }
+      ]
+    },
+    "autosetup_flag": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "-"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "v"
+            },
+            {
+              "type": "STRING",
+              "value": "N"
+            },
+            {
+              "type": "STRING",
+              "value": "c"
+            },
+            {
+              "type": "STRING",
+              "value": "C"
+            },
+            {
+              "type": "STRING",
+              "value": "D"
+            },
+            {
+              "type": "STRING",
+              "value": "T"
+            },
+            {
+              "type": "STRING",
+              "value": "b"
+            }
+          ]
+        }
+      ]
+    },
+    "autosetup_source_option": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "-"
+        },
+        {
+          "type": "STRING",
+          "value": "a"
+        },
+        {
+          "type": "FIELD",
+          "name": "number",
+          "content": {
+            "type": "SYMBOL",
+            "name": "integer"
+          }
+        }
+      ]
+    },
+    "autosetup_name_option": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "-"
+        },
+        {
+          "type": "STRING",
+          "value": "n"
+        },
+        {
+          "type": "FIELD",
+          "name": "directory",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_primary_expression"
+          }
+        }
+      ]
+    },
+    "autosetup_patch_option": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "-"
+              },
+              {
+                "type": "STRING",
+                "value": "p"
+              },
+              {
+                "type": "PATTERN",
+                "value": "[0-9]+"
+              }
+            ]
+          }
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "-"
+            },
+            {
+              "type": "STRING",
+              "value": "p"
+            },
+            {
+              "type": "FIELD",
+              "name": "value",
+              "content": {
+                "type": "SYMBOL",
+                "name": "integer"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "autosetup_vcs_option": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "-"
+        },
+        {
+          "type": "STRING",
+          "value": "S"
+        },
+        {
+          "type": "FIELD",
+          "name": "vcs",
+          "content": {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "git"
+              },
+              {
+                "type": "STRING",
+                "value": "git_am"
+              },
+              {
+                "type": "STRING",
+                "value": "hg"
+              },
+              {
+                "type": "STRING",
+                "value": "bzr"
+              },
+              {
+                "type": "STRING",
+                "value": "quilt"
+              },
+              {
+                "type": "STRING",
+                "value": "patch"
+              },
+              {
+                "type": "STRING",
+                "value": "gendiff"
+              }
+            ]
           }
         }
       ]

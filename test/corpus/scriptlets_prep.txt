@@ -150,6 +150,61 @@ Prep Section (%setup edge cases)
             (quoted_string_content)))))))
 
 ===============================================================================
+Prep Section (%autosetup basic)
+===============================================================================
+
+%prep
+%autosetup
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (autosetup_macro
+        (builtin)))))
+
+===============================================================================
+Prep Section (%autosetup with VCS)
+===============================================================================
+
+%prep
+%autosetup -S git
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (autosetup_macro
+        (builtin)
+        (autosetup_option)))))
+
+===============================================================================
+Prep Section (%autosetup with options)
+===============================================================================
+
+%prep
+%autosetup -v -N -p1 -n mydir -S git_am
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (autosetup_macro
+        (builtin)
+        (autosetup_option)
+        (autosetup_option)
+        (autosetup_option)
+        (autosetup_option
+          (word))
+        (autosetup_option)))))
+
+===============================================================================
 Prep Section (%patch basic usage)
 ===============================================================================
 
