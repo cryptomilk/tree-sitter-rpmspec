@@ -25,5 +25,4 @@ AllowShortFunctionsOnASingleLine: Empty
 BreakAfterReturnType: ExceptShortType
 AlwaysBreakAfterReturnType: AllDefinitions
 AlignEscapedNewlines: Left
-ForEachMacros: ['ssh_callbacks_iterate']
 AlignConsecutiveMacros: 'Consecutive'

@@ -1,18 +1,42 @@
 ---
+# Run a single pipeline per push to avoid duplicate pipelines
+workflow:
+  rules:
+    # Run MR pipeline for merge requests
+    - if: $CI_MERGE_REQUEST_IID
+    # Skip branch pipeline if an MR is open (MR pipeline handles it)
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    # Run branch pipeline for pushes without an MR
+    - if: $CI_COMMIT_BRANCH
+
 variables:
   BUILD_IMAGES_PROJECT: cryptomilk/build-images
   FEDORA_BUILD: buildenv-fedora
 
-format/prettier:
+code-format:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
   script:
     - |
       if prettier --check grammar.js; then
-        exit 0
+        echo "prettier: OK"
       else
         prettier grammar.js > grammar.js.prettier
         diff --unified grammar.js grammar.js.prettier | \
           bat --style=plain --paging=never --color=always
+        exit 1
+      fi
+    - |
+      # Only check src/scanner.c (src/parser.c is generated)
+      diff=$(git-clang-format --diff --commit "$CI_MERGE_REQUEST_DIFF_BASE_SHA" -- src/scanner.c)
+      if [ "$diff" = "no modified files to format" ] || \
+         [ "$diff" = "clang-format did not modify any files" ]; then
+        echo "clang-format: OK"
+      else
+        printf "You have introduced coding style breakages, suggested changes:\n\n"
+        echo "${diff}" | bat --style=plain --paging=never --color=always
         exit 1
       fi
 

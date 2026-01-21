@@ -14,6 +14,10 @@
  * https://tree-sitter.github.io/tree-sitter/creating-parsers/4-external-scanners.html
  */
 
+/* ========================================================================== */
+/* INCLUDES AND MACROS                                                        */
+/* ========================================================================== */
+
 #include "tree_sitter/alloc.h"
 #include "tree_sitter/array.h"
 #include "tree_sitter/parser.h"
@@ -35,6 +39,10 @@
 /** @brief String type alias for character arrays */
 typedef Array(char) String;
 
+/* ========================================================================== */
+/* TYPES AND CONSTANTS                                                        */
+/* ========================================================================== */
+
 /**
  * @brief Token types recognized by the RPM spec scanner
  *
@@ -55,37 +63,39 @@ typedef Array(char) String;
  */
 enum TokenType {
     /* Most common tokens first for better error recovery */
-    SIMPLE_MACRO,     /**< Simple macro expansion: %name */
-    NEGATED_MACRO,    /**< Negated macro expansion: %!name */
-    SPECIAL_MACRO,    /**< Special macro variables: %*, %**, %#, %0-9, %nil */
-    ESCAPED_PERCENT,  /**< Escaped percent sign: %% */
-    /* Context-aware conditional tokens for distinguishing top-level vs scriptlet */
-    TOP_LEVEL_IF,     /**< %if at top-level or containing section keywords */
-    TOP_LEVEL_IFARCH, /**< %ifarch at top-level */
-    TOP_LEVEL_IFNARCH,/**< %ifnarch at top-level */
-    TOP_LEVEL_IFOS,   /**< %ifos at top-level */
-    TOP_LEVEL_IFNOS,  /**< %ifnos at top-level */
-    /* Subsection context tokens (description, package, sourcelist, patchlist) */
-    SUBSECTION_IF,    /**< %if inside subsection (text content) */
-    SUBSECTION_IFARCH,/**< %ifarch inside subsection */
-    SUBSECTION_IFNARCH,/**< %ifnarch inside subsection */
-    SUBSECTION_IFOS,  /**< %ifos inside subsection */
-    SUBSECTION_IFNOS, /**< %ifnos inside subsection */
+    SIMPLE_MACRO,    /**< Simple macro expansion: %name */
+    NEGATED_MACRO,   /**< Negated macro expansion: %!name */
+    SPECIAL_MACRO,   /**< Special macro variables: %*, %**, %#, %0-9, %nil */
+    ESCAPED_PERCENT, /**< Escaped percent sign: %% */
+    /* Context-aware conditional tokens for distinguishing top-level vs
+       scriptlet */
+    TOP_LEVEL_IF,      /**< %if at top-level or containing section keywords */
+    TOP_LEVEL_IFARCH,  /**< %ifarch at top-level */
+    TOP_LEVEL_IFNARCH, /**< %ifnarch at top-level */
+    TOP_LEVEL_IFOS,    /**< %ifos at top-level */
+    TOP_LEVEL_IFNOS,   /**< %ifnos at top-level */
+    /* Subsection context tokens (description, package, sourcelist, patchlist)
+     */
+    SUBSECTION_IF,      /**< %if inside subsection (text content) */
+    SUBSECTION_IFARCH,  /**< %ifarch inside subsection */
+    SUBSECTION_IFNARCH, /**< %ifnarch inside subsection */
+    SUBSECTION_IFOS,    /**< %ifos inside subsection */
+    SUBSECTION_IFNOS,   /**< %ifnos inside subsection */
     /* Scriptlet section context tokens */
-    SCRIPTLET_IF,         /**< %if inside scriptlet section without section keywords */
-    SCRIPTLET_IFARCH,     /**< %ifarch inside scriptlet section */
-    SCRIPTLET_IFNARCH,    /**< %ifnarch inside scriptlet section */
-    SCRIPTLET_IFOS,       /**< %ifos inside scriptlet section */
-    SCRIPTLET_IFNOS,      /**< %ifnos inside scriptlet section */
+    SCRIPTLET_IF, /**< %if inside scriptlet section without section keywords */
+    SCRIPTLET_IFARCH,  /**< %ifarch inside scriptlet section */
+    SCRIPTLET_IFNARCH, /**< %ifnarch inside scriptlet section */
+    SCRIPTLET_IFOS,    /**< %ifos inside scriptlet section */
+    SCRIPTLET_IFNOS,   /**< %ifnos inside scriptlet section */
     /* Files section context tokens */
-    FILES_IF,         /**< %if inside %files section */
-    FILES_IFARCH,     /**< %ifarch inside %files section */
-    FILES_IFNARCH,    /**< %ifnarch inside %files section */
-    FILES_IFOS,       /**< %ifos inside %files section */
-    FILES_IFNOS,      /**< %ifnos inside %files section */
+    FILES_IF,      /**< %if inside %files section */
+    FILES_IFARCH,  /**< %ifarch inside %files section */
+    FILES_IFNARCH, /**< %ifnarch inside %files section */
+    FILES_IFOS,    /**< %ifos inside %files section */
+    FILES_IFNOS,   /**< %ifnos inside %files section */
     /* Context-specific tokens - only valid in specific macro contexts */
-    EXPAND_CODE,      /**< Raw text inside %{expand:...} with balanced braces */
-    SHELL_CODE        /**< Raw text inside %(...) with balanced parentheses */
+    EXPAND_CODE, /**< Raw text inside %{expand:...} with balanced braces */
+    SHELL_CODE   /**< Raw text inside %(...) with balanced parentheses */
 };
 
 /**
@@ -97,8 +107,8 @@ enum TokenType {
  * the same content for each nested conditional.
  */
 struct Scanner {
-    bool lookahead_cache_valid;  /**< Whether cached result is valid */
-    bool lookahead_has_section;  /**< Cached result: found section keyword? */
+    bool lookahead_cache_valid; /**< Whether cached result is valid */
+    bool lookahead_has_section; /**< Cached result: found section keyword? */
 };
 
 /**
@@ -228,6 +238,10 @@ static const char *const SECTION_KEYWORDS[] = {
     NULL,
 };
 
+/* ========================================================================== */
+/* HELPER FUNCTIONS                                                           */
+/* ========================================================================== */
+
 /**
  * @brief Check if character is valid identifier start (letter or underscore)
  */
@@ -338,8 +352,8 @@ static inline bool is_patch_legacy(const char *id, size_t len)
  * @param keywords NULL-terminated array of keywords
  * @return true if str matches a keyword, false otherwise
  */
-static bool matches_keyword_array(const char *str, size_t len,
-                                  const char *const *keywords)
+static bool
+matches_keyword_array(const char *str, size_t len, const char *const *keywords)
 {
     for (const char *const *kw = keywords; *kw != NULL; kw++) {
         size_t kw_len = strlen(*kw);
@@ -372,97 +386,6 @@ static bool is_keyword(const char *str, size_t len)
 }
 
 /**
- * @brief Lookahead to check if %if body contains section keywords
- *
- * When we encounter %if inside a scriptlet section, we need to determine
- * whether it's a scriptlet-level conditional (e.g., if [ -f foo ]; then)
- * or a top-level conditional containing sections (e.g., %if with %files).
- *
- * This function scans ahead until %endif, looking for section keywords.
- * It tracks conditional nesting to find the matching %endif.
- *
- * @param lexer The Tree-sitter lexer (position will be restored)
- * @return true if the body contains section keywords, false otherwise
- */
-static bool lookahead_finds_section_keyword(TSLexer *lexer)
-{
-    /* Track nesting depth of conditionals */
-    int32_t nesting = 1; /* We're already inside one %if */
-    int32_t lines_scanned = 0;
-    bool at_line_start = true;
-
-    /* Scan character by character, looking for section keywords */
-    while (!lexer->eof(lexer) && lines_scanned < MAX_LOOKAHEAD_LINES) {
-        int32_t c = lexer->lookahead;
-
-        if (c == '\r' || c == '\n') {
-            /* Newline - next character is at line start */
-            lexer->advance(lexer, false);
-            if (c == '\r' && lexer->lookahead == '\n') {
-                lexer->advance(lexer, false);
-            }
-            at_line_start = true;
-            lines_scanned++;
-            continue;
-        }
-
-        if (c == ' ' || c == '\t') {
-            /* Whitespace at line start - still at line start */
-            lexer->advance(lexer, false);
-            continue;
-        }
-
-        if (c == '%' && at_line_start) {
-            /* Potential keyword at line start */
-            lexer->advance(lexer, false);
-
-            /* Buffer the identifier */
-            char id_buf[32];
-            size_t id_len = 0;
-
-            while (is_identifier_char(lexer->lookahead) &&
-                   id_len < sizeof(id_buf) - 1) {
-                id_buf[id_len++] = (char)lexer->lookahead;
-                lexer->advance(lexer, false);
-            }
-            id_buf[id_len] = '\0';
-
-            if (id_len > 0) {
-                /* Check for %endif (end of conditional) */
-                if (strequal("endif", id_buf, id_len)) {
-                    nesting--;
-                    if (nesting == 0) {
-                        /* Found matching %endif - no section keywords found */
-                        return false;
-                    }
-                }
-                /* Check for nested %if/%ifarch/%ifos */
-                else if (strequal("if", id_buf, id_len) ||
-                         strequal("ifarch", id_buf, id_len) ||
-                         strequal("ifnarch", id_buf, id_len) ||
-                         strequal("ifos", id_buf, id_len) ||
-                         strequal("ifnos", id_buf, id_len)) {
-                    nesting++;
-                }
-                /* Check for section keywords */
-                else if (is_section_keyword(id_buf, id_len)) {
-                    /* Found a section keyword - this is top-level! */
-                    return true;
-                }
-            }
-            at_line_start = false;
-        } else {
-            /* Other character - not at line start anymore */
-            at_line_start = false;
-            lexer->advance(lexer, false);
-        }
-    }
-
-    /* Reached EOF or max lines without finding section keyword */
-    return false;
-}
-
-/**
  * @brief Advances the lexer to the next character
  * @param lexer The Tree-sitter lexer instance
  */
@@ -471,57 +394,9 @@ static inline void advance(TSLexer *lexer)
     lexer->advance(lexer, false);
 }
 
-/**
- * @brief Serializes the scanner state into a byte buffer
- *
- * This function copies the complete state of the scanner into the given byte
- * buffer and returns the number of bytes written. Used by Tree-sitter for
- * incremental parsing and error recovery.
- *
- * @param scanner The scanner instance to serialize
- * @param buffer The byte buffer to write the state to
- * @return The number of bytes written to the buffer
- */
-static inline unsigned rpmspec_serialize(struct Scanner *scanner, char *buffer)
-{
-    /* Serialize the lookahead cache (2 bytes) */
-    if (2 > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
-        return 0;
-    }
-
-    buffer[0] = scanner->lookahead_cache_valid ? 1 : 0;
-    buffer[1] = scanner->lookahead_has_section ? 1 : 0;
-
-    return 2;
-}
-
-/**
- * @brief Deserializes the scanner state from a byte buffer
- *
- * This function restores the state of the scanner based on the bytes that were
- * previously written by the serialize function. Used by Tree-sitter for
- * incremental parsing and error recovery.
- *
- * @param scanner The scanner instance to restore state to
- * @param buffer The byte buffer containing the serialized state
- * @param length The number of bytes to read from the buffer
- */
-static inline void rpmspec_deserialize(struct Scanner *scanner,
-                                       const char *buffer,
-                                       unsigned length)
-{
-    /* Clear cache by default */
-    scanner->lookahead_cache_valid = false;
-    scanner->lookahead_has_section = false;
-
-    if (length < 2) {
-        return;
-    }
-
-    /* Deserialize the lookahead cache */
-    scanner->lookahead_cache_valid = buffer[0] != 0;
-    scanner->lookahead_has_section = buffer[1] != 0;
-}
+/* ========================================================================== */
+/* CONTENT SCANNERS                                                           */
+/* ========================================================================== */
 
 /**
  * @brief Scans raw content inside %{expand:...} with balanced braces
@@ -706,6 +581,101 @@ done:
     return has_content;
 }
 
+/* ========================================================================== */
+/* TOKEN SCANNERS                                                             */
+/* ========================================================================== */
+
+/**
+ * @brief Lookahead to check if %if body contains section keywords
+ *
+ * When we encounter %if inside a scriptlet section, we need to determine
+ * whether it's a scriptlet-level conditional (e.g., if [ -f foo ]; then)
+ * or a top-level conditional containing sections (e.g., %if with %files).
+ *
+ * This function scans ahead until %endif, looking for section keywords.
+ * It tracks conditional nesting to find the matching %endif.
+ *
+ * @param lexer The Tree-sitter lexer (position will be restored)
+ * @return true if the body contains section keywords, false otherwise
+ */
+static bool lookahead_finds_section_keyword(TSLexer *lexer)
+{
+    /* Track nesting depth of conditionals */
+    int32_t nesting = 1; /* We're already inside one %if */
+    int32_t lines_scanned = 0;
+    bool at_line_start = true;
+
+    /* Scan character by character, looking for section keywords */
+    while (!lexer->eof(lexer) && lines_scanned < MAX_LOOKAHEAD_LINES) {
+        int32_t c = lexer->lookahead;
+
+        if (c == '\r' || c == '\n') {
+            /* Newline - next character is at line start */
+            lexer->advance(lexer, false);
+            if (c == '\r' && lexer->lookahead == '\n') {
+                lexer->advance(lexer, false);
+            }
+            at_line_start = true;
+            lines_scanned++;
+            continue;
+        }
+
+        if (c == ' ' || c == '\t') {
+            /* Whitespace at line start - still at line start */
+            lexer->advance(lexer, false);
+            continue;
+        }
+
+        if (c == '%' && at_line_start) {
+            /* Potential keyword at line start */
+            lexer->advance(lexer, false);
+
+            /* Buffer the identifier */
+            char id_buf[32];
+            size_t id_len = 0;
+
+            while (is_identifier_char(lexer->lookahead) &&
+                   id_len < sizeof(id_buf) - 1) {
+                id_buf[id_len++] = (char)lexer->lookahead;
+                lexer->advance(lexer, false);
+            }
+            id_buf[id_len] = '\0';
+
+            if (id_len > 0) {
+                /* Check for %endif (end of conditional) */
+                if (strequal("endif", id_buf, id_len)) {
+                    nesting--;
+                    if (nesting == 0) {
+                        /* Found matching %endif - no section keywords found */
+                        return false;
+                    }
+                }
+                /* Check for nested %if/%ifarch/%ifos */
+                else if (strequal("if", id_buf, id_len) ||
+                         strequal("ifarch", id_buf, id_len) ||
+                         strequal("ifnarch", id_buf, id_len) ||
+                         strequal("ifos", id_buf, id_len) ||
+                         strequal("ifnos", id_buf, id_len)) {
+                    nesting++;
+                }
+                /* Check for section keywords */
+                else if (is_section_keyword(id_buf, id_len)) {
+                    /* Found a section keyword - this is top-level! */
+                    return true;
+                }
+            }
+            at_line_start = false;
+        } else {
+            /* Other character - not at line start anymore */
+            at_line_start = false;
+            lexer->advance(lexer, false);
+        }
+    }
+
+    /* Reached EOF or max lines without finding section keyword */
+    return false;
+}
+
 /**
  * @brief Scans macro content after the % prefix
  *
@@ -820,14 +790,16 @@ static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
                 advance(lexer);
                 id_len++;
             }
-            id_buf[id_len < sizeof(id_buf) ? id_len : sizeof(id_buf) - 1] = '\0';
+            id_buf[id_len < sizeof(id_buf) ? id_len : sizeof(id_buf) - 1] =
+                '\0';
 
             /* Check if it's a keyword - if so, don't match */
             if (is_keyword(id_buf, id_len)) {
                 return false;
             }
 
-            /* Check if it's legacy patch syntax (patchN) - let grammar handle */
+            /* Check if it's legacy patch syntax (patchN) - let grammar handle
+             */
             if (is_patch_legacy(id_buf, id_len)) {
                 return false;
             }
@@ -893,14 +865,15 @@ static bool cached_lookahead_finds_section(struct Scanner *scanner,
  * This reduces the number of variables and makes the code clearer.
  */
 struct CondTokens {
-    enum TokenType top;        /**< Top-level token */
-    enum TokenType subsection; /**< Subsection token (description, package, etc.) */
-    enum TokenType scriptlet;  /**< Scriptlet token */
-    enum TokenType files;      /**< Files section token */
-    bool top_valid;            /**< Top-level token is valid in current context */
-    bool subsection_valid;     /**< Subsection token is valid */
-    bool scriptlet_valid;      /**< Scriptlet token is valid */
-    bool files_valid;          /**< Files token is valid */
+    enum TokenType top; /**< Top-level token */
+    enum TokenType
+        subsection; /**< Subsection token (description, package, etc.) */
+    enum TokenType scriptlet; /**< Scriptlet token */
+    enum TokenType files;     /**< Files section token */
+    bool top_valid;        /**< Top-level token is valid in current context */
+    bool subsection_valid; /**< Subsection token is valid */
+    bool scriptlet_valid;  /**< Scriptlet token is valid */
+    bool files_valid;      /**< Files token is valid */
 };
 
 /**
@@ -918,11 +891,19 @@ struct CondKeyword {
  * @brief Table of conditional keywords and their tokens
  */
 static const struct CondKeyword COND_KEYWORDS[] = {
-    {"if",     TOP_LEVEL_IF,     SUBSECTION_IF,     SCRIPTLET_IF,     FILES_IF},
-    {"ifarch", TOP_LEVEL_IFARCH, SUBSECTION_IFARCH, SCRIPTLET_IFARCH, FILES_IFARCH},
-    {"ifnarch",TOP_LEVEL_IFNARCH,SUBSECTION_IFNARCH,SCRIPTLET_IFNARCH,FILES_IFNARCH},
-    {"ifos",   TOP_LEVEL_IFOS,   SUBSECTION_IFOS,   SCRIPTLET_IFOS,   FILES_IFOS},
-    {"ifnos",  TOP_LEVEL_IFNOS,  SUBSECTION_IFNOS,  SCRIPTLET_IFNOS,  FILES_IFNOS},
+    {"if", TOP_LEVEL_IF, SUBSECTION_IF, SCRIPTLET_IF, FILES_IF},
+    {"ifarch",
+     TOP_LEVEL_IFARCH,
+     SUBSECTION_IFARCH,
+     SCRIPTLET_IFARCH,
+     FILES_IFARCH},
+    {"ifnarch",
+     TOP_LEVEL_IFNARCH,
+     SUBSECTION_IFNARCH,
+     SCRIPTLET_IFNARCH,
+     FILES_IFNARCH},
+    {"ifos", TOP_LEVEL_IFOS, SUBSECTION_IFOS, SCRIPTLET_IFOS, FILES_IFOS},
+    {"ifnos", TOP_LEVEL_IFNOS, SUBSECTION_IFNOS, SCRIPTLET_IFNOS, FILES_IFNOS},
 };
 #define NUM_COND_KEYWORDS ARRAY_SIZE(COND_KEYWORDS)
 
@@ -939,9 +920,10 @@ static const struct CondKeyword COND_KEYWORDS[] = {
  * @param ctx Context tokens and validity
  * @return The token to emit
  */
-static enum TokenType select_conditional_token_type(struct Scanner *scanner,
-                                           TSLexer *lexer,
-                                           const struct CondTokens *ctx)
+static enum TokenType
+select_conditional_token_type(struct Scanner *scanner,
+                              TSLexer *lexer,
+                              const struct CondTokens *ctx)
 {
     /* Files context always wins - it can handle nested sections */
     if (ctx->files_valid) {
@@ -1003,7 +985,8 @@ static bool any_conditional_valid(const bool *valid_symbols)
     return false;
 }
 
-static bool scan_conditional(struct Scanner *scanner, TSLexer *lexer,
+static bool scan_conditional(struct Scanner *scanner,
+                             TSLexer *lexer,
                              const bool *valid_symbols)
 {
     if (!any_conditional_valid(valid_symbols)) {
@@ -1025,7 +1008,8 @@ static bool scan_conditional(struct Scanner *scanner, TSLexer *lexer,
     char id_buf[16];
     size_t id_len = 0;
 
-    while (is_identifier_char(lexer->lookahead) && id_len < sizeof(id_buf) - 1) {
+    while (is_identifier_char(lexer->lookahead) &&
+           id_len < sizeof(id_buf) - 1) {
         id_buf[id_len++] = (char)lexer->lookahead;
         lexer->advance(lexer, false);
     }
@@ -1052,8 +1036,8 @@ static bool scan_conditional(struct Scanner *scanner, TSLexer *lexer,
             ctx.files_valid = valid_symbols[kw->files];
 
             /* Check if any context is valid for this keyword */
-            if (ctx.top_valid || ctx.subsection_valid ||
-                ctx.scriptlet_valid || ctx.files_valid) {
+            if (ctx.top_valid || ctx.subsection_valid || ctx.scriptlet_valid ||
+                ctx.files_valid) {
                 found = true;
             }
             break;
@@ -1068,6 +1052,10 @@ static bool scan_conditional(struct Scanner *scanner, TSLexer *lexer,
     lexer->result_symbol = select_conditional_token_type(scanner, lexer, &ctx);
     return true;
 }
+
+/* ========================================================================== */
+/* MAIN SCAN LOGIC                                                            */
+/* ========================================================================== */
 
 /**
  * @brief Main scanning function for RPM spec tokens
@@ -1112,6 +1100,62 @@ rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
     }
 
     return false;
+}
+
+/* ========================================================================== */
+/* TREE-SITTER API                                                            */
+/* ========================================================================== */
+
+/**
+ * @brief Serializes the scanner state into a byte buffer
+ *
+ * This function copies the complete state of the scanner into the given byte
+ * buffer and returns the number of bytes written. Used by Tree-sitter for
+ * incremental parsing and error recovery.
+ *
+ * @param scanner The scanner instance to serialize
+ * @param buffer The byte buffer to write the state to
+ * @return The number of bytes written to the buffer
+ */
+static inline unsigned rpmspec_serialize(struct Scanner *scanner, char *buffer)
+{
+    /* Serialize the lookahead cache (2 bytes) */
+    if (2 > TREE_SITTER_SERIALIZATION_BUFFER_SIZE) {
+        return 0;
+    }
+
+    buffer[0] = scanner->lookahead_cache_valid ? 1 : 0;
+    buffer[1] = scanner->lookahead_has_section ? 1 : 0;
+
+    return 2;
+}
+
+/**
+ * @brief Deserializes the scanner state from a byte buffer
+ *
+ * This function restores the state of the scanner based on the bytes that were
+ * previously written by the serialize function. Used by Tree-sitter for
+ * incremental parsing and error recovery.
+ *
+ * @param scanner The scanner instance to restore state to
+ * @param buffer The byte buffer containing the serialized state
+ * @param length The number of bytes to read from the buffer
+ */
+static inline void rpmspec_deserialize(struct Scanner *scanner,
+                                       const char *buffer,
+                                       unsigned length)
+{
+    /* Clear cache by default */
+    scanner->lookahead_cache_valid = false;
+    scanner->lookahead_has_section = false;
+
+    if (length < 2) {
+        return;
+    }
+
+    /* Deserialize the lookahead cache */
+    scanner->lookahead_cache_valid = buffer[0] != 0;
+    scanner->lookahead_has_section = buffer[1] != 0;
 }
 
 /**
