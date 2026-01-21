@@ -2476,6 +2476,7 @@ module.exports = grammar({
                     '%dir', // Directory (created if missing)
                     '%doc', // Documentation file
                     '%docdir', // Documentation directory
+                    '%exclude', // Exclude file from package (used with -f file lists)
                     '%ghost', // Ghost file (not in package, but owned)
                     '%license', // License file
                     '%missingok', // OK if file is missing at install

@@ -9392,6 +9392,10 @@
             },
             {
               "type": "STRING",
+              "value": "%exclude"
+            },
+            {
+              "type": "STRING",
               "value": "%ghost"
             },
             {
