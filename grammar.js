@@ -159,8 +159,6 @@ module.exports = grammar({
             choice(
                 $.macro_definition, // %define, %global
                 $.macro_undefinition, // %undefine
-                $.setup_macro, // %setup with specific option support
-                $.patch_macro, // %patch with specific option support
                 $.macro_expansion, // %{name}, %name
                 $.macro_parametric_expansion, // %name [options] [arguments]
                 $.macro_simple_expansion, // %name - simple expansion

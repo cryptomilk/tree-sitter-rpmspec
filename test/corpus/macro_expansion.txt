@@ -169,24 +169,28 @@ Macros (Conditional macro definition #2)
 Macros (Complex arguments with quotes)
 ===============================================================================
 
+%prep
 %setup -q -n "package name with spaces"
 %patch0 -p1 -b "file.bak"
 
 -------------------------------------------------------------------------------
 (spec
-  (setup_macro
-    (builtin)
-    (setup_flag)
-    (setup_name_option
-      (quoted_string
-        (quoted_string_content))))
-  (patch_macro
-    (patch_legacy_token
-      (builtin))
-    (patch_option)
-    (patch_option
-      (quoted_string
-        (quoted_string_content)))))
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (setup_macro
+        (builtin)
+        (setup_flag)
+        (setup_name_option
+          (quoted_string
+            (quoted_string_content))))
+      (patch_macro
+        (patch_legacy_token
+          (builtin))
+        (patch_option)
+        (patch_option
+          (quoted_string
+            (quoted_string_content)))))))
 
 ===============================================================================
 Macros (Nested macro arguments)

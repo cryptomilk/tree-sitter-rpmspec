@@ -144,10 +144,6 @@
         "named": true
       },
       {
-        "type": "patch_macro",
-        "named": true
-      },
-      {
         "type": "preamble",
         "named": true
       },
@@ -157,10 +153,6 @@
       },
       {
         "type": "runtime_scriptlet",
-        "named": true
-      },
-      {
-        "type": "setup_macro",
         "named": true
       },
       {
@@ -1810,6 +1802,14 @@
             "named": true
           },
           {
+            "type": "patch_macro",
+            "named": true
+          },
+          {
+            "type": "setup_macro",
+            "named": true
+          },
+          {
             "type": "shell_content",
             "named": true
           }
@@ -1882,6 +1882,14 @@
             "named": true
           },
           {
+            "type": "patch_macro",
+            "named": true
+          },
+          {
+            "type": "setup_macro",
+            "named": true
+          },
+          {
             "type": "shell_content",
             "named": true
           }
@@ -1951,6 +1959,14 @@
           },
           {
             "type": "file",
+            "named": true
+          },
+          {
+            "type": "patch_macro",
+            "named": true
+          },
+          {
+            "type": "setup_macro",
             "named": true
           },
           {

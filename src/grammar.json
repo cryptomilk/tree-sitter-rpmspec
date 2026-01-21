@@ -36,14 +36,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "setup_macro"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "patch_macro"
-        },
-        {
-          "type": "SYMBOL",
           "name": "macro_expansion"
         },
         {

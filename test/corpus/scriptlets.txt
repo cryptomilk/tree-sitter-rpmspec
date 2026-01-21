@@ -107,18 +107,22 @@ Prep Section (%setup complex combination)
         (setup_flag)))))
 
 ===============================================================================
-Prep Section (%setup standalone at top level)
+Prep Section (%setup standalone)
 ===============================================================================
 
+%prep
 %setup -D -T
 
 -------------------------------------------------------------------------------
 
 (spec
-  (setup_macro
-    (builtin)
-    (setup_flag)
-    (setup_flag)))
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (setup_macro
+        (builtin)
+        (setup_flag)
+        (setup_flag)))))
 
 ===============================================================================
 Prep Section (%setup edge cases)
@@ -257,26 +261,30 @@ Prep Section (%patch complex combination)
           (word))))))
 
 ===============================================================================
-Prep Section (%patch standalone at top level)
+Prep Section (%patch standalone)
 ===============================================================================
 
+%prep
 %patch 1 -p 1
 %patch -P 0 -E
 
 -------------------------------------------------------------------------------
 
 (spec
-  (patch_macro
-    (builtin)
-    (patch_argument
-      (integer))
-    (patch_option
-      (integer)))
-  (patch_macro
-    (builtin)
-    (patch_option
-      (integer))
-    (patch_option)))
+  (prep_scriptlet
+    (section_name)
+    (shell_block
+      (patch_macro
+        (builtin)
+        (patch_argument
+          (integer))
+        (patch_option
+          (integer)))
+      (patch_macro
+        (builtin)
+        (patch_option
+          (integer))
+        (patch_option)))))
 
 ===============================================================================
 Prep Section (%patch edge cases)
