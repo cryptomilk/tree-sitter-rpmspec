@@ -116,30 +116,19 @@
 ; Prep macros (%setup, %autosetup, %patch, %autopatch)
 ; -----------------------------------------------------------------------------
 
-(setup_macro
-  argument: [
-    (setup_flag) @variable.parameter
-    (setup_source_option) @variable.parameter
-    ((setup_name_option
-      directory: (_) @string) @variable.parameter)
-  ])
+; All prep macros use macro_option for their options via argument: field
+[
+  (setup_macro argument: (macro_option) @variable.parameter)
+  (autosetup_macro argument: (macro_option) @variable.parameter)
+  (autopatch_macro argument: (macro_option) @variable.parameter)
+  (patch_macro argument: (macro_option) @variable.parameter)
+]
 
-(autosetup_macro
-  [
-    (autosetup_option) @variable.parameter
-  ])
-
-(autopatch_macro
-  [
-    (autopatch_option) @variable.parameter
-    (autopatch_argument) @number
-  ])
-
-(patch_macro
-  [
-    (patch_option) @variable.parameter
-    (patch_argument) @number
-  ])
+; Patch number arguments
+[
+  (autopatch_macro (macro_argument) @number)
+  (patch_macro (macro_argument) @number)
+]
 
 ; =============================================================================
 ; FILES SECTION

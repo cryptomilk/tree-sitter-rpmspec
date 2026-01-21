@@ -8017,24 +8017,39 @@
                 "type": "FIELD",
                 "name": "argument",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "setup_flag"
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "setup_flag"
+                  },
+                  "named": true,
+                  "value": "macro_option"
                 }
               },
               {
                 "type": "FIELD",
                 "name": "argument",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "setup_source_option"
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "setup_source_option"
+                  },
+                  "named": true,
+                  "value": "macro_option"
                 }
               },
               {
                 "type": "FIELD",
                 "name": "argument",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "setup_name_option"
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "setup_name_option"
+                  },
+                  "named": true,
+                  "value": "macro_option"
                 }
               }
             ]
@@ -8195,49 +8210,69 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "ALIAS",
+                "type": "FIELD",
+                "name": "argument",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "autosetup_flag"
-                },
-                "named": true,
-                "value": "autosetup_option"
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "autosetup_flag"
+                  },
+                  "named": true,
+                  "value": "macro_option"
+                }
               },
               {
-                "type": "ALIAS",
+                "type": "FIELD",
+                "name": "argument",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "autosetup_source_option"
-                },
-                "named": true,
-                "value": "autosetup_option"
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "autosetup_source_option"
+                  },
+                  "named": true,
+                  "value": "macro_option"
+                }
               },
               {
-                "type": "ALIAS",
+                "type": "FIELD",
+                "name": "argument",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "autosetup_name_option"
-                },
-                "named": true,
-                "value": "autosetup_option"
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "autosetup_name_option"
+                  },
+                  "named": true,
+                  "value": "macro_option"
+                }
               },
               {
-                "type": "ALIAS",
+                "type": "FIELD",
+                "name": "argument",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "autosetup_patch_option"
-                },
-                "named": true,
-                "value": "autosetup_option"
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "autosetup_patch_option"
+                  },
+                  "named": true,
+                  "value": "macro_option"
+                }
               },
               {
-                "type": "ALIAS",
+                "type": "FIELD",
+                "name": "argument",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "autosetup_vcs_option"
-                },
-                "named": true,
-                "value": "autosetup_option"
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "autosetup_vcs_option"
+                  },
+                  "named": true,
+                  "value": "macro_option"
+                }
               }
             ]
           }
@@ -8464,26 +8499,39 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "ALIAS",
+                "type": "FIELD",
+                "name": "argument",
                 "content": {
-                  "type": "SYMBOL",
-                  "name": "autopatch_flag"
-                },
-                "named": true,
-                "value": "autopatch_option"
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "autopatch_flag"
+                  },
+                  "named": true,
+                  "value": "macro_option"
+                }
+              },
+              {
+                "type": "FIELD",
+                "name": "argument",
+                "content": {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "autopatch_number_option"
+                  },
+                  "named": true,
+                  "value": "macro_option"
+                }
               },
               {
                 "type": "ALIAS",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "autopatch_number_option"
+                  "name": "autopatch_argument"
                 },
                 "named": true,
-                "value": "autopatch_option"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "autopatch_argument"
+                "value": "macro_argument"
               }
             ]
           }
@@ -8647,35 +8695,52 @@
               "type": "CHOICE",
               "members": [
                 {
-                  "type": "ALIAS",
+                  "type": "FIELD",
+                  "name": "argument",
                   "content": {
-                    "type": "SYMBOL",
-                    "name": "patch_option_flag"
-                  },
-                  "named": true,
-                  "value": "patch_option"
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "patch_option_flag"
+                    },
+                    "named": true,
+                    "value": "macro_option"
+                  }
+                },
+                {
+                  "type": "FIELD",
+                  "name": "argument",
+                  "content": {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "patch_option_number"
+                    },
+                    "named": true,
+                    "value": "macro_option"
+                  }
+                },
+                {
+                  "type": "FIELD",
+                  "name": "argument",
+                  "content": {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "patch_option_string"
+                    },
+                    "named": true,
+                    "value": "macro_option"
+                  }
                 },
                 {
                   "type": "ALIAS",
                   "content": {
                     "type": "SYMBOL",
-                    "name": "patch_option_number"
+                    "name": "patch_argument"
                   },
                   "named": true,
-                  "value": "patch_option"
-                },
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "patch_option_string"
-                  },
-                  "named": true,
-                  "value": "patch_option"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "patch_argument"
+                  "value": "macro_argument"
                 }
               ]
             }

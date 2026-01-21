@@ -25,7 +25,7 @@ Prep Section (%setup)
     (shell_block
       (setup_macro
         (builtin)
-        (setup_flag)))))
+        (macro_option)))))
 
 ===============================================================================
 Prep Section (%setup with flags)
@@ -42,8 +42,8 @@ Prep Section (%setup with flags)
     (shell_block
       (setup_macro
         (builtin)
-        (setup_flag)
-        (setup_flag)))))
+        (macro_option)
+        (macro_option)))))
 
 ===============================================================================
 Prep Section (%setup with source options)
@@ -60,9 +60,9 @@ Prep Section (%setup with source options)
     (shell_block
       (setup_macro
         (builtin)
-        (setup_source_option
+        (macro_option
           (integer))
-        (setup_source_option
+        (macro_option
           (integer))))))
 
 ===============================================================================
@@ -80,7 +80,7 @@ Prep Section (%setup with name option)
     (shell_block
       (setup_macro
         (builtin)
-        (setup_name_option
+        (macro_option
           (word))))))
 
 ===============================================================================
@@ -98,13 +98,13 @@ Prep Section (%setup complex combination)
     (shell_block
       (setup_macro
         (builtin)
-        (setup_flag)
-        (setup_name_option
+        (macro_option)
+        (macro_option
           (macro_expansion
             (identifier)))
-        (setup_source_option
+        (macro_option
           (integer))
-        (setup_flag)))))
+        (macro_option)))))
 
 ===============================================================================
 Prep Section (%setup standalone)
@@ -121,8 +121,8 @@ Prep Section (%setup standalone)
     (shell_block
       (setup_macro
         (builtin)
-        (setup_flag)
-        (setup_flag)))))
+        (macro_option)
+        (macro_option)))))
 
 ===============================================================================
 Prep Section (%setup edge cases)
@@ -140,12 +140,12 @@ Prep Section (%setup edge cases)
     (shell_block
       (setup_macro
         (builtin)
-        (setup_flag))
+        (macro_option))
       (setup_macro
         (builtin)
-        (setup_source_option
+        (macro_option
           (integer))
-        (setup_name_option
+        (macro_option
           (quoted_string
             (quoted_string_content)))))))
 
@@ -180,7 +180,7 @@ Prep Section (%autosetup with VCS)
     (shell_block
       (autosetup_macro
         (builtin)
-        (autosetup_option)))))
+        (macro_option)))))
 
 ===============================================================================
 Prep Section (%autosetup with options)
@@ -197,12 +197,12 @@ Prep Section (%autosetup with options)
     (shell_block
       (autosetup_macro
         (builtin)
-        (autosetup_option)
-        (autosetup_option)
-        (autosetup_option)
-        (autosetup_option
+        (macro_option)
+        (macro_option)
+        (macro_option)
+        (macro_option
           (word))
-        (autosetup_option)))))
+        (macro_option)))))
 
 ===============================================================================
 Prep Section (%autosetup with macro-concatenated directory)
@@ -219,13 +219,13 @@ Prep Section (%autosetup with macro-concatenated directory)
     (shell_block
       (autosetup_macro
         (builtin)
-        (autosetup_option
+        argument: (macro_option
           directory: (concatenation
             (macro_expansion
               (identifier))
             (macro_expansion
               (identifier))))
-        (autosetup_option)))))
+        argument: (macro_option)))))
 
 ===============================================================================
 Prep Section (%autopatch basic)
@@ -258,9 +258,9 @@ Prep Section (%autopatch with range)
     (shell_block
       (autopatch_macro
         (builtin)
-        (autopatch_option
+        (macro_option
           (integer))
-        (autopatch_option
+        (macro_option
           (integer))))))
 
 ===============================================================================
@@ -278,11 +278,11 @@ Prep Section (%autopatch with arguments)
     (shell_block
       (autopatch_macro
         (builtin)
-        (autopatch_argument
+        (macro_argument
           (integer))
-        (autopatch_argument
+        (macro_argument
           (integer))
-        (autopatch_argument
+        (macro_argument
           (integer))))))
 
 ===============================================================================
@@ -301,11 +301,11 @@ Prep Section (%patch basic usage)
     (shell_block
       (patch_macro
         (builtin)
-        (patch_argument
+        (macro_argument
           (integer)))
       (patch_macro
         (builtin)
-        (patch_option
+        (macro_option
           (integer))))))
 
 ===============================================================================
@@ -324,17 +324,17 @@ Prep Section (%patch with flags)
     (shell_block
       (patch_macro
         (builtin)
-        (patch_argument
+        (macro_argument
           (integer))
-        (patch_option
+        (macro_option
           (integer))
-        (patch_option))
+        (macro_option))
       (patch_macro
         (builtin)
-        (patch_argument
+        (macro_argument
           (integer))
-        (patch_option)
-        (patch_option)))))
+        (macro_option)
+        (macro_option)))))
 
 ===============================================================================
 Prep Section (%patch with string options)
@@ -352,15 +352,15 @@ Prep Section (%patch with string options)
     (shell_block
       (patch_macro
         (builtin)
-        (patch_argument
+        (macro_argument
           (integer))
-        (patch_option
+        (macro_option
           (word)))
       (patch_macro
         (builtin)
-        (patch_option
+        (macro_option
           (integer))
-        (patch_option
+        (macro_option
           (word))))))
 
 ===============================================================================
@@ -379,21 +379,21 @@ Prep Section (%patch complex combination)
     (shell_block
       (patch_macro
         (builtin)
-        (patch_argument
+        (macro_argument
           (integer))
-        (patch_option
+        (macro_option
           (integer))
-        (patch_option
+        (macro_option
           (word))
-        (patch_option
+        (macro_option
           (integer))
-        (patch_option))
+        (macro_option))
       (patch_macro
         (builtin)
-        (patch_option
+        (macro_option
           (integer))
-        (patch_option)
-        (patch_option
+        (macro_option)
+        (macro_option
           (word))))))
 
 ===============================================================================
@@ -412,15 +412,15 @@ Prep Section (%patch standalone)
     (shell_block
       (patch_macro
         (builtin)
-        (patch_argument
+        (macro_argument
           (integer))
-        (patch_option
+        (macro_option
           (integer)))
       (patch_macro
         (builtin)
-        (patch_option
+        (macro_option
           (integer))
-        (patch_option)))))
+        (macro_option)))))
 
 ===============================================================================
 Prep Section (%patch edge cases)
@@ -438,16 +438,16 @@ Prep Section (%patch edge cases)
     (shell_block
       (patch_macro
         (builtin)
-        (patch_argument
+        (macro_argument
           (integer))
-        (patch_option
+        (macro_option
           (integer)))
       (patch_macro
         (builtin)
-        (patch_option
+        (macro_option
           (quoted_string
             (quoted_string_content)))
-        (patch_option
+        (macro_option
           (integer))))))
 
 ===============================================================================

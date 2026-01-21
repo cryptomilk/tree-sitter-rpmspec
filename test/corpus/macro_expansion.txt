@@ -180,15 +180,15 @@ Macros (Complex arguments with quotes)
     (shell_block
       (setup_macro
         (builtin)
-        (setup_flag)
-        (setup_name_option
+        (macro_option)
+        (macro_option
           (quoted_string
             (quoted_string_content))))
       (patch_macro
         (patch_legacy_token
           (builtin))
-        (patch_option)
-        (patch_option
+        (macro_option)
+        (macro_option
           (quoted_string
             (quoted_string_content)))))))
 

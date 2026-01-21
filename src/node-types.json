@@ -228,150 +228,59 @@
     "fields": {}
   },
   {
-    "type": "autopatch_argument",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "integer",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "autopatch_macro",
     "named": true,
-    "fields": {},
+    "fields": {
+      "argument": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "macro_option",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "autopatch_argument",
-          "named": true
-        },
-        {
-          "type": "autopatch_option",
-          "named": true
-        },
-        {
           "type": "builtin",
+          "named": true
+        },
+        {
+          "type": "macro_argument",
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "autopatch_option",
-    "named": true,
-    "fields": {
-      "value": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "integer",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
     "type": "autosetup_macro",
     "named": true,
-    "fields": {},
+    "fields": {
+      "argument": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "macro_option",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
-        {
-          "type": "autosetup_option",
-          "named": true
-        },
         {
           "type": "builtin",
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "autosetup_option",
-    "named": true,
-    "fields": {
-      "directory": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "_primary_expression",
-            "named": true
-          },
-          {
-            "type": "concatenation",
-            "named": true
-          }
-        ]
-      },
-      "number": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "integer",
-            "named": true
-          }
-        ]
-      },
-      "value": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "integer",
-            "named": true
-          }
-        ]
-      },
-      "vcs": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "bzr",
-            "named": false
-          },
-          {
-            "type": "gendiff",
-            "named": false
-          },
-          {
-            "type": "git",
-            "named": false
-          },
-          {
-            "type": "git_am",
-            "named": false
-          },
-          {
-            "type": "hg",
-            "named": false
-          },
-          {
-            "type": "patch",
-            "named": false
-          },
-          {
-            "type": "quilt",
-            "named": false
-          }
-        ]
-      }
     }
   },
   {
@@ -2233,6 +2142,21 @@
     }
   },
   {
+    "type": "macro_argument",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "integer",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "macro_arithmetic_operator",
     "named": true,
     "fields": {
@@ -2929,6 +2853,80 @@
     }
   },
   {
+    "type": "macro_option",
+    "named": true,
+    "fields": {
+      "directory": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_primary_expression",
+            "named": true
+          },
+          {
+            "type": "concatenation",
+            "named": true
+          }
+        ]
+      },
+      "number": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "integer",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_primary_expression",
+            "named": true
+          }
+        ]
+      },
+      "vcs": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "bzr",
+            "named": false
+          },
+          {
+            "type": "gendiff",
+            "named": false
+          },
+          {
+            "type": "git",
+            "named": false
+          },
+          {
+            "type": "git_am",
+            "named": false
+          },
+          {
+            "type": "hg",
+            "named": false
+          },
+          {
+            "type": "patch",
+            "named": false
+          },
+          {
+            "type": "quilt",
+            "named": false
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "macro_parametric_expansion",
     "named": true,
     "fields": {
@@ -3234,21 +3232,6 @@
     }
   },
   {
-    "type": "patch_argument",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "integer",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "patch_legacy_token",
     "named": true,
     "fields": {},
@@ -3266,7 +3249,18 @@
   {
     "type": "patch_macro",
     "named": true,
-    "fields": {},
+    "fields": {
+      "argument": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "macro_option",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -3276,34 +3270,14 @@
           "named": true
         },
         {
-          "type": "patch_argument",
+          "type": "macro_argument",
           "named": true
         },
         {
           "type": "patch_legacy_token",
           "named": true
-        },
-        {
-          "type": "patch_option",
-          "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "patch_option",
-    "named": true,
-    "fields": {
-      "value": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "_primary_expression",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -3796,11 +3770,6 @@
     }
   },
   {
-    "type": "setup_flag",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "setup_macro",
     "named": true,
     "fields": {
@@ -3809,15 +3778,7 @@
         "required": false,
         "types": [
           {
-            "type": "setup_flag",
-            "named": true
-          },
-          {
-            "type": "setup_name_option",
-            "named": true
-          },
-          {
-            "type": "setup_source_option",
+            "type": "macro_option",
             "named": true
           }
         ]
@@ -3832,42 +3793,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "setup_name_option",
-    "named": true,
-    "fields": {
-      "directory": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "_primary_expression",
-            "named": true
-          },
-          {
-            "type": "concatenation",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "setup_source_option",
-    "named": true,
-    "fields": {
-      "number": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "integer",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -5205,10 +5130,6 @@
   {
     "type": "m",
     "named": false
-  },
-  {
-    "type": "macro_option",
-    "named": true
   },
   {
     "type": "macro_option_terminator",

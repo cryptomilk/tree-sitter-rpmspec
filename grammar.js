@@ -2570,9 +2570,18 @@ module.exports = grammar({
                 alias('setup', $.builtin),
                 repeat(
                     choice(
-                        field('argument', $.setup_flag), // Simple flags: -c, -C, -D, -T, -q
-                        field('argument', $.setup_source_option), // Source options: -a N, -b N
-                        field('argument', $.setup_name_option) // Name option: -n DIR
+                        // Simple flags: -c, -C, -D, -T, -q
+                        field('argument', alias($.setup_flag, $.macro_option)),
+                        // Source options: -a N, -b N
+                        field(
+                            'argument',
+                            alias($.setup_source_option, $.macro_option)
+                        ),
+                        // Name option: -n DIR
+                        field(
+                            'argument',
+                            alias($.setup_name_option, $.macro_option)
+                        )
                     )
                 ),
                 NEWLINE
@@ -2631,11 +2640,31 @@ module.exports = grammar({
                 alias('autosetup', $.builtin),
                 repeat(
                     choice(
-                        alias($.autosetup_flag, $.autosetup_option), // Flags: -v, -N, -c, -C, -D, -T, -b
-                        alias($.autosetup_source_option, $.autosetup_option), // Source: -a N
-                        alias($.autosetup_name_option, $.autosetup_option), // Name: -n DIR
-                        alias($.autosetup_patch_option, $.autosetup_option), // Patch: -p N
-                        alias($.autosetup_vcs_option, $.autosetup_option) // VCS: -S <vcs>
+                        // Flags: -v, -N, -c, -C, -D, -T, -b
+                        field(
+                            'argument',
+                            alias($.autosetup_flag, $.macro_option)
+                        ),
+                        // Source: -a N
+                        field(
+                            'argument',
+                            alias($.autosetup_source_option, $.macro_option)
+                        ),
+                        // Name: -n DIR
+                        field(
+                            'argument',
+                            alias($.autosetup_name_option, $.macro_option)
+                        ),
+                        // Patch: -p N
+                        field(
+                            'argument',
+                            alias($.autosetup_patch_option, $.macro_option)
+                        ),
+                        // VCS: -S <vcs>
+                        field(
+                            'argument',
+                            alias($.autosetup_vcs_option, $.macro_option)
+                        )
                     )
                 ),
                 NEWLINE
@@ -2710,9 +2739,18 @@ module.exports = grammar({
                 alias('autopatch', $.builtin),
                 repeat(
                     choice(
-                        alias($.autopatch_flag, $.autopatch_option), // Flags: -v, -q
-                        alias($.autopatch_number_option, $.autopatch_option), // Number: -p N, -m N, -M N
-                        $.autopatch_argument // Positional patch numbers
+                        // Flags: -v, -q
+                        field(
+                            'argument',
+                            alias($.autopatch_flag, $.macro_option)
+                        ),
+                        // Number: -p N, -m N, -M N
+                        field(
+                            'argument',
+                            alias($.autopatch_number_option, $.macro_option)
+                        ),
+                        // Positional patch numbers
+                        alias($.autopatch_argument, $.macro_argument)
                     )
                 ),
                 NEWLINE
@@ -2756,10 +2794,23 @@ module.exports = grammar({
                     ),
                     repeat(
                         choice(
-                            alias($.patch_option_flag, $.patch_option), // Simple flags: -E, -R, -Z
-                            alias($.patch_option_number, $.patch_option), // Number options: -F N, -p N, -P N
-                            alias($.patch_option_string, $.patch_option), // String options: -b SUF, -d DIR, -o FILE, -z SUF
-                            $.patch_argument // Positional patch numbers
+                            // Simple flags: -E, -R, -Z
+                            field(
+                                'argument',
+                                alias($.patch_option_flag, $.macro_option)
+                            ),
+                            // Number options: -F N, -p N, -P N
+                            field(
+                                'argument',
+                                alias($.patch_option_number, $.macro_option)
+                            ),
+                            // String options: -b SUF, -d DIR, -o FILE, -z SUF
+                            field(
+                                'argument',
+                                alias($.patch_option_string, $.macro_option)
+                            ),
+                            // Positional patch numbers
+                            alias($.patch_argument, $.macro_argument)
                         )
                     ),
                     NEWLINE
