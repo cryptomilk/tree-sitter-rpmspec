@@ -87,179 +87,6 @@ function buildScriptlet(name) {
 }
 
 /**
- * Creates an %if statement rule for different contexts
- *
- * @param {function} tokenRule - Function returning the scanner token (e.g., $.top_level_if)
- * @param {function} contentRule - Function returning the content rule (e.g., $._conditional_block)
- * @param {function} elifRule - Function returning the elif clause rule
- * @param {function} elseRule - Function returning the else clause rule
- * @param {boolean} optionalContent - Whether content is optional (true for scriptlet/files contexts)
- * @returns {function} A grammar rule function for the if statement
- */
-function makeIfStatement(
-    tokenRule,
-    contentRule,
-    elifRule,
-    elseRule,
-    optionalContent = false
-) {
-    return ($) =>
-        seq(
-            alias(tokenRule($), '%if'),
-            field('condition', $.expression),
-            token.immediate(NEWLINE),
-            optionalContent
-                ? optional(field('consequence', contentRule($)))
-                : optional(field('consequence', contentRule($))),
-            repeat(field('alternative', elifRule($))),
-            optional(field('alternative', elseRule($))),
-            '%endif',
-            token.immediate(NEWLINE)
-        );
-}
-
-/**
- * Creates an %ifarch/%ifnarch statement rule for different contexts
- *
- * @param {function} ifarchToken - Function returning the %ifarch scanner token
- * @param {function} ifnarchToken - Function returning the %ifnarch scanner token
- * @param {function} contentRule - Function returning the content rule
- * @param {function} elifRule - Function returning the elifarch clause rule
- * @param {function} elseRule - Function returning the else clause rule
- * @returns {function} A grammar rule function for the ifarch statement
- */
-function makeIfarchStatement(
-    ifarchToken,
-    ifnarchToken,
-    contentRule,
-    elifRule,
-    elseRule
-) {
-    return ($) =>
-        seq(
-            choice(
-                alias(ifarchToken($), '%ifarch'),
-                alias(ifnarchToken($), '%ifnarch')
-            ),
-            field('condition', $.arch),
-            token.immediate(NEWLINE),
-            optional(field('consequence', contentRule($))),
-            repeat(field('alternative', elifRule($))),
-            optional(field('alternative', elseRule($))),
-            '%endif',
-            token.immediate(NEWLINE)
-        );
-}
-
-/**
- * Creates an %ifos/%ifnos statement rule for different contexts
- *
- * @param {function} ifosToken - Function returning the %ifos scanner token
- * @param {function} ifnosToken - Function returning the %ifnos scanner token
- * @param {function} contentRule - Function returning the content rule
- * @param {function} elifRule - Function returning the elifos clause rule
- * @param {function} elseRule - Function returning the else clause rule
- * @returns {function} A grammar rule function for the ifos statement
- */
-function makeIfosStatement(
-    ifosToken,
-    ifnosToken,
-    contentRule,
-    elifRule,
-    elseRule
-) {
-    return ($) =>
-        seq(
-            choice(
-                alias(ifosToken($), '%ifos'),
-                alias(ifnosToken($), '%ifnos')
-            ),
-            field('condition', $.os),
-            token.immediate(NEWLINE),
-            optional(field('consequence', contentRule($))),
-            repeat(field('alternative', elifRule($))),
-            optional(field('alternative', elseRule($))),
-            '%endif',
-            token.immediate(NEWLINE)
-        );
-}
-
-/**
- * Creates an %elif clause rule for different contexts
- *
- * @param {function} contentRule - Function returning the content rule
- * @param {boolean} optionalContent - Whether content is optional
- * @returns {function} A grammar rule function for the elif clause
- */
-function makeElifClause(contentRule, optionalContent = false) {
-    return ($) =>
-        seq(
-            '%elif',
-            field('condition', $.expression),
-            token.immediate(NEWLINE),
-            optionalContent
-                ? optional(field('consequence', contentRule($)))
-                : field('consequence', contentRule($))
-        );
-}
-
-/**
- * Creates an %elifarch clause rule for different contexts
- *
- * @param {function} contentRule - Function returning the content rule
- * @param {boolean} optionalContent - Whether content is optional
- * @returns {function} A grammar rule function for the elifarch clause
- */
-function makeElifarchClause(contentRule, optionalContent = false) {
-    return ($) =>
-        seq(
-            '%elifarch',
-            optional(field('condition', $._literal)),
-            token.immediate(NEWLINE),
-            optionalContent
-                ? optional(field('consequence', contentRule($)))
-                : field('consequence', contentRule($))
-        );
-}
-
-/**
- * Creates an %elifos clause rule for different contexts
- *
- * @param {function} contentRule - Function returning the content rule
- * @param {boolean} optionalContent - Whether content is optional
- * @returns {function} A grammar rule function for the elifos clause
- */
-function makeElifosClause(contentRule, optionalContent = false) {
-    return ($) =>
-        seq(
-            '%elifos',
-            optional(field('condition', $._literal)),
-            token.immediate(NEWLINE),
-            optionalContent
-                ? optional(field('consequence', contentRule($)))
-                : field('consequence', contentRule($))
-        );
-}
-
-/**
- * Creates an %else clause rule for different contexts
- *
- * @param {function} contentRule - Function returning the content rule
- * @param {boolean} optionalContent - Whether content is optional
- * @returns {function} A grammar rule function for the else clause
- */
-function makeElseClause(contentRule, optionalContent = false) {
-    return ($) =>
-        seq(
-            '%else',
-            token.immediate(NEWLINE),
-            optionalContent
-                ? optional(field('body', contentRule($)))
-                : field('body', contentRule($))
-        );
-}
-
-/**
  * Main grammar definition for RPM spec files
  *
  * The grammar is structured to handle the complex nature of RPM spec files,
@@ -311,12 +138,18 @@ module.exports = grammar({
         $.negated_macro, // Negated macro %!name
         $.special_macro, // Special macros: %*, %**, %#, %0-9
         $.escaped_percent, // Escaped percent: %%
-        // Context-aware conditional tokens
+        // Context-aware conditional tokens (top-level)
         $.top_level_if, // %if at top-level or containing section keywords
         $.top_level_ifarch, // %ifarch at top-level
         $.top_level_ifnarch, // %ifnarch at top-level
         $.top_level_ifos, // %ifos at top-level
         $.top_level_ifnos, // %ifnos at top-level
+        // Subsection context tokens (description, package, sourcelist, patchlist)
+        $.subsection_if, // %if inside subsection (text content)
+        $.subsection_ifarch, // %ifarch inside subsection
+        $.subsection_ifnarch, // %ifnarch inside subsection
+        $.subsection_ifos, // %ifos inside subsection
+        $.subsection_ifnos, // %ifnos inside subsection
         // Scriptlet section context tokens
         $.scriptlet_if, // %if inside scriptlet section without section keywords
         $.scriptlet_ifarch, // %ifarch inside scriptlet section
@@ -2034,9 +1867,69 @@ module.exports = grammar({
                     ),
                     optional($.text), // Optional inline text on same line
                     token.immediate(NEWLINE),
-                    optional($.text) // Optional multi-line text
+                    optional($._description_content) // Multi-line content with conditionals
                 )
             ),
+
+        // Content allowed inside %description sections
+        // Includes text and description-specific conditionals (%if/%endif with text)
+        _description_content: ($) =>
+            repeat1(
+                choice(
+                    $.text,
+                    $._description_if_statement,
+                    $._description_ifarch_statement,
+                    $._description_ifos_statement
+                )
+            ),
+
+        // Subsection-specific %if (body contains text, not shell code)
+        // Used in %description, %package, %sourcelist, %patchlist
+        _description_if_statement: makeIfStatement(
+            ($) => $.subsection_if,
+            ($) => $._description_content,
+            ($) => $._description_elif_clause,
+            ($) => $._description_else_clause,
+            true
+        ),
+
+        _description_elif_clause: makeElifClause(
+            ($) => $._description_content,
+            true
+        ),
+
+        _description_else_clause: makeElseClause(
+            ($) => $._description_content,
+            true
+        ),
+
+        // Subsection-specific %ifarch
+        _description_ifarch_statement: makeIfarchStatement(
+            ($) => $.subsection_ifarch,
+            ($) => $.subsection_ifnarch,
+            ($) => $._description_content,
+            ($) => $._description_elifarch_clause,
+            ($) => $._description_else_clause
+        ),
+
+        _description_elifarch_clause: makeElifarchClause(
+            ($) => $._description_content,
+            true
+        ),
+
+        // Subsection-specific %ifos
+        _description_ifos_statement: makeIfosStatement(
+            ($) => $.subsection_ifos,
+            ($) => $.subsection_ifnos,
+            ($) => $._description_content,
+            ($) => $._description_elifos_clause,
+            ($) => $._description_else_clause
+        ),
+
+        _description_elifos_clause: makeElifosClause(
+            ($) => $._description_content,
+            true
+        ),
 
         // Subpackage name for section headers (-n option)
         // Used by %description, %package, %files, etc. to reference subpackages
@@ -2070,9 +1963,68 @@ module.exports = grammar({
             prec.right(
                 seq(
                     alias(token(seq('%sourcelist', NEWLINE)), $.section_name),
-                    optional($._url_or_file_list)
+                    optional($._sourcelist_content)
                 )
             ),
+
+        // Content allowed inside %sourcelist sections
+        // Includes URLs/files and sourcelist-specific conditionals
+        _sourcelist_content: ($) =>
+            repeat1(
+                choice(
+                    seq($._url_or_file, NEWLINE),
+                    $._sourcelist_if_statement,
+                    $._sourcelist_ifarch_statement,
+                    $._sourcelist_ifos_statement
+                )
+            ),
+
+        // Sourcelist-specific %if
+        _sourcelist_if_statement: makeIfStatement(
+            ($) => $.subsection_if,
+            ($) => $._sourcelist_content,
+            ($) => $._sourcelist_elif_clause,
+            ($) => $._sourcelist_else_clause,
+            true
+        ),
+
+        _sourcelist_elif_clause: makeElifClause(
+            ($) => $._sourcelist_content,
+            true
+        ),
+
+        _sourcelist_else_clause: makeElseClause(
+            ($) => $._sourcelist_content,
+            true
+        ),
+
+        // Sourcelist-specific %ifarch
+        _sourcelist_ifarch_statement: makeIfarchStatement(
+            ($) => $.subsection_ifarch,
+            ($) => $.subsection_ifnarch,
+            ($) => $._sourcelist_content,
+            ($) => $._sourcelist_elifarch_clause,
+            ($) => $._sourcelist_else_clause
+        ),
+
+        _sourcelist_elifarch_clause: makeElifarchClause(
+            ($) => $._sourcelist_content,
+            true
+        ),
+
+        // Sourcelist-specific %ifos
+        _sourcelist_ifos_statement: makeIfosStatement(
+            ($) => $.subsection_ifos,
+            ($) => $.subsection_ifnos,
+            ($) => $._sourcelist_content,
+            ($) => $._sourcelist_elifos_clause,
+            ($) => $._sourcelist_else_clause
+        ),
+
+        _sourcelist_elifos_clause: makeElifosClause(
+            ($) => $._sourcelist_content,
+            true
+        ),
 
         // %patchlist section: list of patch files, one per line
         // Handled like unnumbered Patch tags
@@ -2084,9 +2036,68 @@ module.exports = grammar({
             prec.right(
                 seq(
                     alias(token(seq('%patchlist', NEWLINE)), $.section_name),
-                    optional($._url_or_file_list)
+                    optional($._patchlist_content)
                 )
             ),
+
+        // Content allowed inside %patchlist sections
+        // Includes URLs/files and patchlist-specific conditionals
+        _patchlist_content: ($) =>
+            repeat1(
+                choice(
+                    seq($._url_or_file, NEWLINE),
+                    $._patchlist_if_statement,
+                    $._patchlist_ifarch_statement,
+                    $._patchlist_ifos_statement
+                )
+            ),
+
+        // Patchlist-specific %if
+        _patchlist_if_statement: makeIfStatement(
+            ($) => $.subsection_if,
+            ($) => $._patchlist_content,
+            ($) => $._patchlist_elif_clause,
+            ($) => $._patchlist_else_clause,
+            true
+        ),
+
+        _patchlist_elif_clause: makeElifClause(
+            ($) => $._patchlist_content,
+            true
+        ),
+
+        _patchlist_else_clause: makeElseClause(
+            ($) => $._patchlist_content,
+            true
+        ),
+
+        // Patchlist-specific %ifarch
+        _patchlist_ifarch_statement: makeIfarchStatement(
+            ($) => $.subsection_ifarch,
+            ($) => $.subsection_ifnarch,
+            ($) => $._patchlist_content,
+            ($) => $._patchlist_elifarch_clause,
+            ($) => $._patchlist_else_clause
+        ),
+
+        _patchlist_elifarch_clause: makeElifarchClause(
+            ($) => $._patchlist_content,
+            true
+        ),
+
+        // Patchlist-specific %ifos
+        _patchlist_ifos_statement: makeIfosStatement(
+            ($) => $.subsection_ifos,
+            ($) => $.subsection_ifnos,
+            ($) => $._patchlist_content,
+            ($) => $._patchlist_elifos_clause,
+            ($) => $._patchlist_else_clause
+        ),
+
+        _patchlist_elifos_clause: makeElifosClause(
+            ($) => $._patchlist_content,
+            true
+        ),
 
         // URL or file path - reusable for Source:, Patch:, %sourcelist, %patchlist
         _url_or_file: ($) =>
@@ -2094,10 +2105,6 @@ module.exports = grammar({
                 alias($.url_with_macro, $.url),
                 alias($.path_with_macro, $.file)
             ),
-
-        // List of URLs or file paths, one per line
-        // Used by %sourcelist and %patchlist
-        _url_or_file_list: ($) => repeat1(seq($._url_or_file, NEWLINE)),
 
         ///////////////////////////////////////////////////////////////////////
         // Preamble Sub-Sections (%package)
@@ -2110,9 +2117,63 @@ module.exports = grammar({
                     optional('-n'),
                     $.subpackage_name,
                     token.immediate(NEWLINE),
-                    repeat1($.preamble)
+                    optional($._package_content)
                 )
             ),
+
+        // Content allowed inside %package sections
+        // Includes preamble tags and package-specific conditionals
+        _package_content: ($) =>
+            repeat1(
+                choice(
+                    $.preamble,
+                    $.macro_definition,
+                    $._package_if_statement,
+                    $._package_ifarch_statement,
+                    $._package_ifos_statement
+                )
+            ),
+
+        // Package-specific %if (body contains preambles, not shell code)
+        _package_if_statement: makeIfStatement(
+            ($) => $.subsection_if,
+            ($) => $._package_content,
+            ($) => $._package_elif_clause,
+            ($) => $._package_else_clause,
+            true
+        ),
+
+        _package_elif_clause: makeElifClause(($) => $._package_content, true),
+
+        _package_else_clause: makeElseClause(($) => $._package_content, true),
+
+        // Package-specific %ifarch
+        _package_ifarch_statement: makeIfarchStatement(
+            ($) => $.subsection_ifarch,
+            ($) => $.subsection_ifnarch,
+            ($) => $._package_content,
+            ($) => $._package_elifarch_clause,
+            ($) => $._package_else_clause
+        ),
+
+        _package_elifarch_clause: makeElifarchClause(
+            ($) => $._package_content,
+            true
+        ),
+
+        // Package-specific %ifos
+        _package_ifos_statement: makeIfosStatement(
+            ($) => $.subsection_ifos,
+            ($) => $.subsection_ifnos,
+            ($) => $._package_content,
+            ($) => $._package_elifos_clause,
+            ($) => $._package_else_clause
+        ),
+
+        _package_elifos_clause: makeElifosClause(
+            ($) => $._package_content,
+            true
+        ),
 
         ///////////////////////////////////////////////////////////////////////
         // BUILD SCRIPTLETS - SHELL SCRIPT SECTIONS
@@ -3081,4 +3142,177 @@ module.exports = grammar({
  */
 function sep1(rule, separator) {
     return seq(rule, repeat(seq(separator, rule)));
+}
+
+/**
+ * Creates an %if statement rule for different contexts
+ *
+ * @param {function} tokenRule - Function returning the scanner token (e.g., $.top_level_if)
+ * @param {function} contentRule - Function returning the content rule (e.g., $._conditional_block)
+ * @param {function} elifRule - Function returning the elif clause rule
+ * @param {function} elseRule - Function returning the else clause rule
+ * @param {boolean} optionalContent - Whether content is optional (true for scriptlet/files contexts)
+ * @returns {function} A grammar rule function for the if statement
+ */
+function makeIfStatement(
+    tokenRule,
+    contentRule,
+    elifRule,
+    elseRule,
+    optionalContent = false
+) {
+    return ($) =>
+        seq(
+            alias(tokenRule($), '%if'),
+            field('condition', $.expression),
+            token.immediate(NEWLINE),
+            optionalContent
+                ? optional(field('consequence', contentRule($)))
+                : optional(field('consequence', contentRule($))),
+            repeat(field('alternative', elifRule($))),
+            optional(field('alternative', elseRule($))),
+            '%endif',
+            token.immediate(NEWLINE)
+        );
+}
+
+/**
+ * Creates an %ifarch/%ifnarch statement rule for different contexts
+ *
+ * @param {function} ifarchToken - Function returning the %ifarch scanner token
+ * @param {function} ifnarchToken - Function returning the %ifnarch scanner token
+ * @param {function} contentRule - Function returning the content rule
+ * @param {function} elifRule - Function returning the elifarch clause rule
+ * @param {function} elseRule - Function returning the else clause rule
+ * @returns {function} A grammar rule function for the ifarch statement
+ */
+function makeIfarchStatement(
+    ifarchToken,
+    ifnarchToken,
+    contentRule,
+    elifRule,
+    elseRule
+) {
+    return ($) =>
+        seq(
+            choice(
+                alias(ifarchToken($), '%ifarch'),
+                alias(ifnarchToken($), '%ifnarch')
+            ),
+            field('condition', $.arch),
+            token.immediate(NEWLINE),
+            optional(field('consequence', contentRule($))),
+            repeat(field('alternative', elifRule($))),
+            optional(field('alternative', elseRule($))),
+            '%endif',
+            token.immediate(NEWLINE)
+        );
+}
+
+/**
+ * Creates an %ifos/%ifnos statement rule for different contexts
+ *
+ * @param {function} ifosToken - Function returning the %ifos scanner token
+ * @param {function} ifnosToken - Function returning the %ifnos scanner token
+ * @param {function} contentRule - Function returning the content rule
+ * @param {function} elifRule - Function returning the elifos clause rule
+ * @param {function} elseRule - Function returning the else clause rule
+ * @returns {function} A grammar rule function for the ifos statement
+ */
+function makeIfosStatement(
+    ifosToken,
+    ifnosToken,
+    contentRule,
+    elifRule,
+    elseRule
+) {
+    return ($) =>
+        seq(
+            choice(
+                alias(ifosToken($), '%ifos'),
+                alias(ifnosToken($), '%ifnos')
+            ),
+            field('condition', $.os),
+            token.immediate(NEWLINE),
+            optional(field('consequence', contentRule($))),
+            repeat(field('alternative', elifRule($))),
+            optional(field('alternative', elseRule($))),
+            '%endif',
+            token.immediate(NEWLINE)
+        );
+}
+
+/**
+ * Creates an %elif clause rule for different contexts
+ *
+ * @param {function} contentRule - Function returning the content rule
+ * @param {boolean} optionalContent - Whether content is optional
+ * @returns {function} A grammar rule function for the elif clause
+ */
+function makeElifClause(contentRule, optionalContent = false) {
+    return ($) =>
+        seq(
+            '%elif',
+            field('condition', $.expression),
+            token.immediate(NEWLINE),
+            optionalContent
+                ? optional(field('consequence', contentRule($)))
+                : field('consequence', contentRule($))
+        );
+}
+
+/**
+ * Creates an %elifarch clause rule for different contexts
+ *
+ * @param {function} contentRule - Function returning the content rule
+ * @param {boolean} optionalContent - Whether content is optional
+ * @returns {function} A grammar rule function for the elifarch clause
+ */
+function makeElifarchClause(contentRule, optionalContent = false) {
+    return ($) =>
+        seq(
+            '%elifarch',
+            optional(field('condition', $._literal)),
+            token.immediate(NEWLINE),
+            optionalContent
+                ? optional(field('consequence', contentRule($)))
+                : field('consequence', contentRule($))
+        );
+}
+
+/**
+ * Creates an %elifos clause rule for different contexts
+ *
+ * @param {function} contentRule - Function returning the content rule
+ * @param {boolean} optionalContent - Whether content is optional
+ * @returns {function} A grammar rule function for the elifos clause
+ */
+function makeElifosClause(contentRule, optionalContent = false) {
+    return ($) =>
+        seq(
+            '%elifos',
+            optional(field('condition', $._literal)),
+            token.immediate(NEWLINE),
+            optionalContent
+                ? optional(field('consequence', contentRule($)))
+                : field('consequence', contentRule($))
+        );
+}
+
+/**
+ * Creates an %else clause rule for different contexts
+ *
+ * @param {function} contentRule - Function returning the content rule
+ * @param {boolean} optionalContent - Whether content is optional
+ * @returns {function} A grammar rule function for the else clause
+ */
+function makeElseClause(contentRule, optionalContent = false) {
+    return ($) =>
+        seq(
+            '%else',
+            token.immediate(NEWLINE),
+            optionalContent
+                ? optional(field('body', contentRule($)))
+                : field('body', contentRule($))
+        );
 }

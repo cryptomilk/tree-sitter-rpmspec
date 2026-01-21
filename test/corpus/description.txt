@@ -114,3 +114,35 @@ Description (subpackage with inline text)
     (text
       (macro_expansion
         (identifier)))))
+
+===============================================================================
+Description (with conditional and shell macro)
+===============================================================================
+
+%description
+Main description text.
+%if 0%{?stable}
+Built from %(c=%version; echo "v${c%.*}-stable") branch.
+%endif
+
+-------------------------------------------------------------------------------
+
+(spec
+  (description
+    (section_name)
+    (text
+      (text_content))
+    condition: (concatenation
+      (integer)
+      (macro_expansion
+        (conditional_expansion
+          condition: (identifier))))
+    consequence: (text
+      (text_content)
+      (macro_shell_expansion
+        (shell_command
+          (shell_code)
+          (macro_simple_expansion
+            (simple_macro))
+          (shell_code)))
+      (text_content))))

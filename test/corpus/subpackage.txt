@@ -55,3 +55,98 @@ Summary: Subpackage
       (tags
         (tag)
         (word)))))
+
+===============================================================================
+Subpackage (with %if conditional)
+===============================================================================
+
+%package udev
+Summary: Test
+License: MIT
+Requires: foo
+%if 0%{?fedora}
+Requires: bar
+%endif
+Conflicts: baz
+
+-------------------------------------------------------------------------------
+
+(spec
+  (package
+    (section_name)
+    (subpackage_name
+      (word))
+    (preamble
+      (tags
+        (tag)
+        value: (word)))
+    (preamble
+      (tags
+        (tag)
+        value: (word)))
+    (preamble
+      (tags
+        (dependency_tag)
+        value: (rich_dependency_list
+          (dependency
+            name: (dependency_name
+              (word))))))
+    condition: (concatenation
+      (integer)
+      (macro_expansion
+        (conditional_expansion
+          condition: (identifier))))
+    consequence: (preamble
+      (tags
+        (dependency_tag)
+        value: (rich_dependency_list
+          (dependency
+            name: (dependency_name
+              (word))))))
+    (preamble
+      (tags
+        (dependency_tag)
+        value: (dependency_list
+          (dependency
+            name: (dependency_name
+              (word))))))))
+
+===============================================================================
+Subpackage (with %ifarch and %global)
+===============================================================================
+
+%package tools
+Summary: Tools
+%ifarch riscv64
+%global binutils_version_req >= 2.42
+%endif
+BuildRequires: binutils %{?binutils_version_req}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (package
+    (section_name)
+    (subpackage_name
+      (word))
+    (preamble
+      (tags
+        (tag)
+        value: (word)))
+    condition: (arch
+      (identifier))
+    consequence: (macro_definition
+      (builtin)
+      name: (identifier)
+      value: (macro_value_text)
+      value: (version))
+    (preamble
+      (tags
+        (dependency_tag)
+        value: (rich_dependency_list
+          (dependency
+            name: (dependency_name
+              (word)
+              (macro_expansion
+                (conditional_expansion
+                  condition: (identifier))))))))))

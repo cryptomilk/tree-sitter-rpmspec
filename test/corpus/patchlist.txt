@@ -89,3 +89,28 @@ Patchlist (File with macros)
         (identifier))
       (macro_expansion
         (identifier)))))
+
+===============================================================================
+Patchlist (with %if conditional)
+===============================================================================
+
+%patchlist
+fix-build.patch
+%if 0%{?fedora}
+fedora-specific.patch
+%endif
+common-fix.patch
+
+-------------------------------------------------------------------------------
+
+(spec
+  (patchlist
+    (section_name)
+    (file)
+    condition: (concatenation
+      (integer)
+      (macro_expansion
+        (conditional_expansion
+          condition: (identifier))))
+    consequence: (file)
+    (file)))

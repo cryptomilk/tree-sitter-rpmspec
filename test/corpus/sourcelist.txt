@@ -89,3 +89,28 @@ ftp://ftp.example.org/data.zip
     (url)
     (file)
     (url)))
+
+===============================================================================
+Sourcelist (with %if conditional)
+===============================================================================
+
+%sourcelist
+https://example.com/foo-1.0.tar.gz
+%if 0%{?fedora}
+https://example.com/fedora-extra.tar.gz
+%endif
+https://example.com/common.tar.gz
+
+-------------------------------------------------------------------------------
+
+(spec
+  (sourcelist
+    (section_name)
+    (url)
+    condition: (concatenation
+      (integer)
+      (macro_expansion
+        (conditional_expansion
+          condition: (identifier))))
+    consequence: (url)
+    (url)))

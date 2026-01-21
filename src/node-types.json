@@ -1256,7 +1256,212 @@
   {
     "type": "description",
     "named": true,
-    "fields": {},
+    "fields": {
+      "alternative": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "%elif",
+            "named": false
+          },
+          {
+            "type": "%elifarch",
+            "named": false
+          },
+          {
+            "type": "%elifos",
+            "named": false
+          },
+          {
+            "type": "%else",
+            "named": false
+          },
+          {
+            "type": "%endif",
+            "named": false
+          },
+          {
+            "type": "%if",
+            "named": false
+          },
+          {
+            "type": "%ifarch",
+            "named": false
+          },
+          {
+            "type": "%ifnarch",
+            "named": false
+          },
+          {
+            "type": "%ifnos",
+            "named": false
+          },
+          {
+            "type": "%ifos",
+            "named": false
+          },
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          },
+          {
+            "type": "text",
+            "named": true
+          }
+        ]
+      },
+      "body": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "%elif",
+            "named": false
+          },
+          {
+            "type": "%elifarch",
+            "named": false
+          },
+          {
+            "type": "%elifos",
+            "named": false
+          },
+          {
+            "type": "%else",
+            "named": false
+          },
+          {
+            "type": "%endif",
+            "named": false
+          },
+          {
+            "type": "%if",
+            "named": false
+          },
+          {
+            "type": "%ifarch",
+            "named": false
+          },
+          {
+            "type": "%ifnarch",
+            "named": false
+          },
+          {
+            "type": "%ifnos",
+            "named": false
+          },
+          {
+            "type": "%ifos",
+            "named": false
+          },
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          },
+          {
+            "type": "text",
+            "named": true
+          }
+        ]
+      },
+      "condition": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "%elif",
+            "named": false
+          },
+          {
+            "type": "%elifarch",
+            "named": false
+          },
+          {
+            "type": "%elifos",
+            "named": false
+          },
+          {
+            "type": "%else",
+            "named": false
+          },
+          {
+            "type": "%endif",
+            "named": false
+          },
+          {
+            "type": "%if",
+            "named": false
+          },
+          {
+            "type": "%ifarch",
+            "named": false
+          },
+          {
+            "type": "%ifnarch",
+            "named": false
+          },
+          {
+            "type": "%ifnos",
+            "named": false
+          },
+          {
+            "type": "%ifos",
+            "named": false
+          },
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          },
+          {
+            "type": "text",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -3191,11 +3396,232 @@
   {
     "type": "package",
     "named": true,
-    "fields": {},
+    "fields": {
+      "alternative": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "%elif",
+            "named": false
+          },
+          {
+            "type": "%elifarch",
+            "named": false
+          },
+          {
+            "type": "%elifos",
+            "named": false
+          },
+          {
+            "type": "%else",
+            "named": false
+          },
+          {
+            "type": "%endif",
+            "named": false
+          },
+          {
+            "type": "%if",
+            "named": false
+          },
+          {
+            "type": "%ifarch",
+            "named": false
+          },
+          {
+            "type": "%ifnarch",
+            "named": false
+          },
+          {
+            "type": "%ifnos",
+            "named": false
+          },
+          {
+            "type": "%ifos",
+            "named": false
+          },
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "macro_definition",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          },
+          {
+            "type": "preamble",
+            "named": true
+          }
+        ]
+      },
+      "body": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "%elif",
+            "named": false
+          },
+          {
+            "type": "%elifarch",
+            "named": false
+          },
+          {
+            "type": "%elifos",
+            "named": false
+          },
+          {
+            "type": "%else",
+            "named": false
+          },
+          {
+            "type": "%endif",
+            "named": false
+          },
+          {
+            "type": "%if",
+            "named": false
+          },
+          {
+            "type": "%ifarch",
+            "named": false
+          },
+          {
+            "type": "%ifnarch",
+            "named": false
+          },
+          {
+            "type": "%ifnos",
+            "named": false
+          },
+          {
+            "type": "%ifos",
+            "named": false
+          },
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "macro_definition",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          },
+          {
+            "type": "preamble",
+            "named": true
+          }
+        ]
+      },
+      "condition": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "%elif",
+            "named": false
+          },
+          {
+            "type": "%elifarch",
+            "named": false
+          },
+          {
+            "type": "%elifos",
+            "named": false
+          },
+          {
+            "type": "%else",
+            "named": false
+          },
+          {
+            "type": "%endif",
+            "named": false
+          },
+          {
+            "type": "%if",
+            "named": false
+          },
+          {
+            "type": "%ifarch",
+            "named": false
+          },
+          {
+            "type": "%ifnarch",
+            "named": false
+          },
+          {
+            "type": "%ifnos",
+            "named": false
+          },
+          {
+            "type": "%ifos",
+            "named": false
+          },
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "macro_definition",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          },
+          {
+            "type": "preamble",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "macro_definition",
+          "named": true
+        },
         {
           "type": "preamble",
           "named": true
@@ -3283,7 +3709,224 @@
   {
     "type": "patchlist",
     "named": true,
-    "fields": {},
+    "fields": {
+      "alternative": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "%elif",
+            "named": false
+          },
+          {
+            "type": "%elifarch",
+            "named": false
+          },
+          {
+            "type": "%elifos",
+            "named": false
+          },
+          {
+            "type": "%else",
+            "named": false
+          },
+          {
+            "type": "%endif",
+            "named": false
+          },
+          {
+            "type": "%if",
+            "named": false
+          },
+          {
+            "type": "%ifarch",
+            "named": false
+          },
+          {
+            "type": "%ifnarch",
+            "named": false
+          },
+          {
+            "type": "%ifnos",
+            "named": false
+          },
+          {
+            "type": "%ifos",
+            "named": false
+          },
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "file",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          },
+          {
+            "type": "url",
+            "named": true
+          }
+        ]
+      },
+      "body": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "%elif",
+            "named": false
+          },
+          {
+            "type": "%elifarch",
+            "named": false
+          },
+          {
+            "type": "%elifos",
+            "named": false
+          },
+          {
+            "type": "%else",
+            "named": false
+          },
+          {
+            "type": "%endif",
+            "named": false
+          },
+          {
+            "type": "%if",
+            "named": false
+          },
+          {
+            "type": "%ifarch",
+            "named": false
+          },
+          {
+            "type": "%ifnarch",
+            "named": false
+          },
+          {
+            "type": "%ifnos",
+            "named": false
+          },
+          {
+            "type": "%ifos",
+            "named": false
+          },
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "file",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          },
+          {
+            "type": "url",
+            "named": true
+          }
+        ]
+      },
+      "condition": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "%elif",
+            "named": false
+          },
+          {
+            "type": "%elifarch",
+            "named": false
+          },
+          {
+            "type": "%elifos",
+            "named": false
+          },
+          {
+            "type": "%else",
+            "named": false
+          },
+          {
+            "type": "%endif",
+            "named": false
+          },
+          {
+            "type": "%if",
+            "named": false
+          },
+          {
+            "type": "%ifarch",
+            "named": false
+          },
+          {
+            "type": "%ifnarch",
+            "named": false
+          },
+          {
+            "type": "%ifnos",
+            "named": false
+          },
+          {
+            "type": "%ifos",
+            "named": false
+          },
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "file",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          },
+          {
+            "type": "url",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -3892,7 +4535,224 @@
   {
     "type": "sourcelist",
     "named": true,
-    "fields": {},
+    "fields": {
+      "alternative": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "%elif",
+            "named": false
+          },
+          {
+            "type": "%elifarch",
+            "named": false
+          },
+          {
+            "type": "%elifos",
+            "named": false
+          },
+          {
+            "type": "%else",
+            "named": false
+          },
+          {
+            "type": "%endif",
+            "named": false
+          },
+          {
+            "type": "%if",
+            "named": false
+          },
+          {
+            "type": "%ifarch",
+            "named": false
+          },
+          {
+            "type": "%ifnarch",
+            "named": false
+          },
+          {
+            "type": "%ifnos",
+            "named": false
+          },
+          {
+            "type": "%ifos",
+            "named": false
+          },
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "file",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          },
+          {
+            "type": "url",
+            "named": true
+          }
+        ]
+      },
+      "body": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "%elif",
+            "named": false
+          },
+          {
+            "type": "%elifarch",
+            "named": false
+          },
+          {
+            "type": "%elifos",
+            "named": false
+          },
+          {
+            "type": "%else",
+            "named": false
+          },
+          {
+            "type": "%endif",
+            "named": false
+          },
+          {
+            "type": "%if",
+            "named": false
+          },
+          {
+            "type": "%ifarch",
+            "named": false
+          },
+          {
+            "type": "%ifnarch",
+            "named": false
+          },
+          {
+            "type": "%ifnos",
+            "named": false
+          },
+          {
+            "type": "%ifos",
+            "named": false
+          },
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "file",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          },
+          {
+            "type": "url",
+            "named": true
+          }
+        ]
+      },
+      "condition": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "%elif",
+            "named": false
+          },
+          {
+            "type": "%elifarch",
+            "named": false
+          },
+          {
+            "type": "%elifos",
+            "named": false
+          },
+          {
+            "type": "%else",
+            "named": false
+          },
+          {
+            "type": "%endif",
+            "named": false
+          },
+          {
+            "type": "%if",
+            "named": false
+          },
+          {
+            "type": "%ifarch",
+            "named": false
+          },
+          {
+            "type": "%ifnarch",
+            "named": false
+          },
+          {
+            "type": "%ifnos",
+            "named": false
+          },
+          {
+            "type": "%ifos",
+            "named": false
+          },
+          {
+            "type": "arch",
+            "named": true
+          },
+          {
+            "type": "expression",
+            "named": true
+          },
+          {
+            "type": "file",
+            "named": true
+          },
+          {
+            "type": "os",
+            "named": true
+          },
+          {
+            "type": "url",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,

@@ -96,17 +96,20 @@ The scanner emits different tokens based on context:
 | Context | Token | Example |
 |---------|-------|---------|
 | Top-level | `top_level_if` | `%if` containing `%install` |
+| Subsection | `subsection_if` | `%if` inside `%description` with text content |
 | Shell scriptlet | `scriptlet_if` | `%if` inside `%build` with only shell code |
 | Files section | `files_if` | `%if` inside `%files` with only file entries |
 
 This allows the grammar to use different rules for conditional bodies:
 
 - **Top-level conditionals**: Can contain any statement including new sections
+- **Subsection conditionals**: Can contain text content (description), preamble
+  tags (package), or URL/file lists (sourcelist, patchlist)
 - **Shell conditionals**: Can only contain shell code and macros
 - **Files conditionals**: Can only contain file entries, `%defattr`, and nested
   conditionals
 
-### Why Three Context Types?
+### Why Four Context Types?
 
 With only one conditional type, the parser often misinterpreted content:
 
@@ -114,11 +117,19 @@ With only one conditional type, the parser often misinterpreted content:
   `%`-prefixed statements
 - Shell code inside scriptlet conditionals could be misinterpreted as
   preamble content or macro invocations
+- Text content in `%description` could be confused with statements
+- Preamble tags in `%package` could interfere with macro parsing
 
 By having context-specific conditionals, each context only allows valid content
 for that section. This makes the parser more robust and prevents these
 misinterpretations. The grammar explicitly restricts what can appear inside
 each conditional type rather than allowing anything and hoping for the best.
+
+The subsection context handles:
+- **%description**: Text content with macro expansion
+- **%package**: Preamble tags and macro definitions
+- **%sourcelist**: URL and file path entries
+- **%patchlist**: Patch file entries
 
 ## Macro Expansion Complexity
 
@@ -298,8 +309,10 @@ enum TokenType {
 When multiple conditional token types are valid, the scanner uses this priority:
 
 1. **Files context**: If `FILES_*` tokens are valid, emit them (most specific)
-2. **Exclusive contexts**: If only one of top/shell is valid, emit that
-3. **Ambiguous**: Use lookahead to decide between top-level and shell
+2. **Exclusive contexts**: If only one of subsection/scriptlet/top is valid,
+   emit that
+3. **Ambiguous**: Use lookahead to decide between top-level and the
+   context-specific token (subsection or scriptlet)
 
 ## Grammar Structure
 
@@ -311,10 +324,10 @@ Several rules are marked as `inline` to flatten the parse tree:
 inline: ($) => [
     $._simple_statements,
     $._compound_statements,
-    $._shell_compound_statements,
+    $._scriptlet_compound_statements,
     $._files_compound_statements,
     $._conditional_block,
-    $._shell_conditional_content,
+    $._scriptlet_conditional_content,
     $._files_conditional_content,
     $._literal,
 ],
