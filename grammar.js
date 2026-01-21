@@ -546,6 +546,7 @@ module.exports = grammar({
         // same line as the macro name. Without this, the parser would skip
         // newlines (via extras) and consume content from subsequent lines as
         // arguments. Line continuation (\) still works because it's in extras.
+        // After --, only arguments are allowed (no more options or terminators)
         macro_parametric_expansion: ($) =>
             prec(
                 1,
@@ -553,15 +554,27 @@ module.exports = grammar({
                     '%',
                     field('name', $.simple_macro),
                     token.immediate(/[ \t]+/), // Same-line whitespace required
-                    repeat1($._macro_invocation_argument),
+                    repeat($._macro_invocation_argument),
+                    optional(
+                        seq(
+                            $.macro_option_terminator,
+                            repeat($._macro_invocation_value)
+                        )
+                    ),
                     NEWLINE
                 )
             ),
 
-        // Arguments that can appear in parametric macro invocations
+        // Arguments that can appear in parametric macro invocations (options + arguments)
         _macro_invocation_argument: ($) =>
             choice(
                 field('option', $.macro_option), // -x, -n
+                $._macro_invocation_value
+            ),
+
+        // Pure argument values (no options) - used after -- terminator
+        _macro_invocation_value: ($) =>
+            choice(
                 field('argument', $.word),
                 field('argument', $.integer),
                 field('argument', $.quoted_string),
@@ -584,8 +597,12 @@ module.exports = grammar({
 
         // Macro options: short options only (getopt style)
         // Examples: -x, -p, -n (single char options from macro definition)
-        // TODO: -- option terminator is tricky to handle (everything after is argument)
         macro_option: (_) => token(prec(2, /-[a-zA-Z]/)),
+
+        // Option terminator: separates options from arguments
+        // Example: %mymacro -x -- arg1 arg2 (-- ends option parsing)
+        // Match '-- ' to distinguish from --long-option arguments
+        macro_option_terminator: (_) => token(prec(1, /-- /)),
 
         // Special macro variables for RPM scriptlets and build context
         // Used inside braced macros: %{*}, %{#}, %{0}, etc.
@@ -789,6 +806,7 @@ module.exports = grammar({
                 ),
                 // %{<builtin> [options] [arguments]} - parametric expansion within braces
                 // Handles path/string/url builtins with space syntax (not colon)
+                // After --, only arguments are allowed (no more options or terminators)
                 seq(
                     choice(
                         $.builtin,
@@ -796,10 +814,16 @@ module.exports = grammar({
                         alias($._builtin_string, $.builtin),
                         alias($._builtin_url, $.builtin)
                     ),
-                    repeat1(
+                    repeat(
                         choice(
                             field('option', $.macro_option),
                             field('argument', $._macro_argument)
+                        )
+                    ),
+                    optional(
+                        seq(
+                            $.macro_option_terminator,
+                            repeat(field('argument', $._macro_argument))
                         )
                     )
                 ),
@@ -820,12 +844,19 @@ module.exports = grammar({
                     optional(seq(optional(':'), $.string))
                 ),
                 // %{<name> [options] [arguments]}
+                // After --, only arguments are allowed (no more options or terminators)
                 seq(
                     alias($.macro_name, $.identifier),
-                    repeat1(
+                    repeat(
                         choice(
                             field('option', $.macro_option),
                             field('argument', $._literal)
+                        )
+                    ),
+                    optional(
+                        seq(
+                            $.macro_option_terminator,
+                            repeat(field('argument', $._literal))
                         )
                     )
                 )

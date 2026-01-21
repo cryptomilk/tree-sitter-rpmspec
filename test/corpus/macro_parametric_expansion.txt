@@ -132,3 +132,39 @@ Parametric Macro Expansion (with macro arguments)
     argument: (macro_expansion
       (identifier))))
 
+===============================================================================
+Parametric Macro Expansion (with option terminator)
+===============================================================================
+
+%mymacro -p -- arg1 arg2
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_parametric_expansion
+    name: (simple_macro)
+    option: (macro_option)
+    (macro_option_terminator)
+    argument: (word)
+    argument: (word)))
+
+===============================================================================
+Parametric Macro Expansion (with option terminator and pass-through)
+===============================================================================
+
+%check
+%{cargo_test -- -- --skip test_foo}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (check_scriptlet
+    (section_name)
+    (shell_block
+      (macro_expansion
+        (identifier)
+        (macro_option_terminator)
+        argument: (word)
+        argument: (word)
+        argument: (word)))))
+

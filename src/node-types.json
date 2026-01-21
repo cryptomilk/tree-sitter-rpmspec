@@ -2756,6 +2756,10 @@
           "named": true
         },
         {
+          "type": "macro_option_terminator",
+          "named": true
+        },
+        {
           "type": "macro_patch",
           "named": true
         },
@@ -2993,6 +2997,10 @@
         },
         {
           "type": "ifos_statement",
+          "named": true
+        },
+        {
+          "type": "macro_option_terminator",
           "named": true
         }
       ]
@@ -5192,6 +5200,10 @@
   },
   {
     "type": "macro_option",
+    "named": true
+  },
+  {
+    "type": "macro_option_terminator",
     "named": true
   },
   {
