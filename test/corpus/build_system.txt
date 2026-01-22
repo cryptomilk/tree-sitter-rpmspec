@@ -1,0 +1,250 @@
+===============================================================================
+BuildSystem (simple cmake)
+===============================================================================
+
+Name:           example
+BuildSystem:    cmake
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (word))))
+
+===============================================================================
+BuildSystem (autotools)
+===============================================================================
+
+Name:           example
+BuildSystem:    autotools
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (word))))
+
+===============================================================================
+BuildOption (simple without qualifier)
+===============================================================================
+
+Name:           example
+BuildSystem:    cmake
+BuildOption:    -DENABLE_FOO=ON
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (word))))
+
+===============================================================================
+BuildOption (with conf qualifier)
+===============================================================================
+
+Name:           example
+BuildSystem:    cmake
+BuildOption(conf): -DENABLE_FOO=ON
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag
+        (qualifier))
+      (word))))
+
+===============================================================================
+BuildOption (with prep qualifier)
+===============================================================================
+
+Name:           example
+BuildSystem:    cmake
+BuildOption(prep): -p0
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag
+        (qualifier))
+      (word))))
+
+===============================================================================
+BuildOption (with build qualifier)
+===============================================================================
+
+Name:           example
+BuildSystem:    cmake
+BuildOption(build): -j4
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag
+        (qualifier))
+      (word))))
+
+===============================================================================
+BuildOption (with install qualifier)
+===============================================================================
+
+Name:           example
+BuildSystem:    cmake
+BuildOption(install): DESTDIR=%{buildroot}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag
+        (qualifier))
+      (concatenation
+        (word)
+        (macro_expansion
+          (identifier))))))
+
+===============================================================================
+BuildOption (with check qualifier)
+===============================================================================
+
+Name:           example
+BuildSystem:    cmake
+BuildOption(check): -V
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag
+        (qualifier))
+      (word))))
+
+===============================================================================
+BuildOption (with generate_buildrequires qualifier)
+===============================================================================
+
+Name:           example
+BuildSystem:    cmake
+BuildOption(generate_buildrequires): --extra-deps
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag
+        (qualifier))
+      (word))))
+
+===============================================================================
+BuildOption (multiple options)
+===============================================================================
+
+Name:           example
+BuildSystem:    cmake
+BuildOption:    -DENABLE_FOO=ON
+BuildOption(conf): -DWITH_BAR=ON
+BuildOption(build): -j8
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag)
+      (word)))
+  (preamble
+    (tags
+      (tag
+        (qualifier))
+      (word)))
+  (preamble
+    (tags
+      (tag
+        (qualifier))
+      (word))))

@@ -1483,6 +1483,14 @@ module.exports = grammar({
                     field('value', $._literal), // Simple arch/OS names
                     token.immediate(NEWLINE)
                 ),
+                // BuildOption tag - pass options to build system phases
+                // Examples: BuildOption: --enable-foo, BuildOption(conf): --enable-foo
+                seq(
+                    alias($._build_option_tag, $.tag),
+                    token.immediate(/:( |\t)*/),
+                    field('value', $._literal), // Option string
+                    token.immediate(NEWLINE)
+                ),
                 // Legacy/deprecated tags - use rich dependency list for compatibility
                 seq(
                     alias($._legacy_dependency_tag, $.dependency_tag),
@@ -1551,6 +1559,31 @@ module.exports = grammar({
                 'verify', // During package verification
                 'interp', // Script interpreter dependency
                 'meta' // Meta-dependency (not runtime)
+            ),
+
+        // Build option qualifier: specifies which build phase the option applies to
+        // Used with BuildOption tag to pass arguments to specific build phases
+        // Example: BuildOption(conf): --enable-foo
+        _build_option_qualifier: (_) =>
+            choice(
+                'prep', // Preparation phase (%prep)
+                'conf', // Configuration phase (%conf)
+                'build', // Build phase (%build)
+                'install', // Installation phase (%install)
+                'check', // Test phase (%check)
+                'clean', // Cleanup phase (%clean)
+                'generate_buildrequires' // Dynamic build requires (%generate_buildrequires)
+            ),
+
+        // BuildOption tag: pass options to build system phases
+        // Supports optional qualifier for specific phases, defaults to conf
+        // Examples: BuildOption: --enable-foo, BuildOption(build): -j4
+        _build_option_tag: ($) =>
+            seq(
+                'BuildOption',
+                optional(
+                    seq('(', alias($._build_option_qualifier, $.qualifier), ')')
+                )
             ),
 
         // Strong dependency tags: Requires (with qualifier), BuildRequires

@@ -4809,6 +4809,42 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
+                "name": "_build_option_tag"
+              },
+              "named": true,
+              "value": "tag"
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": ":( |\\t)*"
+              }
+            },
+            {
+              "type": "FIELD",
+              "name": "value",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_literal"
+              }
+            },
+            {
+              "type": "IMMEDIATE_TOKEN",
+              "content": {
+                "type": "PATTERN",
+                "value": "\\r?\\n"
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
                 "name": "_legacy_dependency_tag"
               },
               "named": true,
@@ -4992,6 +5028,78 @@
         {
           "type": "STRING",
           "value": "meta"
+        }
+      ]
+    },
+    "_build_option_qualifier": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "prep"
+        },
+        {
+          "type": "STRING",
+          "value": "conf"
+        },
+        {
+          "type": "STRING",
+          "value": "build"
+        },
+        {
+          "type": "STRING",
+          "value": "install"
+        },
+        {
+          "type": "STRING",
+          "value": "check"
+        },
+        {
+          "type": "STRING",
+          "value": "clean"
+        },
+        {
+          "type": "STRING",
+          "value": "generate_buildrequires"
+        }
+      ]
+    },
+    "_build_option_tag": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "BuildOption"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "("
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_build_option_qualifier"
+                  },
+                  "named": true,
+                  "value": "qualifier"
+                },
+                {
+                  "type": "STRING",
+                  "value": ")"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },

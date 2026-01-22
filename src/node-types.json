@@ -4845,7 +4845,17 @@
   {
     "type": "tag",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "qualifier",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "tags",
@@ -5622,6 +5632,10 @@
     "named": false
   },
   {
+    "type": "BuildOption",
+    "named": false
+  },
+  {
     "type": "BuildPrereq",
     "named": false
   },
@@ -5846,6 +5860,10 @@
     "named": false
   },
   {
+    "type": "build",
+    "named": false
+  },
+  {
     "type": "bzr",
     "named": false
   },
@@ -5858,9 +5876,21 @@
     "named": false
   },
   {
+    "type": "check",
+    "named": false
+  },
+  {
+    "type": "clean",
+    "named": false
+  },
+  {
     "type": "comment",
     "named": true,
     "extra": true
+  },
+  {
+    "type": "conf",
+    "named": false
   },
   {
     "type": "d",
@@ -5931,6 +5961,10 @@
     "named": false
   },
   {
+    "type": "generate_buildrequires",
+    "named": false
+  },
+  {
     "type": "getenv",
     "named": false
   },
@@ -5968,6 +6002,10 @@
   },
   {
     "type": "if",
+    "named": false
+  },
+  {
+    "type": "install",
     "named": false
   },
   {
@@ -6097,6 +6135,10 @@
   },
   {
     "type": "pre",
+    "named": false
+  },
+  {
+    "type": "prep",
     "named": false
   },
   {
