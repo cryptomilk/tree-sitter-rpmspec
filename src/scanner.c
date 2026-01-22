@@ -215,7 +215,6 @@ static const char *const SCRIPTLET_KEYWORDS[] = {
     "install",
     "check",
     "clean",
-    "files",
     /* Runtime scriptlets */
     "pre",
     "post",
@@ -404,11 +403,28 @@ matches_keyword_array(const char *str, size_t len, const char *const *keywords)
 }
 
 /**
- * @brief Check if a string matches a section keyword
+ * @brief Check if a string matches a scriptlet keyword
  */
 static bool is_scriptlet_keyword(const char *str, size_t len)
 {
     return matches_keyword_array(str, len, SCRIPTLET_KEYWORDS);
+}
+
+/**
+ * @brief Check if a string matches a subsection keyword
+ */
+static bool is_subsection_keyword(const char *str, size_t len)
+{
+    return matches_keyword_array(str, len, SUBSECTION_KEYWORDS);
+}
+
+/**
+ * @brief Check if a string matches any section keyword
+ */
+static bool is_section_keyword(const char *str, size_t len)
+{
+    return is_subsection_keyword(str, len) || is_scriptlet_keyword(str, len) ||
+           strequal("files", str, len);
 }
 
 /**
@@ -422,7 +438,8 @@ static bool is_keyword(const char *str, size_t len)
 {
     return matches_keyword_array(str, len, KEYWORDS) ||
            matches_keyword_array(str, len, SUBSECTION_KEYWORDS) ||
-           matches_keyword_array(str, len, SCRIPTLET_KEYWORDS);
+           matches_keyword_array(str, len, SCRIPTLET_KEYWORDS) ||
+           strequal("files", str, len);
 }
 
 /**
@@ -646,7 +663,7 @@ done:
  * @param lexer The Tree-sitter lexer (position will be restored)
  * @return true if the body contains section keywords, false otherwise
  */
-static bool lookahead_finds_section_keyword(TSLexer *lexer)
+static bool conditional_body_has_section(TSLexer *lexer)
 {
     /* Track nesting depth of conditionals */
     int32_t nesting = 1; /* We're already inside one %if */
@@ -707,7 +724,7 @@ static bool lookahead_finds_section_keyword(TSLexer *lexer)
                     nesting++;
                 }
                 /* Check for section keywords */
-                else if (is_scriptlet_keyword(id_buf, id_len)) {
+                else if (is_section_keyword(id_buf, id_len)) {
                     /* Found a section keyword - this is top-level! */
                     return true;
                 }
@@ -877,14 +894,14 @@ static bool scan_macro(TSLexer *lexer, const bool *valid_symbols)
  *
  * Uses cached result if available, otherwise performs lookahead and caches.
  */
-static bool cached_lookahead_finds_section(struct Scanner *scanner,
-                                           TSLexer *lexer)
+static bool conditional_body_has_section_cached(struct Scanner *scanner,
+                                                TSLexer *lexer)
 {
     if (scanner->lookahead_cache_valid) {
         return scanner->lookahead_has_section;
     }
 
-    bool result = lookahead_finds_section_keyword(lexer);
+    bool result = conditional_body_has_section(lexer);
     scanner->lookahead_cache_valid = true;
     scanner->lookahead_has_section = result;
     return result;
@@ -981,7 +998,10 @@ select_conditional_token_type(struct Scanner *scanner,
 
     /* Ambiguous: top + subsection or top + scriptlet - use lookahead */
     if (ctx->top_valid && (ctx->subsection_valid || ctx->scriptlet_valid)) {
-        if (cached_lookahead_finds_section(scanner, lexer)) {
+        bool has_section = conditional_body_has_section_cached(scanner, lexer);
+        /* Invalidate cache for next conditional */
+        scanner->lookahead_cache_valid = false;
+        if (has_section) {
             /* Body contains sections - use top-level */
             return ctx->top;
         }
