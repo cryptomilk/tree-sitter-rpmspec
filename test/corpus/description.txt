@@ -146,3 +146,114 @@ Built from %(c=%version; echo "v${c%.*}-stable") branch.
             (simple_macro))
           (shell_code)))
       (text_content))))
+
+===============================================================================
+Description (followed by conditional with package)
+===============================================================================
+
+%description dcerpc
+DCE RPC binaries description.
+
+%if %{with dc}
+%package dc
+Summary: Domain Controller
+
+%description dc
+DC description.
+%endif
+
+-------------------------------------------------------------------------------
+
+(spec
+  (description
+    (section_name)
+    (subpackage_name
+      (word))
+    (text
+      (text_content)))
+  (if_statement
+    condition: (with_operator
+      (identifier))
+    consequence: (package
+      (section_name)
+      (subpackage_name
+        (word))
+      (preamble
+        (tags
+          (tag)
+          value: (concatenation
+            (word)
+            (word)))))
+    consequence: (description
+      (section_name)
+      (subpackage_name
+        (word))
+      (text
+        (text_content)))))
+
+===============================================================================
+Description (conditional with multiple packages)
+===============================================================================
+
+%description main
+Main description.
+
+%if %{with feature}
+%package feature
+Summary: Feature package
+
+%description feature
+Feature description.
+
+%package feature-devel
+Summary: Feature development files
+
+%description feature-devel
+Devel description.
+%endif
+
+-------------------------------------------------------------------------------
+
+(spec
+  (description
+    (section_name)
+    (subpackage_name
+      (word))
+    (text
+      (text_content)))
+  (if_statement
+    condition: (with_operator
+      (identifier))
+    consequence: (package
+      (section_name)
+      (subpackage_name
+        (word))
+      (preamble
+        (tags
+          (tag)
+          value: (concatenation
+            (word)
+            (word)))))
+    consequence: (description
+      (section_name)
+      (subpackage_name
+        (word))
+      (text
+        (text_content)))
+    consequence: (package
+      (section_name)
+      (subpackage_name
+        (word))
+      (preamble
+        (tags
+          (tag)
+          value: (concatenation
+            (word)
+            (word)
+            (word)))))
+    consequence: (description
+      (section_name)
+      (subpackage_name
+        (word))
+      (text
+        (text_content)))))
