@@ -143,20 +143,6 @@ static const char *const KEYWORDS[] = {
     "autosetup",
     "patch",
     "autopatch",
-    /* File directives */
-    "defattr",
-    "attr",
-    "config",
-    "doc",
-    "docdir",
-    "dir",
-    "license",
-    "verify",
-    "ghost",
-    "exclude",
-    "artifact",
-    "missingok",
-    "readme",
     /* Builtin string macros */
     "echo",
     "error",
@@ -200,12 +186,27 @@ static const char *const KEYWORDS[] = {
 };
 
 /**
+ * @brief Subsection keywords for metadata sections
+ *
+ * These define package metadata and don't contain shell code.
+ */
+static const char *const SUBSECTION_KEYWORDS[] = {
+    "package",
+    "description",
+    "sourcelist",
+    "patchlist",
+    "changelog",
+    /* End marker */
+    NULL,
+};
+
+/**
  * @brief Section keywords that indicate top-level context
  *
  * When a %if body contains any of these keywords, it should be
  * parsed as a top-level conditional, not a scriptlet-level one.
  */
-static const char *const SECTION_KEYWORDS[] = {
+static const char *const SCRIPTLET_KEYWORDS[] = {
     /* Main sections */
     "prep",
     "generate_buildrequires",
@@ -215,11 +216,6 @@ static const char *const SECTION_KEYWORDS[] = {
     "check",
     "clean",
     "files",
-    "changelog",
-    "description",
-    "package",
-    "sourcelist",
-    "patchlist",
     /* Runtime scriptlets */
     "pre",
     "post",
@@ -241,6 +237,31 @@ static const char *const SECTION_KEYWORDS[] = {
     "transfiletriggerin",
     "transfiletriggerun",
     "transfiletriggerpostun",
+    /* End marker */
+    NULL,
+};
+
+/**
+ * @brief File directive keywords that should only be blocked in %files context
+ *
+ * These keywords have special meaning in %files sections but can be valid
+ * macro names in shell scriptlets. Only block them as SIMPLE_MACRO when
+ * we're in a %files context.
+ */
+static const char *const FILES_KEYWORDS[] = {
+    "defattr",
+    "attr",
+    "config",
+    "doc",
+    "docdir",
+    "dir",
+    "license",
+    "verify",
+    "ghost",
+    "exclude",
+    "artifact",
+    "missingok",
+    "readme",
     /* End marker */
     NULL,
 };
@@ -385,9 +406,9 @@ matches_keyword_array(const char *str, size_t len, const char *const *keywords)
 /**
  * @brief Check if a string matches a section keyword
  */
-static bool is_section_keyword(const char *str, size_t len)
+static bool is_scriptlet_keyword(const char *str, size_t len)
 {
-    return matches_keyword_array(str, len, SECTION_KEYWORDS);
+    return matches_keyword_array(str, len, SCRIPTLET_KEYWORDS);
 }
 
 /**
@@ -400,7 +421,16 @@ static bool is_section_keyword(const char *str, size_t len)
 static bool is_keyword(const char *str, size_t len)
 {
     return matches_keyword_array(str, len, KEYWORDS) ||
-           matches_keyword_array(str, len, SECTION_KEYWORDS);
+           matches_keyword_array(str, len, SUBSECTION_KEYWORDS) ||
+           matches_keyword_array(str, len, SCRIPTLET_KEYWORDS);
+}
+
+/**
+ * @brief Check if a string matches a files directive keyword
+ */
+static bool is_files_keyword(const char *str, size_t len)
+{
+    return matches_keyword_array(str, len, FILES_KEYWORDS);
 }
 
 /**
@@ -677,7 +707,7 @@ static bool lookahead_finds_section_keyword(TSLexer *lexer)
                     nesting++;
                 }
                 /* Check for section keywords */
-                else if (is_section_keyword(id_buf, id_len)) {
+                else if (is_scriptlet_keyword(id_buf, id_len)) {
                     /* Found a section keyword - this is top-level! */
                     return true;
                 }
@@ -1074,8 +1104,9 @@ static bool try_scan_parametric_macro(TSLexer *lexer,
         return false;
     }
 
-    /* Exclude reserved keywords */
+    /* Exclude reserved keywords and file directive keywords */
     if (is_keyword(keyword, keyword_len) ||
+        is_files_keyword(keyword, keyword_len) ||
         is_patch_legacy(keyword, keyword_len) || is_nil(keyword, keyword_len)) {
         return false;
     }
