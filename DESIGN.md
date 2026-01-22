@@ -3,6 +3,36 @@
 This document explains some key design decisions in the tree-sitter-rpmspec
 grammar.
 
+## Introduction
+
+RPM spec files are challenging to parse. They are processed by RPM in multiple
+stages, roughly following these phases:
+
+### Phase 1: Macro Expansion Pass
+
+Macros (`%{name}`, `%{version}`, `%define`, `%global`, etc.) are expanded before
+the spec is interpreted as instructions. Macros can be nested and are expanded
+recursively.
+
+### Phase 2: Conditional Evaluation
+
+`%if`, `%ifarch`, `%ifos`, `%endif` blocks are evaluated. This determines which
+sections of the spec are active.
+
+### Phase 3: Section Parsing and Execution
+
+The preamble (`Name`, `Version`, `Release`, etc.) is parsed first. Then each
+section (`%description`, `%prep`, `%build`, `%install`, `%files`, etc.) is
+parsed. Some sections like `%files` have their own sub-parsing for file
+attributes. Once parsed, RPM starts executing different scriptlets to build and
+install the package.
+
+As soon as `BuildArch` is involved, the RPM parser needs to be able to re-read
+the spec file. This is one reason why it can't read spec files from stdin.
+
+Writing a tree-sitter parser for spec files is not straightforward. There are
+many pitfalls and edge cases, as described in the following sections.
+
 ## The Section End Detection Problem
 
 RPM spec files have no explicit section end markers. Sections like `%prep`,
@@ -48,9 +78,9 @@ make test
 systemctl daemon-reload
 ```
 
-**The first `%if`** is a "shell-level" conditional:
+**The first `%if`** is a "scriptlet-level" conditional:
 - It appears inside the `%build` section
-- Its body contains only shell code (`make feature`)
+- Its body contains only scriptlet code (shell) (`make feature`)
 - After `%endif`, we're still in `%build`
 
 **The second `%if`** is a "top-level" conditional:
@@ -63,8 +93,8 @@ type it is?** The `%if` token looks the same in both cases.
 
 A naive approach fails in two ways:
 
-1. **If we assume all `%if` blocks are shell-level**: We'd try to parse `%check`
-   as shell code, which is wrong - it should start a new section.
+1. **If we assume all `%if` blocks are scriptlet-level**: We'd try to parse
+   `%check` as scriptlet code, which is wrong - it should start a new section.
 
 2. **If we assume all `%if` blocks are top-level**: We'd incorrectly allow
    section keywords inside every conditional, even ones that should contain
@@ -82,12 +112,13 @@ see what's inside the conditional body. Based on what it finds, it emits
 *different* tokens for the same `%if` keyword:
 
 ```c
-static bool lookahead_finds_section_keyword(TSLexer *lexer)
+static bool conditional_body_has_section(TSLexer *lexer)
 {
     // Scan ahead until %endif, looking for section keywords
     // like %prep, %build, %install, %files, %post, etc.
     // If found, this is a "top-level" conditional
-    // If not found, this is a "shell-level" or "file-level" conditional
+    // If not found, this is a "subsection-level", "scriptlet-sevel" or
+    // "file-level" conditional
 }
 ```
 
