@@ -22,7 +22,7 @@
 (dependency_comparison_operator) @operator
 
 ; Dependency tag qualifier (e.g., post in Requires(post):)
-(qualifier) @attribute
+(qualifier) @attribute.builtin
 
 ; Boolean dependency operators
 [
@@ -67,19 +67,19 @@
 
 ; Build scriptlets (%prep, %build, %install, %check, %clean)
 (prep_scriptlet
-  (section_name) @function.builtin)
+  (section_name) @module.builtin)
 (generate_buildrequires
-  (section_name) @function.builtin)
+  (section_name) @module.builtin)
 (conf_scriptlet
-  (section_name) @function.builtin)
+  (section_name) @module.builtin)
 (build_scriptlet
-  (section_name) @function.builtin)
+  (section_name) @module.builtin)
 (install_scriptlet
-  (section_name) @function.builtin)
+  (section_name) @module.builtin)
 (check_scriptlet
-  (section_name) @function.builtin)
+  (section_name) @module.builtin)
 (clean_scriptlet
-  (section_name) @function.builtin)
+  (section_name) @module.builtin)
 
 ; Runtime scriptlets (%pre, %post, %preun, %postun, etc.)
 [
@@ -92,7 +92,7 @@
   "%preuntrans"
   "%postuntrans"
   "%verify"
-] @function.builtin
+] @module.builtin
 
 ; Trigger scriptlets
 [
@@ -100,7 +100,7 @@
   "%triggerin"
   "%triggerun"
   "%triggerpostun"
-] @function.builtin
+] @module.builtin
 
 ; File trigger scriptlets
 [
@@ -110,7 +110,7 @@
   "%transfiletriggerin"
   "%transfiletriggerun"
   "%transfiletriggerpostun"
-] @function.builtin
+] @module.builtin
 
 ; -----------------------------------------------------------------------------
 ; Prep macros (%setup, %autosetup, %patch, %autopatch)
@@ -168,11 +168,12 @@
 
 (macro_definition
   "%" @punctuation.special
-  (builtin) @keyword.directive.define
+  (builtin) @constant.builtin
   (identifier) @keyword.macro)
 
 (macro_undefinition
-  (builtin) @keyword.directive.define
+  "%" @punctuation.special
+  (builtin) @constant.builtin
   (identifier) @keyword.macro)
 
 ; -----------------------------------------------------------------------------
@@ -181,15 +182,15 @@
 
 (macro_simple_expansion
   "%" @punctuation.special
-  (simple_macro) @function.macro)
+  (simple_macro) @constant.macro)
 
 (macro_simple_expansion
   "%" @punctuation.special
-  (negated_macro) @function.macro)
+  (negated_macro) @constant.macro)
 
 (macro_simple_expansion
   "%" @punctuation.special
-  (special_macro) @constant)
+  (special_macro) @constant.macro)
 
 ; -----------------------------------------------------------------------------
 ; Parametric macro expansion (%name [options] [arguments])
@@ -197,7 +198,7 @@
 
 ; Note: parametric_macro_name includes the '%' prefix and is aliased to simple_macro
 (macro_parametric_expansion
-  name: (simple_macro) @function.call)
+  name: (simple_macro) @function.macro)
 
 (macro_parametric_expansion
   option: (macro_option) @variable.parameter)
@@ -223,23 +224,30 @@
   "}" @punctuation.special) @none
 
 (macro_expansion
-  (builtin) @variable.builtin
+  (builtin) @constant.builtin
   argument: (_) @variable.parameter)
 
 (macro_expansion
-  (identifier) @function.call
+  (identifier) @constant.macro)
+
+(macro_expansion
+  (identifier)
   argument: [
     (word) @variable.parameter
     (concatenation
       (word) @variable.parameter)
   ])
 
+; Conditional expansion (%{?name}, %{!?name})
+(conditional_expansion
+  condition: (identifier) @constant.macro)
+
 ; -----------------------------------------------------------------------------
 ; General macro rules
 ; -----------------------------------------------------------------------------
 
 (special_variable_name) @constant
-(builtin) @variable.builtin
+(builtin) @constant.builtin
 
 ; =============================================================================
 ; CONDITIONALS
