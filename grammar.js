@@ -73,7 +73,7 @@ function buildScriptlet(name) {
                 // With options: %name -a or %name -p
                 seq(
                     alias(token(seq('%' + name, / +/)), $.section_name),
-                    $.scriptlet_augment_option,
+                    field('argument', $.scriptlet_augment_option),
                     token.immediate(NEWLINE),
                     optional($.shell_block)
                 ),

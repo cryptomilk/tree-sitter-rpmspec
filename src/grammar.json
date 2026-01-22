@@ -8226,8 +8226,12 @@
                 "value": "section_name"
               },
               {
-                "type": "SYMBOL",
-                "name": "scriptlet_augment_option"
+                "type": "FIELD",
+                "name": "argument",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "scriptlet_augment_option"
+                }
               },
               {
                 "type": "IMMEDIATE_TOKEN",
@@ -8322,8 +8326,12 @@
                 "value": "section_name"
               },
               {
-                "type": "SYMBOL",
-                "name": "scriptlet_augment_option"
+                "type": "FIELD",
+                "name": "argument",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "scriptlet_augment_option"
+                }
               },
               {
                 "type": "IMMEDIATE_TOKEN",
@@ -8418,8 +8426,12 @@
                 "value": "section_name"
               },
               {
-                "type": "SYMBOL",
-                "name": "scriptlet_augment_option"
+                "type": "FIELD",
+                "name": "argument",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "scriptlet_augment_option"
+                }
               },
               {
                 "type": "IMMEDIATE_TOKEN",
@@ -8514,8 +8526,12 @@
                 "value": "section_name"
               },
               {
-                "type": "SYMBOL",
-                "name": "scriptlet_augment_option"
+                "type": "FIELD",
+                "name": "argument",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "scriptlet_augment_option"
+                }
               },
               {
                 "type": "IMMEDIATE_TOKEN",
@@ -8610,8 +8626,12 @@
                 "value": "section_name"
               },
               {
-                "type": "SYMBOL",
-                "name": "scriptlet_augment_option"
+                "type": "FIELD",
+                "name": "argument",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "scriptlet_augment_option"
+                }
               },
               {
                 "type": "IMMEDIATE_TOKEN",
@@ -8706,8 +8726,12 @@
                 "value": "section_name"
               },
               {
-                "type": "SYMBOL",
-                "name": "scriptlet_augment_option"
+                "type": "FIELD",
+                "name": "argument",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "scriptlet_augment_option"
+                }
               },
               {
                 "type": "IMMEDIATE_TOKEN",
@@ -8802,8 +8826,12 @@
                 "value": "section_name"
               },
               {
-                "type": "SYMBOL",
-                "name": "scriptlet_augment_option"
+                "type": "FIELD",
+                "name": "argument",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "scriptlet_augment_option"
+                }
               },
               {
                 "type": "IMMEDIATE_TOKEN",

@@ -777,15 +777,22 @@
   {
     "type": "build_scriptlet",
     "named": true,
-    "fields": {},
+    "fields": {
+      "argument": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "scriptlet_augment_option",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "scriptlet_augment_option",
-          "named": true
-        },
         {
           "type": "section_name",
           "named": true
@@ -862,15 +869,22 @@
   {
     "type": "check_scriptlet",
     "named": true,
-    "fields": {},
+    "fields": {
+      "argument": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "scriptlet_augment_option",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "scriptlet_augment_option",
-          "named": true
-        },
         {
           "type": "section_name",
           "named": true
@@ -885,15 +899,22 @@
   {
     "type": "clean_scriptlet",
     "named": true,
-    "fields": {},
+    "fields": {
+      "argument": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "scriptlet_augment_option",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "scriptlet_augment_option",
-          "named": true
-        },
         {
           "type": "section_name",
           "named": true
@@ -1029,15 +1050,22 @@
   {
     "type": "conf_scriptlet",
     "named": true,
-    "fields": {},
+    "fields": {
+      "argument": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "scriptlet_augment_option",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "scriptlet_augment_option",
-          "named": true
-        },
         {
           "type": "section_name",
           "named": true
@@ -2020,15 +2048,22 @@
   {
     "type": "generate_buildrequires",
     "named": true,
-    "fields": {},
+    "fields": {
+      "argument": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "scriptlet_augment_option",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "scriptlet_augment_option",
-          "named": true
-        },
         {
           "type": "section_name",
           "named": true
@@ -2307,15 +2342,22 @@
   {
     "type": "install_scriptlet",
     "named": true,
-    "fields": {},
+    "fields": {
+      "argument": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "scriptlet_augment_option",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "scriptlet_augment_option",
-          "named": true
-        },
         {
           "type": "section_name",
           "named": true
@@ -3987,15 +4029,22 @@
   {
     "type": "prep_scriptlet",
     "named": true,
-    "fields": {},
+    "fields": {
+      "argument": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "scriptlet_augment_option",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "scriptlet_augment_option",
-          "named": true
-        },
         {
           "type": "section_name",
           "named": true
