@@ -8,7 +8,9 @@
       "scope": "source.rpmspec",
       "file-types": ["spec"],
       "injection-regex": "^rpmspec$",
-      "class-name": "TreeSitterRPMSpec"
+      "class-name": "TreeSitterRPMSpec",
+      "highlights": "queries/highlights.scm",
+      "injections": "queries/injections.scm"
     }
   ],
   "metadata": {
