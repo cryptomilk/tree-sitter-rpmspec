@@ -102,7 +102,7 @@ module.exports = grammar({
     // during parsing (whitespace, comments, line continuations)
     extras: ($) => [
         $.comment, // # comments and %dnl comments
-        /\s+/, // All whitespace characters
+        /\s/, // All whitespace characters (single, matched repeatedly)
         /\\( |\t|\v|\f)/, // Escaped whitespace characters
         $.line_continuation, // Backslash line continuations
     ],
