@@ -1438,63 +1438,63 @@ module.exports = grammar({
                     $.tag, // Tag name
                     token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
                     field('value', $._literal), // Simple values (can contain macros)
-                    token.immediate(NEWLINE) // Must end with newline
+                    /\n/
                 ),
                 // Source tags (Source0, Source1, etc.) - URL or file path
                 seq(
                     alias($._source_tag, $.tag), // Source tag name
                     token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
                     field('value', $._url_or_file), // URL or file path
-                    token.immediate(NEWLINE) // Must end with newline
+                    /\n/
                 ),
                 // Patch tags (Patch0, Patch1, etc.) - URL or file path
                 seq(
                     alias($._patch_tag, $.tag), // Patch tag name
                     token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
                     field('value', $._url_or_file), // URL or file path
-                    token.immediate(NEWLINE) // Must end with newline
+                    /\n/
                 ),
                 // URL tags (URL, Url, BugUrl) - URL value
                 seq(
                     alias($._url_tag, $.tag), // URL tag name
                     token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
                     field('value', alias($.url_with_macro, $.url)), // URL value
-                    token.immediate(NEWLINE) // Must end with newline
+                    /\n/
                 ),
                 // Strong dependency tags (Requires, BuildRequires) - full boolean support
                 seq(
                     alias($._requires_tag, $.dependency_tag),
                     token.immediate(/:( |\t)*/),
                     field('value', $.rich_dependency_list), // Supports boolean deps
-                    token.immediate(NEWLINE)
+                    /\n/
                 ),
                 // Weak dependency tags (Recommends, Suggests, etc.) - full boolean support
                 seq(
                     alias($._weak_requires_tag, $.dependency_tag),
                     token.immediate(/:( |\t)*/),
                     field('value', $.rich_dependency_list), // Supports boolean deps
-                    token.immediate(NEWLINE)
+                    /\n/
                 ),
                 // Conflicts/Obsoletes tags - NO boolean expressions
                 seq(
                     alias($._conflicts_tag, $.dependency_tag),
                     token.immediate(/:( |\t)*/),
                     field('value', $.dependency_list), // No boolean deps
-                    token.immediate(NEWLINE)
+                    /\n/
                 ),
                 // Provides tag - NO boolean expressions
                 seq(
                     alias($._provides_tag, $.dependency_tag),
                     token.immediate(/:( |\t)*/),
                     field('value', $.dependency_list), // No boolean deps
-                    token.immediate(NEWLINE)
+                    /\n/
                 ),
                 // Architecture/OS constraint tags - use literals
                 seq(
                     alias($._arch_tag, $.dependency_tag),
                     token.immediate(/:( |\t)*/),
                     field('value', $._literal), // Simple arch/OS names
-                    token.immediate(NEWLINE)
+                    /\n/
                 ),
                 // BuildOption tag - pass options to build system phases
                 // Examples: BuildOption: --enable-foo, BuildOption(conf): --enable-foo
@@ -1502,14 +1502,14 @@ module.exports = grammar({
                     alias($._build_option_tag, $.tag),
                     token.immediate(/:( |\t)*/),
                     field('value', $._literal), // Option string
-                    token.immediate(NEWLINE)
+                    /\n/
                 ),
                 // Legacy/deprecated tags - use rich dependency list for compatibility
                 seq(
                     alias($._legacy_dependency_tag, $.dependency_tag),
                     token.immediate(/:( |\t)*/),
                     field('value', $.rich_dependency_list),
-                    token.immediate(NEWLINE)
+                    /\n/
                 )
             ),
 
