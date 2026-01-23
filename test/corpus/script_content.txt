@@ -30,7 +30,8 @@ fi
     (section_name)
     (script_block
       (script_line
-        (script_content)
+        (script_content))
+      (script_line
         (script_content))
       (script_line
         (script_content)))))

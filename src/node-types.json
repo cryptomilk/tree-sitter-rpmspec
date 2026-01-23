@@ -160,6 +160,10 @@
         "named": true
       },
       {
+        "type": "runtime_scriptlet_interpreter",
+        "named": true
+      },
+      {
         "type": "sourcelist",
         "named": true
       },
@@ -4106,10 +4110,29 @@
   {
     "type": "runtime_scriptlet",
     "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "script_block",
+          "named": true
+        },
+        {
+          "type": "subpackage_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "runtime_scriptlet_interpreter",
+    "named": true,
     "fields": {
       "interpreter": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "script_interpreter",
@@ -4299,6 +4322,10 @@
             "named": true
           },
           {
+            "type": "runtime_scriptlet_interpreter",
+            "named": true
+          },
+          {
             "type": "script_line",
             "named": true
           },
@@ -4370,6 +4397,10 @@
           },
           {
             "type": "runtime_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet_interpreter",
             "named": true
           },
           {
@@ -4447,6 +4478,10 @@
             "named": true
           },
           {
+            "type": "runtime_scriptlet_interpreter",
+            "named": true
+          },
+          {
             "type": "script_line",
             "named": true
           },
@@ -4504,6 +4539,10 @@
           },
           {
             "type": "runtime_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet_interpreter",
             "named": true
           },
           {

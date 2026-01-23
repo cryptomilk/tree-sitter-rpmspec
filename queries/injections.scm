@@ -52,41 +52,10 @@
   (#set! injection.include-children))
 
 ; ============================================================
-; RUNTIME SCRIPTLETS WITH INTERPRETER DETECTION
+; RUNTIME SCRIPTLETS
 ; ============================================================
 
-; Lua interpreter: -p <lua>
-(runtime_scriptlet
-  interpreter: (script_interpreter
-    program: (interpreter_program) @_interp)
-  (script_block (script_line) @injection.content)
-  (#eq? @_interp "<lua>")
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "lua")
-  (#set! injection.include-children))
-
-; Python interpreter: -p /path/python or -p /path/python3
-(runtime_scriptlet
-  interpreter: (script_interpreter
-    program: (interpreter_program) @_interp)
-  (script_block (script_line) @injection.content)
-  (#match? @_interp "python")
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "python")
-  (#set! injection.include-children))
-
-; Perl interpreter: -p /path/perl
-(runtime_scriptlet
-  interpreter: (script_interpreter
-    program: (interpreter_program) @_interp)
-  (script_block (script_line) @injection.content)
-  (#match? @_interp "perl")
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "perl")
-  (#set! injection.include-children))
-
-; Default: bash (no interpreter or shell path)
-; This must come after specific interpreter matches
+; runtime_scriptlet (no -p option) -> always bash
 (runtime_scriptlet
   (script_block (script_line) @injection.content)
   (#not-match? @injection.content "^\\s*[%]")
@@ -94,8 +63,61 @@
   (#set! injection.include-children))
 
 ; ============================================================
-; TRIGGERS
+; RUNTIME SCRIPTLETS WITH INTERPRETER (-p option)
+; Each pattern checks the interpreter value explicitly
 ; ============================================================
+
+; Lua: -p <lua>
+; Inject entire script_block so multi-line constructs work
+(runtime_scriptlet_interpreter
+  interpreter: (script_interpreter
+    program: (interpreter_program) @_interp)
+  (script_block) @injection.content
+  (#eq? @_interp "<lua>")
+  (#set! injection.language "lua")
+  (#set! injection.include-children))
+
+; Python: -p /path/python or -p /path/python3
+; Inject entire script_block so multi-line constructs work
+(runtime_scriptlet_interpreter
+  interpreter: (script_interpreter
+    program: (interpreter_program) @_interp)
+  (script_block) @injection.content
+  (#match? @_interp "python")
+  (#set! injection.language "python")
+  (#set! injection.include-children))
+
+; Perl: -p /path/perl
+; Inject entire script_block so multi-line constructs work
+(runtime_scriptlet_interpreter
+  interpreter: (script_interpreter
+    program: (interpreter_program) @_interp)
+  (script_block) @injection.content
+  (#match? @_interp "perl")
+  (#set! injection.language "perl")
+  (#set! injection.include-children))
+
+; Bash: -p /bin/bash, -p /bin/sh, -p /usr/bin/bash, etc.
+(runtime_scriptlet_interpreter
+  interpreter: (script_interpreter
+    program: (interpreter_program) @_interp)
+  (script_block (script_line) @injection.content)
+  (#match? @_interp "(bash|/sh$)")
+  (#not-match? @injection.content "^\\s*[%]")
+  (#set! injection.language "bash")
+  (#set! injection.include-children))
+
+; ============================================================
+; TRIGGERS (have optional interpreter like runtime_scriptlet_interpreter)
+; Order: default bash first, specific interpreters last to override
+; ============================================================
+
+; Default bash for triggers
+(trigger
+  (script_block (script_line) @injection.content)
+  (#not-match? @injection.content "^\\s*[%]")
+  (#set! injection.language "bash")
+  (#set! injection.include-children))
 
 ; Lua interpreter for triggers
 (trigger
@@ -117,14 +139,18 @@
   (#set! injection.language "perl")
   (#set! injection.include-children))
 
-; Default bash for triggers
-(trigger
+; ============================================================
+; FILE TRIGGERS
+; ============================================================
+
+; Default bash for file triggers
+(file_trigger
   (script_block (script_line) @injection.content)
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
   (#set! injection.include-children))
 
-; File triggers (same pattern)
+; Lua interpreter for file triggers
 (file_trigger
   interpreter: (script_interpreter
     program: (interpreter_program) @_interp)
@@ -132,12 +158,6 @@
   (#eq? @_interp "<lua>")
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "lua")
-  (#set! injection.include-children))
-
-(file_trigger
-  (script_block (script_line) @injection.content)
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
   (#set! injection.include-children))
 
 ; ============================================================
@@ -192,4 +212,5 @@
   argument: (script_code) @injection.content
   (#eq? @_builtin "lua:")
   (#set! injection.language "lua")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))

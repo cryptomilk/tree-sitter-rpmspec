@@ -108,6 +108,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "runtime_scriptlet_interpreter"
+        },
+        {
+          "type": "SYMBOL",
           "name": "trigger"
         },
         {
@@ -2990,6 +2994,10 @@
           {
             "type": "SYMBOL",
             "name": "runtime_scriptlet"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "runtime_scriptlet_interpreter"
           },
           {
             "type": "SYMBOL",
@@ -7962,7 +7970,7 @@
           },
           {
             "type": "PATTERN",
-            "value": "\\r?\\n"
+            "value": "\\n"
           }
         ]
       }
@@ -8657,6 +8665,47 @@
         ]
       }
     },
+    "_runtime_scriptlet_keyword": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "%pre"
+        },
+        {
+          "type": "STRING",
+          "value": "%post"
+        },
+        {
+          "type": "STRING",
+          "value": "%preun"
+        },
+        {
+          "type": "STRING",
+          "value": "%postun"
+        },
+        {
+          "type": "STRING",
+          "value": "%pretrans"
+        },
+        {
+          "type": "STRING",
+          "value": "%posttrans"
+        },
+        {
+          "type": "STRING",
+          "value": "%preuntrans"
+        },
+        {
+          "type": "STRING",
+          "value": "%postuntrans"
+        },
+        {
+          "type": "STRING",
+          "value": "%verify"
+        }
+      ]
+    },
     "runtime_scriptlet": {
       "type": "PREC_RIGHT",
       "value": 0,
@@ -8664,45 +8713,8 @@
         "type": "SEQ",
         "members": [
           {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "STRING",
-                "value": "%pre"
-              },
-              {
-                "type": "STRING",
-                "value": "%post"
-              },
-              {
-                "type": "STRING",
-                "value": "%preun"
-              },
-              {
-                "type": "STRING",
-                "value": "%postun"
-              },
-              {
-                "type": "STRING",
-                "value": "%pretrans"
-              },
-              {
-                "type": "STRING",
-                "value": "%posttrans"
-              },
-              {
-                "type": "STRING",
-                "value": "%preuntrans"
-              },
-              {
-                "type": "STRING",
-                "value": "%postuntrans"
-              },
-              {
-                "type": "STRING",
-                "value": "%verify"
-              }
-            ]
+            "type": "SYMBOL",
+            "name": "_runtime_scriptlet_keyword"
           },
           {
             "type": "CHOICE",
@@ -8734,20 +8746,70 @@
             ]
           },
           {
+            "type": "PATTERN",
+            "value": "\\n"
+          },
+          {
             "type": "CHOICE",
             "members": [
               {
-                "type": "FIELD",
-                "name": "interpreter",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "script_interpreter"
-                }
+                "type": "SYMBOL",
+                "name": "script_block"
               },
               {
                 "type": "BLANK"
               }
             ]
+          }
+        ]
+      }
+    },
+    "runtime_scriptlet_interpreter": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_runtime_scriptlet_keyword"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": "-n"
+                      },
+                      {
+                        "type": "BLANK"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "subpackage_name"
+                  }
+                ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "FIELD",
+            "name": "interpreter",
+            "content": {
+              "type": "SYMBOL",
+              "name": "script_interpreter"
+            }
           },
           {
             "type": "PATTERN",

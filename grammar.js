@@ -217,7 +217,8 @@ module.exports = grammar({
                 $.install_scriptlet, // %install section
                 $.check_scriptlet, // %check section
                 $.clean_scriptlet, // %clean section
-                $.runtime_scriptlet, // %pre, %post, etc.
+                $.runtime_scriptlet, // %pre, %post without -p (bash default)
+                $.runtime_scriptlet_interpreter, // %pre, %post with -p interpreter
                 $.trigger, // %triggerin, %triggerun, etc.
                 $.file_trigger, // %filetriggerin, etc.
                 $.files, // %files section
@@ -1217,6 +1218,7 @@ module.exports = grammar({
                 choice(
                     $._scriptlet_compound_statements,
                     $.runtime_scriptlet,
+                    $.runtime_scriptlet_interpreter,
                     $.macro_definition,
                     $.macro_undefinition,
                     $.setup_macro,
@@ -2300,7 +2302,7 @@ module.exports = grammar({
                             $.script_content // Raw script text
                         )
                     ),
-                    NEWLINE // Line terminator
+                    /\n/ // Line terminator (external token)
                 )
             ),
 
@@ -2370,27 +2372,41 @@ module.exports = grammar({
                 )
             ),
 
-        // Runtime scriptlet: scripts executed during package lifecycle
-        // Can specify subpackage with -n option and interpreter with -p option
-        // Contains commands to execute for system integration
+        // Runtime scriptlet keywords (shared between variants)
+        _runtime_scriptlet_keyword: (_) =>
+            choice(
+                '%pre', // Before installation
+                '%post', // After installation
+                '%preun', // Before removal
+                '%postun', // After removal
+                '%pretrans', // Before transaction
+                '%posttrans', // After transaction
+                '%preuntrans', // Before removal transaction
+                '%postuntrans', // After removal transaction
+                '%verify' // During verification
+            ),
+
+        // Runtime scriptlet without interpreter (defaults to bash)
         runtime_scriptlet: ($) =>
             prec.right(
                 seq(
-                    choice(
-                        '%pre', // Before installation
-                        '%post', // After installation
-                        '%preun', // Before removal
-                        '%postun', // After removal
-                        '%pretrans', // Before transaction
-                        '%posttrans', // After transaction
-                        '%preuntrans', // Before removal transaction
-                        '%postuntrans', // After removal transaction
-                        '%verify' // During verification
-                    ),
-                    optional(seq(optional('-n'), $.subpackage_name)), // Optional subpackage name
-                    optional(field('interpreter', $.script_interpreter)), // Optional interpreter
+                    $._runtime_scriptlet_keyword,
+                    optional(seq(optional('-n'), $.subpackage_name)),
                     /\n/,
-                    optional($.script_block) // Commands to execute
+                    optional($.script_block)
+                )
+            ),
+
+        // Runtime scriptlet with explicit interpreter (-p option)
+        // Use this for lua, python, perl, etc.
+        runtime_scriptlet_interpreter: ($) =>
+            prec.right(
+                seq(
+                    $._runtime_scriptlet_keyword,
+                    optional(seq(optional('-n'), $.subpackage_name)),
+                    field('interpreter', $.script_interpreter),
+                    /\n/,
+                    optional($.script_block)
                 )
             ),
 
