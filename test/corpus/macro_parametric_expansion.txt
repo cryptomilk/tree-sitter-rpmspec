@@ -97,7 +97,8 @@ Parametric Macro Expansion (with conditional inside)
         (if_statement
           condition: (with_operator
             (identifier))
-          consequence: (script_content))
+          consequence: (script_line
+            (script_content)))
         argument: (word)))))
 
 ===============================================================================
@@ -161,12 +162,13 @@ Parametric Macro Expansion (with option terminator and pass-through)
   (check_scriptlet
     (section_name)
     (script_block
-      (macro_expansion
-        (identifier)
-        (macro_option_terminator)
-        argument: (word)
-        argument: (word)
-        argument: (word)))))
+      (script_line
+        (macro_expansion
+          (identifier)
+          (macro_option_terminator)
+          argument: (word)
+          argument: (word)
+          argument: (word))))))
 
 ===============================================================================
 Parametric Macro Expansion (macro inside shell subcommand is simple)
@@ -181,11 +183,11 @@ KCFLAGS="-fno-pie -fdebug-prefix-map=$(%python3 -c '%find_vmlinux_h')"
   (build_scriptlet
     (section_name)
     (script_block
-      (script_content)
-      (macro_simple_expansion
-        (simple_macro))
-      (script_content)
-      (macro_simple_expansion
-        (simple_macro))
-      (script_content))))
-
+      (script_line
+        (script_content)
+        (macro_simple_expansion
+          (simple_macro))
+        (script_content)
+        (macro_simple_expansion
+          (simple_macro))
+        (script_content)))))

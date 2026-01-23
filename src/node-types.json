@@ -2152,7 +2152,7 @@
             "named": true
           },
           {
-            "type": "script_content",
+            "type": "script_line",
             "named": true
           },
           {
@@ -2240,7 +2240,7 @@
             "named": true
           },
           {
-            "type": "script_content",
+            "type": "script_line",
             "named": true
           },
           {
@@ -2328,7 +2328,7 @@
             "named": true
           },
           {
-            "type": "script_content",
+            "type": "script_line",
             "named": true
           },
           {
@@ -4151,23 +4151,7 @@
           "named": true
         },
         {
-          "type": "macro_expansion",
-          "named": true
-        },
-        {
-          "type": "macro_expression",
-          "named": true
-        },
-        {
           "type": "macro_parametric_expansion",
-          "named": true
-        },
-        {
-          "type": "macro_shell_expansion",
-          "named": true
-        },
-        {
-          "type": "macro_simple_expansion",
           "named": true
         },
         {
@@ -4179,11 +4163,42 @@
           "named": true
         },
         {
-          "type": "script_content",
+          "type": "script_line",
           "named": true
         },
         {
           "type": "setup_macro",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "script_line",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_expression",
+          "named": true
+        },
+        {
+          "type": "macro_shell_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
+          "named": true
+        },
+        {
+          "type": "script_content",
           "named": true
         }
       ]
@@ -4237,23 +4252,7 @@
             "named": true
           },
           {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_expression",
-            "named": true
-          },
-          {
             "type": "macro_parametric_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_shell_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -4269,7 +4268,7 @@
             "named": true
           },
           {
-            "type": "script_content",
+            "type": "script_line",
             "named": true
           },
           {
@@ -4327,23 +4326,7 @@
             "named": true
           },
           {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_expression",
-            "named": true
-          },
-          {
             "type": "macro_parametric_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_shell_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -4359,7 +4342,7 @@
             "named": true
           },
           {
-            "type": "script_content",
+            "type": "script_line",
             "named": true
           },
           {
@@ -4417,23 +4400,7 @@
             "named": true
           },
           {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_expression",
-            "named": true
-          },
-          {
             "type": "macro_parametric_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_shell_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -4449,7 +4416,7 @@
             "named": true
           },
           {
-            "type": "script_content",
+            "type": "script_line",
             "named": true
           },
           {
@@ -4493,23 +4460,7 @@
             "named": true
           },
           {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_expression",
-            "named": true
-          },
-          {
             "type": "macro_parametric_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_shell_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -4525,7 +4476,7 @@
             "named": true
           },
           {
-            "type": "script_content",
+            "type": "script_line",
             "named": true
           },
           {

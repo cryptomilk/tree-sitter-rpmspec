@@ -24,7 +24,8 @@ echo "appending to build"
     (section_name)
     (scriptlet_augment_option)
     (script_block
-      (script_content))))
+      (script_line
+        (script_content)))))
 
 ===============================================================================
 Build Section (prepend option)
@@ -40,4 +41,5 @@ echo "prepending to build"
     (section_name)
     (scriptlet_augment_option)
     (script_block
-      (script_content))))
+      (script_line
+        (script_content)))))

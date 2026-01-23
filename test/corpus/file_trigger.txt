@@ -52,7 +52,8 @@ cat /dev/urandom
       (subpackage_name
         (word)))
     (script_block
-      (script_content))))
+      (script_line
+        (script_content)))))
 
 ===============================================================================
 Filetriggerin Section (with path patterns)
@@ -69,7 +70,8 @@ ldconfig
       (word)
       (word))
     (script_block
-      (script_content))))
+      (script_line
+        (script_content)))))
 
 ===============================================================================
 Filetriggerin Section (with priority)
@@ -87,7 +89,8 @@ systemctl daemon-reload
     paths: (file_trigger_paths
       (word))
     (script_block
-      (script_content))))
+      (script_line
+        (script_content)))))
 
 ===============================================================================
 Transfiletriggerin Section (with complex patterns)
@@ -103,7 +106,8 @@ update-desktop-database
     paths: (file_trigger_paths
       (word))
     (script_block
-      (script_content))))
+      (script_line
+        (script_content)))))
 
 ===============================================================================
 Filetriggerun Section (with multiple patterns)
@@ -121,5 +125,7 @@ gdk-pixbuf-query-loaders
       (word)
       (word))
     (script_block
-      (script_content)
-      (script_content))))
+      (script_line
+        (script_content))
+      (script_line
+        (script_content)))))

@@ -1206,11 +1206,7 @@ module.exports = grammar({
                     $.patch_macro,
                     $.autopatch_macro,
                     $.macro_parametric_expansion,
-                    $.macro_expansion,
-                    $.macro_simple_expansion,
-                    $.macro_shell_expansion,
-                    $.macro_expression,
-                    $.script_content
+                    $.script_line // Line of script content
                 )
             ),
 
@@ -2248,10 +2244,10 @@ module.exports = grammar({
 
         // Shell script content within scriptlet sections
 
-        // Shell block: executable shell script content in scriptlets
+        // Script block: executable script content in scriptlets
         // Can contain shell commands, macro expansions, and conditional blocks
         // Right precedence allows greedy matching of script content
-        // Uses script_content instead of string for permissive shell parsing
+        // Uses script_line for line-based grouping to enable better injection
         script_block: ($) =>
             prec.right(
                 repeat1(
@@ -2264,12 +2260,27 @@ module.exports = grammar({
                         $.patch_macro, // %patch with specific option support
                         $.autopatch_macro, // %autopatch for automatic patching
                         $.macro_parametric_expansion, // %name args (consumes to EOL)
-                        $.macro_expansion, // %{...}
-                        $.macro_simple_expansion, // %name
-                        $.macro_shell_expansion, // %(shell)
-                        $.macro_expression, // %[expr]
-                        $.script_content // Raw shell text (no prec needed)
+                        $.script_line // Line of script content (for injection)
                     )
+                )
+            ),
+
+        // Script line: one logical line of script content
+        // Groups inline macros and raw text for line-based injection
+        // Handles line continuations with backslash
+        script_line: ($) =>
+            prec.right(
+                seq(
+                    repeat1(
+                        choice(
+                            $.macro_expansion, // %{...}
+                            $.macro_simple_expansion, // %name
+                            $.macro_shell_expansion, // %(shell)
+                            $.macro_expression, // %[expr]
+                            $.script_content // Raw script text
+                        )
+                    ),
+                    NEWLINE // Line terminator
                 )
             ),
 

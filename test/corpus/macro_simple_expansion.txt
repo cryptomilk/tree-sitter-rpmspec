@@ -11,11 +11,12 @@ cp %{S:0} .
   (build_scriptlet
     (section_name)
     (script_block
-      (script_content)
-      (macro_expansion
-        (macro_source)
-        argument: (integer))
-      (script_content))))
+      (script_line
+        (script_content)
+        (macro_expansion
+          (macro_source)
+          argument: (integer))
+        (script_content)))))
 
 ===============================================================================
 Simple Macro Expansion (Patch colon syntax P:1)
@@ -30,9 +31,10 @@ Simple Macro Expansion (Patch colon syntax P:1)
   (build_scriptlet
     (section_name)
     (script_block
-      (macro_expansion
-        (macro_patch)
-        argument: (integer)))))
+      (script_line
+        (macro_expansion
+          (macro_patch)
+          argument: (integer))))))
 
 ===============================================================================
 Simple Macro Expansion (Source colon syntax with larger index)
@@ -47,11 +49,12 @@ cp %{S:123} .
   (build_scriptlet
     (section_name)
     (script_block
-      (script_content)
-      (macro_expansion
-        (macro_source)
-        argument: (integer))
-      (script_content))))
+      (script_line
+        (script_content)
+        (macro_expansion
+          (macro_source)
+          argument: (integer))
+        (script_content)))))
 
 ===============================================================================
 Simple Macro Expansion (Custom macro name in tag)
@@ -144,8 +147,9 @@ Simple Macro Expansion (in shell block followed by section)
   (install_scriptlet
     (section_name)
     (script_block
-      (macro_simple_expansion
-        (simple_macro))))
+      (script_line
+        (macro_simple_expansion
+          (simple_macro)))))
   (files
     (section_name)
     (file
@@ -169,13 +173,16 @@ find %{buildroot} -name foo
   (install_scriptlet
     (section_name)
     (script_block
-      (script_content)
-      (macro_simple_expansion
-        (simple_macro))
-      (script_content)
-      (macro_expansion
-        (identifier))
-      (script_content)))
+      (script_line
+        (script_content))
+      (script_line
+        (macro_simple_expansion
+          (simple_macro)))
+      (script_line
+        (script_content)
+        (macro_expansion
+          (identifier))
+        (script_content))))
   (files
     (section_name)
     (subpackage_name

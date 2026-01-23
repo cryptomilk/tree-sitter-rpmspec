@@ -464,4 +464,5 @@ echo "pre-prep step"
     (section_name)
     (scriptlet_augment_option)
     (script_block
-      (script_content))))
+      (script_line
+        (script_content)))))

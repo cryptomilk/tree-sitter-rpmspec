@@ -2986,23 +2986,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "macro_expansion"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "macro_simple_expansion"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "macro_shell_expansion"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "macro_expression"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "script_content"
+            "name": "script_line"
           }
         ]
       }
@@ -8160,26 +8144,51 @@
             },
             {
               "type": "SYMBOL",
-              "name": "macro_expansion"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "macro_simple_expansion"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "macro_shell_expansion"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "macro_expression"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "script_content"
+              "name": "script_line"
             }
           ]
         }
+      }
+    },
+    "script_line": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "REPEAT1",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_expansion"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_simple_expansion"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_shell_expansion"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_expression"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "script_content"
+                }
+              ]
+            }
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\r?\\n"
+          }
+        ]
       }
     },
     "scriptlet_augment_option": {

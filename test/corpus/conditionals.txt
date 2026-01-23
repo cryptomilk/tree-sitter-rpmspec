@@ -553,7 +553,8 @@ make test
   (check_scriptlet
     (section_name)
     (script_block
-      (script_content)))
+      (script_line
+        (script_content))))
   (if_statement
     condition: (not_operator
       argument: (with_operator
