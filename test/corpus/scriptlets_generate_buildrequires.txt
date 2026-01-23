@@ -24,7 +24,7 @@ echo "appending to generate_buildrequires"
     (section_name)
     (scriptlet_augment_option)
     (script_block
-      (shell_content))))
+      (script_content))))
 
 ===============================================================================
 Generate Buildrequires Section (prepend option)
@@ -40,4 +40,4 @@ echo "prepending to generate_buildrequires"
     (section_name)
     (scriptlet_augment_option)
     (script_block
-      (shell_content))))
+      (script_content))))

@@ -3002,7 +3002,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "shell_content"
+            "name": "script_content"
           }
         ]
       }
@@ -8176,7 +8176,7 @@
             },
             {
               "type": "SYMBOL",
-              "name": "shell_content"
+              "name": "script_content"
             }
           ]
         }
@@ -11345,7 +11345,7 @@
         }
       }
     },
-    "shell_content": {
+    "script_content": {
       "type": "TOKEN",
       "content": {
         "type": "PREC",

@@ -11,10 +11,10 @@ echo %%{name}
   (build_scriptlet
     (section_name)
     (script_block
-      (shell_content)
+      (script_content)
       (macro_simple_expansion
         (escaped_percent))
-      (shell_content))))
+      (script_content))))
 
 ===============================================================================
 Escaped Percent (in comment)
@@ -40,7 +40,7 @@ echo %%
   (build_scriptlet
     (section_name)
     (script_block
-      (shell_content)
+      (script_content)
       (macro_simple_expansion
         (escaped_percent)))))
 
@@ -57,13 +57,13 @@ echo %%{foo} and %%{bar}
   (build_scriptlet
     (section_name)
     (script_block
-      (shell_content)
+      (script_content)
       (macro_simple_expansion
         (escaped_percent))
-      (shell_content)
+      (script_content)
       (macro_simple_expansion
         (escaped_percent))
-      (shell_content))))
+      (script_content))))
 
 ===============================================================================
 Escaped Percent (mixed with real macro)
@@ -78,10 +78,10 @@ echo %%{literal} %{real}
   (build_scriptlet
     (section_name)
     (script_block
-      (shell_content)
+      (script_content)
       (macro_simple_expansion
         (escaped_percent))
-      (shell_content)
+      (script_content)
       (macro_expansion
         (identifier)))))
 

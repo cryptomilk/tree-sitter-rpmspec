@@ -49,7 +49,7 @@ cat /dev/urandom
     (subpackage_name
       (word))
     (script_block
-      (shell_content))))
+      (script_content))))
 
 ===============================================================================
 Pre Section (custom interpreter)

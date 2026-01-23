@@ -24,7 +24,7 @@ echo "appending to conf"
     (section_name)
     (scriptlet_augment_option)
     (script_block
-      (shell_content))))
+      (script_content))))
 
 ===============================================================================
 Conf Section (prepend option)
@@ -40,4 +40,4 @@ echo "prepending to conf"
     (section_name)
     (scriptlet_augment_option)
     (script_block
-      (shell_content))))
+      (script_content))))

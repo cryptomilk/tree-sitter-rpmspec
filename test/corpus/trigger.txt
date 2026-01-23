@@ -52,7 +52,7 @@ cat /dev/urandom
       (subpackage_name
         (word)))
     (script_block
-      (shell_content))))
+      (script_content))))
 
 ===============================================================================
 Triggerin Section (with version constraint)
@@ -104,4 +104,4 @@ print "I'm in my trigger!\n";
             operator: (dependency_comparison_operator)
             version: (version)))))
     (script_block
-      (shell_content))))
+      (script_content))))

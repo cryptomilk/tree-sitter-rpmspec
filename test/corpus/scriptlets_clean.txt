@@ -24,7 +24,7 @@ echo "appending to clean"
     (section_name)
     (scriptlet_augment_option)
     (script_block
-      (shell_content))))
+      (script_content))))
 
 ===============================================================================
 Clean Section (prepend option)
@@ -40,4 +40,4 @@ echo "prepending to clean"
     (section_name)
     (scriptlet_augment_option)
     (script_block
-      (shell_content))))
+      (script_content))))

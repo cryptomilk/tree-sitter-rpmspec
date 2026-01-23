@@ -97,7 +97,7 @@ Parametric Macro Expansion (with conditional inside)
         (if_statement
           condition: (with_operator
             (identifier))
-          consequence: (shell_content))
+          consequence: (script_content))
         argument: (word)))))
 
 ===============================================================================
@@ -181,11 +181,11 @@ KCFLAGS="-fno-pie -fdebug-prefix-map=$(%python3 -c '%find_vmlinux_h')"
   (build_scriptlet
     (section_name)
     (script_block
-      (shell_content)
+      (script_content)
       (macro_simple_expansion
         (simple_macro))
-      (shell_content)
+      (script_content)
       (macro_simple_expansion
         (simple_macro))
-      (shell_content))))
+      (script_content))))
 

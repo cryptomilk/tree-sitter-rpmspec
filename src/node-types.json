@@ -2152,11 +2152,11 @@
             "named": true
           },
           {
-            "type": "setup_macro",
+            "type": "script_content",
             "named": true
           },
           {
-            "type": "shell_content",
+            "type": "setup_macro",
             "named": true
           }
         ]
@@ -2240,11 +2240,11 @@
             "named": true
           },
           {
-            "type": "setup_macro",
+            "type": "script_content",
             "named": true
           },
           {
-            "type": "shell_content",
+            "type": "setup_macro",
             "named": true
           }
         ]
@@ -2328,11 +2328,11 @@
             "named": true
           },
           {
-            "type": "setup_macro",
+            "type": "script_content",
             "named": true
           },
           {
-            "type": "shell_content",
+            "type": "setup_macro",
             "named": true
           }
         ]
@@ -4179,11 +4179,11 @@
           "named": true
         },
         {
-          "type": "setup_macro",
+          "type": "script_content",
           "named": true
         },
         {
-          "type": "shell_content",
+          "type": "setup_macro",
           "named": true
         }
       ]
@@ -4269,11 +4269,11 @@
             "named": true
           },
           {
-            "type": "setup_macro",
+            "type": "script_content",
             "named": true
           },
           {
-            "type": "shell_content",
+            "type": "setup_macro",
             "named": true
           }
         ]
@@ -4359,11 +4359,11 @@
             "named": true
           },
           {
-            "type": "setup_macro",
+            "type": "script_content",
             "named": true
           },
           {
-            "type": "shell_content",
+            "type": "setup_macro",
             "named": true
           }
         ]
@@ -4449,11 +4449,11 @@
             "named": true
           },
           {
-            "type": "setup_macro",
+            "type": "script_content",
             "named": true
           },
           {
-            "type": "shell_content",
+            "type": "setup_macro",
             "named": true
           }
         ]
@@ -4525,11 +4525,11 @@
             "named": true
           },
           {
-            "type": "setup_macro",
+            "type": "script_content",
             "named": true
           },
           {
-            "type": "shell_content",
+            "type": "setup_macro",
             "named": true
           }
         ]
@@ -6231,15 +6231,15 @@
     "named": false
   },
   {
+    "type": "script_content",
+    "named": true
+  },
+  {
     "type": "section_name",
     "named": true
   },
   {
     "type": "shell_code",
-    "named": true
-  },
-  {
-    "type": "shell_content",
     "named": true
   },
   {

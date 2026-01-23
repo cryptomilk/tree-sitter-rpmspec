@@ -1210,7 +1210,7 @@ module.exports = grammar({
                     $.macro_simple_expansion,
                     $.macro_shell_expansion,
                     $.macro_expression,
-                    $.shell_content
+                    $.script_content
                 )
             ),
 
@@ -2251,7 +2251,7 @@ module.exports = grammar({
         // Shell block: executable shell script content in scriptlets
         // Can contain shell commands, macro expansions, and conditional blocks
         // Right precedence allows greedy matching of script content
-        // Uses shell_content instead of string for permissive shell parsing
+        // Uses script_content instead of string for permissive shell parsing
         script_block: ($) =>
             prec.right(
                 repeat1(
@@ -2268,7 +2268,7 @@ module.exports = grammar({
                         $.macro_simple_expansion, // %name
                         $.macro_shell_expansion, // %(shell)
                         $.macro_expression, // %[expr]
-                        $.shell_content // Raw shell text (no prec needed)
+                        $.script_content // Raw shell text (no prec needed)
                     )
                 )
             ),
@@ -3117,7 +3117,7 @@ module.exports = grammar({
         // Stops at: %, newline
         // Includes: quotes, backslashes, !, etc. - anything valid in shell
         // Used in script_block for %prep, %build, %install, etc.
-        shell_content: (_) => token(prec(-1, /[^%\r\n]+/)),
+        script_content: (_) => token(prec(-1, /[^%\r\n]+/)),
 
         // Quoted strings: explicit string literals with macro expansion
         // Allows macro expansion within quotes: "prefix-%{version}-suffix"
