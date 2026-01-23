@@ -1607,7 +1607,7 @@ module.exports = grammar({
         _requires_tag: ($) =>
             choice(
                 seq('Requires', optional(seq('(', $.qualifier, ')'))),
-                'BuildRequires'
+                seq('BuildRequires', optional(alias('(pre)', $.qualifier))) // optional qualifier (deprecated) for ALTLinux
             ),
 
         // Weak dependency tags: Recommends, Suggests, Supplements, Enhances

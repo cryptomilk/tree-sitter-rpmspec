@@ -5045,8 +5045,30 @@
           ]
         },
         {
-          "type": "STRING",
-          "value": "BuildRequires"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "BuildRequires"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "STRING",
+                    "value": "(pre)"
+                  },
+                  "named": true,
+                  "value": "qualifier"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            }
+          ]
         }
       ]
     },

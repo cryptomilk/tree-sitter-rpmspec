@@ -63,6 +63,37 @@ BuildPreReq: rpm-macros-systemd
             (word)))))))
 
 ===============================================================================
+Tag-specific: BuildRequires with qualifier
+===============================================================================
+
+BuildRequires(pre): rpm-build-xdg
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag
+        (qualifier))
+      value: (rich_dependency_list
+        (dependency
+          name: (dependency_name
+            (word)))))))
+
+===============================================================================
+Tag-specific: BuildRequires with invalid qualifier
+===============================================================================
+
+BuildRequires(post): rpm-build-xdg
+
+-------------------------------------------------------------------------------
+
+(spec
+  (ERROR
+    (simple_macro)
+    (simple_macro)))
+
+===============================================================================
 Tag-specific: Recommends with boolean dependency
 ===============================================================================
 
