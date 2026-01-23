@@ -1,4 +1,51 @@
 ===============================================================================
+Shell Content (line continuation simple)
+===============================================================================
+
+%build
+touch file1 \
+      file2
+
+-------------------------------------------------------------------------------
+
+(spec
+  (build_scriptlet
+    (section_name)
+    (script_block
+      (script_line
+        (script_content)
+        (line_continuation)
+        (script_content)))))
+
+===============================================================================
+Shell Content (line continuation with macros)
+===============================================================================
+
+%build
+touch %{buildroot}%{_sysconfdir}/file1 \
+      %{buildroot}%{_sysconfdir}/file2
+
+-------------------------------------------------------------------------------
+
+(spec
+  (build_scriptlet
+    (section_name)
+    (script_block
+      (script_line
+        (script_content)
+        (macro_expansion
+          (identifier))
+        (macro_expansion
+          (identifier))
+        (script_content)
+        (line_continuation)
+        (macro_expansion
+          (identifier))
+        (macro_expansion
+          (identifier))
+        (script_content)))))
+
+===============================================================================
 Shell Content (backslash escape sequences)
 ===============================================================================
 
@@ -12,6 +59,7 @@ echo "\n\t\r"
     (section_name)
     (script_block
       (script_line
+        (script_content)
         (script_content)))))
 
 ===============================================================================

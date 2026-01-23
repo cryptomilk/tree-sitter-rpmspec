@@ -506,6 +506,10 @@
       "type": "CHOICE",
       "members": [
         {
+          "type": "SYMBOL",
+          "name": "line_continuation"
+        },
+        {
           "type": "FIELD",
           "name": "option",
           "content": {
@@ -3028,8 +3032,13 @@
             "name": "macro_parametric_expansion"
           },
           {
-            "type": "SYMBOL",
-            "name": "script_line"
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_script_line_simple"
+            },
+            "named": true,
+            "value": "script_line"
           }
         ]
       }
@@ -7977,6 +7986,63 @@
               "members": [
                 {
                   "type": "SYMBOL",
+                  "name": "line_continuation"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_script_escape"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_expansion"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_simple_expansion"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_shell_expansion"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_expression"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "script_content"
+                }
+              ]
+            }
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\n"
+          }
+        ]
+      }
+    },
+    "_script_line_simple": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "REPEAT1",
+            "content": {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_script_escape"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_trailing_backslash"
+                },
+                {
+                  "type": "SYMBOL",
                   "name": "macro_expansion"
                 },
                 {
@@ -11186,9 +11252,20 @@
         "value": -1,
         "content": {
           "type": "PATTERN",
-          "value": "[^%\\r\\n]+"
+          "value": "[^%\\\\\\r\\n]+"
         }
       }
+    },
+    "_script_escape": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "\\\\[^\\r\\n]"
+      }
+    },
+    "_trailing_backslash": {
+      "type": "STRING",
+      "value": "\\"
     },
     "quoted_string": {
       "type": "SEQ",
@@ -11281,10 +11358,6 @@
     {
       "type": "PATTERN",
       "value": "\\\\( |\\t|\\v|\\f)"
-    },
-    {
-      "type": "SYMBOL",
-      "name": "line_continuation"
     }
   ],
   "conflicts": [

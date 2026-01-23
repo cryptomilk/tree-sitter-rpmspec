@@ -3261,6 +3261,10 @@
           "named": true
         },
         {
+          "type": "line_continuation",
+          "named": true
+        },
+        {
           "type": "macro_option_terminator",
           "named": true
         }
@@ -4233,8 +4237,12 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
+        {
+          "type": "line_continuation",
+          "named": true
+        },
         {
           "type": "macro_expansion",
           "named": true
@@ -5899,6 +5907,10 @@
     "named": false
   },
   {
+    "type": "\\",
+    "named": false
+  },
+  {
     "type": "]",
     "named": false
   },
@@ -6081,8 +6093,7 @@
   },
   {
     "type": "line_continuation",
-    "named": true,
-    "extra": true
+    "named": true
   },
   {
     "type": "link",

@@ -105,7 +105,8 @@ module.exports = grammar({
         $.comment, // # comments and %dnl comments
         /\s/, // All whitespace characters (single, matched repeatedly)
         /\\( |\t|\v|\f)/, // Escaped whitespace characters
-        $.line_continuation, // Backslash line continuations
+        // Note: line_continuation is handled explicitly in rules that need it
+        // (script_line, _macro_value) rather than globally in extras
     ],
 
     // Supertypes define abstract syntax tree node categories
@@ -415,6 +416,7 @@ module.exports = grammar({
         // Arguments that can appear in parametric macro invocations (options + arguments)
         _macro_invocation_argument: ($) =>
             choice(
+                $.line_continuation, // Allow line continuation
                 field('option', $.macro_option), // -x, -n
                 $._macro_invocation_value
             ),
@@ -1226,7 +1228,9 @@ module.exports = grammar({
                     $.patch_macro,
                     $.autopatch_macro,
                     $.macro_parametric_expansion,
-                    $.script_line // Line of script content
+                    // Use simple script_line without line continuation
+                    // to prevent extending past %endif boundaries
+                    alias($._script_line_simple, $.script_line)
                 )
             ),
 
@@ -2297,6 +2301,8 @@ module.exports = grammar({
                 seq(
                     repeat1(
                         choice(
+                            $.line_continuation, // Allow line continuation (backslash-newline)
+                            $._script_escape, // Backslash escapes (\n, \t, etc.)
                             $.macro_expansion, // %{...}
                             $.macro_simple_expansion, // %name
                             $.macro_shell_expansion, // %(shell)
@@ -2304,7 +2310,29 @@ module.exports = grammar({
                             $.script_content // Raw script text
                         )
                     ),
-                    /\n/ // Line terminator (external token)
+                    /\n/ // Line terminator
+                )
+            ),
+
+        // Script line without line continuation support
+        // Used inside conditional consequences where line continuation
+        // should NOT extend past %endif boundaries
+        // Aliased to script_line in the AST for consistency
+        _script_line_simple: ($) =>
+            prec.right(
+                seq(
+                    repeat1(
+                        choice(
+                            $._script_escape, // Backslash escapes (\n, \t, etc.)
+                            $._trailing_backslash, // Backslash at end of line
+                            $.macro_expansion, // %{...}
+                            $.macro_simple_expansion, // %name
+                            $.macro_shell_expansion, // %(shell)
+                            $.macro_expression, // %[expr]
+                            $.script_content // Raw script text
+                        )
+                    ),
+                    /\n/ // Line terminator
                 )
             ),
 
@@ -3173,10 +3201,20 @@ module.exports = grammar({
         string_content: (_) => token(prec(-1, /([^%\\\r\n])+/)),
 
         // Shell content: permissive raw text for shell script sections
-        // Stops at: %, newline
-        // Includes: quotes, backslashes, !, etc. - anything valid in shell
+        // Stops at: %, backslash, newline
         // Used in script_block for %prep, %build, %install, etc.
-        script_content: (_) => token(prec(-1, /[^%\r\n]+/)),
+        script_content: (_) => token(prec(-1, /[^%\\\r\n]+/)),
+
+        // Backslash escape sequence in script content (not line continuation)
+        // Matches backslash followed by any character except CR/LF
+        // Examples: \n, \t, \r within strings like echo "\n\t"
+        // Note: backslash-newline is handled by line_continuation
+        _script_escape: (_) => token(/\\[^\r\n]/),
+
+        // Trailing backslash: just a backslash character
+        // Used in _script_line_simple where we don't want line continuation
+        // but still need to match the backslash at end of line
+        _trailing_backslash: (_) => '\\',
 
         // Quoted strings: explicit string literals with macro expansion
         // Allows macro expansion within quotes: "prefix-%{version}-suffix"

@@ -121,6 +121,40 @@ echo test
     value: (word)))
 
 ===============================================================================
+Macros (%global multi-line function definition)
+===============================================================================
+
+%global systemd_post() \
+if [ $1 -eq 1 ]; then \
+    systemctl daemon-reload \
+fi \
+%{nil}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    name: (identifier)
+    (parametric_options)
+    value: (line_continuation)
+    value: (word)
+    value: (word)
+    value: (word)
+    value: (word)
+    value: (integer)
+    value: (word)
+    value: (word)
+    value: (line_continuation)
+    value: (word)
+    value: (word)
+    value: (line_continuation)
+    value: (word)
+    value: (line_continuation)
+    value: (macro_expansion
+      (special_variable_name))))
+
+===============================================================================
 Macros (%global with quoted string)
 ===============================================================================
 
