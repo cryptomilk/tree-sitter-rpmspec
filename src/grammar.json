@@ -8904,6 +8904,39 @@
         ]
       }
     },
+    "script_interpreter": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "-p"
+        },
+        {
+          "type": "FIELD",
+          "name": "program",
+          "content": {
+            "type": "SYMBOL",
+            "name": "interpreter_program"
+          }
+        }
+      ]
+    },
+    "interpreter_program": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "<[a-z]+>"
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\/[^\\s]+"
+          }
+        ]
+      }
+    },
     "runtime_scriptlet": {
       "type": "PREC_RIGHT",
       "value": 0,
@@ -8974,6 +9007,22 @@
                     "name": "subpackage_name"
                   }
                 ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "FIELD",
+                "name": "interpreter",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "script_interpreter"
+                }
               },
               {
                 "type": "BLANK"

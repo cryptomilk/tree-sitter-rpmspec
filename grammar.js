@@ -2334,9 +2334,25 @@ module.exports = grammar({
 
         // Runtime scriptlets: execute during package install/remove lifecycle
 
+        // Script interpreter: -p <program> option for scriptlets
+        // Specifies the interpreter to run the script with
+        // Examples: -p /bin/bash, -p /usr/bin/python3, -p <lua>
+        script_interpreter: ($) =>
+            seq('-p', field('program', $.interpreter_program)),
+
+        // Interpreter program: path or special interpreter name
+        // Can be a file path (/bin/bash) or special form (<lua>)
+        interpreter_program: (_) =>
+            token(
+                choice(
+                    /<[a-z]+>/, // Special: <lua>, <builtin>
+                    /\/[^\s]+/ // Path: /bin/bash, /usr/bin/python3
+                )
+            ),
+
         // Runtime scriptlet: scripts executed during package lifecycle
-        // Can specify subpackage with -n option
-        // Contains shell commands for system integration
+        // Can specify subpackage with -n option and interpreter with -p option
+        // Contains commands to execute for system integration
         runtime_scriptlet: ($) =>
             prec.right(
                 seq(
@@ -2352,8 +2368,9 @@ module.exports = grammar({
                         '%verify' // During verification
                     ),
                     optional(seq(optional('-n'), $.subpackage_name)), // Optional subpackage name
+                    optional(field('interpreter', $.script_interpreter)), // Optional interpreter
                     token.immediate(NEWLINE),
-                    optional($.script_block) // Shell commands to execute
+                    optional($.script_block) // Commands to execute
                 )
             ),
 

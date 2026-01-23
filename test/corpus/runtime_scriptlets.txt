@@ -54,35 +54,54 @@ cat /dev/urandom
 
 ===============================================================================
 Pre Section (custom interpreter)
-:skip
 ===============================================================================
 
-# TODO Add -p support for %pre etc.
 %pre -p /bin/bash
 echo "Running with bash"
 
 -------------------------------------------------------------------------------
 
+(spec
+  (runtime_scriptlet
+    interpreter: (script_interpreter
+      program: (interpreter_program))
+    (script_block
+      (script_line
+        (script_content)))))
+
 ===============================================================================
 Post Section (python interpreter)
-:skip
 ===============================================================================
 
-# TODO Add -p support
 %post -p /usr/bin/python3
 import sys
 print("Installing with Python")
 
 -------------------------------------------------------------------------------
 
+(spec
+  (runtime_scriptlet
+    interpreter: (script_interpreter
+      program: (interpreter_program))
+    (script_block
+      (script_line
+        (script_content))
+      (script_line
+        (script_content)))))
+
 ===============================================================================
-Preun Section (custom interpreter with flags)
-:skip
+Pre Section (lua interpreter)
 ===============================================================================
 
-# TODO add -p support
-%preun -p /bin/sh -e
-set -e
-echo "Removing package"
+%pretrans -p <lua>
+print("Running with Lua")
 
 -------------------------------------------------------------------------------
+
+(spec
+  (runtime_scriptlet
+    interpreter: (script_interpreter
+      program: (interpreter_program))
+    (script_block
+      (script_line
+        (script_content)))))

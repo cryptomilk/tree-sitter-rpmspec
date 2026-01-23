@@ -4102,7 +4102,18 @@
   {
     "type": "runtime_scriptlet",
     "named": true,
-    "fields": {},
+    "fields": {
+      "interpreter": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "script_interpreter",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": false,
@@ -4171,6 +4182,22 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "script_interpreter",
+    "named": true,
+    "fields": {
+      "program": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "interpreter_program",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -6011,6 +6038,10 @@
   {
     "type": "interp",
     "named": false
+  },
+  {
+    "type": "interpreter_program",
+    "named": true
   },
   {
     "type": "len",
