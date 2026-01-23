@@ -1271,6 +1271,47 @@ static inline bool
 rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
 {
     /*
+     * 0. Handle newlines for line-sensitive contexts
+     *
+     * When the grammar expects a newline (valid_symbols[NEWLINE] is true),
+     * we emit the NEWLINE token to give it priority over extras.
+     *
+     * When the grammar doesn't expect a newline, skip them as whitespace.
+     * This ensures newlines are consumed as extras in contexts where they
+     * don't matter (like between statements).
+     *
+     * IMPORTANT: Don't skip whitespace when content tokens (EXPAND_CODE,
+     * SCRIPT_CODE) are valid - they need to capture whitespace as content.
+     */
+    if (!valid_symbols[EXPAND_CODE] && !valid_symbols[SCRIPT_CODE]) {
+        while (isspace(lexer->lookahead)) {
+            if (lexer->lookahead == '\n') {
+                if (valid_symbols[NEWLINE]) {
+                    /* Emit newline token */
+                    lexer->advance(lexer, false);
+                    lexer->mark_end(lexer);
+                    lexer->result_symbol = NEWLINE;
+                    return true;
+                }
+                /* Skip newline as whitespace */
+            } else if (lexer->lookahead == '\r') {
+                if (valid_symbols[NEWLINE]) {
+                    /* Handle \r\n or just \r */
+                    lexer->advance(lexer, false);
+                    if (lexer->lookahead == '\n') {
+                        lexer->advance(lexer, false);
+                    }
+                    lexer->mark_end(lexer);
+                    lexer->result_symbol = NEWLINE;
+                    return true;
+                }
+                /* Skip carriage return as whitespace */
+            }
+            lexer->advance(lexer, true); /* skip */
+        }
+    }
+
+    /*
      * 1. Percent-prefixed tokens - scanner handles the '%'
      *
      * Conditionals (%if, %else, etc.) and parametric macros (%configure).
