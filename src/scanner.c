@@ -58,7 +58,7 @@ typedef Array(char) String;
  * 1. SIMPLE_MACRO (%name) - by far the most common pattern (~80% of macros)
  * 2. Other macro types - less common but still frequent
  * 3. Conditional tokens - used in control flow
- * 4. Context-specific tokens (EXPAND_CODE, SHELL_CODE) - rare, only valid
+ * 4. Context-specific tokens (EXPAND_CODE, SCRIPT_CODE) - rare, only valid
  *    in specific contexts like %{expand:...} or %(...)
  */
 enum TokenType {
@@ -97,7 +97,7 @@ enum TokenType {
     FILES_IFNOS,   /**< %ifnos inside %files section */
     /* Context-specific tokens - only valid in specific macro contexts */
     EXPAND_CODE, /**< Raw text inside %{expand:...} with balanced braces */
-    SHELL_CODE   /**< Raw text inside %(...) with balanced parentheses */
+    SCRIPT_CODE  /**< Raw text inside %(...) with balanced parentheses */
 };
 
 /**
@@ -1241,10 +1241,10 @@ static void skip_whitespace_track_newline(TSLexer *lexer, bool *at_line_start)
  *    - `%name` -> grammar matches '%', scanner matches 'name'
  *    - `%{name}` -> handled entirely by grammar
  *
- * 3. **Contextual tokens** (EXPAND_CODE, SHELL_CODE)
+ * 3. **Contextual tokens** (EXPAND_CODE, SCRIPT_CODE)
  *    Only valid inside specific constructs:
  *    - EXPAND_CODE: inside `%{expand:...}`
- *    - SHELL_CODE: inside `%(...)`
+ *    - SCRIPT_CODE: inside `%(...)`
  *
  *    These are checked LAST because they are greedy and would consume
  *    section keywords during error recovery if checked earlier.
@@ -1262,7 +1262,7 @@ rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
      *
      * Conditionals (%if, %else, etc.) and parametric macros (%configure).
      * Must be checked early so section keywords are recognized during
-     * error recovery, preventing EXPAND_CODE/SHELL_CODE from consuming
+     * error recovery, preventing EXPAND_CODE/SCRIPT_CODE from consuming
      * too much content.
      */
     bool conditionals_valid = any_conditional_valid(valid_symbols);
@@ -1325,15 +1325,15 @@ rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
      * These are checked LAST because they are greedy and would consume
      * section keywords during error recovery if checked earlier.
      * - EXPAND_CODE: content inside %{expand:...}
-     * - SHELL_CODE: content inside %(...)
+     * - SCRIPT_CODE: content inside %(...)
      */
     if (valid_symbols[EXPAND_CODE] && scan_expand_content(lexer)) {
         lexer->result_symbol = EXPAND_CODE;
         return true;
     }
 
-    if (valid_symbols[SHELL_CODE] && scan_shell_content(lexer)) {
-        lexer->result_symbol = SHELL_CODE;
+    if (valid_symbols[SCRIPT_CODE] && scan_shell_content(lexer)) {
+        lexer->result_symbol = SCRIPT_CODE;
         return true;
     }
 

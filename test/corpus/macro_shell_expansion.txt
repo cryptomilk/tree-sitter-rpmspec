@@ -20,7 +20,7 @@ Macro Shell Expansion (Simple Command)
 (spec
   (macro_shell_expansion
     (shell_command
-      (shell_code))))
+      (script_code))))
 
 ===============================================================================
 Macro Shell Expansion (Command with Pipes and Parentheses)
@@ -33,7 +33,7 @@ Macro Shell Expansion (Command with Pipes and Parentheses)
 (spec
   (macro_shell_expansion
     (shell_command
-      (shell_code))))
+      (script_code))))
 
 ===============================================================================
 Macro Shell Expansion (Command with Macro)
@@ -46,10 +46,10 @@ Macro Shell Expansion (Command with Macro)
 (spec
   (macro_shell_expansion
     (shell_command
-      (shell_code)
+      (script_code)
       (macro_expansion
         (identifier))
-      (shell_code)
+      (script_code)
       (macro_expansion
         (identifier)))))
 
@@ -64,7 +64,7 @@ Macro Shell Expansion (Command with Nested Parentheses)
 (spec
   (macro_shell_expansion
     (shell_command
-      (shell_code))))
+      (script_code))))
 
 ===============================================================================
 Macro Shell Expansion (Complex Command with Multiple Macros)
@@ -77,10 +77,10 @@ Macro Shell Expansion (Complex Command with Multiple Macros)
 (spec
   (macro_shell_expansion
     (shell_command
-      (shell_code)
+      (script_code)
       (macro_expansion
         (identifier))
-      (shell_code))))
+      (script_code))))
 
 ===============================================================================
 Macro Shell Expansion (Bash Parameter Expansion with %)
@@ -93,7 +93,7 @@ Macro Shell Expansion (Bash Parameter Expansion with %)
 (spec
   (macro_shell_expansion
     (shell_command
-      (shell_code)
+      (script_code)
       (macro_simple_expansion
         (simple_macro))
-      (shell_code))))
+      (script_code))))

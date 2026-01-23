@@ -463,7 +463,7 @@ Macros (Conditional expansion with shell command consequence)
       consequence: (text
         (macro_shell_expansion
           (shell_command
-            (shell_code)))))))
+            (script_code)))))))
 
 ===============================================================================
 Macros (Conditional expansion concatenated with default)

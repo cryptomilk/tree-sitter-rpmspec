@@ -141,10 +141,10 @@ Built from %(c=%version; echo "v${c%.*}-stable") branch.
       (text_content)
       (macro_shell_expansion
         (shell_command
-          (shell_code)
+          (script_code)
           (macro_simple_expansion
             (simple_macro))
-          (shell_code)))
+          (script_code)))
       (text_content))))
 
 ===============================================================================

@@ -165,7 +165,7 @@ module.exports = grammar({
         $.files_ifnos, // %ifnos inside %files section
         // Context-specific tokens (only valid in specific macro contexts)
         $.expand_code, // Raw text inside %{expand:...} with balanced braces
-        $.shell_code, // Raw text inside %(...) with balanced parentheses
+        $.script_code, // Raw text inside %(...) with balanced parentheses
     ],
 
     // Inline rules are flattened in the parse tree to reduce nesting
@@ -982,15 +982,15 @@ module.exports = grammar({
             ),
 
         // Shell command: complete shell command content
-        // Uses external scanner (shell_code) for raw text with parenthesis tracking
+        // Uses external scanner (script_code) for raw text with parenthesis tracking
         // The scanner handles balanced parentheses and stops at % for macro parsing
-        // shell_code is an external scanner token - see src/scanner.c
+        // script_code is an external scanner token - see src/scanner.c
         shell_command: ($) =>
             repeat1(
                 choice(
                     $.macro_simple_expansion, // %name
                     $.macro_expansion, // %{name}
-                    $.shell_code // Raw shell text with balanced parens (external scanner)
+                    $.script_code // Raw shell text with balanced parens (external scanner)
                 )
             ),
 

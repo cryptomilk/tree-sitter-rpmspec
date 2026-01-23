@@ -4579,7 +4579,7 @@
           "named": true
         },
         {
-          "type": "shell_code",
+          "type": "script_code",
           "named": true
         }
       ]
@@ -6231,15 +6231,15 @@
     "named": false
   },
   {
+    "type": "script_code",
+    "named": true
+  },
+  {
     "type": "script_content",
     "named": true
   },
   {
     "type": "section_name",
-    "named": true
-  },
-  {
-    "type": "shell_code",
     "named": true
   },
   {

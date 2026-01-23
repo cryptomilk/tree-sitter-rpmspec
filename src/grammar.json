@@ -2417,7 +2417,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "shell_code"
+            "name": "script_code"
           }
         ]
       }
@@ -11570,7 +11570,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "shell_code"
+      "name": "script_code"
     }
   ],
   "inline": [
