@@ -3252,14 +3252,14 @@ function makeIfStatement(
         seq(
             alias(tokenRule($), '%if'),
             field('condition', $.expression),
-            token.immediate(NEWLINE),
+            /\n/,
             optionalContent
                 ? optional(field('consequence', contentRule($)))
                 : optional(field('consequence', contentRule($))),
             repeat(field('alternative', elifRule($))),
             optional(field('alternative', elseRule($))),
             '%endif',
-            token.immediate(NEWLINE)
+            /\n/
         );
 }
 
@@ -3287,12 +3287,12 @@ function makeIfarchStatement(
                 alias(ifnarchToken($), '%ifnarch')
             ),
             field('condition', $.arch),
-            token.immediate(NEWLINE),
+            /\n/,
             optional(field('consequence', contentRule($))),
             repeat(field('alternative', elifRule($))),
             optional(field('alternative', elseRule($))),
             '%endif',
-            token.immediate(NEWLINE)
+            /\n/
         );
 }
 
@@ -3320,12 +3320,12 @@ function makeIfosStatement(
                 alias(ifnosToken($), '%ifnos')
             ),
             field('condition', $.os),
-            token.immediate(NEWLINE),
+            /\n/,
             optional(field('consequence', contentRule($))),
             repeat(field('alternative', elifRule($))),
             optional(field('alternative', elseRule($))),
             '%endif',
-            token.immediate(NEWLINE)
+            /\n/
         );
 }
 
@@ -3341,7 +3341,7 @@ function makeElifClause(contentRule, optionalContent = false) {
         seq(
             '%elif',
             field('condition', $.expression),
-            token.immediate(NEWLINE),
+            /\n/,
             optionalContent
                 ? optional(field('consequence', contentRule($)))
                 : field('consequence', contentRule($))
@@ -3360,7 +3360,7 @@ function makeElifarchClause(contentRule, optionalContent = false) {
         seq(
             '%elifarch',
             optional(field('condition', $._literal)),
-            token.immediate(NEWLINE),
+            /\n/,
             optionalContent
                 ? optional(field('consequence', contentRule($)))
                 : field('consequence', contentRule($))
@@ -3379,7 +3379,7 @@ function makeElifosClause(contentRule, optionalContent = false) {
         seq(
             '%elifos',
             optional(field('condition', $._literal)),
-            token.immediate(NEWLINE),
+            /\n/,
             optionalContent
                 ? optional(field('consequence', contentRule($)))
                 : field('consequence', contentRule($))
@@ -3397,7 +3397,7 @@ function makeElseClause(contentRule, optionalContent = false) {
     return ($) =>
         seq(
             '%else',
-            token.immediate(NEWLINE),
+            /\n/,
             optionalContent
                 ? optional(field('body', contentRule($)))
                 : field('body', contentRule($))
