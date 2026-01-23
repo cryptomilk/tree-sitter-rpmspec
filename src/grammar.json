@@ -923,10 +923,6 @@
         {
           "type": "STRING",
           "value": "expr"
-        },
-        {
-          "type": "STRING",
-          "value": "lua"
         }
       ]
     },
@@ -952,10 +948,6 @@
         {
           "type": "STRING",
           "value": "expr"
-        },
-        {
-          "type": "STRING",
-          "value": "lua"
         }
       ]
     },
@@ -1167,6 +1159,31 @@
               "content": {
                 "type": "SYMBOL",
                 "name": "expand_content"
+              }
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "TOKEN",
+                "content": {
+                  "type": "STRING",
+                  "value": "lua:"
+                }
+              },
+              "named": true,
+              "value": "builtin"
+            },
+            {
+              "type": "FIELD",
+              "name": "argument",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_lua_code"
               }
             }
           ]
@@ -2434,6 +2451,27 @@
           {
             "type": "SYMBOL",
             "name": "expand_code"
+          }
+        ]
+      }
+    },
+    "_lua_code": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "macro_expansion"
+          },
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "expand_code"
+            },
+            "named": true,
+            "value": "script_code"
           }
         ]
       }

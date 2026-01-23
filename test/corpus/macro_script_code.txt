@@ -97,3 +97,71 @@ Macro Shell Expansion (Bash Parameter Expansion with %)
       (macro_simple_expansion
         (simple_macro))
       (script_code))))
+
+===============================================================================
+Macro Lua Expansion (Simple)
+===============================================================================
+
+%{lua:print("hello")}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (script_code)))
+
+===============================================================================
+Macro Lua Expansion (Multi-line)
+===============================================================================
+
+%{lua:
+local x = 1
+print(x)
+}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (script_code)))
+
+===============================================================================
+Macro Lua Expansion (With RPM macro)
+===============================================================================
+
+%{lua:print(rpm.expand("%{version}"))}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (script_code)
+    argument: (macro_expansion
+      (identifier))
+    argument: (script_code)))
+
+===============================================================================
+Macro Lua Expansion (Complex script)
+===============================================================================
+
+%{lua:
+local name = rpm.expand("%{name}")
+local version = rpm.expand("%{version}")
+print(name .. "-" .. version)
+}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (builtin)
+    argument: (script_code)
+    argument: (macro_expansion
+      (identifier))
+    argument: (script_code)
+    argument: (macro_expansion
+      (identifier))
+    argument: (script_code)))

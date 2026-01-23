@@ -552,8 +552,7 @@ module.exports = grammar({
                 $._builtin_url,
                 $._builtin_multi_arg,
                 $._builtin_standalone,
-                'expr',
-                'lua'
+                'expr'
             ),
 
         // Builtin rule for builtins not handled by category-specific rules
@@ -564,8 +563,7 @@ module.exports = grammar({
                 $.macro_patch,
                 $._builtin_multi_arg,
                 $._builtin_standalone,
-                'expr', // Special: takes expression argument
-                'lua' // Special: takes Lua code argument
+                'expr' // Special: takes expression argument
             ),
 
         macro_source: ($) =>
@@ -619,6 +617,13 @@ module.exports = grammar({
                 seq(
                     alias(token('expand:'), $.builtin),
                     field('argument', $.expand_content)
+                ),
+                // Lua builtin: %{lua:...}
+                // Uses external scanner to handle balanced braces in lua code
+                // _lua_code is a container with macros and raw lua text
+                seq(
+                    alias(token('lua:'), $.builtin),
+                    field('argument', $._lua_code)
                 ),
                 // Expression builtin: %{expr:5+3}
                 // Takes expression argument instead of literal
@@ -1006,6 +1011,17 @@ module.exports = grammar({
                 choice(
                     $.macro_expansion, // %{name}
                     $.expand_code // Raw text with balanced braces (external scanner)
+                )
+            ),
+
+        // Lua content: text inside %{lua:...} with balanced braces
+        // Uses expand_code scanner (aliased to script_code) for brace tracking
+        // Allows macro expansions within lua code
+        _lua_code: ($) =>
+            repeat1(
+                choice(
+                    $.macro_expansion, // %{name}
+                    alias($.expand_code, $.script_code) // Raw lua text with balanced braces
                 )
             ),
 

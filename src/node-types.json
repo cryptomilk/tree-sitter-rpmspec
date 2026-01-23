@@ -2898,6 +2898,10 @@
             "named": true
           },
           {
+            "type": "script_code",
+            "named": true
+          },
+          {
             "type": "ternary_operator",
             "named": true
           },
@@ -6043,10 +6047,6 @@
   },
   {
     "type": "lower",
-    "named": false
-  },
-  {
-    "type": "lua",
     "named": false
   },
   {
