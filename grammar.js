@@ -74,12 +74,13 @@ function buildScriptlet(name) {
                 seq(
                     alias(token(seq('%' + name, / +/)), $.section_name),
                     field('argument', $.scriptlet_augment_option),
-                    token.immediate(NEWLINE),
+                    /\n/,
                     optional($.script_block)
                 ),
                 // Without options: %name
                 seq(
-                    alias(token(seq('%' + name, NEWLINE)), $.section_name),
+                    alias(token('%' + name), $.section_name),
+                    /\n/,
                     optional($.script_block)
                 )
             )
@@ -1923,7 +1924,7 @@ module.exports = grammar({
                         )
                     ),
                     optional($.text), // Optional inline text on same line
-                    token.immediate(NEWLINE),
+                    /\n/,
                     optional($._description_content) // Multi-line content with conditionals
                 )
             ),
@@ -2173,7 +2174,7 @@ module.exports = grammar({
                     alias('%package', $.section_name),
                     optional('-n'),
                     $.subpackage_name,
-                    token.immediate(NEWLINE),
+                    /\n/,
                     optional($._package_content)
                 )
             ),
@@ -2386,7 +2387,7 @@ module.exports = grammar({
                     ),
                     optional(seq(optional('-n'), $.subpackage_name)), // Optional subpackage name
                     optional(field('interpreter', $.script_interpreter)), // Optional interpreter
-                    token.immediate(NEWLINE),
+                    /\n/,
                     optional($.script_block) // Commands to execute
                 )
             ),
@@ -2416,7 +2417,7 @@ module.exports = grammar({
                     optional(field('subpackage', $.trigger_subpackage)),
                     optional(field('interpreter', $.script_interpreter)),
                     optional(field('condition', $.trigger_condition)),
-                    token.immediate(NEWLINE),
+                    /\n/,
                     optional($.script_block)
                 )
             ),
@@ -2461,7 +2462,7 @@ module.exports = grammar({
                     optional(field('interpreter', $.script_interpreter)),
                     optional(field('priority', $.file_trigger_priority)),
                     optional(field('paths', $.file_trigger_paths)),
-                    token.immediate(NEWLINE),
+                    /\n/,
                     optional($.script_block)
                 )
             ),
@@ -2512,7 +2513,7 @@ module.exports = grammar({
                         )
                     ),
                     optional(seq('-f', alias($.path_with_macro, $.path))), // Read file list from file
-                    token.immediate(NEWLINE),
+                    /\n/,
                     repeat(
                         choice(
                             $._files_compound_statements, // Conditional file inclusion (files context)
@@ -2539,7 +2540,7 @@ module.exports = grammar({
                 choice('-', /[a-zA-Z0-9_]+/), // Group name or '-'
                 optional(seq(',', choice('-', /[0-9]+/))), // Optional dirmode
                 ')',
-                token.immediate(NEWLINE)
+                /\n/
             ),
 
         // File qualifiers: specify file type and handling behavior
@@ -2594,7 +2595,7 @@ module.exports = grammar({
             seq(
                 repeat(choice($.attr, $.file_qualifier)), // Attributes and qualifiers in any order
                 repeat1(alias($.file_path, $.path)), // One or more file paths
-                token.immediate(NEWLINE) // Must end with newline
+                /\n/
             ),
 
         // Single file path for %files section - follows shell globbing rules (see glob(7))
