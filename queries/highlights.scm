@@ -94,6 +94,14 @@
   "%verify"
 ] @module.builtin
 
+; Scriptlet interpreter (-p <program>)
+(script_interpreter
+  "-p" @variable.parameter)
+(interpreter_program) @string.special.path
+
+; Scriptlet augment options (-a, -p for append/prepend)
+(scriptlet_augment_option) @variable.parameter
+
 ; Trigger scriptlets
 [
   "%triggerprein"
