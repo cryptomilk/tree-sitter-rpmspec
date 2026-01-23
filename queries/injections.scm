@@ -182,3 +182,14 @@
 (shell_command) @injection.content
   (#set! injection.language "bash")
   (#set! injection.include-children)
+
+; ============================================================
+; LUA MACRO EXPANSION %{lua:...}
+; ============================================================
+
+(macro_expansion
+  (builtin) @_builtin
+  argument: (script_code) @injection.content
+  (#eq? @_builtin "lua:")
+  (#set! injection.language "lua")
+  (#set! injection.include-children))
