@@ -407,7 +407,7 @@ module.exports = grammar({
                             repeat($._macro_invocation_value)
                         )
                     ),
-                    NEWLINE
+                    /\n/
                 )
             ),
 
@@ -2020,7 +2020,8 @@ module.exports = grammar({
         sourcelist: ($) =>
             prec.right(
                 seq(
-                    alias(token(seq('%sourcelist', NEWLINE)), $.section_name),
+                    alias(token('%sourcelist'), $.section_name),
+                    /\n/,
                     optional($._sourcelist_content)
                 )
             ),
@@ -2030,7 +2031,7 @@ module.exports = grammar({
         _sourcelist_content: ($) =>
             repeat1(
                 choice(
-                    seq($._url_or_file, NEWLINE),
+                    seq($._url_or_file, /\n/),
                     $._sourcelist_if_statement,
                     $._sourcelist_ifarch_statement,
                     $._sourcelist_ifos_statement
@@ -2093,7 +2094,8 @@ module.exports = grammar({
         patchlist: ($) =>
             prec.right(
                 seq(
-                    alias(token(seq('%patchlist', NEWLINE)), $.section_name),
+                    alias(token('%patchlist'), $.section_name),
+                    /\n/,
                     optional($._patchlist_content)
                 )
             ),
@@ -2103,7 +2105,7 @@ module.exports = grammar({
         _patchlist_content: ($) =>
             repeat1(
                 choice(
-                    seq($._url_or_file, NEWLINE),
+                    seq($._url_or_file, /\n/),
                     $._patchlist_if_statement,
                     $._patchlist_ifarch_statement,
                     $._patchlist_ifos_statement
@@ -2693,7 +2695,8 @@ module.exports = grammar({
 
         changelog: ($) =>
             seq(
-                alias(token(seq('%changelog', NEWLINE)), $.section_name),
+                alias(token('%changelog'), $.section_name),
+                /\n/,
                 repeat($.changelog_entry)
             ),
 
@@ -2701,12 +2704,7 @@ module.exports = grammar({
         // * Fri Jun 21 2002 Bob Marley <marley@redhat.com>
 
         changelog_entry: ($) =>
-            seq(
-                '*',
-                $.string_content,
-                NEWLINE,
-                repeat(seq('-', $.string, NEWLINE))
-            ),
+            seq('*', $.string_content, /\n/, repeat(seq('-', $.string, /\n/))),
 
         ///////////////////////////////////////////////////////////////////////
         // Special Macros (%autosetup, %autopatch, %setup, ...)
@@ -2735,7 +2733,7 @@ module.exports = grammar({
                         )
                     )
                 ),
-                NEWLINE
+                /\n/
             ),
 
         // Simple setup flags (no parameters)
@@ -2818,7 +2816,7 @@ module.exports = grammar({
                         )
                     )
                 ),
-                NEWLINE
+                /\n/
             ),
 
         // Autosetup flags (no parameters)
@@ -2904,7 +2902,7 @@ module.exports = grammar({
                         alias($._autopatch_argument, $.macro_argument)
                     )
                 ),
-                NEWLINE
+                /\n/
             ),
 
         // Autopatch flags (no parameters)
@@ -2964,7 +2962,7 @@ module.exports = grammar({
                             alias($._patch_argument, $.macro_argument)
                         )
                     ),
-                    NEWLINE
+                    /\n/
                 )
             ),
 
