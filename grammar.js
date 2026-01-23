@@ -1641,7 +1641,9 @@ module.exports = grammar({
         _legacy_dependency_tag: (_) =>
             choice(
                 'BuildPrereq', // Build prerequisites (deprecated)
+                'BuildPreReq', // Build prerequisites (deprecated)
                 'Prereq', // Prerequisites (deprecated)
+                'PreReq', // Prerequisites (deprecated)
                 'OrderWithRequires', // Ordering dependency
                 'DocDir', // Documentation directory
                 'Prefix', // Installation prefix

@@ -5130,7 +5130,15 @@
         },
         {
           "type": "STRING",
+          "value": "BuildPreReq"
+        },
+        {
+          "type": "STRING",
           "value": "Prereq"
+        },
+        {
+          "type": "STRING",
+          "value": "PreReq"
         },
         {
           "type": "STRING",

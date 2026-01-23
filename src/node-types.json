@@ -5687,6 +5687,10 @@
     "named": false
   },
   {
+    "type": "BuildPreReq",
+    "named": false
+  },
+  {
     "type": "BuildPrereq",
     "named": false
   },
@@ -5804,6 +5808,10 @@
   },
   {
     "type": "Packager",
+    "named": false
+  },
+  {
+    "type": "PreReq",
     "named": false
   },
   {

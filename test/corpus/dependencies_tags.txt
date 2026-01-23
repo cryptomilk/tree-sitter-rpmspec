@@ -46,6 +46,23 @@ BuildRequires: (cmake >= 3.10 and ninja)
                 (word)))))))))
 
 ===============================================================================
+Tag-specific: BuildPreReq (deprecated)
+===============================================================================
+
+BuildPreReq: rpm-macros-systemd
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (rich_dependency_list
+        (dependency
+          name: (dependency_name
+            (word)))))))
+
+===============================================================================
 Tag-specific: Recommends with boolean dependency
 ===============================================================================
 
