@@ -2397,7 +2397,7 @@ module.exports = grammar({
                         )
                     ),
                     optional(field('subpackage', $.trigger_subpackage)),
-                    optional(field('interpreter', $.trigger_interpreter)),
+                    optional(field('interpreter', $.script_interpreter)),
                     optional(field('condition', $.trigger_condition)),
                     token.immediate(NEWLINE),
                     optional($.script_block)
@@ -2406,9 +2406,6 @@ module.exports = grammar({
 
         // Trigger subpackage: [-n] <name>
         trigger_subpackage: ($) => seq(optional('-n'), $.subpackage_name),
-
-        // Trigger interpreter: -p <program>
-        trigger_interpreter: ($) => seq('-p', $._literal),
 
         // Trigger condition: -- <dependency_list>
         trigger_condition: ($) => seq('--', $.dependency_list),
@@ -2444,7 +2441,7 @@ module.exports = grammar({
                         )
                     ),
                     optional(field('subpackage', $.trigger_subpackage)),
-                    optional(field('interpreter', $.trigger_interpreter)),
+                    optional(field('interpreter', $.script_interpreter)),
                     optional(field('priority', $.file_trigger_priority)),
                     optional(field('paths', $.file_trigger_paths)),
                     token.immediate(NEWLINE),

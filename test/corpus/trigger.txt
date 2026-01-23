@@ -88,8 +88,8 @@ print "I'm in my trigger!\n";
     subpackage: (trigger_subpackage
       (subpackage_name
         (word)))
-    interpreter: (trigger_interpreter
-      (word))
+    interpreter: (script_interpreter
+      program: (interpreter_program))
     condition: (trigger_condition
       (dependency_list
         (dependency

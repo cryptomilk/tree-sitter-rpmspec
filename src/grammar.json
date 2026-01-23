@@ -9106,7 +9106,7 @@
                 "name": "interpreter",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "trigger_interpreter"
+                  "name": "script_interpreter"
                 }
               },
               {
@@ -9170,19 +9170,6 @@
         {
           "type": "SYMBOL",
           "name": "subpackage_name"
-        }
-      ]
-    },
-    "trigger_interpreter": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "-p"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_literal"
         }
       ]
     },
@@ -9262,7 +9249,7 @@
                 "name": "interpreter",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "trigger_interpreter"
+                  "name": "script_interpreter"
                 }
               },
               {

@@ -1709,7 +1709,7 @@
         "required": false,
         "types": [
           {
-            "type": "trigger_interpreter",
+            "type": "script_interpreter",
             "named": true
           }
         ]
@@ -5156,7 +5156,7 @@
         "required": false,
         "types": [
           {
-            "type": "trigger_interpreter",
+            "type": "script_interpreter",
             "named": true
           }
         ]
@@ -5215,25 +5215,6 @@
       "types": [
         {
           "type": "dependency_list",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "trigger_interpreter",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "_primary_expression",
-          "named": true
-        },
-        {
-          "type": "concatenation",
           "named": true
         }
       ]
