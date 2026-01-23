@@ -48,7 +48,7 @@ cat /dev/urandom
   (runtime_scriptlet
     (subpackage_name
       (word))
-    (shell_block
+    (script_block
       (shell_content))))
 
 ===============================================================================

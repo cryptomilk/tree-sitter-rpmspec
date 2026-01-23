@@ -51,7 +51,7 @@ cat /dev/urandom
     subpackage: (trigger_subpackage
       (subpackage_name
         (word)))
-    (shell_block
+    (script_block
       (shell_content))))
 
 ===============================================================================
@@ -103,5 +103,5 @@ print "I'm in my trigger!\n";
           version: (dependency_version_constraint
             operator: (dependency_comparison_operator)
             version: (version)))))
-    (shell_block
+    (script_block
       (shell_content))))

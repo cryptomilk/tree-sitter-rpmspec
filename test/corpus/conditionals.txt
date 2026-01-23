@@ -552,14 +552,14 @@ make test
 (spec
   (check_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (shell_content)))
   (if_statement
     condition: (not_operator
       argument: (with_operator
         (identifier)))
     consequence: (runtime_scriptlet
-      (shell_block
+      (script_block
         (macro_parametric_expansion
           name: (simple_macro)
           argument: (word))))))

@@ -10,7 +10,7 @@ cp %{S:0} .
 (spec
   (build_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (shell_content)
       (macro_expansion
         (macro_source)
@@ -29,7 +29,7 @@ Simple Macro Expansion (Patch colon syntax P:1)
 (spec
   (build_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (macro_expansion
         (macro_patch)
         argument: (integer)))))
@@ -46,7 +46,7 @@ cp %{S:123} .
 (spec
   (build_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (shell_content)
       (macro_expansion
         (macro_source)
@@ -143,7 +143,7 @@ Simple Macro Expansion (in shell block followed by section)
 (spec
   (install_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (macro_simple_expansion
         (simple_macro))))
   (files
@@ -168,7 +168,7 @@ find %{buildroot} -name foo
 (spec
   (install_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (shell_content)
       (macro_simple_expansion
         (simple_macro))

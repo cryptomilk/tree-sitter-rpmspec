@@ -16,7 +16,7 @@
 ; - Editor must support tree-sitter language injection
 
 ; Inject bash into shell content within scriptlets
-(shell_block (shell_content) @injection.content
+(script_block (shell_content) @injection.content
   (#set! injection.language "bash"))
 
 ; Inject bash into shell content inside conditionals

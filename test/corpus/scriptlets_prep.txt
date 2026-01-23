@@ -22,7 +22,7 @@ Prep Section (%setup)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (setup_macro
         (builtin)
         (macro_option)))))
@@ -39,7 +39,7 @@ Prep Section (%setup with flags)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (setup_macro
         (builtin)
         (macro_option)
@@ -57,7 +57,7 @@ Prep Section (%setup with source options)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (setup_macro
         (builtin)
         (macro_option
@@ -77,7 +77,7 @@ Prep Section (%setup with name option)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (setup_macro
         (builtin)
         (macro_option
@@ -95,7 +95,7 @@ Prep Section (%setup complex combination)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (setup_macro
         (builtin)
         (macro_option)
@@ -118,7 +118,7 @@ Prep Section (%setup standalone)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (setup_macro
         (builtin)
         (macro_option)
@@ -137,7 +137,7 @@ Prep Section (%setup edge cases)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (setup_macro
         (builtin)
         (macro_option))
@@ -161,7 +161,7 @@ Prep Section (%autosetup basic)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (autosetup_macro
         (builtin)))))
 
@@ -177,7 +177,7 @@ Prep Section (%autosetup with VCS)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (autosetup_macro
         (builtin)
         (macro_option)))))
@@ -194,7 +194,7 @@ Prep Section (%autosetup with options)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (autosetup_macro
         (builtin)
         (macro_option)
@@ -216,7 +216,7 @@ Prep Section (%autosetup with macro-concatenated directory)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (autosetup_macro
         (builtin)
         argument: (macro_option
@@ -239,7 +239,7 @@ Prep Section (%autopatch basic)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (autopatch_macro
         (builtin)))))
 
@@ -255,7 +255,7 @@ Prep Section (%autopatch with range)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (autopatch_macro
         (builtin)
         (macro_option
@@ -275,7 +275,7 @@ Prep Section (%autopatch with arguments)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (autopatch_macro
         (builtin)
         (macro_argument
@@ -298,7 +298,7 @@ Prep Section (%patch basic usage)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (patch_macro
         (builtin)
         (macro_argument
@@ -321,7 +321,7 @@ Prep Section (%patch with flags)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (patch_macro
         (builtin)
         (macro_argument
@@ -349,7 +349,7 @@ Prep Section (%patch with string options)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (patch_macro
         (builtin)
         (macro_argument
@@ -376,7 +376,7 @@ Prep Section (%patch complex combination)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (patch_macro
         (builtin)
         (macro_argument
@@ -409,7 +409,7 @@ Prep Section (%patch standalone)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (patch_macro
         (builtin)
         (macro_argument
@@ -435,7 +435,7 @@ Prep Section (%patch edge cases)
 (spec
   (prep_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (patch_macro
         (builtin)
         (macro_argument
@@ -463,5 +463,5 @@ echo "pre-prep step"
   (prep_scriptlet
     (section_name)
     (scriptlet_augment_option)
-    (shell_block
+    (script_block
       (shell_content))))

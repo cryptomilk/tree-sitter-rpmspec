@@ -794,11 +794,11 @@
       "required": true,
       "types": [
         {
-          "type": "section_name",
+          "type": "script_block",
           "named": true
         },
         {
-          "type": "shell_block",
+          "type": "section_name",
           "named": true
         }
       ]
@@ -886,11 +886,11 @@
       "required": true,
       "types": [
         {
-          "type": "section_name",
+          "type": "script_block",
           "named": true
         },
         {
-          "type": "shell_block",
+          "type": "section_name",
           "named": true
         }
       ]
@@ -916,11 +916,11 @@
       "required": true,
       "types": [
         {
-          "type": "section_name",
+          "type": "script_block",
           "named": true
         },
         {
-          "type": "shell_block",
+          "type": "section_name",
           "named": true
         }
       ]
@@ -1067,11 +1067,11 @@
       "required": true,
       "types": [
         {
-          "type": "section_name",
+          "type": "script_block",
           "named": true
         },
         {
-          "type": "shell_block",
+          "type": "section_name",
           "named": true
         }
       ]
@@ -1780,7 +1780,7 @@
       "required": false,
       "types": [
         {
-          "type": "shell_block",
+          "type": "script_block",
           "named": true
         }
       ]
@@ -2065,11 +2065,11 @@
       "required": true,
       "types": [
         {
-          "type": "section_name",
+          "type": "script_block",
           "named": true
         },
         {
-          "type": "shell_block",
+          "type": "section_name",
           "named": true
         }
       ]
@@ -2359,11 +2359,11 @@
       "required": true,
       "types": [
         {
-          "type": "section_name",
+          "type": "script_block",
           "named": true
         },
         {
-          "type": "shell_block",
+          "type": "section_name",
           "named": true
         }
       ]
@@ -4046,11 +4046,11 @@
       "required": true,
       "types": [
         {
-          "type": "section_name",
+          "type": "script_block",
           "named": true
         },
         {
-          "type": "shell_block",
+          "type": "section_name",
           "named": true
         }
       ]
@@ -4108,11 +4108,82 @@
       "required": false,
       "types": [
         {
-          "type": "shell_block",
+          "type": "script_block",
           "named": true
         },
         {
           "type": "subpackage_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "script_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "autopatch_macro",
+          "named": true
+        },
+        {
+          "type": "autosetup_macro",
+          "named": true
+        },
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "ifarch_statement",
+          "named": true
+        },
+        {
+          "type": "ifos_statement",
+          "named": true
+        },
+        {
+          "type": "macro_definition",
+          "named": true
+        },
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_expression",
+          "named": true
+        },
+        {
+          "type": "macro_parametric_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_shell_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_undefinition",
+          "named": true
+        },
+        {
+          "type": "patch_macro",
+          "named": true
+        },
+        {
+          "type": "setup_macro",
+          "named": true
+        },
+        {
+          "type": "shell_content",
           "named": true
         }
       ]
@@ -4486,77 +4557,6 @@
       "types": [
         {
           "type": "builtin",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "shell_block",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "autopatch_macro",
-          "named": true
-        },
-        {
-          "type": "autosetup_macro",
-          "named": true
-        },
-        {
-          "type": "if_statement",
-          "named": true
-        },
-        {
-          "type": "ifarch_statement",
-          "named": true
-        },
-        {
-          "type": "ifos_statement",
-          "named": true
-        },
-        {
-          "type": "macro_definition",
-          "named": true
-        },
-        {
-          "type": "macro_expansion",
-          "named": true
-        },
-        {
-          "type": "macro_expression",
-          "named": true
-        },
-        {
-          "type": "macro_parametric_expansion",
-          "named": true
-        },
-        {
-          "type": "macro_shell_expansion",
-          "named": true
-        },
-        {
-          "type": "macro_simple_expansion",
-          "named": true
-        },
-        {
-          "type": "macro_undefinition",
-          "named": true
-        },
-        {
-          "type": "patch_macro",
-          "named": true
-        },
-        {
-          "type": "setup_macro",
-          "named": true
-        },
-        {
-          "type": "shell_content",
           "named": true
         }
       ]
@@ -5221,7 +5221,7 @@
       "required": false,
       "types": [
         {
-          "type": "shell_block",
+          "type": "script_block",
           "named": true
         }
       ]

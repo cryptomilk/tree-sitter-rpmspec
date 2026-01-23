@@ -23,7 +23,7 @@ echo "appending to clean"
   (clean_scriptlet
     (section_name)
     (scriptlet_augment_option)
-    (shell_block
+    (script_block
       (shell_content))))
 
 ===============================================================================
@@ -39,5 +39,5 @@ echo "prepending to clean"
   (clean_scriptlet
     (section_name)
     (scriptlet_augment_option)
-    (shell_block
+    (script_block
       (shell_content))))

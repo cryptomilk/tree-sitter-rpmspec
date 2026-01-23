@@ -10,7 +10,7 @@ echo "\n\t\r"
 (spec
   (build_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (shell_content))))
 
 ===============================================================================
@@ -27,7 +27,7 @@ fi
 (spec
   (build_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (shell_content)
       (shell_content)
       (shell_content))))
@@ -44,7 +44,7 @@ FOO="bar"
 (spec
   (build_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (shell_content))))
 
 ===============================================================================
@@ -59,7 +59,7 @@ VERSION=$(cat VERSION)
 (spec
   (build_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (shell_content))))
 
 ===============================================================================
@@ -74,7 +74,7 @@ export PATH="${PATH}:/opt/bin"
 (spec
   (build_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (shell_content))))
 
 ===============================================================================
@@ -89,7 +89,7 @@ echo "Building %{name}"
 (spec
   (build_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (shell_content)
       (macro_expansion
         (identifier))
@@ -107,7 +107,7 @@ Shell Content (RPM macro at start of line)
 (spec
   (build_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (macro_expansion
         (identifier))
       (shell_content))))
@@ -124,7 +124,7 @@ Shell Content (multiple RPM macros in line)
 (spec
   (build_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (macro_expansion
         (identifier))
       (shell_content)
@@ -146,7 +146,7 @@ echo %version
 (spec
   (build_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (shell_content)
       (macro_simple_expansion
         (simple_macro)))))
@@ -163,7 +163,7 @@ echo "Result: %[1 + 2]"
 (spec
   (build_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (shell_content)
       (macro_expression
         (macro_arithmetic_operator
@@ -183,7 +183,7 @@ echo "Date: %(date +%Y)"
 (spec
   (build_scriptlet
     (section_name)
-    (shell_block
+    (script_block
       (shell_content)
       (macro_shell_expansion
         (shell_command

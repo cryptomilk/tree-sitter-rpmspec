@@ -75,12 +75,12 @@ function buildScriptlet(name) {
                     alias(token(seq('%' + name, / +/)), $.section_name),
                     field('argument', $.scriptlet_augment_option),
                     token.immediate(NEWLINE),
-                    optional($.shell_block)
+                    optional($.script_block)
                 ),
                 // Without options: %name
                 seq(
                     alias(token(seq('%' + name, NEWLINE)), $.section_name),
-                    optional($.shell_block)
+                    optional($.script_block)
                 )
             )
         );
@@ -2252,7 +2252,7 @@ module.exports = grammar({
         // Can contain shell commands, macro expansions, and conditional blocks
         // Right precedence allows greedy matching of script content
         // Uses shell_content instead of string for permissive shell parsing
-        shell_block: ($) =>
+        script_block: ($) =>
             prec.right(
                 repeat1(
                     choice(
@@ -2342,7 +2342,7 @@ module.exports = grammar({
                     ),
                     optional(seq(optional('-n'), $.subpackage_name)), // Optional subpackage name
                     token.immediate(NEWLINE),
-                    optional($.shell_block) // Shell commands to execute
+                    optional($.script_block) // Shell commands to execute
                 )
             ),
 
@@ -2372,7 +2372,7 @@ module.exports = grammar({
                     optional(field('interpreter', $.trigger_interpreter)),
                     optional(field('condition', $.trigger_condition)),
                     token.immediate(NEWLINE),
-                    optional($.shell_block)
+                    optional($.script_block)
                 )
             ),
 
@@ -2420,7 +2420,7 @@ module.exports = grammar({
                     optional(field('priority', $.file_trigger_priority)),
                     optional(field('paths', $.file_trigger_paths)),
                     token.immediate(NEWLINE),
-                    optional($.shell_block)
+                    optional($.script_block)
                 )
             ),
 
@@ -3116,7 +3116,7 @@ module.exports = grammar({
         // Shell content: permissive raw text for shell script sections
         // Stops at: %, newline
         // Includes: quotes, backslashes, !, etc. - anything valid in shell
-        // Used in shell_block for %prep, %build, %install, etc.
+        // Used in script_block for %prep, %build, %install, etc.
         shell_content: (_) => token(prec(-1, /[^%\r\n]+/)),
 
         // Quoted strings: explicit string literals with macro expansion

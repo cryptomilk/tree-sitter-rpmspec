@@ -51,7 +51,7 @@ cat /dev/urandom
     subpackage: (trigger_subpackage
       (subpackage_name
         (word)))
-    (shell_block
+    (script_block
       (shell_content))))
 
 ===============================================================================
@@ -68,7 +68,7 @@ ldconfig
     paths: (file_trigger_paths
       (word)
       (word))
-    (shell_block
+    (script_block
       (shell_content))))
 
 ===============================================================================
@@ -86,7 +86,7 @@ systemctl daemon-reload
       (integer))
     paths: (file_trigger_paths
       (word))
-    (shell_block
+    (script_block
       (shell_content))))
 
 ===============================================================================
@@ -102,7 +102,7 @@ update-desktop-database
   (file_trigger
     paths: (file_trigger_paths
       (word))
-    (shell_block
+    (script_block
       (shell_content))))
 
 ===============================================================================
@@ -120,6 +120,6 @@ gdk-pixbuf-query-loaders
     paths: (file_trigger_paths
       (word)
       (word))
-    (shell_block
+    (script_block
       (shell_content)
       (shell_content))))
