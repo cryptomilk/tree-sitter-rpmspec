@@ -166,6 +166,8 @@ module.exports = grammar({
         // Context-specific tokens (only valid in specific macro contexts)
         $.expand_code, // Raw text inside %{expand:...} with balanced braces
         $.script_code, // Raw text inside %(...) with balanced parentheses
+        // Newline token for explicit line termination
+        /\n/,
     ],
 
     // Inline rules are flattened in the parse tree to reduce nesting
@@ -754,8 +756,7 @@ module.exports = grammar({
         //// Macro Definition
         //
         // %define <name>[(opts)] <body>
-        macro_definition: ($) =>
-            seq($._macro_definition, token.immediate(NEWLINE)),
+        macro_definition: ($) => seq($._macro_definition, /\n/),
 
         _macro_definition: ($) =>
             prec.left(

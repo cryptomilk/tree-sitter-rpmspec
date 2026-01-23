@@ -97,7 +97,9 @@ enum TokenType {
     FILES_IFNOS,   /**< %ifnos inside %files section */
     /* Context-specific tokens - only valid in specific macro contexts */
     EXPAND_CODE, /**< Raw text inside %{expand:...} with balanced braces */
-    SCRIPT_CODE  /**< Raw text inside %(...) with balanced parentheses */
+    SCRIPT_CODE, /**< Raw text inside %(...) with balanced parentheses */
+    /* Newline token for explicit line termination */
+    NEWLINE /**< Newline character for line-sensitive contexts */
 };
 
 /**
@@ -1203,13 +1205,24 @@ static bool consume_percent_and_identifier(TSLexer *lexer,
  * Advances the lexer past any whitespace characters while tracking whether
  * a newline was crossed. This is needed for parametric macro detection.
  *
+ * When valid_symbols[NEWLINE] is true, stops at newlines instead of skipping
+ * them. This allows tree-sitter's internal lexer to match the /\n/ external
+ * token when the grammar expects it.
+ *
  * @param lexer The lexer
+ * @param valid_symbols Array indicating which tokens are valid
  * @param[in,out] at_line_start Set to true if a newline is crossed
  */
-static void skip_whitespace_track_newline(TSLexer *lexer, bool *at_line_start)
+static void skip_whitespace_track_newline(TSLexer *lexer,
+                                          const bool *valid_symbols,
+                                          bool *at_line_start)
 {
     while (isspace(lexer->lookahead)) {
         if (lexer->lookahead == '\n' || lexer->lookahead == '\r') {
+            /* Don't skip newlines if grammar expects them */
+            if (valid_symbols[NEWLINE]) {
+                return;
+            }
             *at_line_start = true;
         }
         lexer->advance(lexer, true);
@@ -1271,7 +1284,7 @@ rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
     if (conditionals_valid || parametric_valid) {
         bool at_line_start = (lexer->get_column(lexer) == 0);
 
-        skip_whitespace_track_newline(lexer, &at_line_start);
+        skip_whitespace_track_newline(lexer, valid_symbols, &at_line_start);
 
         if (lexer->lookahead == '%') {
             lexer->mark_end(lexer);

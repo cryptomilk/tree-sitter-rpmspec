@@ -1665,11 +1665,8 @@
           "name": "_macro_definition"
         },
         {
-          "type": "IMMEDIATE_TOKEN",
-          "content": {
-            "type": "PATTERN",
-            "value": "\\r?\\n"
-          }
+          "type": "PATTERN",
+          "value": "\\n"
         }
       ]
     },
@@ -11654,6 +11651,10 @@
     {
       "type": "SYMBOL",
       "name": "script_code"
+    },
+    {
+      "type": "PATTERN",
+      "value": "\\n"
     }
   ],
   "inline": [
