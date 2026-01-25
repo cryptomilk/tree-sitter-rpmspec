@@ -3994,6 +3994,14 @@
           "named": true
         },
         {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
+          "named": true
+        },
+        {
           "type": "section_name",
           "named": true
         },
@@ -4841,6 +4849,14 @@
       "types": [
         {
           "type": "file",
+          "named": true
+        },
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
           "named": true
         },
         {

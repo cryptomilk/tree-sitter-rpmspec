@@ -1461,11 +1461,18 @@ module.exports = grammar({
                     field('value', $._url_or_file), // URL or file path
                     /\n/
                 ),
-                // URL tags (URL, Url, BugUrl) - URL value
+                // URL tags (URL, Url, BugUrl) - URL value or macro
                 seq(
                     alias($._url_tag, $.tag), // URL tag name
                     token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
-                    field('value', alias($.url_with_macro, $.url)), // URL value
+                    field(
+                        'value',
+                        choice(
+                            alias($.url_with_macro, $.url), // Full URL
+                            $.macro_expansion, // %{gourl}
+                            $.macro_simple_expansion // %gourl
+                        )
+                    ),
                     /\n/
                 ),
                 // Strong dependency tags (Requires, BuildRequires) - full boolean support
@@ -2168,10 +2175,14 @@ module.exports = grammar({
         ),
 
         // URL or file path - reusable for Source:, Patch:, %sourcelist, %patchlist
+        // Also accepts a bare macro when the entire URL/path is in a macro (e.g., %{gosource})
+        // Macro-only options have lower precedence so URL/path patterns are preferred
         _url_or_file: ($) =>
             choice(
                 alias($.url_with_macro, $.url),
-                alias($.path_with_macro, $.file)
+                alias($.path_with_macro, $.file),
+                prec(-1, $.macro_expansion),
+                prec(-1, $.macro_simple_expansion)
             ),
 
         ///////////////////////////////////////////////////////////////////////

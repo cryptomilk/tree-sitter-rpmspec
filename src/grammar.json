@@ -4541,13 +4541,26 @@
               "type": "FIELD",
               "name": "value",
               "content": {
-                "type": "ALIAS",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "url_with_macro"
-                },
-                "named": true,
-                "value": "url"
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "url_with_macro"
+                    },
+                    "named": true,
+                    "value": "url"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "macro_expansion"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "macro_simple_expansion"
+                  }
+                ]
               }
             },
             {
@@ -7429,6 +7442,22 @@
           },
           "named": true,
           "value": "file"
+        },
+        {
+          "type": "PREC",
+          "value": -1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "macro_expansion"
+          }
+        },
+        {
+          "type": "PREC",
+          "value": -1,
+          "content": {
+            "type": "SYMBOL",
+            "name": "macro_simple_expansion"
+          }
         }
       ]
     },
