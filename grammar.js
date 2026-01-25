@@ -2797,10 +2797,13 @@ module.exports = grammar({
 
         // Setup options that take a source number parameter
         _setup_source_option: ($) =>
-            seq(
-                '-',
-                choice('a', 'b'), // -a: unpack after cd, -b: unpack before cd
-                field('number', $.integer)
+            choice(
+                token(seq('-', choice('a', 'b'), /[0-9]+/)), // -a4, -b4
+                seq(
+                    '-',
+                    choice('a', 'b'), // -a: unpack after cd, -b: unpack before cd
+                    field('number', $.integer)
+                ) // -a 4, -b 4
             ),
 
         // Setup name option that takes a directory name
@@ -2882,7 +2885,10 @@ module.exports = grammar({
 
         // Autosetup source option: -a N
         _autosetup_source_option: ($) =>
-            seq('-', 'a', field('number', $.integer)),
+            choice(
+                token(seq('-', 'a', /[0-9]+/)), // -a4
+                seq('-', 'a', field('number', $.integer)) // -a 4
+            ),
 
         // Autosetup name option: -n DIR
         _autosetup_name_option: ($) =>

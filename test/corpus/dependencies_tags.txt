@@ -84,14 +84,20 @@ BuildRequires(pre): rpm-build-xdg
 Tag-specific: BuildRequires with invalid qualifier
 ===============================================================================
 
+# BuildRequires(post) is invalid - only Requires supports (post).
+# Error recovery parses "rpm" as simple_macro and "-build-xdg" as macro_value_text.
+# The exact ERROR structure may change when grammar rules are modified.
 BuildRequires(post): rpm-build-xdg
 
 -------------------------------------------------------------------------------
 
 (spec
+  (comment)
+  (comment)
+  (comment)
   (ERROR
     (simple_macro)
-    (simple_macro)))
+    (macro_value_text)))
 
 ===============================================================================
 Tag-specific: Recommends with boolean dependency

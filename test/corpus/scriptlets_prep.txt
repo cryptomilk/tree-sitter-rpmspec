@@ -66,6 +66,24 @@ Prep Section (%setup with source options)
           (integer))))))
 
 ===============================================================================
+Prep Section (%setup with attached source numbers)
+===============================================================================
+
+%prep
+%setup -a4 -b10
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (script_block
+      (setup_macro
+        (builtin)
+        (macro_option)
+        (macro_option)))))
+
+===============================================================================
 Prep Section (%setup with name option)
 ===============================================================================
 
@@ -202,6 +220,24 @@ Prep Section (%autosetup with options)
         (macro_option)
         (macro_option
           (word))
+        (macro_option)))))
+
+===============================================================================
+Prep Section (%autosetup with attached source number)
+===============================================================================
+
+%prep
+%autosetup -a4 -p1
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (script_block
+      (autosetup_macro
+        (builtin)
+        (macro_option)
         (macro_option)))))
 
 ===============================================================================
