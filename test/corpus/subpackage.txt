@@ -150,3 +150,26 @@ BuildRequires: binutils %{?binutils_version_req}
               (macro_expansion
                 (conditional_expansion
                   condition: (identifier))))))))))
+
+===============================================================================
+Subpackage (with plus in name)
+===============================================================================
+
+%package -n %{name}+default-devel
+Summary: Default feature devel
+
+-------------------------------------------------------------------------------
+
+(spec
+  (package
+    (section_name)
+    (subpackage_name
+      (macro_expansion
+        (identifier)))
+    (preamble
+      (tags
+        (tag)
+        value: (concatenation
+          (word)
+          (word)
+          (word))))))

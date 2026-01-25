@@ -2007,7 +2007,7 @@ module.exports = grammar({
                     choice($.word, $.macro_simple_expansion, $.macro_expansion),
                     repeat(
                         choice(
-                            token.immediate(/[a-zA-Z0-9_-]+/),
+                            token.immediate(/[a-zA-Z0-9_+-]+/),
                             $.macro_simple_expansion,
                             $.macro_expansion
                         )
