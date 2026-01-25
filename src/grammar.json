@@ -6123,7 +6123,19 @@
         "members": [
           {
             "type": "SYMBOL",
-            "name": "dependency"
+            "name": "elf_dependency"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "path_dependency"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "qualified_dependency"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "versioned_dependency"
           },
           {
             "type": "SYMBOL",

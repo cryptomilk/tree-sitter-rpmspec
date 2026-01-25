@@ -13,12 +13,10 @@ Requires: (pkgA or pkgB)
       value: (rich_dependency_list
         (boolean_dependency
           (boolean_or_expression
-            left: (dependency
-              (versioned_dependency
-                name: (word)))
-            right: (dependency
-              (versioned_dependency
-                name: (word)))))))))
+            left: (versioned_dependency
+              name: (word))
+            right: (versioned_dependency
+              name: (word))))))))
 
 ===============================================================================
 Tag-specific: BuildRequires with boolean dependency
@@ -35,15 +33,13 @@ BuildRequires: (cmake >= 3.10 and ninja)
       value: (rich_dependency_list
         (boolean_dependency
           (boolean_and_expression
-            left: (dependency
-              (versioned_dependency
-                name: (word)
-                version: (dependency_version_constraint
-                  operator: (dependency_comparison_operator)
-                  version: (version))))
-            right: (dependency
-              (versioned_dependency
-                name: (word)))))))))
+            left: (versioned_dependency
+              name: (word)
+              version: (dependency_version_constraint
+                operator: (dependency_comparison_operator)
+                version: (version)))
+            right: (versioned_dependency
+              name: (word))))))))
 
 ===============================================================================
 Tag-specific: BuildPreReq (deprecated)
@@ -114,12 +110,10 @@ Recommends: (pkgA and pkgB)
       value: (rich_dependency_list
         (boolean_dependency
           (boolean_and_expression
-            left: (dependency
-              (versioned_dependency
-                name: (word)))
-            right: (dependency
-              (versioned_dependency
-                name: (word)))))))))
+            left: (versioned_dependency
+              name: (word))
+            right: (versioned_dependency
+              name: (word))))))))
 
 ===============================================================================
 Tag-specific: Suggests with boolean dependency
@@ -136,12 +130,10 @@ Suggests: (nice-pkg if feature-pkg)
       value: (rich_dependency_list
         (boolean_dependency
           (boolean_if_expression
-            consequence: (dependency
-              (versioned_dependency
-                name: (word)))
-            condition: (dependency
-              (versioned_dependency
-                name: (word)))))))))
+            consequence: (versioned_dependency
+              name: (word))
+            condition: (versioned_dependency
+              name: (word))))))))
 
 ===============================================================================
 Tag-specific: Conflicts without boolean (simple)

@@ -320,7 +320,19 @@
             "named": true
           },
           {
-            "type": "dependency",
+            "type": "elf_dependency",
+            "named": true
+          },
+          {
+            "type": "path_dependency",
+            "named": true
+          },
+          {
+            "type": "qualified_dependency",
+            "named": true
+          },
+          {
+            "type": "versioned_dependency",
             "named": true
           }
         ]
@@ -354,7 +366,19 @@
             "named": true
           },
           {
-            "type": "dependency",
+            "type": "elf_dependency",
+            "named": true
+          },
+          {
+            "type": "path_dependency",
+            "named": true
+          },
+          {
+            "type": "qualified_dependency",
+            "named": true
+          },
+          {
+            "type": "versioned_dependency",
             "named": true
           }
         ]
@@ -394,7 +418,19 @@
           "named": true
         },
         {
-          "type": "dependency",
+          "type": "elf_dependency",
+          "named": true
+        },
+        {
+          "type": "path_dependency",
+          "named": true
+        },
+        {
+          "type": "qualified_dependency",
+          "named": true
+        },
+        {
+          "type": "versioned_dependency",
           "named": true
         }
       ]
@@ -433,7 +469,19 @@
             "named": true
           },
           {
-            "type": "dependency",
+            "type": "elf_dependency",
+            "named": true
+          },
+          {
+            "type": "path_dependency",
+            "named": true
+          },
+          {
+            "type": "qualified_dependency",
+            "named": true
+          },
+          {
+            "type": "versioned_dependency",
             "named": true
           }
         ]
@@ -467,7 +515,19 @@
             "named": true
           },
           {
-            "type": "dependency",
+            "type": "elf_dependency",
+            "named": true
+          },
+          {
+            "type": "path_dependency",
+            "named": true
+          },
+          {
+            "type": "qualified_dependency",
+            "named": true
+          },
+          {
+            "type": "versioned_dependency",
             "named": true
           }
         ]
@@ -501,7 +561,19 @@
             "named": true
           },
           {
-            "type": "dependency",
+            "type": "elf_dependency",
+            "named": true
+          },
+          {
+            "type": "path_dependency",
+            "named": true
+          },
+          {
+            "type": "qualified_dependency",
+            "named": true
+          },
+          {
+            "type": "versioned_dependency",
             "named": true
           }
         ]
@@ -589,7 +661,19 @@
             "named": true
           },
           {
-            "type": "dependency",
+            "type": "elf_dependency",
+            "named": true
+          },
+          {
+            "type": "path_dependency",
+            "named": true
+          },
+          {
+            "type": "qualified_dependency",
+            "named": true
+          },
+          {
+            "type": "versioned_dependency",
             "named": true
           }
         ]
@@ -623,7 +707,19 @@
             "named": true
           },
           {
-            "type": "dependency",
+            "type": "elf_dependency",
+            "named": true
+          },
+          {
+            "type": "path_dependency",
+            "named": true
+          },
+          {
+            "type": "qualified_dependency",
+            "named": true
+          },
+          {
+            "type": "versioned_dependency",
             "named": true
           }
         ]
@@ -663,7 +759,19 @@
             "named": true
           },
           {
-            "type": "dependency",
+            "type": "elf_dependency",
+            "named": true
+          },
+          {
+            "type": "path_dependency",
+            "named": true
+          },
+          {
+            "type": "qualified_dependency",
+            "named": true
+          },
+          {
+            "type": "versioned_dependency",
             "named": true
           }
         ]
@@ -697,7 +805,19 @@
             "named": true
           },
           {
-            "type": "dependency",
+            "type": "elf_dependency",
+            "named": true
+          },
+          {
+            "type": "path_dependency",
+            "named": true
+          },
+          {
+            "type": "qualified_dependency",
+            "named": true
+          },
+          {
+            "type": "versioned_dependency",
             "named": true
           }
         ]
@@ -737,7 +857,19 @@
             "named": true
           },
           {
-            "type": "dependency",
+            "type": "elf_dependency",
+            "named": true
+          },
+          {
+            "type": "path_dependency",
+            "named": true
+          },
+          {
+            "type": "qualified_dependency",
+            "named": true
+          },
+          {
+            "type": "versioned_dependency",
             "named": true
           }
         ]
@@ -771,7 +903,19 @@
             "named": true
           },
           {
-            "type": "dependency",
+            "type": "elf_dependency",
+            "named": true
+          },
+          {
+            "type": "path_dependency",
+            "named": true
+          },
+          {
+            "type": "qualified_dependency",
+            "named": true
+          },
+          {
+            "type": "versioned_dependency",
             "named": true
           }
         ]

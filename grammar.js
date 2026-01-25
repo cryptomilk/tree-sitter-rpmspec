@@ -2001,12 +2001,15 @@ module.exports = grammar({
             ),
 
         // Base operand in boolean expressions
-        // Can be a regular dependency or a nested boolean expression
+        // Can be any dependency type or a nested boolean expression
         _boolean_operand: ($) =>
             prec(
                 PREC.boolean_operand,
                 choice(
-                    $.dependency,
+                    $.elf_dependency,
+                    $.path_dependency,
+                    $.qualified_dependency,
+                    $.versioned_dependency,
                     $.boolean_dependency // Nested parentheses
                 )
             ),
