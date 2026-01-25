@@ -2448,12 +2448,20 @@ module.exports = grammar({
                             $.macro_simple_expansion, // %name
                             $.macro_shell_expansion, // %(shell)
                             $.macro_expression, // %[expr]
+                            alias($._literal_percent, $.script_content), // Fallback for % followed by invalid char
                             $.script_content // Raw script text
                         )
                     ),
                     /\n/ // Line terminator
                 )
             ),
+
+        // Literal percent sign followed by a character that doesn't start a macro
+        // This handles cases like [^%] in regex patterns where % is followed by ]
+        // Low precedence so macro rules are tried first
+        // Excludes: % a-z A-Z _ { ( [ * # 0-9 ! ? space tab
+        _literal_percent: (_) =>
+            prec(-2, token(seq('%', /[^%a-zA-Z_{\(\[\*#0-9!\? \t]/))),
 
         // Script line without line continuation support
         // Used inside conditional consequences where line continuation
@@ -2470,6 +2478,7 @@ module.exports = grammar({
                             $.macro_simple_expansion, // %name
                             $.macro_shell_expansion, // %(shell)
                             $.macro_expression, // %[expr]
+                            alias($._literal_percent, $.script_content), // Fallback for % followed by invalid char
                             $.script_content // Raw script text
                         )
                     ),

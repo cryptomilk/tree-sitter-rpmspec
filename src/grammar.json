@@ -8313,6 +8313,15 @@
                   "name": "macro_expression"
                 },
                 {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_literal_percent"
+                  },
+                  "named": true,
+                  "value": "script_content"
+                },
+                {
                   "type": "SYMBOL",
                   "name": "script_content"
                 }
@@ -8324,6 +8333,26 @@
             "value": "\\n"
           }
         ]
+      }
+    },
+    "_literal_percent": {
+      "type": "PREC",
+      "value": -2,
+      "content": {
+        "type": "TOKEN",
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "%"
+            },
+            {
+              "type": "PATTERN",
+              "value": "[^%a-zA-Z_{\\(\\[\\*#0-9!\\? \\t]"
+            }
+          ]
+        }
       }
     },
     "_script_line_simple": {
@@ -8360,6 +8389,15 @@
                 {
                   "type": "SYMBOL",
                   "name": "macro_expression"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_literal_percent"
+                  },
+                  "named": true,
+                  "value": "script_content"
                 },
                 {
                   "type": "SYMBOL",

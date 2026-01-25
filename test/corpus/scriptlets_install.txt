@@ -43,3 +43,21 @@ echo "prepending to install"
     (script_block
       (script_line
         (script_content)))))
+
+===============================================================================
+Install Section (literal percent in regex pattern)
+===============================================================================
+
+%install
+sed -i 's/[^%]//g' file.txt
+
+-------------------------------------------------------------------------------
+
+(spec
+  (install_scriptlet
+    (section_name)
+    (script_block
+      (script_line
+        (script_content)
+        (script_content)
+        (script_content)))))
