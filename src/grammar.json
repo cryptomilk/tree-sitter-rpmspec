@@ -10473,6 +10473,34 @@
                 "value": "-"
               },
               {
+                "type": "REPEAT",
+                "content": {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "c"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "C"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "D"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "T"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "q"
+                    }
+                  ]
+                }
+              },
+              {
                 "type": "STRING",
                 "value": "n"
               }
@@ -10685,6 +10713,42 @@
               {
                 "type": "STRING",
                 "value": "-"
+              },
+              {
+                "type": "REPEAT",
+                "content": {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "v"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "N"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "c"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "C"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "D"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "T"
+                    },
+                    {
+                      "type": "STRING",
+                      "value": "b"
+                    }
+                  ]
+                }
               },
               {
                 "type": "STRING",

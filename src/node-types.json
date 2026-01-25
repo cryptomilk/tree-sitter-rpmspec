@@ -4574,6 +4574,11 @@
     }
   },
   {
+    "type": "script_content",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "script_interpreter",
     "named": true,
     "fields": {
@@ -6614,10 +6619,6 @@
   },
   {
     "type": "script_code",
-    "named": true
-  },
-  {
-    "type": "script_content",
     "named": true
   },
   {

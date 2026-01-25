@@ -170,6 +170,31 @@ Prep Section (%setup edge cases)
             (quoted_string_content)))))))
 
 ===============================================================================
+Prep Section (%setup with combined flags)
+===============================================================================
+
+%prep
+%setup -qn %{name}-%{version} -D -T -a1
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (script_block
+      (setup_macro
+        (builtin)
+        argument: (macro_option
+          directory: (directory
+            (macro_expansion
+              (identifier))
+            (macro_expansion
+              (identifier))))
+        argument: (macro_option)
+        argument: (macro_option)
+        argument: (macro_option)))))
+
+===============================================================================
 Prep Section (%autosetup basic)
 ===============================================================================
 

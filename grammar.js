@@ -2997,10 +2997,14 @@ module.exports = grammar({
         _setup_directory: ($) =>
             choice(alias($.package_name, $.directory), $.quoted_string),
 
-        // Setup name option: -n DIR
+        // Setup name option: -n DIR (or combined forms like -qn, -cqn, -Tqn, etc.)
+        // Supports getopt-style combined flags where -n is last and takes directory argument
         // -n must be a token to require whitespace separation
         _setup_name_option: ($) =>
-            seq(token(seq('-', 'n')), field('directory', $._setup_directory)),
+            seq(
+                token(seq('-', repeat(choice('c', 'C', 'D', 'T', 'q')), 'n')),
+                field('directory', $._setup_directory)
+            ),
 
         // %autosetup macro: automated source unpacking and patch application
         // Syntax: %autosetup [options]
@@ -3054,10 +3058,20 @@ module.exports = grammar({
                 seq(token(seq('-', 'a')), field('number', $.integer)) // -a 4
             ),
 
-        // Autosetup name option: -n DIR
+        // Autosetup name option: -n DIR (or combined forms like -qn, -cqn, etc.)
+        // Supports getopt-style combined flags where -n is last and takes directory argument
         // -n must be a token to require whitespace separation
         _autosetup_name_option: ($) =>
-            seq(token(seq('-', 'n')), field('directory', $._setup_directory)),
+            seq(
+                token(
+                    seq(
+                        '-',
+                        repeat(choice('v', 'N', 'c', 'C', 'D', 'T', 'b')),
+                        'n'
+                    )
+                ),
+                field('directory', $._setup_directory)
+            ),
 
         // Autosetup patch option: -p N
         // -p must be a token to require whitespace separation
