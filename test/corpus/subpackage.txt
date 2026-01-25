@@ -138,7 +138,8 @@ BuildRequires: binutils %{?binutils_version_req}
     consequence: (macro_definition
       (builtin)
       name: (identifier)
-      value: (macro_value_text)
+      value: (word)
+      value: (word)
       value: (version))
     (preamble
       (tags

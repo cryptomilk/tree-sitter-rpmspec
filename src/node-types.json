@@ -3054,10 +3054,6 @@
             "named": true
           },
           {
-            "type": "macro_value_text",
-            "named": true
-          },
-          {
             "type": "quoted_string",
             "named": true
           },
@@ -6488,10 +6484,6 @@
   },
   {
     "type": "macro_option_terminator",
-    "named": true
-  },
-  {
-    "type": "macro_value_text",
     "named": true
   },
   {

@@ -145,6 +145,7 @@ fi \
     value: (integer)
     value: (word)
     value: (word)
+    value: (word)
     value: (line_continuation)
     value: (word)
     value: (word)
@@ -399,7 +400,9 @@ Macros (%global with parenthesized string value)
   (macro_definition
     (builtin)
     name: (identifier)
-    value: (macro_value_text)))
+    value: (word)
+    value: (word)
+    value: (word)))
 
 ===============================================================================
 Macros (%global with parentheses and macro expansion)
@@ -413,7 +416,7 @@ Macros (%global with parentheses and macro expansion)
   (macro_definition
     (builtin)
     name: (identifier)
-    value: (macro_value_text)
+    value: (word)
     value: (macro_expansion
       (identifier))))
 
@@ -429,7 +432,9 @@ Macros (%global with angle brackets)
   (macro_definition
     (builtin)
     name: (identifier)
-    value: (macro_value_text)))
+    value: (word)
+    value: (word)
+    value: (word)))
 
 ===============================================================================
 Macros (%global with pipe and semicolon)
@@ -444,7 +449,7 @@ Macros (%global with pipe and semicolon)
     (builtin)
     name: (identifier)
     value: (word)
-    value: (macro_value_text)
+    value: (word)
     value: (word)
     value: (word)
     value: (word)
@@ -555,9 +560,11 @@ Macros (Escape sequence in macro value - regex pattern)
     name: (identifier)
     value: (word)
     value: (escape_sequence)
-    value: (macro_value_text)
+    value: (word)
+    value: (word)
     value: (escape_sequence)
-    value: (macro_value_text)))
+    value: (word)
+    value: (word)))
 
 ===============================================================================
 Macros (Triple backslash - escaped backslash with line continuation)
@@ -576,4 +583,28 @@ Macros (Triple backslash - escaped backslash with line continuation)
     value: (word)
     value: (escape_sequence)
     value: (line_continuation)
+    value: (word)))
+
+===============================================================================
+Macros (Single quotes in shell command)
+===============================================================================
+
+%global tarball_version %%(echo %{version} | tr '~' '-')
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    name: (identifier)
+    value: (macro_simple_expansion
+      (escaped_percent))
+    value: (word)
+    value: (word)
+    value: (macro_expansion
+      (identifier))
+    value: (word)
+    value: (word)
+    value: (word)
+    value: (word)
     value: (word)))

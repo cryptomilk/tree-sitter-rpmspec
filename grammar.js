@@ -57,6 +57,31 @@ const ANYTHING = /[^\r\n]*/; // Any character except newlines
 const BLANK = /( |\t)+/; // One or more spaces or tabs
 
 /**
+ * Special characters that have syntactic meaning in RPM spec files
+ *
+ * These characters are excluded from the word token and handled by specific rules.
+ * Pattern borrowed from tree-sitter-bash, adapted for RPM spec syntax:
+ * - % replaces $ as the macro expansion prefix
+ * - Similar handling of quotes, braces, parentheses, etc.
+ */
+const SPECIAL_CHARACTERS = [
+    '"',
+    '<',
+    '>',
+    '{',
+    '}',
+    '\\[',
+    '\\]',
+    '(',
+    ')',
+    '%',
+    '|',
+    '\\\\',
+    '\\s',
+    '#',
+];
+
+/**
  * Creates a build scriptlet rule with -a (append) and -p (prepend) options
  *
  * Build scriptlets support augmentation options since rpm >= 4.20.
@@ -831,11 +856,8 @@ module.exports = grammar({
             ),
 
         // Macro value: content of a macro definition
-        // More permissive than _body - allows raw text with ();<>|& etc.
         // Recognizes macro expansions within the value
-        // Example: %global elf_suffix ()%{elf_bits}
-        //   -> macro_value_text: "()"
-        //   -> macro_expansion: %{elf_bits}
+        // Special characters like (){}[];<>|& are handled by _special_character
         _macro_value: ($) =>
             repeat1(
                 choice(
@@ -850,9 +872,8 @@ module.exports = grammar({
                     $.version,
                     $.word,
                     $.quoted_string,
-                    $.macro_value_text, // Fallback for text with ();<>|& etc.
-                    // Lowest priority: special characters like {} as word
-                    // Handles cases like %%{uid} where {uid} is literal text
+                    // Lowest priority: special characters as word
+                    // Handles cases like %%{uid}, ];, etc.
                     alias(prec(-2, repeat1($._special_character)), $.word)
                 )
             ),
@@ -3436,18 +3457,23 @@ module.exports = grammar({
         // Word tokens: unquoted identifiers and simple values
         // Excludes whitespace and special characters that have syntactic meaning
         // Used for simple identifiers, paths, and unquoted string values
-        word: ($) => token(/([^\s"#%{}()<>|\\])+/),
+        // Pattern borrowed from tree-sitter-bash, using noneOf() helper
+        word: (_) =>
+            token(
+                seq(
+                    noneOf(...SPECIAL_CHARACTERS),
+                    repeat(noneOf(...SPECIAL_CHARACTERS))
+                )
+            ),
 
-        // Macro value text: raw text content in macro definitions
-        // More permissive than 'word' - allows ();<>|& etc.
-        // Only stops at: whitespace, %, {, }, #, ", \, or newlines
-        // Used for macro values like: %global elf_bits (64bit)
-        macro_value_text: (_) => token(prec(-1, /[^\s%{}#"\\]+/)),
-
-        // Special characters that are normally excluded from word tokens
-        // Used with low precedence to catch standalone special chars like {uid}
-        // Pattern from tree-sitter-bash for handling edge cases
-        _special_character: (_) => token(prec(-2, /[{}]/)),
+        // Special characters that are excluded from word tokens
+        // Used with low precedence to catch standalone special chars in macro values
+        // Pattern from tree-sitter-bash for handling edge cases like %%{uid}
+        // Matches all chars in SPECIAL_CHARACTERS except quotes/whitespace/escapes
+        _special_character: (_) =>
+            token(
+                prec(-1, choice('{', '}', '[', ']', '(', ')', '<', '>', '|'))
+            ),
 
         // String concatenation: automatic joining of adjacent expressions
         // RPM automatically concatenates adjacent values without operators
@@ -3659,4 +3685,20 @@ function makeElseClause(contentRule, optionalContent = false) {
                 ? optional(field('body', contentRule($)))
                 : field('body', contentRule($))
         );
+}
+
+/**
+ * Creates a regex that matches any character EXCEPT the specified ones
+ *
+ * Helper function from tree-sitter-bash for building negated character classes.
+ * Used to define word tokens that exclude special characters.
+ *
+ * @param {...string} characters - Characters to exclude
+ * @returns {RegExp} A regex matching any character except those specified
+ */
+function noneOf(...characters) {
+    const negatedString = characters
+        .map((c) => (c === '\\' ? '\\\\' : c))
+        .join('');
+    return new RegExp('[^' + negatedString + ']');
 }
