@@ -923,6 +923,25 @@
     }
   },
   {
+    "type": "brace_expansion",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "build_scriptlet",
     "named": true,
     "fields": {
@@ -4289,6 +4308,10 @@
       "required": false,
       "types": [
         {
+          "type": "brace_expansion",
+          "named": true
+        },
+        {
           "type": "macro_expansion",
           "named": true
         },
@@ -6719,6 +6742,10 @@
   },
   {
     "type": "z",
+    "named": false
+  },
+  {
+    "type": "{",
     "named": false
   },
   {

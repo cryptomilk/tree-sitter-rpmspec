@@ -2826,7 +2826,8 @@ module.exports = grammar({
                     choice(
                         /[^\s"{}%]+/,
                         $.macro_simple_expansion,
-                        $.macro_expansion
+                        $.macro_expansion,
+                        $.brace_expansion
                     ),
                     repeat(
                         choice(
@@ -2834,10 +2835,28 @@ module.exports = grammar({
                             token.immediate(/[^\s"{}%]+/),
                             // Macros naturally attach (start with %)
                             $.macro_simple_expansion,
-                            $.macro_expansion
+                            $.macro_expansion,
+                            // Brace expansion for globs like {a,b,c}
+                            $.brace_expansion
                         )
                     )
                 )
+            ),
+
+        // Brace expansion for shell globs: {a,b,c}
+        // Used in file paths like /path/{foo,bar,baz}
+        brace_expansion: ($) =>
+            seq(
+                token.immediate('{'),
+                sep1(
+                    choice(
+                        /[^\s,{}%]+/, // Simple word
+                        $.macro_simple_expansion,
+                        $.macro_expansion
+                    ),
+                    ','
+                ),
+                '}'
             ),
 
         // File attributes: custom permissions for individual files
