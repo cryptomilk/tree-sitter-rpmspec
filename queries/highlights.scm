@@ -38,6 +38,34 @@
   "(" @punctuation.bracket
   ")" @punctuation.bracket)
 
+; -----------------------------------------------------------------------------
+; Dependency Types
+; -----------------------------------------------------------------------------
+
+; ELF dependencies: libc.so.6(GLIBC_2.2.5)(64bit)
+(elf_dependency
+  soname: (soname) @module
+  symbol_version: (elf_symbol_version) @property
+  arch: (elf_arch) @attribute)
+
+; Path dependencies: /usr/bin/pkg-config
+(path_dependency) @string.special.path
+
+; Qualified dependencies: perl(Carp), pkgconfig(glib-2.0)
+(qualified_dependency
+  name: (_) @function
+  qualifier: (dependency_qualifier
+    content: (_) @variable.parameter))
+
+; ISA qualifiers override - known architecture patterns
+((dependency_qualifier
+   content: (word) @attribute)
+ (#match? @attribute "^(x86-64|x86-32|aarch64|arm|ppc-64|ppc-32|s390x)$"))
+
+; Versioned dependencies: cmake-filesystem >= 3
+(versioned_dependency
+  name: (_) @module)
+
 ; Source tag file paths
 (tags
   (tag)
