@@ -1172,6 +1172,10 @@
         {
           "type": "path_dependency",
           "named": true
+        },
+        {
+          "type": "qualified_dependency",
+          "named": true
         }
       ]
     }
@@ -1221,6 +1225,30 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "dependency_qualifier",
+    "named": true,
+    "fields": {
+      "content": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "nested_qualified_dependency",
+            "named": true
+          },
+          {
+            "type": "word",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -3488,6 +3516,36 @@
     }
   },
   {
+    "type": "nested_qualified_dependency",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "word",
+            "named": true
+          }
+        ]
+      },
+      "qualifier": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "dependency_qualifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "not_operator",
     "named": true,
     "fields": {
@@ -4183,6 +4241,50 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "qualified_dependency",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "word",
+            "named": true
+          }
+        ]
+      },
+      "qualifier": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "dependency_qualifier",
+            "named": true
+          }
+        ]
+      },
+      "version": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "dependency_version_constraint",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {

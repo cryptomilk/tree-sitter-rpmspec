@@ -1680,7 +1680,9 @@ module.exports = grammar({
                 $.elf_dependency,
                 // Path dependency: /usr/bin/pkg-config - no version constraint
                 $.path_dependency,
-                // Other dependencies with optional version constraint
+                // Qualified dependency: perl(Carp) >= 3.2 - has qualifier
+                $.qualified_dependency,
+                // Other dependencies with optional version constraint (fallback)
                 seq(
                     field('name', $.dependency_name),
                     optional(field('version', $.dependency_version_constraint))
@@ -1730,6 +1732,43 @@ module.exports = grammar({
         // Hidden rule for path matching in dependencies
         // Matches absolute paths: /usr/bin/sh, /usr/lib64/libc.so.6
         _dependency_path: (_) => token(prec(1, /\/[^\s(){}%<>=!,|&]+/)),
+
+        // Qualified dependency: name(qualifier) with optional version
+        // Covers: perl(Carp), libssh(x86-64), bundled(golang(...)), pkgconfig(glib-2.0)
+        qualified_dependency: ($) =>
+            seq(
+                field('name', $._dependency_name_base),
+                field('qualifier', $.dependency_qualifier),
+                optional(field('version', $.dependency_version_constraint))
+            ),
+
+        // The qualifier: (content) - parenthesized qualifier content
+        // Examples: (Carp), (x86-64), (glib-2.0), (golang(...))
+        // Use prec(1) to prefer qualified_dependency over dependency_name with suffix
+        dependency_qualifier: ($) =>
+            prec(
+                1,
+                seq(
+                    token.immediate('('),
+                    field(
+                        'content',
+                        choice(
+                            $.nested_qualified_dependency, // Nested: bundled(golang(...))
+                            $.identifier, // Simple identifier: Carp, pytest
+                            $.word // Complex: x86-64, glib-2.0, golang.org/x/arch
+                        )
+                    ),
+                    ')'
+                )
+            ),
+
+        // Nested qualifier for bundled(golang(...)) patterns
+        // The inner qualified name that can appear inside a qualifier
+        nested_qualified_dependency: ($) =>
+            seq(
+                field('name', choice($.identifier, $.word)),
+                field('qualifier', $.dependency_qualifier)
+            ),
 
         // Simple dependency list: NO boolean expressions allowed
         // Used for Conflicts, Obsoletes, and Provides tags
