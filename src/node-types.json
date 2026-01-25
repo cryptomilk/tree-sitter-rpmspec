@@ -1168,6 +1168,10 @@
         {
           "type": "elf_dependency",
           "named": true
+        },
+        {
+          "type": "path_dependency",
+          "named": true
         }
       ]
     }
@@ -4116,6 +4120,21 @@
         },
         {
           "type": "macro_simple_expansion",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "path_dependency",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "path",
           "named": true
         }
       ]

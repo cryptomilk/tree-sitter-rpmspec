@@ -1678,6 +1678,8 @@ module.exports = grammar({
             choice(
                 // ELF dependency: libc.so.6(GLIBC_2.2.5)(64bit) - no version constraint
                 $.elf_dependency,
+                // Path dependency: /usr/bin/pkg-config - no version constraint
+                $.path_dependency,
                 // Other dependencies with optional version constraint
                 seq(
                     field('name', $.dependency_name),
@@ -1718,6 +1720,16 @@ module.exports = grammar({
         // ELF architecture marker: (64bit) or (32bit)
         elf_arch: (_) =>
             seq(token.immediate('('), token.immediate(/64bit|32bit/), ')'),
+
+        // File path dependency: /usr/bin/pkg-config
+        // Absolute paths used as dependencies (typically executable paths)
+        // Path dependencies have no version constraints
+        // Use prec(1) to prefer path over word when both match
+        path_dependency: ($) => prec(1, alias($._dependency_path, $.path)),
+
+        // Hidden rule for path matching in dependencies
+        // Matches absolute paths: /usr/bin/sh, /usr/lib64/libc.so.6
+        _dependency_path: (_) => token(prec(1, /\/[^\s(){}%<>=!,|&]+/)),
 
         // Simple dependency list: NO boolean expressions allowed
         // Used for Conflicts, Obsoletes, and Provides tags

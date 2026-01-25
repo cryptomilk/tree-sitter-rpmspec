@@ -1,0 +1,128 @@
+===============================================================================
+Path dependency (simple executable)
+===============================================================================
+
+Requires: /usr/bin/pkg-config
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (rich_dependency_list
+        (dependency
+          (path_dependency
+            (path)))))))
+
+===============================================================================
+Path dependency (sbin path)
+===============================================================================
+
+Requires: /usr/sbin/useradd
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (rich_dependency_list
+        (dependency
+          (path_dependency
+            (path)))))))
+
+===============================================================================
+Path dependency (library path)
+===============================================================================
+
+Provides: /usr/lib64/libfoo.so
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (dependency
+          (path_dependency
+            (path)))))))
+
+===============================================================================
+Path dependency (shell)
+===============================================================================
+
+Requires: /bin/sh
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (rich_dependency_list
+        (dependency
+          (path_dependency
+            (path)))))))
+
+===============================================================================
+Multiple path dependencies
+===============================================================================
+
+Requires: /usr/bin/sh /usr/bin/bash
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (rich_dependency_list
+        (dependency
+          (path_dependency
+            (path)))
+        (dependency
+          (path_dependency
+            (path)))))))
+
+===============================================================================
+Path dependency with comma separator
+===============================================================================
+
+Requires: /usr/bin/sh, /usr/bin/bash
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (rich_dependency_list
+        (dependency
+          (path_dependency
+            (path)))
+        (dependency
+          (path_dependency
+            (path)))))))
+
+===============================================================================
+Mixed path and package dependencies
+===============================================================================
+
+Requires: /usr/bin/sh cmake-filesystem
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (rich_dependency_list
+        (dependency
+          (path_dependency
+            (path)))
+        (dependency
+          name: (dependency_name
+            (word)))))))
+

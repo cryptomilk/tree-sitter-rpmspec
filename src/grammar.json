@@ -5214,6 +5214,10 @@
           "name": "elf_dependency"
         },
         {
+          "type": "SYMBOL",
+          "name": "path_dependency"
+        },
+        {
           "type": "SEQ",
           "members": [
             {
@@ -5346,6 +5350,30 @@
           "value": ")"
         }
       ]
+    },
+    "path_dependency": {
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "ALIAS",
+        "content": {
+          "type": "SYMBOL",
+          "name": "_dependency_path"
+        },
+        "named": true,
+        "value": "path"
+      }
+    },
+    "_dependency_path": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "\\/[^\\s(){}%<>=!,|&]+"
+        }
+      }
     },
     "dependency_list": {
       "type": "SEQ",
