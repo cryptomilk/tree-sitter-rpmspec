@@ -1795,33 +1795,13 @@ module.exports = grammar({
         _rich_dependency_item: ($) =>
             choice($.dependency, $.boolean_dependency),
 
-        // Dependency name
-        // Supports: simple words, macros, concatenation, and qualifier suffixes
-        // Examples: foo, %{name}, %{name}-libs, perl(Carp), python3dist(pytest)
-        dependency_name: ($) =>
-            seq(
-                $._dependency_name_base,
-                optional($.dependency_qualifier_suffix)
-            ),
-
-        // Base part of dependency name (without qualifier suffix)
+        // Base part of dependency name
         _dependency_name_base: ($) =>
             choice(
                 $._dependency_name_concatenation, // %{name}-libs, foo%{?_isa}
                 $.word, // simple: foo
                 $.macro_expansion, // %{name}
                 $.macro_simple_expansion // %name
-            ),
-
-        // Qualifier suffix for dependencies
-        // Examples: (Carp), (x86-64), (pytest), (abi)
-        // Nested: bundled(golang(golang.org/x/arch))
-        dependency_qualifier_suffix: ($) =>
-            seq(
-                token.immediate('('),
-                choice($.identifier, $.word),
-                optional($.dependency_qualifier_suffix), // Allow nesting
-                ')'
             ),
 
         // Concatenation of dependency name parts
