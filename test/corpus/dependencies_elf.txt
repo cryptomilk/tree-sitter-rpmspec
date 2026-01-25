@@ -158,3 +158,39 @@ Requires: libfoo.so()(64bit)
             soname: (soname)
             symbol_version: (elf_symbol_version)
             arch: (elf_arch)))))))
+
+===============================================================================
+ELF dependency soname only (no symbol version or arch)
+===============================================================================
+
+Provides: libssh_threads.so.4
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (dependency
+          (elf_dependency
+            soname: (soname)))))))
+
+===============================================================================
+ELF dependency with symbol version but no arch
+===============================================================================
+
+Provides: libssh.so.4(LIBSSH_4_5_0)
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (dependency
+          (elf_dependency
+            soname: (soname)
+            symbol_version: (elf_symbol_version
+              version: (identifier))))))))

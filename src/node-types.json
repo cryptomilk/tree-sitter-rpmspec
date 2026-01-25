@@ -1643,7 +1643,7 @@
     "fields": {
       "arch": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "elf_arch",
@@ -1663,7 +1663,7 @@
       },
       "symbol_version": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "elf_symbol_version",

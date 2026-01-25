@@ -5268,20 +5268,41 @@
           }
         },
         {
-          "type": "FIELD",
-          "name": "symbol_version",
-          "content": {
-            "type": "SYMBOL",
-            "name": "elf_symbol_version"
-          }
-        },
-        {
-          "type": "FIELD",
-          "name": "arch",
-          "content": {
-            "type": "SYMBOL",
-            "name": "elf_arch"
-          }
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "FIELD",
+                  "name": "symbol_version",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "elf_symbol_version"
+                  }
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "FIELD",
+                      "name": "arch",
+                      "content": {
+                        "type": "SYMBOL",
+                        "name": "elf_arch"
+                      }
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
