@@ -540,3 +540,40 @@ Version: %{?version_override}%{!?version_override:258.3}
             condition: (identifier)
             consequence: (text
               (text_content))))))))
+
+===============================================================================
+Macros (Escape sequence in macro value - regex pattern)
+===============================================================================
+
+%global __requires_exclude ^golang\\(.*\\)$
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    name: (identifier)
+    value: (word)
+    value: (escape_sequence)
+    value: (macro_value_text)
+    value: (escape_sequence)
+    value: (macro_value_text)))
+
+===============================================================================
+Macros (Triple backslash - escaped backslash with line continuation)
+===============================================================================
+
+%global godocs docs README.md\\\
+               more/files.txt
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    name: (identifier)
+    value: (word)
+    value: (word)
+    value: (escape_sequence)
+    value: (line_continuation)
+    value: (word)))

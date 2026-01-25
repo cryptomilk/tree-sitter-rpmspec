@@ -208,6 +208,22 @@
         }
       }
     },
+    "escape_sequence": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "\\"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^\\r\\n]"
+          }
+        ]
+      }
+    },
     "identifier": {
       "type": "PATTERN",
       "value": "(\\p{XID_Start}|\\$|_|\\\\u[0-9A-Fa-f]{4}|\\\\U[0-9A-Fa-f]{8})(\\p{XID_Continue}|\\$|\\\\u[0-9A-Fa-f]{4}|\\\\U[0-9A-Fa-f]{8})*"
@@ -1841,6 +1857,10 @@
           {
             "type": "SYMBOL",
             "name": "line_continuation"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "escape_sequence"
           },
           {
             "type": "SYMBOL",

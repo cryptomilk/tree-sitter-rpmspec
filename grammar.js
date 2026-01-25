@@ -261,6 +261,11 @@ module.exports = grammar({
                 )
             ),
 
+        // Escape sequence: backslash followed by any character (not newline)
+        // Used in regex patterns like ^golang\\(.*\\)$ where \\ = literal backslash
+        // and \\( = literal \( (escaped paren in regex)
+        escape_sequence: (_) => token(seq('\\', /[^\r\n]/)),
+
         identifier: (_) =>
             /(\p{XID_Start}|\$|_|\\u[0-9A-Fa-f]{4}|\\U[0-9A-Fa-f]{8})(\p{XID_Continue}|\$|\\u[0-9A-Fa-f]{4}|\\U[0-9A-Fa-f]{8})*/,
 
@@ -831,6 +836,7 @@ module.exports = grammar({
             repeat1(
                 choice(
                     $.line_continuation, // Allow value to start with line continuation
+                    $.escape_sequence, // Backslash escapes like \\, \(, etc.
                     $.macro_simple_expansion,
                     $.macro_expansion,
                     $.macro_shell_expansion,
