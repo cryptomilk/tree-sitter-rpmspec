@@ -54,7 +54,7 @@ Files (-n)
 (spec
   (files
     (section_name)
-    (subpackage_name
+    (package_name
       (word))
     (file
       (path))))

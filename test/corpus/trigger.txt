@@ -20,7 +20,7 @@ Triggerin Section (subpackage)
 (spec
   (trigger
     subpackage: (trigger_subpackage
-      (subpackage_name
+      (package_name
         (word)))))
 
 ===============================================================================
@@ -34,7 +34,7 @@ Triggerin Section (package)
 (spec
   (trigger
     subpackage: (trigger_subpackage
-      (subpackage_name
+      (package_name
         (word)))))
 
 ===============================================================================
@@ -49,7 +49,7 @@ cat /dev/urandom
 (spec
   (trigger
     subpackage: (trigger_subpackage
-      (subpackage_name
+      (package_name
         (word)))
     (script_block
       (script_line
@@ -86,7 +86,7 @@ print "I'm in my trigger!\n";
 (spec
   (trigger
     subpackage: (trigger_subpackage
-      (subpackage_name
+      (package_name
         (word)))
     interpreter: (script_interpreter
       program: (interpreter_program))

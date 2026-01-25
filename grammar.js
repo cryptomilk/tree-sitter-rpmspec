@@ -123,9 +123,9 @@ module.exports = grammar({
         // file_path: After a path segment, a % could either continue the current
         // path (e.g., /usr/%{name}) or start a new path. Let GLR handle it.
         [$.file_path],
-        // subpackage_name vs text: In %description, a macro after package name could
-        // be continuation of subpackage_name or start of inline text.
-        [$.subpackage_name, $.text],
+        // package_name vs text: In %description, a macro after package name could
+        // be continuation of package_name or start of inline text.
+        [$.package_name, $.text],
     ],
 
     // External scanner tokens (implemented in src/scanner.c)
@@ -1935,7 +1935,7 @@ module.exports = grammar({
                     optional(
                         seq(
                             optional('-n'),
-                            $.subpackage_name // Package name (stops at whitespace)
+                            $.package_name // Package name (stops at whitespace)
                         )
                     ),
                     optional($.text), // Optional inline text on same line
@@ -2004,11 +2004,11 @@ module.exports = grammar({
             true
         ),
 
-        // Subpackage name for section headers (-n option)
-        // Used by %description, %package, %files, etc. to reference subpackages
+        // Package name for section headers and dependencies
+        // Used by %description, %package, %files, dependencies, etc.
         // Can be a word, macro, or immediate concatenation (no spaces)
-        // Examples: devel, %{crate}, %{name}-libs
-        subpackage_name: ($) =>
+        // Examples: libssh-devel, %{crate}, %{name}-libs, perl
+        package_name: ($) =>
             prec.left(
                 seq(
                     choice($.word, $.macro_simple_expansion, $.macro_expansion),
@@ -2194,7 +2194,7 @@ module.exports = grammar({
                 seq(
                     alias('%package', $.section_name),
                     optional('-n'),
-                    $.subpackage_name,
+                    $.package_name,
                     /\n/,
                     optional($._package_content)
                 )
@@ -2432,7 +2432,7 @@ module.exports = grammar({
             prec.right(
                 seq(
                     $._runtime_scriptlet_keyword,
-                    optional(seq(optional('-n'), $.subpackage_name)),
+                    optional(seq(optional('-n'), $.package_name)),
                     /\n/,
                     optional($.script_block)
                 )
@@ -2444,7 +2444,7 @@ module.exports = grammar({
             prec.right(
                 seq(
                     $._runtime_scriptlet_keyword,
-                    optional(seq(optional('-n'), $.subpackage_name)),
+                    optional(seq(optional('-n'), $.package_name)),
                     field('interpreter', $.script_interpreter),
                     /\n/,
                     optional($.script_block)
@@ -2482,7 +2482,7 @@ module.exports = grammar({
             ),
 
         // Trigger subpackage: [-n] <name>
-        trigger_subpackage: ($) => seq(optional('-n'), $.subpackage_name),
+        trigger_subpackage: ($) => seq(optional('-n'), $.package_name),
 
         // Trigger condition: -- <dependency_list>
         trigger_condition: ($) => seq('--', $.dependency_list),
@@ -2568,7 +2568,7 @@ module.exports = grammar({
                     optional(
                         seq(
                             optional('-n'),
-                            $.subpackage_name // Subpackage name
+                            $.package_name // Subpackage name
                         )
                     ),
                     optional(seq('-f', alias($.path_with_macro, $.path))), // Read file list from file

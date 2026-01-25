@@ -5924,7 +5924,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "subpackage_name"
+                    "name": "package_name"
                   }
                 ]
               },
@@ -6403,7 +6403,7 @@
         }
       ]
     },
-    "subpackage_name": {
+    "package_name": {
       "type": "PREC_LEFT",
       "value": 0,
       "content": {
@@ -7490,7 +7490,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "subpackage_name"
+            "name": "package_name"
           },
           {
             "type": "PATTERN",
@@ -8861,7 +8861,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "subpackage_name"
+                    "name": "package_name"
                   }
                 ]
               },
@@ -8919,7 +8919,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "subpackage_name"
+                    "name": "package_name"
                   }
                 ]
               },
@@ -9070,7 +9070,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "subpackage_name"
+          "name": "package_name"
         }
       ]
     },
@@ -9273,7 +9273,7 @@
                   },
                   {
                     "type": "SYMBOL",
-                    "name": "subpackage_name"
+                    "name": "package_name"
                   }
                 ]
               },
@@ -11526,7 +11526,7 @@
       "file_path"
     ],
     [
-      "subpackage_name",
+      "package_name",
       "text"
     ]
   ],

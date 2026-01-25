@@ -185,7 +185,7 @@ find %{buildroot} -name foo
         (script_content))))
   (files
     (section_name)
-    (subpackage_name
+    (package_name
       (word)
       (macro_expansion
         (identifier)))

@@ -10,7 +10,7 @@ Summary: Client
 (spec
   (package
     (section_name)
-    (subpackage_name
+    (package_name
       (word))
     (preamble
       (tags
@@ -29,7 +29,7 @@ Summary: Subpackage
 (spec
   (package
     (section_name)
-    (subpackage_name
+    (package_name
       (word))
     (preamble
       (tags
@@ -48,7 +48,7 @@ Summary: Subpackage
 (spec
   (package
     (section_name)
-    (subpackage_name
+    (package_name
       (macro_expansion
         (identifier)))
     (preamble
@@ -74,7 +74,7 @@ Conflicts: baz
 (spec
   (package
     (section_name)
-    (subpackage_name
+    (package_name
       (word))
     (preamble
       (tags
@@ -127,7 +127,7 @@ BuildRequires: binutils %{?binutils_version_req}
 (spec
   (package
     (section_name)
-    (subpackage_name
+    (package_name
       (word))
     (preamble
       (tags
@@ -163,7 +163,7 @@ Summary: Default feature devel
 (spec
   (package
     (section_name)
-    (subpackage_name
+    (package_name
       (macro_expansion
         (identifier)))
     (preamble
