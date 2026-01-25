@@ -37,21 +37,21 @@ BuildRequires:  another-package >= 1:2.0.0
       (dependency_tag)
       value: (rich_dependency_list
         (dependency
-          name: (dependency_name
-            (word))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version))))))
+          (versioned_dependency
+            name: (word)
+            version: (dependency_version_constraint
+              operator: (dependency_comparison_operator)
+              version: (version)))))))
   (preamble
     (tags
       (dependency_tag)
       value: (rich_dependency_list
         (dependency
-          name: (dependency_name
-            (word))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))))
+          (versioned_dependency
+            name: (word)
+            version: (dependency_version_constraint
+              operator: (dependency_comparison_operator)
+              version: (version))))))))
 
 ===============================================================================
 Version (Complex epoch with release)
@@ -102,14 +102,14 @@ Requires:       (package >= 2:1.0 or alternative-package)
         (boolean_dependency
           (boolean_or_expression
             left: (dependency
-              name: (dependency_name
-                (word))
-              version: (dependency_version_constraint
-                operator: (dependency_comparison_operator)
-                version: (version)))
+              (versioned_dependency
+                name: (word)
+                version: (dependency_version_constraint
+                  operator: (dependency_comparison_operator)
+                  version: (version))))
             right: (dependency
-              name: (dependency_name
-                (word)))))))))
+              (versioned_dependency
+                name: (word)))))))))
 
 ===============================================================================
 Version (Epoch zero explicit)
@@ -130,9 +130,9 @@ Provides:       virtual-package = 0:1.0.0
       (dependency_tag)
       value: (dependency_list
         (dependency
-          name: (dependency_name
-            (word))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))))
+          (versioned_dependency
+            name: (word)
+            version: (dependency_version_constraint
+              operator: (dependency_comparison_operator)
+              version: (version))))))))
 

@@ -1139,31 +1139,10 @@
   {
     "type": "dependency",
     "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "dependency_name",
-            "named": true
-          }
-        ]
-      },
-      "version": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "dependency_version_constraint",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": false,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "elf_dependency",
@@ -1175,6 +1154,10 @@
         },
         {
           "type": "qualified_dependency",
+          "named": true
+        },
+        {
+          "type": "versioned_dependency",
           "named": true
         }
       ]
@@ -1195,33 +1178,6 @@
       "types": [
         {
           "type": "dependency",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "dependency_name",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "dependency_qualifier_suffix",
-          "named": true
-        },
-        {
-          "type": "macro_expansion",
-          "named": true
-        },
-        {
-          "type": "macro_simple_expansion",
-          "named": true
-        },
-        {
-          "type": "word",
           "named": true
         }
       ]
@@ -1249,29 +1205,6 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "dependency_qualifier_suffix",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "dependency_qualifier_suffix",
-          "named": true
-        },
-        {
-          "type": "identifier",
-          "named": true
-        },
-        {
-          "type": "word",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -5550,6 +5483,40 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "versioned_dependency",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "word",
+            "named": true
+          }
+        ]
+      },
+      "version": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "dependency_version_constraint",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {

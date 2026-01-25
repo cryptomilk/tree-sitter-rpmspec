@@ -123,6 +123,6 @@ Requires: /usr/bin/sh cmake-filesystem
           (path_dependency
             (path)))
         (dependency
-          name: (dependency_name
-            (word)))))))
+          (versioned_dependency
+            name: (word)))))))
 

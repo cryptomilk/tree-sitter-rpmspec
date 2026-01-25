@@ -5222,31 +5222,35 @@
           "name": "qualified_dependency"
         },
         {
-          "type": "SEQ",
+          "type": "SYMBOL",
+          "name": "versioned_dependency"
+        }
+      ]
+    },
+    "versioned_dependency": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_dependency_name_base"
+          }
+        },
+        {
+          "type": "CHOICE",
           "members": [
             {
               "type": "FIELD",
-              "name": "name",
+              "name": "version",
               "content": {
                 "type": "SYMBOL",
-                "name": "dependency_name"
+                "name": "dependency_version_constraint"
               }
             },
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "FIELD",
-                  "name": "version",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "dependency_version_constraint"
-                  }
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
+              "type": "BLANK"
             }
           ]
         }

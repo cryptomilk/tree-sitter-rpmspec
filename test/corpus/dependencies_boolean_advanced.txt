@@ -14,11 +14,11 @@ Requires: (pkgA if pkgB)
         (boolean_dependency
           (boolean_if_expression
             consequence: (dependency
-              name: (dependency_name
-                (word)))
+              (versioned_dependency
+                name: (word)))
             condition: (dependency
-              name: (dependency_name
-                (word)))))))))
+              (versioned_dependency
+                name: (word)))))))))
 
 ===============================================================================
 Boolean dependency (if with else)
@@ -36,14 +36,14 @@ Requires: (pkgA if pkgB else pkgC)
         (boolean_dependency
           (boolean_if_expression
             consequence: (dependency
-              name: (dependency_name
-                (word)))
+              (versioned_dependency
+                name: (word)))
             condition: (dependency
-              name: (dependency_name
-                (word)))
+              (versioned_dependency
+                name: (word)))
             alternative: (dependency
-              name: (dependency_name
-                (word)))))))))
+              (versioned_dependency
+                name: (word)))))))))
 
 ===============================================================================
 Boolean dependency (if with version constraint)
@@ -61,14 +61,14 @@ Requires: (libbpf >= 2:1.4.7 if libbpf)
         (boolean_dependency
           (boolean_if_expression
             consequence: (dependency
-              name: (dependency_name
-                (word))
-              version: (dependency_version_constraint
-                operator: (dependency_comparison_operator)
-                version: (version)))
+              (versioned_dependency
+                name: (word)
+                version: (dependency_version_constraint
+                  operator: (dependency_comparison_operator)
+                  version: (version))))
             condition: (dependency
-              name: (dependency_name
-                (word)))))))))
+              (versioned_dependency
+                name: (word)))))))))
 
 ===============================================================================
 Boolean dependency (with capability)
@@ -86,11 +86,11 @@ Requires: (pkgA with capB)
         (boolean_dependency
           (boolean_with_expression
             left: (dependency
-              name: (dependency_name
-                (word)))
+              (versioned_dependency
+                name: (word)))
             right: (dependency
-              name: (dependency_name
-                (word)))))))))
+              (versioned_dependency
+                name: (word)))))))))
 
 ===============================================================================
 Boolean dependency (without capability)
@@ -108,11 +108,11 @@ Requires: (pkgA without capB)
         (boolean_dependency
           (boolean_without_expression
             left: (dependency
-              name: (dependency_name
-                (word)))
+              (versioned_dependency
+                name: (word)))
             right: (dependency
-              name: (dependency_name
-                (word)))))))))
+              (versioned_dependency
+                name: (word)))))))))
 
 ===============================================================================
 Boolean dependency (complex with and or)
@@ -132,19 +132,19 @@ Requires: ((pkgA with capB) or (pkgB without capA))
             left: (boolean_dependency
               (boolean_with_expression
                 left: (dependency
-                  name: (dependency_name
-                    (word)))
+                  (versioned_dependency
+                    name: (word)))
                 right: (dependency
-                  name: (dependency_name
-                    (word)))))
+                  (versioned_dependency
+                    name: (word)))))
             right: (boolean_dependency
               (boolean_without_expression
                 left: (dependency
-                  name: (dependency_name
-                    (word)))
+                  (versioned_dependency
+                    name: (word)))
                 right: (dependency
-                  name: (dependency_name
-                    (word)))))))))))
+                  (versioned_dependency
+                    name: (word)))))))))))
 
 ===============================================================================
 Boolean dependency (if with else real-world)
@@ -162,14 +162,14 @@ Requires: (myPkg-backend-mariaDB if mariaDB else sqlite)
         (boolean_dependency
           (boolean_if_expression
             consequence: (dependency
-              name: (dependency_name
-                (word)))
+              (versioned_dependency
+                name: (word)))
             condition: (dependency
-              name: (dependency_name
-                (word)))
+              (versioned_dependency
+                name: (word)))
             alternative: (dependency
-              name: (dependency_name
-                (word)))))))))
+              (versioned_dependency
+                name: (word)))))))))
 
 ===============================================================================
 Boolean dependency (simple unless)
@@ -187,11 +187,11 @@ Requires: (pkgA unless pkgB)
         (boolean_dependency
           (boolean_if_expression
             consequence: (dependency
-              name: (dependency_name
-                (word)))
+              (versioned_dependency
+                name: (word)))
             condition: (dependency
-              name: (dependency_name
-                (word)))))))))
+              (versioned_dependency
+                name: (word)))))))))
 
 ===============================================================================
 Boolean dependency (unless with else)
@@ -209,14 +209,14 @@ Requires: (pkgA unless pkgB else pkgC)
         (boolean_dependency
           (boolean_if_expression
             consequence: (dependency
-              name: (dependency_name
-                (word)))
+              (versioned_dependency
+                name: (word)))
             condition: (dependency
-              name: (dependency_name
-                (word)))
+              (versioned_dependency
+                name: (word)))
             alternative: (dependency
-              name: (dependency_name
-                (word)))))))))
+              (versioned_dependency
+                name: (word)))))))))
 
 ===============================================================================
 Boolean dependency (unless with version constraint)
@@ -234,12 +234,12 @@ Requires: (badpkg unless goodpkg >= 2.0)
         (boolean_dependency
           (boolean_if_expression
             consequence: (dependency
-              name: (dependency_name
-                (word)))
+              (versioned_dependency
+                name: (word)))
             condition: (dependency
-              name: (dependency_name
-                (word))
-              version: (dependency_version_constraint
-                operator: (dependency_comparison_operator)
-                version: (version)))))))))
+              (versioned_dependency
+                name: (word)
+                version: (dependency_version_constraint
+                  operator: (dependency_comparison_operator)
+                  version: (version))))))))))
 

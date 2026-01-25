@@ -1682,11 +1682,17 @@ module.exports = grammar({
                 $.path_dependency,
                 // Qualified dependency: perl(Carp) >= 3.2 - has qualifier
                 $.qualified_dependency,
-                // Other dependencies with optional version constraint (fallback)
-                seq(
-                    field('name', $.dependency_name),
-                    optional(field('version', $.dependency_version_constraint))
-                )
+                // Versioned dependency: cmake-filesystem >= 3 - simple name with optional version
+                $.versioned_dependency
+            ),
+
+        // Simple versioned dependency: package name with optional version constraint
+        // This is the fallback for dependencies that don't match other patterns
+        // Examples: cmake-filesystem, filesystem >= 3, python3-libs = 3.14.2
+        versioned_dependency: ($) =>
+            seq(
+                field('name', $._dependency_name_base),
+                optional(field('version', $.dependency_version_constraint))
             ),
 
         // ELF/shared library dependency: libc.so.6(GLIBC_2.2.5)(64bit)

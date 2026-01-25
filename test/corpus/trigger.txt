@@ -68,11 +68,11 @@ Triggerin Section (with version constraint)
     condition: (trigger_condition
       (dependency_list
         (dependency
-          name: (dependency_name
-            (word))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))))
+          (versioned_dependency
+            name: (word)
+            version: (dependency_version_constraint
+              operator: (dependency_comparison_operator)
+              version: (version))))))))
 
 ===============================================================================
 Triggerin Section (with subpackage and interpreter)
@@ -93,17 +93,17 @@ print "I'm in my trigger!\n";
     condition: (trigger_condition
       (dependency_list
         (dependency
-          name: (dependency_name
-            (word))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))
+          (versioned_dependency
+            name: (word)
+            version: (dependency_version_constraint
+              operator: (dependency_comparison_operator)
+              version: (version))))
         (dependency
-          name: (dependency_name
-            (word))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))
+          (versioned_dependency
+            name: (word)
+            version: (dependency_version_constraint
+              operator: (dependency_comparison_operator)
+              version: (version))))))
     (script_block
       (script_line
         (script_content)
