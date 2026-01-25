@@ -43,3 +43,20 @@ echo "prepending to build"
     (script_block
       (script_line
         (script_content)))))
+
+===============================================================================
+Build Section (%configure macro not confused with %conf section)
+===============================================================================
+
+%build
+%configure
+
+-------------------------------------------------------------------------------
+
+(spec
+  (build_scriptlet
+    (section_name)
+    (script_block
+      (script_line
+        (macro_simple_expansion
+          (simple_macro))))))

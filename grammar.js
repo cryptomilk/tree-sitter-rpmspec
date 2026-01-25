@@ -66,20 +66,22 @@ const BLANK = /( |\t)+/; // One or more spaces or tabs
  * @param {string} name - The scriptlet name without % prefix (e.g., 'prep', 'build')
  * @returns {function} A grammar rule function for the scriptlet
  */
-function buildScriptlet(name) {
+function buildScriptlet(name, sectionToken) {
+    // Uses external token for word boundary checking
+    // This prevents %conf from matching %configure
     return ($) =>
         prec.right(
             choice(
                 // With options: %name -a or %name -p
                 seq(
-                    alias(token(seq('%' + name, / +/)), $.section_name),
+                    alias(sectionToken($), $.section_name),
                     field('argument', $.scriptlet_augment_option),
                     /\n/,
                     optional($.script_block)
                 ),
                 // Without options: %name
                 seq(
-                    alias(token('%' + name), $.section_name),
+                    alias(sectionToken($), $.section_name),
                     /\n/,
                     optional($.script_block)
                 )
@@ -168,6 +170,15 @@ module.exports = grammar({
         // Context-specific tokens (only valid in specific macro contexts)
         $.expand_code, // Raw text inside %{expand:...} with balanced braces
         $.script_code, // Raw text inside %(...) with balanced parentheses
+        // Scriptlet section tokens with word boundary checking
+        // Prevents %conf from matching %configure
+        $.section_prep,
+        $.section_generate_buildrequires,
+        $.section_conf,
+        $.section_build,
+        $.section_install,
+        $.section_check,
+        $.section_clean,
         // Newline token for explicit line termination
         /\n/,
     ],
@@ -2451,20 +2462,24 @@ module.exports = grammar({
         scriptlet_augment_option: (_) => choice('-a', '-p'),
 
         // Build scriptlets - all support -a (append) and -p (prepend) options since rpm >= 4.20
+        // Uses external tokens for word boundary checking (prevents %conf matching %configure)
         // %prep: prepare source code for building (extract sources, apply patches)
-        prep_scriptlet: buildScriptlet('prep'),
+        prep_scriptlet: buildScriptlet('prep', ($) => $.section_prep),
         // %generate_buildrequires: dynamically determine build dependencies
-        generate_buildrequires: buildScriptlet('generate_buildrequires'),
+        generate_buildrequires: buildScriptlet(
+            'generate_buildrequires',
+            ($) => $.section_generate_buildrequires
+        ),
         // %conf: configure build environment (deprecated, use %build)
-        conf_scriptlet: buildScriptlet('conf'),
+        conf_scriptlet: buildScriptlet('conf', ($) => $.section_conf),
         // %build: compile and build the software
-        build_scriptlet: buildScriptlet('build'),
+        build_scriptlet: buildScriptlet('build', ($) => $.section_build),
         // %install: install software into build root
-        install_scriptlet: buildScriptlet('install'),
+        install_scriptlet: buildScriptlet('install', ($) => $.section_install),
         // %check: run test suite
-        check_scriptlet: buildScriptlet('check'),
+        check_scriptlet: buildScriptlet('check', ($) => $.section_check),
         // %clean: clean up build artifacts (deprecated)
-        clean_scriptlet: buildScriptlet('clean'),
+        clean_scriptlet: buildScriptlet('clean', ($) => $.section_clean),
 
         ///////////////////////////////////////////////////////////////////////
         // RUNTIME SCRIPTLETS - PACKAGE LIFECYCLE SCRIPTS

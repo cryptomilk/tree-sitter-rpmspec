@@ -8368,20 +8368,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "%prep"
-                      },
-                      {
-                        "type": "PATTERN",
-                        "value": " +"
-                      }
-                    ]
-                  }
+                  "type": "SYMBOL",
+                  "name": "section_prep"
                 },
                 "named": true,
                 "value": "section_name"
@@ -8418,11 +8406,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "STRING",
-                    "value": "%prep"
-                  }
+                  "type": "SYMBOL",
+                  "name": "section_prep"
                 },
                 "named": true,
                 "value": "section_name"
@@ -8460,20 +8445,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "%generate_buildrequires"
-                      },
-                      {
-                        "type": "PATTERN",
-                        "value": " +"
-                      }
-                    ]
-                  }
+                  "type": "SYMBOL",
+                  "name": "section_generate_buildrequires"
                 },
                 "named": true,
                 "value": "section_name"
@@ -8510,11 +8483,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "STRING",
-                    "value": "%generate_buildrequires"
-                  }
+                  "type": "SYMBOL",
+                  "name": "section_generate_buildrequires"
                 },
                 "named": true,
                 "value": "section_name"
@@ -8552,20 +8522,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "%conf"
-                      },
-                      {
-                        "type": "PATTERN",
-                        "value": " +"
-                      }
-                    ]
-                  }
+                  "type": "SYMBOL",
+                  "name": "section_conf"
                 },
                 "named": true,
                 "value": "section_name"
@@ -8602,11 +8560,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "STRING",
-                    "value": "%conf"
-                  }
+                  "type": "SYMBOL",
+                  "name": "section_conf"
                 },
                 "named": true,
                 "value": "section_name"
@@ -8644,20 +8599,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "%build"
-                      },
-                      {
-                        "type": "PATTERN",
-                        "value": " +"
-                      }
-                    ]
-                  }
+                  "type": "SYMBOL",
+                  "name": "section_build"
                 },
                 "named": true,
                 "value": "section_name"
@@ -8694,11 +8637,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "STRING",
-                    "value": "%build"
-                  }
+                  "type": "SYMBOL",
+                  "name": "section_build"
                 },
                 "named": true,
                 "value": "section_name"
@@ -8736,20 +8676,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "%install"
-                      },
-                      {
-                        "type": "PATTERN",
-                        "value": " +"
-                      }
-                    ]
-                  }
+                  "type": "SYMBOL",
+                  "name": "section_install"
                 },
                 "named": true,
                 "value": "section_name"
@@ -8786,11 +8714,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "STRING",
-                    "value": "%install"
-                  }
+                  "type": "SYMBOL",
+                  "name": "section_install"
                 },
                 "named": true,
                 "value": "section_name"
@@ -8828,20 +8753,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "%check"
-                      },
-                      {
-                        "type": "PATTERN",
-                        "value": " +"
-                      }
-                    ]
-                  }
+                  "type": "SYMBOL",
+                  "name": "section_check"
                 },
                 "named": true,
                 "value": "section_name"
@@ -8878,11 +8791,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "STRING",
-                    "value": "%check"
-                  }
+                  "type": "SYMBOL",
+                  "name": "section_check"
                 },
                 "named": true,
                 "value": "section_name"
@@ -8920,20 +8830,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "SEQ",
-                    "members": [
-                      {
-                        "type": "STRING",
-                        "value": "%clean"
-                      },
-                      {
-                        "type": "PATTERN",
-                        "value": " +"
-                      }
-                    ]
-                  }
+                  "type": "SYMBOL",
+                  "name": "section_clean"
                 },
                 "named": true,
                 "value": "section_name"
@@ -8970,11 +8868,8 @@
               {
                 "type": "ALIAS",
                 "content": {
-                  "type": "TOKEN",
-                  "content": {
-                    "type": "STRING",
-                    "value": "%clean"
-                  }
+                  "type": "SYMBOL",
+                  "name": "section_clean"
                 },
                 "named": true,
                 "value": "section_name"
@@ -11861,6 +11756,34 @@
     {
       "type": "SYMBOL",
       "name": "script_code"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "section_prep"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "section_generate_buildrequires"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "section_conf"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "section_build"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "section_install"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "section_check"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "section_clean"
     },
     {
       "type": "PATTERN",

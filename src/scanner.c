@@ -98,6 +98,15 @@ enum TokenType {
     /* Context-specific tokens - only valid in specific macro contexts */
     EXPAND_CODE, /**< Raw text inside %{expand:...} with balanced braces */
     SCRIPT_CODE, /**< Raw text inside %(...) with balanced parentheses */
+    /* Scriptlet section tokens with word boundary checking */
+    SECTION_PREP,                   /**< %prep with word boundary */
+    SECTION_GENERATE_BUILDREQUIRES, /**< %generate_buildrequires with word
+                                       boundary */
+    SECTION_CONF,                   /**< %conf with word boundary */
+    SECTION_BUILD,                  /**< %build with word boundary */
+    SECTION_INSTALL,                /**< %install with word boundary */
+    SECTION_CHECK,                  /**< %check with word boundary */
+    SECTION_CLEAN,                  /**< %clean with word boundary */
     /* Newline token for explicit line termination */
     NEWLINE /**< Newline character for line-sensitive contexts */
 };
@@ -1040,6 +1049,62 @@ static bool any_conditional_valid(const bool *valid_symbols)
 }
 
 /* ========================================================================== */
+/* SCRIPTLET SECTION SCAN LOGIC                                               */
+/* ========================================================================== */
+
+/**
+ * @brief Check if any scriptlet section token is valid
+ */
+static inline bool any_section_token_valid(const bool *valid_symbols)
+{
+    return valid_symbols[SECTION_PREP] ||
+           valid_symbols[SECTION_GENERATE_BUILDREQUIRES] ||
+           valid_symbols[SECTION_CONF] || valid_symbols[SECTION_BUILD] ||
+           valid_symbols[SECTION_INSTALL] || valid_symbols[SECTION_CHECK] ||
+           valid_symbols[SECTION_CLEAN];
+}
+
+/**
+ * @brief Scriptlet section keyword to token mapping
+ */
+struct SectionKeyword {
+    const char *name;
+    size_t len;
+    enum TokenType token;
+};
+
+static const struct SectionKeyword SECTION_KEYWORDS_MAP[] = {
+    {"prep", 4, SECTION_PREP},
+    {"generate_buildrequires", 22, SECTION_GENERATE_BUILDREQUIRES},
+    {"conf", 4, SECTION_CONF},
+    {"build", 5, SECTION_BUILD},
+    {"install", 7, SECTION_INSTALL},
+    {"check", 5, SECTION_CHECK},
+    {"clean", 5, SECTION_CLEAN},
+    {NULL, 0, 0} /* End marker */
+};
+
+/**
+ * @brief Look up a section keyword and return its token type
+ *
+ * @param id The identifier to look up
+ * @param len Length of the identifier
+ * @return Pointer to matching SectionKeyword, or NULL if not found
+ */
+static const struct SectionKeyword *lookup_section_keyword(const char *id,
+                                                           size_t len)
+{
+    for (const struct SectionKeyword *kw = SECTION_KEYWORDS_MAP;
+         kw->name != NULL;
+         kw++) {
+        if (strequal(kw->name, id, len)) {
+            return kw;
+        }
+    }
+    return NULL;
+}
+
+/* ========================================================================== */
 /* MAIN SCAN LOGIC                                                            */
 /* ========================================================================== */
 
@@ -1314,15 +1379,20 @@ rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
     /*
      * 1. Percent-prefixed tokens - scanner handles the '%'
      *
-     * Conditionals (%if, %else, etc.) and parametric macros (%configure).
-     * Must be checked early so section keywords are recognized during
-     * error recovery, preventing EXPAND_CODE/SCRIPT_CODE from consuming
-     * too much content.
+     * This handles:
+     * - Conditionals (%if, %else, etc.)
+     * - Parametric macros (%configure)
+     * - Scriptlet sections (%prep, %build, %conf, etc.)
+     *
+     * Section tokens are checked here (not separately) to prevent %conf
+     * from matching %configure. We consume %identifier once, then check
+     * in order: conditionals, sections, parametric macros.
      */
     bool conditionals_valid = any_conditional_valid(valid_symbols);
     bool parametric_valid = valid_symbols[PARAMETRIC_MACRO_NAME];
+    bool sections_valid = any_section_token_valid(valid_symbols);
 
-    if (conditionals_valid || parametric_valid) {
+    if (conditionals_valid || parametric_valid || sections_valid) {
         bool at_line_start = (lexer->get_column(lexer) == 0);
 
         skip_whitespace_track_newline(lexer, valid_symbols, &at_line_start);
@@ -1337,7 +1407,7 @@ rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
                                                keyword,
                                                sizeof(keyword),
                                                &keyword_len)) {
-                /* Try conditional first (higher priority) */
+                /* Try conditional first (highest priority) */
                 if (conditionals_valid &&
                     is_cond_keyword(keyword, keyword_len)) {
                     if (try_scan_conditional(scanner,
@@ -1345,6 +1415,17 @@ rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
                                              valid_symbols,
                                              keyword,
                                              keyword_len)) {
+                        return true;
+                    }
+                }
+
+                /* Try section token (with word boundary check) */
+                if (sections_valid && !is_identifier_char(lexer->lookahead)) {
+                    const struct SectionKeyword *kw =
+                        lookup_section_keyword(keyword, keyword_len);
+                    if (kw != NULL && valid_symbols[kw->token]) {
+                        lexer->mark_end(lexer);
+                        lexer->result_symbol = kw->token;
                         return true;
                     }
                 }
