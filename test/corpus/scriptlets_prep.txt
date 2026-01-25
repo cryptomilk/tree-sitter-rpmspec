@@ -264,6 +264,28 @@ Prep Section (%autosetup with macro-concatenated directory)
         argument: (macro_option)))))
 
 ===============================================================================
+Prep Section (%autosetup with word-macro directory)
+===============================================================================
+
+%prep
+%autosetup -n talloc-%{version} -p1
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (script_block
+      (autosetup_macro
+        (builtin)
+        argument: (macro_option
+          directory: (concatenation
+            (word)
+            (macro_expansion
+              (identifier))))
+        argument: (macro_option)))))
+
+===============================================================================
 Prep Section (%autopatch basic)
 ===============================================================================
 

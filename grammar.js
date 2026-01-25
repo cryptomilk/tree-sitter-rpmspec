@@ -2824,9 +2824,19 @@ module.exports = grammar({
         // Handles hyphen-connected parts like %{crate}-%{version}
         // token.immediate('-') ensures hyphen binds tightly to preceding token
         _setup_directory: ($) =>
-            seq(
-                $._primary_expression,
-                repeat1(seq(token.immediate('-'), $._primary_expression))
+            choice(
+                // Pattern 1: primary-primary-... (hyphens as separate tokens)
+                // Example: %{crate}-%{version}
+                seq(
+                    $._primary_expression,
+                    repeat1(seq(token.immediate('-'), $._primary_expression))
+                ),
+                // Pattern 2: word followed by macro(s) (word may contain trailing hyphen)
+                // Example: talloc-%{version} where talloc- is one word token
+                seq(
+                    $.word,
+                    repeat1(choice($.macro_simple_expansion, $.macro_expansion))
+                )
             ),
 
         // %autosetup macro: automated source unpacking and patch application
