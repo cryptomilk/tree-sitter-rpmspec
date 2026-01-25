@@ -50,7 +50,30 @@ Parametric Macro Expansion (configure with line continuation)
     argument: (word)))
 
 ===============================================================================
-Parametric Macro Expansion (configure with line continuation in script_block)
+Parametric Macro Expansion (bcond inside ifarch)
+===============================================================================
+
+%bcond_without luajit
+
+%ifarch x86_64
+  %bcond_without test
+%endif
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_parametric_expansion
+    name: (simple_macro)
+    argument: (word))
+  (ifarch_statement
+    condition: (arch
+      (identifier))
+    consequence: (macro_parametric_expansion
+      name: (simple_macro)
+      argument: (word))))
+
+===============================================================================
+Simple Macro Expansion (configure with line continuation in script_block)
 ===============================================================================
 
 %build
@@ -64,15 +87,16 @@ Parametric Macro Expansion (configure with line continuation in script_block)
   (build_scriptlet
     (section_name)
     (script_block
-      (macro_parametric_expansion
-        name: (simple_macro)
+      (script_line
+        (macro_simple_expansion
+          (simple_macro))
         (line_continuation)
-        argument: (word)
+        (script_content)
         (line_continuation)
-        argument: (word)))))
+        (script_content)))))
 
 ===============================================================================
-Parametric Macro Expansion (with conditional inside)
+Simple Macro Expansion (with embedded conditional in line continuation)
 ===============================================================================
 
 %build
@@ -89,17 +113,18 @@ Parametric Macro Expansion (with conditional inside)
   (build_scriptlet
     (section_name)
     (script_block
-      (macro_parametric_expansion
-        name: (simple_macro)
+      (script_line
+        (macro_simple_expansion
+          (simple_macro))
         (line_continuation)
-        argument: (word)
+        (script_content)
         (line_continuation)
         (if_statement
           condition: (with_operator
             (identifier))
           consequence: (script_line
             (script_content)))
-        argument: (word)))))
+        (script_content)))))
 
 ===============================================================================
 Parametric Macro Expansion (with short options)

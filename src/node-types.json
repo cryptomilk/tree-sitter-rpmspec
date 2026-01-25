@@ -1340,6 +1340,14 @@
             "named": true
           },
           {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
             "type": "nested_qualified_dependency",
             "named": true
           },
@@ -2995,6 +3003,10 @@
         "required": true,
         "types": [
           {
+            "type": "escape_sequence",
+            "named": true
+          },
+          {
             "type": "float",
             "named": true
           },
@@ -4562,6 +4574,18 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "if_statement",
+          "named": true
+        },
+        {
+          "type": "ifarch_statement",
+          "named": true
+        },
+        {
+          "type": "ifos_statement",
+          "named": true
+        },
         {
           "type": "line_continuation",
           "named": true
@@ -6320,6 +6344,10 @@
   {
     "type": "error",
     "named": false
+  },
+  {
+    "type": "escape_sequence",
+    "named": true
   },
   {
     "type": "escaped_percent",

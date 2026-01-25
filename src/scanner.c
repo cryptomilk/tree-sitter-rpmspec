@@ -1065,6 +1065,21 @@ static inline bool any_section_token_valid(const bool *valid_symbols)
 }
 
 /**
+ * @brief Check if we're inside a scriptlet context
+ *
+ * Returns true if any scriptlet-specific conditional token is valid,
+ * indicating we're inside a scriptlet section like %build, %install, etc.
+ * In scriptlet context, parametric macros should NOT match because we
+ * want shell semantics (macros expand inline, rest is shell arguments).
+ */
+static inline bool in_scriptlet_context(const bool *valid_symbols)
+{
+    return valid_symbols[SCRIPTLET_IF] || valid_symbols[SCRIPTLET_IFARCH] ||
+           valid_symbols[SCRIPTLET_IFNARCH] || valid_symbols[SCRIPTLET_IFOS] ||
+           valid_symbols[SCRIPTLET_IFNOS];
+}
+
+/**
  * @brief Scriptlet section keyword to token mapping
  */
 struct SectionKeyword {
@@ -1172,22 +1187,22 @@ static bool try_scan_conditional(struct Scanner *scanner,
 /**
  * @brief Try to match a parametric macro name token
  *
- * Parametric macros are only matched at line start to avoid ambiguity
- * with simple macros inside shell subcommands like $(%python3 -c '...').
+ * Parametric macros consume arguments on the same line. They are only
+ * matched when allow_parametric is true (determined by caller based on
+ * context - not in scriptlet sections).
  *
  * @param lexer The lexer
- * @param at_line_start Whether we're at the start of a line
+ * @param allow_parametric Whether parametric macros are allowed in this context
  * @param keyword The keyword that was peeked
  * @param keyword_len Length of the keyword
  * @return true if a parametric macro token was matched
  */
 static bool try_scan_parametric_macro(TSLexer *lexer,
-                                      bool at_line_start,
+                                      bool allow_parametric,
                                       const char *keyword,
                                       size_t keyword_len)
 {
-    /* Only match at line start */
-    if (!at_line_start) {
+    if (!allow_parametric) {
         return false;
     }
 
@@ -1265,31 +1280,16 @@ static bool consume_percent_and_identifier(TSLexer *lexer,
 }
 
 /**
- * @brief Skip whitespace and track line crossings
+ * @brief Skip leading whitespace before a potential macro
  *
- * Advances the lexer past any whitespace characters while tracking whether
- * a newline was crossed. This is needed for parametric macro detection.
- *
- * When valid_symbols[NEWLINE] is true, stops at newlines instead of skipping
- * them. This allows tree-sitter's internal lexer to match the /\n/ external
- * token when the grammar expects it.
+ * Advances the lexer past spaces and tabs. Does NOT skip newlines - those
+ * are meaningful for line-based constructs and may be expected by grammar.
  *
  * @param lexer The lexer
- * @param valid_symbols Array indicating which tokens are valid
- * @param[in,out] at_line_start Set to true if a newline is crossed
  */
-static void skip_whitespace_track_newline(TSLexer *lexer,
-                                          const bool *valid_symbols,
-                                          bool *at_line_start)
+static void skip_leading_whitespace(TSLexer *lexer)
 {
-    while (isspace(lexer->lookahead)) {
-        if (lexer->lookahead == '\n' || lexer->lookahead == '\r') {
-            /* Don't skip newlines if grammar expects them */
-            if (valid_symbols[NEWLINE]) {
-                return;
-            }
-            *at_line_start = true;
-        }
+    while (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
         lexer->advance(lexer, true);
     }
 }
@@ -1393,9 +1393,21 @@ rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
     bool sections_valid = any_section_token_valid(valid_symbols);
 
     if (conditionals_valid || parametric_valid || sections_valid) {
-        bool at_line_start = (lexer->get_column(lexer) == 0);
+        /*
+         * Determine if parametric macros should match in this context.
+         *
+         * In scriptlet context (inside %build, %install, etc.), we use shell
+         * semantics: macros expand inline and the rest is shell arguments.
+         *   %gobuild -o foo bar   <- %gobuild is simple, "-o foo bar" is shell
+         *
+         * Outside scriptlet context (top-level, inside %ifarch, etc.), we use
+         * macro semantics: the macro consumes arguments.
+         *   %bcond_without luajit <- %bcond_without is parametric with arg
+         */
+        bool allow_parametric = !in_scriptlet_context(valid_symbols);
 
-        skip_whitespace_track_newline(lexer, valid_symbols, &at_line_start);
+        /* Skip any remaining whitespace */
+        skip_leading_whitespace(lexer);
 
         if (lexer->lookahead == '%') {
             lexer->mark_end(lexer);
@@ -1433,7 +1445,7 @@ rpmspec_scan(struct Scanner *scanner, TSLexer *lexer, const bool *valid_symbols)
                 /* Try parametric macro */
                 if (parametric_valid) {
                     if (try_scan_parametric_macro(lexer,
-                                                  at_line_start,
+                                                  allow_parametric,
                                                   keyword,
                                                   keyword_len)) {
                         return true;

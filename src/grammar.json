@@ -8290,6 +8290,10 @@
                 },
                 {
                   "type": "SYMBOL",
+                  "name": "_scriptlet_compound_statements"
+                },
+                {
+                  "type": "SYMBOL",
                   "name": "_script_escape"
                 },
                 {
@@ -11673,6 +11677,10 @@
     [
       "package_name",
       "text"
+    ],
+    [
+      "script_block",
+      "script_line"
     ]
   ],
   "precedences": [],

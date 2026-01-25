@@ -128,6 +128,10 @@ module.exports = grammar({
         // package_name vs text: In %description, a macro after package name could
         // be continuation of package_name or start of inline text.
         [$.package_name, $.text],
+        // script_block vs script_line: A conditional inside script_block could be
+        // a direct child of script_block or embedded inside script_line (for line
+        // continuation sequences with conditionals).
+        [$.script_block, $.script_line],
     ],
 
     // External scanner tokens (implemented in src/scanner.c)
@@ -2425,12 +2429,20 @@ module.exports = grammar({
         // Script line: one logical line of script content
         // Groups inline macros and raw text for line-based injection
         // Handles line continuations with backslash
+        // Conditionals can be embedded in line continuation sequences:
+        //   %configure \
+        //     --opt1 \
+        //   %if %{with foo}
+        //     --opt2 \
+        //   %endif
+        //     --opt3
         script_line: ($) =>
             prec.right(
                 seq(
                     repeat1(
                         choice(
                             $.line_continuation, // Allow line continuation (backslash-newline)
+                            $._scriptlet_compound_statements, // Embedded conditionals
                             $._script_escape, // Backslash escapes (\n, \t, etc.)
                             $.macro_expansion, // %{...}
                             $.macro_simple_expansion, // %name

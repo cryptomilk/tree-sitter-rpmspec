@@ -561,9 +561,10 @@ make test
         (identifier)))
     consequence: (runtime_scriptlet
       (script_block
-        (macro_parametric_expansion
-          name: (simple_macro)
-          argument: (word))))))
+        (script_line
+          (macro_simple_expansion
+            (simple_macro))
+          (script_content))))))
 
 ===============================================================================
 Conditionals (%if with nested %files sections)
