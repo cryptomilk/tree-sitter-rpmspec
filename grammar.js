@@ -2594,22 +2594,19 @@ module.exports = grammar({
         // File qualifiers: specify file type and handling behavior
         // These affect how RPM treats the file during install/upgrade
         file_qualifier: ($) =>
-            seq(
-                choice(
-                    '%artifact', // Build artifact (build system metadata)
-                    $.caps_qualifier, // %caps(capabilities) - POSIX capabilities
-                    $.config_qualifier, // %config or %config(noreplace) etc.
-                    '%dir', // Directory (created if missing)
-                    '%doc', // Documentation file
-                    '%docdir', // Documentation directory
-                    '%exclude', // Exclude file from package (used with -f file lists)
-                    '%ghost', // Ghost file (not in package, but owned)
-                    '%license', // License file
-                    '%missingok', // OK if file is missing at install
-                    '%readme', // README file
-                    $.verify // Custom verification attributes
-                ),
-                token.immediate(BLANK) // Required whitespace after qualifier
+            choice(
+                '%artifact', // Build artifact (build system metadata)
+                $.caps_qualifier, // %caps(capabilities) - POSIX capabilities
+                $.config_qualifier, // %config or %config(noreplace) etc.
+                '%dir', // Directory (created if missing)
+                '%doc', // Documentation file
+                '%docdir', // Documentation directory
+                '%exclude', // Exclude file from package (used with -f file lists)
+                '%ghost', // Ghost file (not in package, but owned)
+                '%license', // License file
+                '%missingok', // OK if file is missing at install
+                '%readme', // README file
+                $.verify // Custom verification attributes
             ),
 
         // %caps directive: set POSIX.1e capabilities on the file
@@ -2620,16 +2617,20 @@ module.exports = grammar({
 
         // %config directive with optional arguments
         // Forms: %config, %config(noreplace), %config(missingok), %config(noreplace,missingok)
+        // Use token.immediate to force ( to be part of the same token as %config
         config_qualifier: ($) =>
             seq(
-                '%config',
-                optional(
+                // Match %config or %config( as the start
+                choice(
+                    // %config( forces parsing of options
                     seq(
-                        token.immediate('('),
+                        token(seq('%config', '(')),
                         $.config_option,
                         repeat(seq(',', $.config_option)),
                         ')'
-                    )
+                    ),
+                    // Plain %config without options
+                    '%config'
                 )
             ),
 
@@ -2640,10 +2641,15 @@ module.exports = grammar({
         // Can specify custom permissions, file type, and path
         // Attributes (%attr) and qualifiers (%ghost, %dir, etc.) can appear in any order
         file: ($) =>
-            seq(
-                repeat(choice($.attr, $.file_qualifier)), // Attributes and qualifiers in any order
-                repeat1(alias($.file_path, $.path)), // One or more file paths
-                /\n/
+            choice(
+                // Just qualifiers, no paths (e.g., standalone %doc)
+                seq(repeat1(choice($.attr, $.file_qualifier)), /\n/),
+                // Paths with optional qualifiers
+                seq(
+                    repeat(choice($.attr, $.file_qualifier)),
+                    repeat1(alias($.file_path, $.path)),
+                    /\n/
+                )
             ),
 
         // Single file path for %files section - follows shell globbing rules (see glob(7))

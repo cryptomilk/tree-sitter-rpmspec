@@ -9405,67 +9405,55 @@
       ]
     },
     "file_qualifier": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "%artifact"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "caps_qualifier"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "config_qualifier"
-            },
-            {
-              "type": "STRING",
-              "value": "%dir"
-            },
-            {
-              "type": "STRING",
-              "value": "%doc"
-            },
-            {
-              "type": "STRING",
-              "value": "%docdir"
-            },
-            {
-              "type": "STRING",
-              "value": "%exclude"
-            },
-            {
-              "type": "STRING",
-              "value": "%ghost"
-            },
-            {
-              "type": "STRING",
-              "value": "%license"
-            },
-            {
-              "type": "STRING",
-              "value": "%missingok"
-            },
-            {
-              "type": "STRING",
-              "value": "%readme"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "verify"
-            }
-          ]
+          "type": "STRING",
+          "value": "%artifact"
         },
         {
-          "type": "IMMEDIATE_TOKEN",
-          "content": {
-            "type": "PATTERN",
-            "value": "( |\\t)+"
-          }
+          "type": "SYMBOL",
+          "name": "caps_qualifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "config_qualifier"
+        },
+        {
+          "type": "STRING",
+          "value": "%dir"
+        },
+        {
+          "type": "STRING",
+          "value": "%doc"
+        },
+        {
+          "type": "STRING",
+          "value": "%docdir"
+        },
+        {
+          "type": "STRING",
+          "value": "%exclude"
+        },
+        {
+          "type": "STRING",
+          "value": "%ghost"
+        },
+        {
+          "type": "STRING",
+          "value": "%license"
+        },
+        {
+          "type": "STRING",
+          "value": "%missingok"
+        },
+        {
+          "type": "STRING",
+          "value": "%readme"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "verify"
         }
       ]
     },
@@ -9500,20 +9488,25 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "STRING",
-          "value": "%config"
-        },
-        {
           "type": "CHOICE",
           "members": [
             {
               "type": "SEQ",
               "members": [
                 {
-                  "type": "IMMEDIATE_TOKEN",
+                  "type": "TOKEN",
                   "content": {
-                    "type": "STRING",
-                    "value": "("
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": "%config"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "("
+                      }
+                    ]
                   }
                 },
                 {
@@ -9543,7 +9536,8 @@
               ]
             },
             {
-              "type": "BLANK"
+              "type": "STRING",
+              "value": "%config"
             }
           ]
         }
@@ -9563,39 +9557,69 @@
       ]
     },
     "file": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "REPEAT",
-          "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "attr"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "file_qualifier"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "REPEAT1",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "attr"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "file_qualifier"
+                  }
+                ]
               }
-            ]
-          }
-        },
-        {
-          "type": "REPEAT1",
-          "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "SYMBOL",
-              "name": "file_path"
             },
-            "named": true,
-            "value": "path"
-          }
+            {
+              "type": "PATTERN",
+              "value": "\\n"
+            }
+          ]
         },
         {
-          "type": "PATTERN",
-          "value": "\\n"
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "SYMBOL",
+                    "name": "attr"
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "file_qualifier"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "REPEAT1",
+              "content": {
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "file_path"
+                },
+                "named": true,
+                "value": "path"
+              }
+            },
+            {
+              "type": "PATTERN",
+              "value": "\\n"
+            }
+          ]
         }
       ]
     },
