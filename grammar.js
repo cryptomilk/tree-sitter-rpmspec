@@ -850,7 +850,10 @@ module.exports = grammar({
                     $.version,
                     $.word,
                     $.quoted_string,
-                    $.macro_value_text // Fallback for text with ();<>|& etc.
+                    $.macro_value_text, // Fallback for text with ();<>|& etc.
+                    // Lowest priority: special characters like {} as word
+                    // Handles cases like %%{uid} where {uid} is literal text
+                    alias(prec(-2, repeat1($._special_character)), $.word)
                 )
             ),
 
@@ -3440,6 +3443,11 @@ module.exports = grammar({
         // Only stops at: whitespace, %, {, }, #, ", \, or newlines
         // Used for macro values like: %global elf_bits (64bit)
         macro_value_text: (_) => token(prec(-1, /[^\s%{}#"\\]+/)),
+
+        // Special characters that are normally excluded from word tokens
+        // Used with low precedence to catch standalone special chars like {uid}
+        // Pattern from tree-sitter-bash for handling edge cases
+        _special_character: (_) => token(prec(-2, /[{}]/)),
 
         // String concatenation: automatic joining of adjacent expressions
         // RPM automatically concatenates adjacent values without operators

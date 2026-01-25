@@ -88,3 +88,22 @@ echo %%{literal} %{real}
         (script_content)
         (macro_expansion
           (identifier))))))
+
+===============================================================================
+Escaped Percent (with braces in macro value)
+===============================================================================
+
+%global ccache_name KEYRING:persistent:%%{uid}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    name: (identifier)
+    value: (word)
+    value: (macro_simple_expansion
+      (escaped_percent))
+    value: (word)
+    value: (word)
+    value: (word)))

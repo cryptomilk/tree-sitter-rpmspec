@@ -1901,6 +1901,22 @@
           {
             "type": "SYMBOL",
             "name": "macro_value_text"
+          },
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "PREC",
+              "value": -2,
+              "content": {
+                "type": "REPEAT1",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_special_character"
+                }
+              }
+            },
+            "named": true,
+            "value": "word"
           }
         ]
       }
@@ -11830,6 +11846,17 @@
         "content": {
           "type": "PATTERN",
           "value": "[^\\s%{}#\"\\\\]+"
+        }
+      }
+    },
+    "_special_character": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": -2,
+        "content": {
+          "type": "PATTERN",
+          "value": "[{}]"
         }
       }
     },

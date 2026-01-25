@@ -5773,6 +5773,11 @@
     }
   },
   {
+    "type": "word",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "!",
     "named": false
   },
@@ -6736,10 +6741,6 @@
   {
     "type": "without",
     "named": false
-  },
-  {
-    "type": "word",
-    "named": true
   },
   {
     "type": "z",
