@@ -93,7 +93,7 @@ BuildRequires(post): rpm-build-xdg
   (comment)
   (ERROR
     (simple_macro)
-    (macro_value_text)))
+    (simple_macro)))
 
 ===============================================================================
 Tag-specific: Recommends with boolean dependency

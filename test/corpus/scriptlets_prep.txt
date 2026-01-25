@@ -98,8 +98,9 @@ Prep Section (%setup with name option)
     (script_block
       (setup_macro
         (builtin)
-        (macro_option
-          (word))))))
+        argument: (macro_option
+          directory: (directory
+            (word)))))))
 
 ===============================================================================
 Prep Section (%setup complex combination)
@@ -116,13 +117,14 @@ Prep Section (%setup complex combination)
     (script_block
       (setup_macro
         (builtin)
-        (macro_option)
-        (macro_option
-          (macro_expansion
-            (identifier)))
-        (macro_option
-          (integer))
-        (macro_option)))))
+        argument: (macro_option)
+        argument: (macro_option
+          directory: (directory
+            (macro_expansion
+              (identifier))))
+        argument: (macro_option
+          number: (integer))
+        argument: (macro_option)))))
 
 ===============================================================================
 Prep Section (%setup standalone)
@@ -158,13 +160,13 @@ Prep Section (%setup edge cases)
     (script_block
       (setup_macro
         (builtin)
-        (macro_option))
+        argument: (macro_option))
       (setup_macro
         (builtin)
-        (macro_option
-          (integer))
-        (macro_option
-          (quoted_string
+        argument: (macro_option
+          number: (integer))
+        argument: (macro_option
+          directory: (quoted_string
             (quoted_string_content)))))))
 
 ===============================================================================
@@ -215,12 +217,13 @@ Prep Section (%autosetup with options)
     (script_block
       (autosetup_macro
         (builtin)
-        (macro_option)
-        (macro_option)
-        (macro_option)
-        (macro_option
-          (word))
-        (macro_option)))))
+        argument: (macro_option)
+        argument: (macro_option)
+        argument: (macro_option)
+        argument: (macro_option
+          directory: (directory
+            (word)))
+        argument: (macro_option)))))
 
 ===============================================================================
 Prep Section (%autosetup with attached source number)
@@ -256,7 +259,7 @@ Prep Section (%autosetup with macro-concatenated directory)
       (autosetup_macro
         (builtin)
         argument: (macro_option
-          directory: (concatenation
+          directory: (directory
             (macro_expansion
               (identifier))
             (macro_expansion
@@ -279,7 +282,7 @@ Prep Section (%autosetup with word-macro directory)
       (autosetup_macro
         (builtin)
         argument: (macro_option
-          directory: (concatenation
+          directory: (directory
             (word)
             (macro_expansion
               (identifier))))

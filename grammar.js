@@ -2904,61 +2904,30 @@ module.exports = grammar({
             ),
 
         // Simple setup flags (no parameters)
-        _setup_flag: (_) =>
-            seq(
-                '-',
-                choice(
-                    'c', // Create build directory and change to it
-                    'C', // Create build directory, unpack, strip top-level if exists
-                    'D', // Do not delete build directory before unpacking
-                    'T', // Skip default unpacking of first source
-                    'q' // Operate quietly
-                )
-            ),
+        // Must be tokens so they only match with whitespace separation
+        _setup_flag: (_) => token(choice('-c', '-C', '-D', '-T', '-q')),
 
         // Setup options that take a source number parameter
+        // -a/-b must be tokens to require whitespace separation
         _setup_source_option: ($) =>
             choice(
                 token(seq('-', choice('a', 'b'), /[0-9]+/)), // -a4, -b4
                 seq(
-                    '-',
-                    choice('a', 'b'), // -a: unpack after cd, -b: unpack before cd
+                    token(seq('-', choice('a', 'b'))), // -a: unpack after cd, -b: unpack before cd
                     field('number', $.integer)
                 ) // -a 4, -b 4
             ),
 
-        // Setup name option that takes a directory name
-        _setup_name_option: ($) =>
-            seq(
-                '-',
-                'n', // Set name of build directory
-                field(
-                    'directory',
-                    choice(
-                        alias($._setup_directory, $.concatenation),
-                        $._primary_expression
-                    )
-                )
-            ),
-
-        // Directory concatenation for setup/autosetup -n option
-        // Handles hyphen-connected parts like %{crate}-%{version}
-        // token.immediate('-') ensures hyphen binds tightly to preceding token
+        // Directory value for -n option in setup/autosetup
+        // Uses package_name for word/macro combinations, or quoted string for names with spaces
+        // Examples: %{name}-%{version}, %{name}-v%{version}, talloc-%{version}, "name with spaces"
         _setup_directory: ($) =>
-            choice(
-                // Pattern 1: primary-primary-... (hyphens as separate tokens)
-                // Example: %{crate}-%{version}
-                seq(
-                    $._primary_expression,
-                    repeat1(seq(token.immediate('-'), $._primary_expression))
-                ),
-                // Pattern 2: word followed by macro(s) (word may contain trailing hyphen)
-                // Example: talloc-%{version} where talloc- is one word token
-                seq(
-                    $.word,
-                    repeat1(choice($.macro_simple_expansion, $.macro_expansion))
-                )
-            ),
+            choice(alias($.package_name, $.directory), $.quoted_string),
+
+        // Setup name option: -n DIR
+        // -n must be a token to require whitespace separation
+        _setup_name_option: ($) =>
+            seq(token(seq('-', 'n')), field('directory', $._setup_directory)),
 
         // %autosetup macro: automated source unpacking and patch application
         // Syntax: %autosetup [options]
@@ -3000,53 +2969,36 @@ module.exports = grammar({
             ),
 
         // Autosetup flags (no parameters)
+        // Must be tokens so they only match with whitespace separation
         _autosetup_flag: (_) =>
-            seq(
-                '-',
-                choice(
-                    'v', // Verbose operation
-                    'N', // Disable automatic patch application
-                    'c', // Create build directory before unpacking
-                    'C', // Create build directory, strip top-level
-                    'D', // Do not delete build directory
-                    'T', // Skip default unpacking of first source
-                    'b' // Backup (accepted but ignored)
-                )
-            ),
+            token(choice('-v', '-N', '-c', '-C', '-D', '-T', '-b')),
 
         // Autosetup source option: -a N
+        // -a must be a token to require whitespace separation
         _autosetup_source_option: ($) =>
             choice(
                 token(seq('-', 'a', /[0-9]+/)), // -a4
-                seq('-', 'a', field('number', $.integer)) // -a 4
+                seq(token(seq('-', 'a')), field('number', $.integer)) // -a 4
             ),
 
         // Autosetup name option: -n DIR
+        // -n must be a token to require whitespace separation
         _autosetup_name_option: ($) =>
-            seq(
-                '-',
-                'n',
-                field(
-                    'directory',
-                    choice(
-                        alias($._setup_directory, $.concatenation),
-                        $._primary_expression
-                    )
-                )
-            ),
+            seq(token(seq('-', 'n')), field('directory', $._setup_directory)),
 
         // Autosetup patch option: -p N
+        // -p must be a token to require whitespace separation
         _autosetup_patch_option: ($) =>
             choice(
                 token(seq('-', 'p', /[0-9]+/)), // -p1
-                seq('-', 'p', field('value', $.integer)) // -p 1
+                seq(token(seq('-', 'p')), field('value', $.integer)) // -p 1
             ),
 
         // Autosetup VCS option: -S <vcs>
+        // -S must be a token to require whitespace separation
         _autosetup_vcs_option: (_) =>
             seq(
-                '-',
-                'S',
+                token(seq('-', 'S')),
                 field(
                     'vcs',
                     choice(

@@ -1633,6 +1633,29 @@
     }
   },
   {
+    "type": "directory",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
+          "named": true
+        },
+        {
+          "type": "word",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "elf_arch",
     "named": true,
     "fields": {}
@@ -3296,11 +3319,11 @@
         "required": false,
         "types": [
           {
-            "type": "_primary_expression",
+            "type": "directory",
             "named": true
           },
           {
-            "type": "concatenation",
+            "type": "quoted_string",
             "named": true
           }
         ]
@@ -6034,15 +6057,7 @@
     "named": false
   },
   {
-    "type": "C",
-    "named": false
-  },
-  {
     "type": "Conflicts",
-    "named": false
-  },
-  {
-    "type": "D",
     "named": false
   },
   {
@@ -6103,10 +6118,6 @@
   },
   {
     "type": "ModularityLabel",
-    "named": false
-  },
-  {
-    "type": "N",
     "named": false
   },
   {
@@ -6178,10 +6189,6 @@
     "named": false
   },
   {
-    "type": "S",
-    "named": false
-  },
-  {
     "type": "SourceLicense",
     "named": false
   },
@@ -6195,10 +6202,6 @@
   },
   {
     "type": "Supplements",
-    "named": false
-  },
-  {
-    "type": "T",
     "named": false
   },
   {
@@ -6234,10 +6237,6 @@
     "named": false
   },
   {
-    "type": "a",
-    "named": false
-  },
-  {
     "type": "and",
     "named": false
   },
@@ -6255,10 +6254,6 @@
   },
   {
     "type": "bzr",
-    "named": false
-  },
-  {
-    "type": "c",
     "named": false
   },
   {
@@ -6468,10 +6463,6 @@
   },
   {
     "type": "mtime",
-    "named": false
-  },
-  {
-    "type": "n",
     "named": false
   },
   {
