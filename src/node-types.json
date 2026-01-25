@@ -1389,6 +1389,10 @@
             "named": false
           },
           {
+            "type": "dependency_version_string",
+            "named": true
+          },
+          {
             "type": "macro_expansion",
             "named": true
           },
@@ -6288,6 +6292,10 @@
   {
     "type": "defined",
     "named": false
+  },
+  {
+    "type": "dependency_version_string",
+    "named": true
   },
   {
     "type": "dirname",

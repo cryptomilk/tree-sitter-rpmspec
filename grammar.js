@@ -1857,13 +1857,14 @@ module.exports = grammar({
             ),
 
         // Version value in dependencies - can be literal or macro-based
-        // Examples: 1.0.0, %{version}, %{version}-%{release}
+        // Examples: 1.0.0, %{version}, %{version}-%{release}, git-hash
         _dependency_version_value: ($) =>
             choice(
                 $._dependency_version_concatenation, // %{version}-%{release}
                 alias($.dependency_version, $.version), // literal: 1.0.0-1.fc35
                 $.macro_expansion, // %{version}
-                $.macro_simple_expansion // %version
+                $.macro_simple_expansion, // %version
+                $.dependency_version_string // fallback: git hashes, arbitrary strings
             ),
 
         // Concatenated version parts (e.g., %{version}-%{release}, 1:%{version})
@@ -3225,9 +3226,21 @@ module.exports = grammar({
                         optional(seq(digits, ':')), // Optional epoch: N:
                         digits,
                         optional(seq('.', digits)), // Optional minor version
-                        optional(/[a-zA-Z0-9+._~]+/), // Optional version suffix (patch, pre-release, etc.)
-                        optional(seq('-', /[0-9]+[a-zA-Z0-9+._~]*/)) // Optional release: -release (must start with digit)
+                        optional(/[a-zA-Z0-9+._~]+/), // Optional version suffix
+                        optional(seq('-', /[0-9]+[a-zA-Z0-9+._~]*/)) // Optional release
                     )
+                )
+            );
+        },
+
+        // Arbitrary version string: for git hashes, commit IDs, etc.
+        // Fallback when dependency_version doesn't match
+        // Must start with alphanumeric, greedy match to end
+        dependency_version_string: ($) => {
+            return token(
+                prec(
+                    1, // Lower precedence than dependency_version
+                    /[a-zA-Z0-9][a-zA-Z0-9+._~-]*/
                 )
             );
         },

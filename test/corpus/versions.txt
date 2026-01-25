@@ -134,3 +134,30 @@ Provides:       virtual-package = 0:1.0.0
               operator: (dependency_comparison_operator)
               version: (version))))))))
 
+===============================================================================
+Version (Git hash as version)
+===============================================================================
+
+Name:           tree-sitter-rpmspec
+Provides:       bundled(sdb) = db7edd4a96a89b6749b677a85d7fa4ee2c6fbbb9
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (tag)
+      value: (word)))
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (dependency
+          (qualified_dependency
+            name: (word)
+            qualifier: (dependency_qualifier
+              content: (identifier))
+            version: (dependency_version_constraint
+              operator: (dependency_comparison_operator)
+              version: (dependency_version_string))))))))
+

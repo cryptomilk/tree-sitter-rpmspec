@@ -5745,6 +5745,10 @@
         {
           "type": "SYMBOL",
           "name": "macro_simple_expansion"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "dependency_version_string"
         }
       ]
     },
@@ -11437,6 +11441,17 @@
               ]
             }
           ]
+        }
+      }
+    },
+    "dependency_version_string": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "[a-zA-Z0-9][a-zA-Z0-9+._~-]*"
         }
       }
     },
