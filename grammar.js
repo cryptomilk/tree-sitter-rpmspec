@@ -3349,7 +3349,7 @@ module.exports = grammar({
         // Word tokens: unquoted identifiers and simple values
         // Excludes whitespace and special characters that have syntactic meaning
         // Used for simple identifiers, paths, and unquoted string values
-        word: ($) => token(/([^\s"#%{}()<>|&\\])+/),
+        word: ($) => token(/([^\s"#%{}()<>|\\])+/),
 
         // Macro value text: raw text content in macro definitions
         // More permissive than 'word' - allows ();<>|& etc.
