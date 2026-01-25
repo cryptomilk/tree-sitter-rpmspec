@@ -289,6 +289,32 @@ Prep Section (%autosetup with word-macro directory)
         argument: (macro_option)))))
 
 ===============================================================================
+Prep Section (%autosetup with dotted version in directory)
+===============================================================================
+
+%prep
+%autosetup -p1 -n %{pkgname}-%{major}.%{minor} -a1
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (script_block
+      (autosetup_macro
+        (builtin)
+        argument: (macro_option)
+        argument: (macro_option
+          directory: (directory
+            (macro_expansion
+              (identifier))
+            (macro_expansion
+              (identifier))
+            (macro_expansion
+              (identifier))))
+        argument: (macro_option)))))
+
+===============================================================================
 Prep Section (%autopatch basic)
 ===============================================================================
 

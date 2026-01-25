@@ -6630,6 +6630,13 @@
         }
       ]
     },
+    "_package_name_word": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[^\\s\"#%{}()<>|&=\\\\,]+"
+      }
+    },
     "package_name": {
       "type": "PREC_LEFT",
       "value": 0,
@@ -6640,8 +6647,13 @@
             "type": "CHOICE",
             "members": [
               {
-                "type": "SYMBOL",
-                "name": "word"
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_package_name_word"
+                },
+                "named": true,
+                "value": "word"
               },
               {
                 "type": "SYMBOL",
@@ -6662,7 +6674,7 @@
                   "type": "IMMEDIATE_TOKEN",
                   "content": {
                     "type": "PATTERN",
-                    "value": "[a-zA-Z0-9_+-]+"
+                    "value": "[^\\s\"#%{}()<>|&=\\\\,]+"
                   }
                 },
                 {

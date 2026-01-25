@@ -2096,14 +2096,23 @@ module.exports = grammar({
         // Package name for section headers and dependencies
         // Used by %description, %package, %files, dependencies, etc.
         // Can be a word, macro, or immediate concatenation (no spaces)
-        // Examples: libssh-devel, %{crate}, %{name}-libs, perl
+        // Per RPM spec: names must not include whitespace or numeric operators (<>=)
+        // Examples: libssh-devel, %{crate}, %{name}-libs, perl, paket-ü
+        _package_name_word: (_) => token(/[^\s"#%{}()<>|&=\\,]+/),
         package_name: ($) =>
             prec.left(
                 seq(
-                    choice($.word, $.macro_simple_expansion, $.macro_expansion),
+                    choice(
+                        alias($._package_name_word, $.word),
+                        $.macro_simple_expansion,
+                        $.macro_expansion
+                    ),
+                    // Use token.immediate (not _package_name_word) to:
+                    // 1. Require no whitespace between parts (e.g., %{name}-devel)
+                    // 2. Keep continuation parts anonymous in the AST
                     repeat(
                         choice(
-                            token.immediate(/[a-zA-Z0-9_+-]+/),
+                            token.immediate(/[^\s"#%{}()<>|&=\\,]+/),
                             $.macro_simple_expansion,
                             $.macro_expansion
                         )
