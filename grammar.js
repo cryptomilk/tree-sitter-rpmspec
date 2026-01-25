@@ -2754,9 +2754,24 @@ module.exports = grammar({
 
         // * Tue May 31 2016 Adam Miller <maxamillion@fedoraproject.org> - 0.1-1
         // * Fri Jun 21 2002 Bob Marley <marley@redhat.com>
+        // - Some change description
+        //   continuation line (starts with whitespace)
 
         changelog_entry: ($) =>
-            seq('*', $.string_content, /\n/, repeat(seq('-', $.string, /\n/))),
+            seq(
+                '*',
+                $.string_content,
+                /\n/,
+                repeat(
+                    seq(
+                        '-',
+                        $.string,
+                        /\n/,
+                        // Continuation lines: start with whitespace, not * or -
+                        repeat(seq(/[ \t]+/, $.string, /\n/))
+                    )
+                )
+            ),
 
         ///////////////////////////////////////////////////////////////////////
         // Special Macros (%autosetup, %autopatch, %setup, ...)

@@ -66,3 +66,24 @@ Changelog (Multi-line)
         (string_content))
       (string
         (string_content)))))
+
+===============================================================================
+Changelog (with continuation line)
+===============================================================================
+
+%changelog
+* Fri Dec 18 2020 Alice <alice@alice.com> - 1.0-1
+- Split out subpackage
+  https://bugzilla.example.com/show_bug.cgi?id=123
+
+-------------------------------------------------------------------------------
+
+(spec
+  (changelog
+    (section_name)
+    (changelog_entry
+      (string_content)
+      (string
+        (string_content))
+      (string
+        (string_content)))))

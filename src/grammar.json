@@ -9935,6 +9935,26 @@
               {
                 "type": "PATTERN",
                 "value": "\\n"
+              },
+              {
+                "type": "REPEAT",
+                "content": {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "PATTERN",
+                      "value": "[ \\t]+"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "string"
+                    },
+                    {
+                      "type": "PATTERN",
+                      "value": "\\n"
+                    }
+                  ]
+                }
               }
             ]
           }
