@@ -6141,10 +6141,6 @@
     "named": false
   },
   {
-    "type": "M",
-    "named": false
-  },
-  {
     "type": "ModularityLabel",
     "named": false
   },
@@ -6455,10 +6451,6 @@
   },
   {
     "type": "lower",
-    "named": false
-  },
-  {
-    "type": "m",
     "named": false
   },
   {

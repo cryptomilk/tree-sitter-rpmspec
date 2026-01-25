@@ -3094,7 +3094,14 @@ module.exports = grammar({
                 // Immediate format: -p1, -m100, -M400
                 token(seq('-', choice('p', 'm', 'M'), /[0-9]+/)),
                 // Spaced format: -p 1, -m 100, -M 400
-                seq('-', choice('p', 'm', 'M'), field('value', $.integer))
+                // Value can be integer, macro expansion, or macro expression
+                seq(
+                    token(seq('-', choice('p', 'm', 'M'))),
+                    field(
+                        'value',
+                        choice($.integer, $.macro_expansion, $.macro_expression)
+                    )
+                )
             ),
 
         // Autopatch arguments: positional patch numbers

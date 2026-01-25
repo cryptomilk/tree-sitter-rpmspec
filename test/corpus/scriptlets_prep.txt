@@ -351,6 +351,31 @@ Prep Section (%autopatch with range)
           (integer))))))
 
 ===============================================================================
+Prep Section (%autopatch with macro expression)
+===============================================================================
+
+%prep
+%autopatch -M %[%{?fedora} * 10 + 9]
+
+-------------------------------------------------------------------------------
+
+(spec
+  (prep_scriptlet
+    (section_name)
+    (script_block
+      (autopatch_macro
+        (builtin)
+        argument: (macro_option
+          value: (macro_expression
+            (macro_arithmetic_operator
+              left: (macro_arithmetic_operator
+                left: (macro_expansion
+                  (conditional_expansion
+                    condition: (identifier)))
+                right: (integer))
+              right: (integer))))))))
+
+===============================================================================
 Prep Section (%autopatch with arguments)
 ===============================================================================
 
