@@ -5207,14 +5207,87 @@
       ]
     },
     "dependency": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "elf_dependency"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "name",
+              "content": {
+                "type": "SYMBOL",
+                "name": "dependency_name"
+              }
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "FIELD",
+                  "name": "version",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "dependency_version_constraint"
+                  }
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "elf_dependency": {
       "type": "SEQ",
       "members": [
         {
           "type": "FIELD",
-          "name": "name",
+          "name": "soname",
           "content": {
             "type": "SYMBOL",
-            "name": "dependency_name"
+            "name": "soname"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "symbol_version",
+          "content": {
+            "type": "SYMBOL",
+            "name": "elf_symbol_version"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "arch",
+          "content": {
+            "type": "SYMBOL",
+            "name": "elf_arch"
+          }
+        }
+      ]
+    },
+    "soname": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[a-zA-Z_][a-zA-Z0-9_.-]*\\.so(\\.[0-9]+)?"
+      }
+    },
+    "elf_symbol_version": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "("
           }
         },
         {
@@ -5224,14 +5297,53 @@
               "type": "FIELD",
               "name": "version",
               "content": {
-                "type": "SYMBOL",
-                "name": "dependency_version_constraint"
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_elf_symbol_version_name"
+                },
+                "named": true,
+                "value": "identifier"
               }
             },
             {
               "type": "BLANK"
             }
           ]
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "_elf_symbol_version_name": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[a-zA-Z_][a-zA-Z0-9_.]+"
+      }
+    },
+    "elf_arch": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "("
+          }
+        },
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "PATTERN",
+            "value": "64bit|32bit"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": ")"
         }
       ]
     },

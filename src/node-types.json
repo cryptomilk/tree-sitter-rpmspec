@@ -1142,7 +1142,7 @@
     "fields": {
       "name": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "dependency_name",
@@ -1160,6 +1160,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "elf_dependency",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -1511,6 +1521,63 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "elf_arch",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "elf_dependency",
+    "named": true,
+    "fields": {
+      "arch": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "elf_arch",
+            "named": true
+          }
+        ]
+      },
+      "soname": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "soname",
+            "named": true
+          }
+        ]
+      },
+      "symbol_version": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "elf_symbol_version",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "elf_symbol_version",
+    "named": true,
+    "fields": {
+      "version": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -6298,6 +6365,10 @@
   {
     "type": "size",
     "named": false
+  },
+  {
+    "type": "soname",
+    "named": true
   },
   {
     "type": "special_macro",
