@@ -3141,13 +3141,12 @@ module.exports = grammar({
             prec(
                 -1,
                 repeat1(
-                    seq(
-                        choice(
-                            seq(optional('%'), $.text_content), // Raw text (% is literal)
-                            $.macro_simple_expansion, // %macro
-                            $.macro_expansion, // %{macro}
-                            $.macro_shell_expansion // %(shell command)
-                        )
+                    choice(
+                        seq(optional('%'), $.text_content), // Raw text (% is literal)
+                        $.macro_simple_expansion, // %macro
+                        $.macro_expansion, // %{macro}
+                        $.macro_shell_expansion, // %(shell command)
+                        $.quoted_string // Quoted strings like "%{crate}"
                     )
                 )
             ),

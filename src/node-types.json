@@ -5182,6 +5182,10 @@
           "named": true
         },
         {
+          "type": "quoted_string",
+          "named": true
+        },
+        {
           "type": "text_content",
           "named": true
         }

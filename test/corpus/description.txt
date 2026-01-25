@@ -257,3 +257,26 @@ Devel description.
         (word))
       (text
         (text_content)))))
+
+===============================================================================
+Description (with quoted strings)
+===============================================================================
+
+%description devel
+This package contains library source intended for building other packages which
+use the "%{crate}" crate.
+
+-------------------------------------------------------------------------------
+
+(spec
+  (description
+    (section_name)
+    (subpackage_name
+      (word))
+    (text
+      (text_content)
+      (text_content)
+      (quoted_string
+        (macro_expansion
+          (identifier)))
+      (text_content))))
