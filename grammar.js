@@ -1781,6 +1781,8 @@ module.exports = grammar({
                         'content',
                         choice(
                             $.nested_qualified_dependency, // Nested: bundled(golang(...))
+                            $.macro_expansion, // Macro: %{pkgname}
+                            $.macro_simple_expansion, // Simple macro: %pkgname
                             $.identifier, // Simple identifier: Carp, pytest
                             $.word // Complex: x86-64, glib-2.0, golang.org/x/arch
                         )

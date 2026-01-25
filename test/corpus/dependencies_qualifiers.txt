@@ -169,3 +169,26 @@ Provides: bundled(golang(golang.org/x/arch)) = 0.18.1
               operator: (dependency_comparison_operator)
               version: (version))))))))
 
+===============================================================================
+Qualifier dependency (macro in qualifier)
+===============================================================================
+
+Provides: npm(%{pkgname}) = %{version}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble
+    (tags
+      (dependency_tag)
+      value: (dependency_list
+        (dependency
+          (qualified_dependency
+            name: (word)
+            qualifier: (dependency_qualifier
+              content: (macro_expansion
+                (identifier)))
+            version: (dependency_version_constraint
+              operator: (dependency_comparison_operator)
+              version: (macro_expansion
+                (identifier)))))))))
