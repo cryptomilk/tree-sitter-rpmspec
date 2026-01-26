@@ -6777,7 +6777,7 @@
     },
     "package_name": {
       "type": "PREC_LEFT",
-      "value": 0,
+      "value": 1,
       "content": {
         "type": "SEQ",
         "members": [
@@ -12050,10 +12050,6 @@
   "conflicts": [
     [
       "file_path"
-    ],
-    [
-      "package_name",
-      "text"
     ],
     [
       "script_block",

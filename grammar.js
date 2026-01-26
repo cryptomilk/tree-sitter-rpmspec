@@ -157,9 +157,7 @@ module.exports = grammar({
         // file_path: After a path segment, a % could either continue the current
         // path (e.g., /usr/%{name}) or start a new path. Let GLR handle it.
         [$.file_path],
-        // package_name vs text: In %description, a macro after package name could
-        // be continuation of package_name or start of inline text.
-        [$.package_name, $.text],
+        // REMOVED: [$.package_name, $.text] - resolved with precedence (package_name prec 1, text prec -1)
         // script_block vs script_line: A conditional inside script_block could be
         // a direct child of script_block or embedded inside script_line (for line
         // continuation sequences with conditionals).
@@ -2194,8 +2192,10 @@ module.exports = grammar({
                     repeat(noneOf(...PACKAGE_NAME_SPECIAL_CHARS))
                 )
             ),
+        // Precedence 1 to prefer package_name over text (prec -1) when both match
         package_name: ($) =>
             prec.left(
+                1,
                 seq(
                     choice(
                         alias($._package_name_word, $.word),
