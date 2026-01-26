@@ -25,31 +25,38 @@
 (prep_scriptlet (script_block (script_line) @injection.content)
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 (build_scriptlet (script_block (script_line) @injection.content)
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 (install_scriptlet (script_block (script_line) @injection.content)
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 (check_scriptlet (script_block (script_line) @injection.content)
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 (clean_scriptlet (script_block (script_line) @injection.content)
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 (conf_scriptlet (script_block (script_line) @injection.content)
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 (generate_buildrequires (script_block (script_line) @injection.content)
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 
 ; ============================================================
 ; RUNTIME SCRIPTLETS
@@ -121,7 +128,8 @@
   (script_block (script_line) @injection.content)
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 
 ; Lua interpreter for triggers
 (trigger
@@ -131,7 +139,8 @@
   (#eq? @_interp "<lua>")
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "lua")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 
 ; Perl interpreter for triggers
 (trigger
@@ -141,7 +150,8 @@
   (#match? @_interp "perl")
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "perl")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 
 ; ============================================================
 ; FILE TRIGGERS
@@ -152,7 +162,8 @@
   (script_block (script_line) @injection.content)
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 
 ; Lua interpreter for file triggers
 (file_trigger
@@ -162,7 +173,8 @@
   (#eq? @_interp "<lua>")
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "lua")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 
 ; ============================================================
 ; CONDITIONALS INSIDE SCRIPTLETS
@@ -171,33 +183,40 @@
 (if_statement (script_line) @injection.content
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 (scriptlet_elif_clause (script_line) @injection.content
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 (scriptlet_else_clause (script_line) @injection.content
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 
 (ifarch_statement (script_line) @injection.content
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 (scriptlet_elifarch_clause (script_line) @injection.content
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 
 (ifos_statement (script_line) @injection.content
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 (scriptlet_elifos_clause (script_line) @injection.content
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 
 ; ============================================================
 ; SHELL COMMAND EXPANSION %(...)
