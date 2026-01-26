@@ -250,15 +250,22 @@ module.exports = grammar({
         _header_statements: ($) =>
             choice($._header_item, $._compound_statements),
 
-        _header_item: ($) =>
+        // Common macro statements that can appear in multiple contexts
+        // Extracted to reduce duplication and potentially share parser states
+        _macro_statement: ($) =>
             choice(
                 $.macro_definition, // %define, %global
                 $.macro_undefinition, // %undefine
-                $.macro_expansion, // %{name}, %name
+                $.macro_expansion, // %{name}
                 $.macro_parametric_expansion, // %name [options] [arguments]
-                $.macro_simple_expansion, // %name - simple expansion
+                $.macro_simple_expansion, // %name
                 $.macro_shell_expansion, // %(shell command)
-                $.macro_expression, // %[expression]
+                $.macro_expression // %[expression]
+            ),
+
+        _header_item: ($) =>
+            choice(
+                $._macro_statement,
                 $.preamble, // Name:, Version:, etc.
                 $.description, // %description section
                 $.package, // %package subsection (has its own preamble)
@@ -272,13 +279,7 @@ module.exports = grammar({
 
         _body_item: ($) =>
             choice(
-                $.macro_definition, // %define, %global
-                $.macro_undefinition, // %undefine
-                $.macro_expansion, // %{name}, %name
-                $.macro_parametric_expansion, // %name [options] [arguments]
-                $.macro_simple_expansion, // %name - simple expansion
-                $.macro_shell_expansion, // %(shell command)
-                $.macro_expression, // %[expression]
+                $._macro_statement,
                 // NO preamble here - preamble tags not valid in body
                 $.description, // %description can appear in body too
                 $.package, // %package can appear in body too
