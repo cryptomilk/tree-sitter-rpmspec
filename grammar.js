@@ -1693,11 +1693,11 @@ module.exports = grammar({
 
         // Source tag: Source0, Source1, Source, etc.
         // Note: includes the colon to match as complete token
-        _source_tag: (_) => token(seq(/Source\d*/, /:( |\t)*/)),
+        _source_tag: (_) => token(seq(/Source\d*/, ':')),
 
         // Patch tag: Patch0, Patch1, Patch, etc.
         // Note: includes the colon to match as complete token
-        _patch_tag: (_) => token(seq(/Patch\d*/, /:( |\t)*/)),
+        _patch_tag: (_) => token(seq(/Patch\d*/, ':')),
 
         // URL tag: URL, Url, BugUrl
         // Note: includes the colon via tagWithColon() to match as complete token
@@ -1743,7 +1743,7 @@ module.exports = grammar({
                 seq(
                     token(seq('BuildOption', token.immediate('('))),
                     alias($._build_option_qualifier, $.qualifier),
-                    token(seq(')', /:( |\t)*/))
+                    '):'
                 ),
                 // BuildOption without qualifier: BuildOption:
                 tagWithColon('BuildOption')
@@ -1759,13 +1759,13 @@ module.exports = grammar({
                 seq(
                     token(seq('Requires', token.immediate('('))),
                     $.qualifier,
-                    token(seq(')', /:( |\t)*/))
+                    '):'
                 ),
                 // Requires without qualifier: Requires:
                 tagWithColon('Requires'),
                 // BuildRequires with qualifier: BuildRequires(pre):
                 // The (pre) is included in token for ALTLinux compatibility
-                token(seq('BuildRequires(pre)', /:( |\t)*/)),
+                token(seq('BuildRequires(pre)', ':')),
                 // BuildRequires without qualifier: BuildRequires:
                 tagWithColon('BuildRequires')
             ),
@@ -3640,12 +3640,12 @@ function commaSepAllowEmpty(rule) {
  * won't be recognized as a tag.
  *
  * @param {...string} keywords - One or more tag keywords
- * @return {TokenRule} A token matching any keyword followed by colon and optional whitespace
+ * @return {TokenRule} A token matching any keyword followed by colon
  */
 function tagWithColon(...keywords) {
     const keywordChoice =
         keywords.length === 1 ? keywords[0] : choice(...keywords);
-    return token(seq(keywordChoice, /:( |\t)*/));
+    return token(seq(keywordChoice, ':'));
 }
 
 /**

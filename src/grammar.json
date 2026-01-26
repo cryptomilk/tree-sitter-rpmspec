@@ -5003,8 +5003,8 @@
             ]
           },
           {
-            "type": "PATTERN",
-            "value": ":( |\\t)*"
+            "type": "STRING",
+            "value": ":"
           }
         ]
       }
@@ -5019,8 +5019,8 @@
             "value": "Source\\d*"
           },
           {
-            "type": "PATTERN",
-            "value": ":( |\\t)*"
+            "type": "STRING",
+            "value": ":"
           }
         ]
       }
@@ -5035,8 +5035,8 @@
             "value": "Patch\\d*"
           },
           {
-            "type": "PATTERN",
-            "value": ":( |\\t)*"
+            "type": "STRING",
+            "value": ":"
           }
         ]
       }
@@ -5064,8 +5064,8 @@
             ]
           },
           {
-            "type": "PATTERN",
-            "value": ":( |\\t)*"
+            "type": "STRING",
+            "value": ":"
           }
         ]
       }
@@ -5179,20 +5179,8 @@
               "value": "qualifier"
             },
             {
-              "type": "TOKEN",
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": ")"
-                  },
-                  {
-                    "type": "PATTERN",
-                    "value": ":( |\\t)*"
-                  }
-                ]
-              }
+              "type": "STRING",
+              "value": "):"
             }
           ]
         },
@@ -5206,8 +5194,8 @@
                 "value": "BuildOption"
               },
               {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
+                "type": "STRING",
+                "value": ":"
               }
             ]
           }
@@ -5244,20 +5232,8 @@
               "name": "qualifier"
             },
             {
-              "type": "TOKEN",
-              "content": {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": ")"
-                  },
-                  {
-                    "type": "PATTERN",
-                    "value": ":( |\\t)*"
-                  }
-                ]
-              }
+              "type": "STRING",
+              "value": "):"
             }
           ]
         },
@@ -5271,8 +5247,8 @@
                 "value": "Requires"
               },
               {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
+                "type": "STRING",
+                "value": ":"
               }
             ]
           }
@@ -5287,8 +5263,8 @@
                 "value": "BuildRequires(pre)"
               },
               {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
+                "type": "STRING",
+                "value": ":"
               }
             ]
           }
@@ -5303,8 +5279,8 @@
                 "value": "BuildRequires"
               },
               {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
+                "type": "STRING",
+                "value": ":"
               }
             ]
           }
@@ -5338,8 +5314,8 @@
             ]
           },
           {
-            "type": "PATTERN",
-            "value": ":( |\\t)*"
+            "type": "STRING",
+            "value": ":"
           }
         ]
       }
@@ -5367,8 +5343,8 @@
             ]
           },
           {
-            "type": "PATTERN",
-            "value": ":( |\\t)*"
+            "type": "STRING",
+            "value": ":"
           }
         ]
       }
@@ -5383,8 +5359,8 @@
             "value": "Provides"
           },
           {
-            "type": "PATTERN",
-            "value": ":( |\\t)*"
+            "type": "STRING",
+            "value": ":"
           }
         ]
       }
@@ -5424,8 +5400,8 @@
             ]
           },
           {
-            "type": "PATTERN",
-            "value": ":( |\\t)*"
+            "type": "STRING",
+            "value": ":"
           }
         ]
       }
@@ -5477,8 +5453,8 @@
             ]
           },
           {
-            "type": "PATTERN",
-            "value": ":( |\\t)*"
+            "type": "STRING",
+            "value": ":"
           }
         ]
       }
