@@ -88,6 +88,7 @@ See [DESIGN.md](DESIGN.md) for details on key design decisions, including:
 - [Creating Parsers](https://tree-sitter.github.io/tree-sitter/creating-parsers)
 - [Syntax Highlighting](https://tree-sitter.github.io/tree-sitter/syntax-highlighting)
 - [Parser Development (Neovim wiki)](https://github.com/nvim-treesitter/nvim-treesitter/wiki/Parser-Development)
+- [Tips and Tricks for a grammar author](https://github.com/tree-sitter/tree-sitter/wiki/Tips-and-Tricks-for-a-grammar-author)
 
 #### RPM
 
