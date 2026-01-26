@@ -105,3 +105,21 @@ Changelog (with escape sequence in text)
       (string_content)
       (string
         (string_content)))))
+
+===============================================================================
+Changelog (item without leading dash)
+===============================================================================
+
+%changelog
+* Wed Jun 04 2003 Jane Doe <jane@example.com>
+6 rebuilt
+
+-------------------------------------------------------------------------------
+
+(spec
+  (changelog
+    (section_name)
+    (changelog_entry
+      (string_content)
+      (string
+        (string_content)))))

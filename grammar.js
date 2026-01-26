@@ -2962,12 +2962,17 @@ module.exports = grammar({
                 $.string_content,
                 /\n/,
                 repeat(
-                    seq(
-                        '-',
-                        $.string,
-                        /\n/,
-                        // Continuation lines: start with whitespace, not * or -
-                        repeat(seq(/[ \t]+/, $.string, /\n/))
+                    choice(
+                        // Standard format: - item description
+                        seq(
+                            '-',
+                            $.string,
+                            /\n/,
+                            // Continuation lines: start with whitespace, not * or -
+                            repeat(seq(/[ \t]+/, $.string, /\n/))
+                        ),
+                        // Legacy format: item without leading - (must start with non-whitespace)
+                        seq(/[^\s*%-]/, optional($.string), /\n/)
                     )
                 )
             ),
