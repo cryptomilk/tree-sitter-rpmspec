@@ -1601,37 +1601,38 @@ module.exports = grammar({
                     /\n/
                 ),
                 // Strong dependency tags (Requires, BuildRequires) - full boolean support
+                // Note: _requires_tag includes the colon (same reason as Provides)
                 seq(
                     alias($._requires_tag, $.dependency_tag),
-                    token.immediate(/:( |\t)*/),
                     field('value', $.rich_dependency_list), // Supports boolean deps
                     /\n/
                 ),
                 // Weak dependency tags (Recommends, Suggests, etc.) - full boolean support
+                // Note: _weak_requires_tag includes the colon (same reason as Provides)
                 seq(
                     alias($._weak_requires_tag, $.dependency_tag),
-                    token.immediate(/:( |\t)*/),
                     field('value', $.rich_dependency_list), // Supports boolean deps
                     /\n/
                 ),
                 // Conflicts/Obsoletes tags - NO boolean expressions
+                // Note: _conflicts_tag includes the colon (same reason as Provides)
                 seq(
                     alias($._conflicts_tag, $.dependency_tag),
-                    token.immediate(/:( |\t)*/),
                     field('value', $.dependency_list), // No boolean deps
                     /\n/
                 ),
                 // Provides tag - NO boolean expressions
+                // Note: _provides_tag includes the colon to prevent "Provides" from
+                // matching in text content (e.g., description starting with "Provides...")
                 seq(
                     alias($._provides_tag, $.dependency_tag),
-                    token.immediate(/:( |\t)*/),
                     field('value', $.dependency_list), // No boolean deps
                     /\n/
                 ),
                 // Architecture/OS constraint tags - use literals
+                // Note: _arch_tag includes the colon via tagWithColon()
                 seq(
                     alias($._arch_tag, $.dependency_tag),
-                    token.immediate(/:( |\t)*/),
                     field('value', $._literal), // Simple arch/OS names
                     /\n/
                 ),
@@ -1644,9 +1645,9 @@ module.exports = grammar({
                     /\n/
                 ),
                 // Legacy/deprecated tags - use rich dependency list for compatibility
+                // Note: _legacy_dependency_tag includes the colon via tagWithColon()
                 seq(
                     alias($._legacy_dependency_tag, $.dependency_tag),
-                    token.immediate(/:( |\t)*/),
                     field('value', $.rich_dependency_list),
                     /\n/
                 )
@@ -1740,30 +1741,43 @@ module.exports = grammar({
 
         // Strong dependency tags: Requires (with qualifier), BuildRequires
         // These support full boolean dependency syntax (and, or, if, with, without)
+        // Colon is included in token to prevent matching in text content
         _requires_tag: ($) =>
             choice(
-                seq('Requires', optional(seq('(', $.qualifier, ')'))),
-                seq('BuildRequires', optional(alias('(pre)', $.qualifier))) // optional qualifier (deprecated) for ALTLinux
+                // Requires with qualifier: Requires(post):
+                // Use token.immediate('(') to require paren immediately after Requires
+                seq(
+                    token(seq('Requires', token.immediate('('))),
+                    $.qualifier,
+                    token(seq(')', /:( |\t)*/))
+                ),
+                // Requires without qualifier: Requires:
+                tagWithColon('Requires'),
+                // BuildRequires with qualifier: BuildRequires(pre):
+                // The (pre) is included in token for ALTLinux compatibility
+                token(seq('BuildRequires(pre)', /:( |\t)*/)),
+                // BuildRequires without qualifier: BuildRequires:
+                tagWithColon('BuildRequires')
             ),
 
         // Weak dependency tags: Recommends, Suggests, Supplements, Enhances
         // These also support full boolean dependency syntax
         _weak_requires_tag: (_) =>
-            choice('Recommends', 'Suggests', 'Supplements', 'Enhances'),
+            tagWithColon('Recommends', 'Suggests', 'Supplements', 'Enhances'),
 
         // Conflict/Obsolete tags: Conflicts, BuildConflicts, Obsoletes
         // These do NOT support boolean expressions - only simple versioned deps
         _conflicts_tag: (_) =>
-            choice('Conflicts', 'BuildConflicts', 'Obsoletes'),
+            tagWithColon('Conflicts', 'BuildConflicts', 'Obsoletes'),
 
         // Provides tag: provides virtual packages/capabilities
         // Does NOT support boolean expressions - only simple versioned deps
-        _provides_tag: (_) => 'Provides',
+        _provides_tag: (_) => tagWithColon('Provides'),
 
         // Architecture/OS constraint tags
         // These use simple literals (arch names), not dependency lists
         _arch_tag: (_) =>
-            choice(
+            tagWithColon(
                 'BuildArch',
                 'BuildArchitectures',
                 'ExcludeArch',
@@ -1775,16 +1789,16 @@ module.exports = grammar({
         // Legacy/deprecated dependency tags
         // Keep for backwards compatibility
         _legacy_dependency_tag: (_) =>
-            choice(
-                'BuildPrereq', // Build prerequisites (deprecated)
-                'BuildPreReq', // Build prerequisites (deprecated)
-                'Prereq', // Prerequisites (deprecated)
-                'PreReq', // Prerequisites (deprecated)
-                'OrderWithRequires', // Ordering dependency
-                'DocDir', // Documentation directory
-                'Prefix', // Installation prefix
-                'Prefixes', // Multiple installation prefixes
-                'RemovePathPostfixes' // Path postfixes to remove
+            tagWithColon(
+                'BuildPrereq',
+                'BuildPreReq',
+                'Prereq',
+                'PreReq',
+                'OrderWithRequires',
+                'DocDir',
+                'Prefix',
+                'Prefixes',
+                'RemovePathPostfixes'
             ),
 
         ///////////////////////////////////////////////////////////////////////
@@ -3605,6 +3619,23 @@ function commaSep(rule) {
  */
 function commaSepAllowEmpty(rule) {
     return sep1(optional(rule), ',');
+}
+
+/**
+ * Creates a tag token that includes the colon.
+ *
+ * This prevents tag keywords (like "Provides", "Requires") from matching
+ * in text content (e.g., description starting with "Provides...").
+ * By including the colon in the token, "Provides" without a colon
+ * won't be recognized as a tag.
+ *
+ * @param {...string} keywords - One or more tag keywords
+ * @return {TokenRule} A token matching any keyword followed by colon and optional whitespace
+ */
+function tagWithColon(...keywords) {
+    const keywordChoice =
+        keywords.length === 1 ? keywords[0] : choice(...keywords);
+    return token(seq(keywordChoice, /:( |\t)*/));
 }
 
 /**

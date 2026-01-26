@@ -6762,31 +6762,7 @@
     "named": false
   },
   {
-    "type": "BuildArch",
-    "named": false
-  },
-  {
-    "type": "BuildArchitectures",
-    "named": false
-  },
-  {
-    "type": "BuildConflicts",
-    "named": false
-  },
-  {
     "type": "BuildOption",
-    "named": false
-  },
-  {
-    "type": "BuildPreReq",
-    "named": false
-  },
-  {
-    "type": "BuildPrereq",
-    "named": false
-  },
-  {
-    "type": "BuildRequires",
     "named": false
   },
   {
@@ -6798,10 +6774,6 @@
     "named": false
   },
   {
-    "type": "Conflicts",
-    "named": false
-  },
-  {
     "type": "DistTag",
     "named": false
   },
@@ -6810,35 +6782,11 @@
     "named": false
   },
   {
-    "type": "DocDir",
-    "named": false
-  },
-  {
     "type": "E",
     "named": false
   },
   {
-    "type": "Enhances",
-    "named": false
-  },
-  {
     "type": "Epoch",
-    "named": false
-  },
-  {
-    "type": "ExcludeArch",
-    "named": false
-  },
-  {
-    "type": "ExcludeOS",
-    "named": false
-  },
-  {
-    "type": "ExclusiveArch",
-    "named": false
-  },
-  {
-    "type": "ExclusiveOS",
     "named": false
   },
   {
@@ -6870,14 +6818,6 @@
     "named": false
   },
   {
-    "type": "Obsoletes",
-    "named": false
-  },
-  {
-    "type": "OrderWithRequires",
-    "named": false
-  },
-  {
     "type": "P",
     "named": false
   },
@@ -6886,31 +6826,7 @@
     "named": false
   },
   {
-    "type": "PreReq",
-    "named": false
-  },
-  {
-    "type": "Prefix",
-    "named": false
-  },
-  {
-    "type": "Prefixes",
-    "named": false
-  },
-  {
-    "type": "Prereq",
-    "named": false
-  },
-  {
-    "type": "Provides",
-    "named": false
-  },
-  {
     "type": "R",
-    "named": false
-  },
-  {
-    "type": "Recommends",
     "named": false
   },
   {
@@ -6918,27 +6834,11 @@
     "named": false
   },
   {
-    "type": "RemovePathPostfixes",
-    "named": false
-  },
-  {
-    "type": "Requires",
-    "named": false
-  },
-  {
     "type": "SourceLicense",
     "named": false
   },
   {
-    "type": "Suggests",
-    "named": false
-  },
-  {
     "type": "Summary",
-    "named": false
-  },
-  {
-    "type": "Supplements",
     "named": false
   },
   {

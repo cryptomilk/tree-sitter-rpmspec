@@ -4765,13 +4765,6 @@
               "value": "dependency_tag"
             },
             {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
-              }
-            },
-            {
               "type": "FIELD",
               "name": "value",
               "content": {
@@ -4796,13 +4789,6 @@
               },
               "named": true,
               "value": "dependency_tag"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
-              }
             },
             {
               "type": "FIELD",
@@ -4831,13 +4817,6 @@
               "value": "dependency_tag"
             },
             {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
-              }
-            },
-            {
               "type": "FIELD",
               "name": "value",
               "content": {
@@ -4864,13 +4843,6 @@
               "value": "dependency_tag"
             },
             {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
-              }
-            },
-            {
               "type": "FIELD",
               "name": "value",
               "content": {
@@ -4895,13 +4867,6 @@
               },
               "named": true,
               "value": "dependency_tag"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
-              }
             },
             {
               "type": "FIELD",
@@ -4961,13 +4926,6 @@
               },
               "named": true,
               "value": "dependency_tag"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
-              }
             },
             {
               "type": "FIELD",
@@ -5219,175 +5177,267 @@
           "type": "SEQ",
           "members": [
             {
-              "type": "STRING",
-              "value": "Requires"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SEQ",
-                  "members": [
-                    {
+              "type": "TOKEN",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "Requires"
+                  },
+                  {
+                    "type": "IMMEDIATE_TOKEN",
+                    "content": {
                       "type": "STRING",
                       "value": "("
-                    },
-                    {
-                      "type": "SYMBOL",
-                      "name": "qualifier"
-                    },
-                    {
-                      "type": "STRING",
-                      "value": ")"
                     }
-                  ]
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
+                  }
+                ]
+              }
+            },
+            {
+              "type": "SYMBOL",
+              "name": "qualifier"
+            },
+            {
+              "type": "TOKEN",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": ")"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": ":( |\\t)*"
+                  }
+                ]
+              }
             }
           ]
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "BuildRequires"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "STRING",
-                    "value": "(pre)"
-                  },
-                  "named": true,
-                  "value": "qualifier"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
-            }
-          ]
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "Requires"
+              },
+              {
+                "type": "PATTERN",
+                "value": ":( |\\t)*"
+              }
+            ]
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "BuildRequires(pre)"
+              },
+              {
+                "type": "PATTERN",
+                "value": ":( |\\t)*"
+              }
+            ]
+          }
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "BuildRequires"
+              },
+              {
+                "type": "PATTERN",
+                "value": ":( |\\t)*"
+              }
+            ]
+          }
         }
       ]
     },
     "_weak_requires_tag": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "Recommends"
-        },
-        {
-          "type": "STRING",
-          "value": "Suggests"
-        },
-        {
-          "type": "STRING",
-          "value": "Supplements"
-        },
-        {
-          "type": "STRING",
-          "value": "Enhances"
-        }
-      ]
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "Recommends"
+              },
+              {
+                "type": "STRING",
+                "value": "Suggests"
+              },
+              {
+                "type": "STRING",
+                "value": "Supplements"
+              },
+              {
+                "type": "STRING",
+                "value": "Enhances"
+              }
+            ]
+          },
+          {
+            "type": "PATTERN",
+            "value": ":( |\\t)*"
+          }
+        ]
+      }
     },
     "_conflicts_tag": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "Conflicts"
-        },
-        {
-          "type": "STRING",
-          "value": "BuildConflicts"
-        },
-        {
-          "type": "STRING",
-          "value": "Obsoletes"
-        }
-      ]
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "Conflicts"
+              },
+              {
+                "type": "STRING",
+                "value": "BuildConflicts"
+              },
+              {
+                "type": "STRING",
+                "value": "Obsoletes"
+              }
+            ]
+          },
+          {
+            "type": "PATTERN",
+            "value": ":( |\\t)*"
+          }
+        ]
+      }
     },
     "_provides_tag": {
-      "type": "STRING",
-      "value": "Provides"
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "Provides"
+          },
+          {
+            "type": "PATTERN",
+            "value": ":( |\\t)*"
+          }
+        ]
+      }
     },
     "_arch_tag": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "BuildArch"
-        },
-        {
-          "type": "STRING",
-          "value": "BuildArchitectures"
-        },
-        {
-          "type": "STRING",
-          "value": "ExcludeArch"
-        },
-        {
-          "type": "STRING",
-          "value": "ExclusiveArch"
-        },
-        {
-          "type": "STRING",
-          "value": "ExcludeOS"
-        },
-        {
-          "type": "STRING",
-          "value": "ExclusiveOS"
-        }
-      ]
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "BuildArch"
+              },
+              {
+                "type": "STRING",
+                "value": "BuildArchitectures"
+              },
+              {
+                "type": "STRING",
+                "value": "ExcludeArch"
+              },
+              {
+                "type": "STRING",
+                "value": "ExclusiveArch"
+              },
+              {
+                "type": "STRING",
+                "value": "ExcludeOS"
+              },
+              {
+                "type": "STRING",
+                "value": "ExclusiveOS"
+              }
+            ]
+          },
+          {
+            "type": "PATTERN",
+            "value": ":( |\\t)*"
+          }
+        ]
+      }
     },
     "_legacy_dependency_tag": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "BuildPrereq"
-        },
-        {
-          "type": "STRING",
-          "value": "BuildPreReq"
-        },
-        {
-          "type": "STRING",
-          "value": "Prereq"
-        },
-        {
-          "type": "STRING",
-          "value": "PreReq"
-        },
-        {
-          "type": "STRING",
-          "value": "OrderWithRequires"
-        },
-        {
-          "type": "STRING",
-          "value": "DocDir"
-        },
-        {
-          "type": "STRING",
-          "value": "Prefix"
-        },
-        {
-          "type": "STRING",
-          "value": "Prefixes"
-        },
-        {
-          "type": "STRING",
-          "value": "RemovePathPostfixes"
-        }
-      ]
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "BuildPrereq"
+              },
+              {
+                "type": "STRING",
+                "value": "BuildPreReq"
+              },
+              {
+                "type": "STRING",
+                "value": "Prereq"
+              },
+              {
+                "type": "STRING",
+                "value": "PreReq"
+              },
+              {
+                "type": "STRING",
+                "value": "OrderWithRequires"
+              },
+              {
+                "type": "STRING",
+                "value": "DocDir"
+              },
+              {
+                "type": "STRING",
+                "value": "Prefix"
+              },
+              {
+                "type": "STRING",
+                "value": "Prefixes"
+              },
+              {
+                "type": "STRING",
+                "value": "RemovePathPostfixes"
+              }
+            ]
+          },
+          {
+            "type": "PATTERN",
+            "value": ":( |\\t)*"
+          }
+        ]
+      }
     },
     "dependency": {
       "type": "CHOICE",

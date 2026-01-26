@@ -69,8 +69,7 @@ BuildRequires(pre): rpm-build-xdg
 (spec
   (preamble
     (tags
-      (dependency_tag
-        (qualifier))
+      (dependency_tag)
       value: (rich_dependency_list
         (dependency
           (versioned_dependency
@@ -81,8 +80,7 @@ Tag-specific: BuildRequires with invalid qualifier
 ===============================================================================
 
 # BuildRequires(post) is invalid - only Requires supports (post).
-# Error recovery parses "rpm" as simple_macro and "-build-xdg" as macro_value_text.
-# The exact ERROR structure may change when grammar rules are modified.
+# The entire line ends up in ERROR since "BuildRequires(post):" is not a valid token.
 BuildRequires(post): rpm-build-xdg
 
 -------------------------------------------------------------------------------
@@ -90,8 +88,8 @@ BuildRequires(post): rpm-build-xdg
 (spec
   (comment)
   (comment)
-  (comment)
   (ERROR
+    (identifier)
     (simple_macro)
     (simple_macro)))
 
