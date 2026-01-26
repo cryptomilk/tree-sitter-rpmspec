@@ -2904,18 +2904,16 @@ module.exports = grammar({
 
         // Brace expansion for shell globs: {a,b,c}
         // Used in file paths like /path/{foo,bar,baz}
+        // Also handles empty alternatives like {,.*} (matches "" or ".anything")
         brace_expansion: ($) =>
-            seq(
-                token.immediate('{'),
-                sep1(
-                    choice(
-                        /[^\s,{}%]+/, // Simple word
-                        $.macro_simple_expansion,
-                        $.macro_expansion
-                    ),
-                    ','
-                ),
-                '}'
+            seq(token.immediate('{'), commaSepAllowEmpty($._brace_item), '}'),
+
+        // Single item inside brace expansion
+        _brace_item: ($) =>
+            choice(
+                /[^\s,{}%]+/, // Simple word (includes * and ? globs)
+                $.macro_simple_expansion,
+                $.macro_expansion
             ),
 
         // File attributes: custom permissions for individual files
@@ -3581,6 +3579,19 @@ function commaSep1(rule) {
  */
 function commaSep(rule) {
     return optional(commaSep1(rule));
+}
+
+/**
+ * Creates a comma-separated list where items are optional
+ *
+ * Allows empty slots like {,.*} or {a,} or {a,,b}
+ * Used for shell brace expansion patterns.
+ *
+ * @param {RuleOrLiteral} rule - The rule to match (each item is optional)
+ * @return {SeqRule} A rule matching comma-separated optional items
+ */
+function commaSepAllowEmpty(rule) {
+    return sep1(optional(rule), ',');
 }
 
 /**
