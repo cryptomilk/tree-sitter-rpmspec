@@ -2238,6 +2238,59 @@ module.exports = grammar({
         // Preamble Sub-Sections (%sourcelist, %patchlist)
         ///////////////////////////////////////////////////////////////////////
 
+        // Shared content for %sourcelist and %patchlist sections
+        // Both contain file entries (URLs or paths) - RPM extracts basename
+        _filelist_content: ($) =>
+            repeat1(
+                choice(
+                    seq($._url_or_file, /\n/),
+                    $._filelist_if_statement,
+                    $._filelist_ifarch_statement,
+                    $._filelist_ifos_statement
+                )
+            ),
+
+        // Shared %if for filelist sections
+        _filelist_if_statement: makeIfStatement(
+            ($) => $.subsection_if,
+            ($) => $._filelist_content,
+            ($) => $._filelist_elif_clause,
+            ($) => $._filelist_else_clause,
+            true
+        ),
+
+        _filelist_elif_clause: makeElifClause(($) => $._filelist_content, true),
+
+        _filelist_else_clause: makeElseClause(($) => $._filelist_content, true),
+
+        // Shared %ifarch for filelist sections
+        _filelist_ifarch_statement: makeIfarchStatement(
+            ($) => $.subsection_ifarch,
+            ($) => $.subsection_ifnarch,
+            ($) => $._filelist_content,
+            ($) => $._filelist_elifarch_clause,
+            ($) => $._filelist_else_clause
+        ),
+
+        _filelist_elifarch_clause: makeElifarchClause(
+            ($) => $._filelist_content,
+            true
+        ),
+
+        // Shared %ifos for filelist sections
+        _filelist_ifos_statement: makeIfosStatement(
+            ($) => $.subsection_ifos,
+            ($) => $.subsection_ifnos,
+            ($) => $._filelist_content,
+            ($) => $._filelist_elifos_clause,
+            ($) => $._filelist_else_clause
+        ),
+
+        _filelist_elifos_clause: makeElifosClause(
+            ($) => $._filelist_content,
+            true
+        ),
+
         // %sourcelist section: list of source files, one per line
         // Handled like unnumbered Source tags
         // Example:
@@ -2249,68 +2302,9 @@ module.exports = grammar({
                 seq(
                     alias(token('%sourcelist'), $.section_name),
                     /\n/,
-                    optional($._sourcelist_content)
+                    optional($._filelist_content)
                 )
             ),
-
-        // Content allowed inside %sourcelist sections
-        // Includes URLs/files and sourcelist-specific conditionals
-        _sourcelist_content: ($) =>
-            repeat1(
-                choice(
-                    seq($._url_or_file, /\n/),
-                    $._sourcelist_if_statement,
-                    $._sourcelist_ifarch_statement,
-                    $._sourcelist_ifos_statement
-                )
-            ),
-
-        // Sourcelist-specific %if
-        _sourcelist_if_statement: makeIfStatement(
-            ($) => $.subsection_if,
-            ($) => $._sourcelist_content,
-            ($) => $._sourcelist_elif_clause,
-            ($) => $._sourcelist_else_clause,
-            true
-        ),
-
-        _sourcelist_elif_clause: makeElifClause(
-            ($) => $._sourcelist_content,
-            true
-        ),
-
-        _sourcelist_else_clause: makeElseClause(
-            ($) => $._sourcelist_content,
-            true
-        ),
-
-        // Sourcelist-specific %ifarch
-        _sourcelist_ifarch_statement: makeIfarchStatement(
-            ($) => $.subsection_ifarch,
-            ($) => $.subsection_ifnarch,
-            ($) => $._sourcelist_content,
-            ($) => $._sourcelist_elifarch_clause,
-            ($) => $._sourcelist_else_clause
-        ),
-
-        _sourcelist_elifarch_clause: makeElifarchClause(
-            ($) => $._sourcelist_content,
-            true
-        ),
-
-        // Sourcelist-specific %ifos
-        _sourcelist_ifos_statement: makeIfosStatement(
-            ($) => $.subsection_ifos,
-            ($) => $.subsection_ifnos,
-            ($) => $._sourcelist_content,
-            ($) => $._sourcelist_elifos_clause,
-            ($) => $._sourcelist_else_clause
-        ),
-
-        _sourcelist_elifos_clause: makeElifosClause(
-            ($) => $._sourcelist_content,
-            true
-        ),
 
         // %patchlist section: list of patch files, one per line
         // Handled like unnumbered Patch tags
@@ -2323,68 +2317,9 @@ module.exports = grammar({
                 seq(
                     alias(token('%patchlist'), $.section_name),
                     /\n/,
-                    optional($._patchlist_content)
+                    optional($._filelist_content)
                 )
             ),
-
-        // Content allowed inside %patchlist sections
-        // Includes URLs/files and patchlist-specific conditionals
-        _patchlist_content: ($) =>
-            repeat1(
-                choice(
-                    seq($._url_or_file, /\n/),
-                    $._patchlist_if_statement,
-                    $._patchlist_ifarch_statement,
-                    $._patchlist_ifos_statement
-                )
-            ),
-
-        // Patchlist-specific %if
-        _patchlist_if_statement: makeIfStatement(
-            ($) => $.subsection_if,
-            ($) => $._patchlist_content,
-            ($) => $._patchlist_elif_clause,
-            ($) => $._patchlist_else_clause,
-            true
-        ),
-
-        _patchlist_elif_clause: makeElifClause(
-            ($) => $._patchlist_content,
-            true
-        ),
-
-        _patchlist_else_clause: makeElseClause(
-            ($) => $._patchlist_content,
-            true
-        ),
-
-        // Patchlist-specific %ifarch
-        _patchlist_ifarch_statement: makeIfarchStatement(
-            ($) => $.subsection_ifarch,
-            ($) => $.subsection_ifnarch,
-            ($) => $._patchlist_content,
-            ($) => $._patchlist_elifarch_clause,
-            ($) => $._patchlist_else_clause
-        ),
-
-        _patchlist_elifarch_clause: makeElifarchClause(
-            ($) => $._patchlist_content,
-            true
-        ),
-
-        // Patchlist-specific %ifos
-        _patchlist_ifos_statement: makeIfosStatement(
-            ($) => $.subsection_ifos,
-            ($) => $.subsection_ifnos,
-            ($) => $._patchlist_content,
-            ($) => $._patchlist_elifos_clause,
-            ($) => $._patchlist_else_clause
-        ),
-
-        _patchlist_elifos_clause: makeElifosClause(
-            ($) => $._patchlist_content,
-            true
-        ),
 
         // URL or file path - reusable for Source:, Patch:, %sourcelist, %patchlist
         // Also accepts a bare macro when the entire URL/path is in a macro (e.g., %{gosource})

@@ -6835,44 +6835,7 @@
         ]
       }
     },
-    "sourcelist": {
-      "type": "PREC_RIGHT",
-      "value": 0,
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "ALIAS",
-            "content": {
-              "type": "TOKEN",
-              "content": {
-                "type": "STRING",
-                "value": "%sourcelist"
-              }
-            },
-            "named": true,
-            "value": "section_name"
-          },
-          {
-            "type": "PATTERN",
-            "value": "\\n"
-          },
-          {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_sourcelist_content"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    "_sourcelist_content": {
+    "_filelist_content": {
       "type": "REPEAT1",
       "content": {
         "type": "CHOICE",
@@ -6892,20 +6855,20 @@
           },
           {
             "type": "SYMBOL",
-            "name": "_sourcelist_if_statement"
+            "name": "_filelist_if_statement"
           },
           {
             "type": "SYMBOL",
-            "name": "_sourcelist_ifarch_statement"
+            "name": "_filelist_ifarch_statement"
           },
           {
             "type": "SYMBOL",
-            "name": "_sourcelist_ifos_statement"
+            "name": "_filelist_ifos_statement"
           }
         ]
       }
     },
-    "_sourcelist_if_statement": {
+    "_filelist_if_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -6937,7 +6900,7 @@
               "name": "consequence",
               "content": {
                 "type": "SYMBOL",
-                "name": "_sourcelist_content"
+                "name": "_filelist_content"
               }
             },
             {
@@ -6952,7 +6915,7 @@
             "name": "alternative",
             "content": {
               "type": "SYMBOL",
-              "name": "_sourcelist_elif_clause"
+              "name": "_filelist_elif_clause"
             }
           }
         },
@@ -6964,7 +6927,7 @@
               "name": "alternative",
               "content": {
                 "type": "SYMBOL",
-                "name": "_sourcelist_else_clause"
+                "name": "_filelist_else_clause"
               }
             },
             {
@@ -6982,7 +6945,7 @@
         }
       ]
     },
-    "_sourcelist_elif_clause": {
+    "_filelist_elif_clause": {
       "type": "SEQ",
       "members": [
         {
@@ -7009,7 +6972,7 @@
               "name": "consequence",
               "content": {
                 "type": "SYMBOL",
-                "name": "_sourcelist_content"
+                "name": "_filelist_content"
               }
             },
             {
@@ -7019,7 +6982,7 @@
         }
       ]
     },
-    "_sourcelist_else_clause": {
+    "_filelist_else_clause": {
       "type": "SEQ",
       "members": [
         {
@@ -7038,7 +7001,7 @@
               "name": "body",
               "content": {
                 "type": "SYMBOL",
-                "name": "_sourcelist_content"
+                "name": "_filelist_content"
               }
             },
             {
@@ -7048,7 +7011,7 @@
         }
       ]
     },
-    "_sourcelist_ifarch_statement": {
+    "_filelist_ifarch_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -7094,7 +7057,7 @@
               "name": "consequence",
               "content": {
                 "type": "SYMBOL",
-                "name": "_sourcelist_content"
+                "name": "_filelist_content"
               }
             },
             {
@@ -7109,7 +7072,7 @@
             "name": "alternative",
             "content": {
               "type": "SYMBOL",
-              "name": "_sourcelist_elifarch_clause"
+              "name": "_filelist_elifarch_clause"
             }
           }
         },
@@ -7121,7 +7084,7 @@
               "name": "alternative",
               "content": {
                 "type": "SYMBOL",
-                "name": "_sourcelist_else_clause"
+                "name": "_filelist_else_clause"
               }
             },
             {
@@ -7139,7 +7102,7 @@
         }
       ]
     },
-    "_sourcelist_elifarch_clause": {
+    "_filelist_elifarch_clause": {
       "type": "SEQ",
       "members": [
         {
@@ -7174,7 +7137,7 @@
               "name": "consequence",
               "content": {
                 "type": "SYMBOL",
-                "name": "_sourcelist_content"
+                "name": "_filelist_content"
               }
             },
             {
@@ -7184,7 +7147,7 @@
         }
       ]
     },
-    "_sourcelist_ifos_statement": {
+    "_filelist_ifos_statement": {
       "type": "SEQ",
       "members": [
         {
@@ -7230,7 +7193,7 @@
               "name": "consequence",
               "content": {
                 "type": "SYMBOL",
-                "name": "_sourcelist_content"
+                "name": "_filelist_content"
               }
             },
             {
@@ -7245,7 +7208,7 @@
             "name": "alternative",
             "content": {
               "type": "SYMBOL",
-              "name": "_sourcelist_elifos_clause"
+              "name": "_filelist_elifos_clause"
             }
           }
         },
@@ -7257,7 +7220,7 @@
               "name": "alternative",
               "content": {
                 "type": "SYMBOL",
-                "name": "_sourcelist_else_clause"
+                "name": "_filelist_else_clause"
               }
             },
             {
@@ -7275,7 +7238,7 @@
         }
       ]
     },
-    "_sourcelist_elifos_clause": {
+    "_filelist_elifos_clause": {
       "type": "SEQ",
       "members": [
         {
@@ -7310,7 +7273,7 @@
               "name": "consequence",
               "content": {
                 "type": "SYMBOL",
-                "name": "_sourcelist_content"
+                "name": "_filelist_content"
               }
             },
             {
@@ -7319,6 +7282,43 @@
           ]
         }
       ]
+    },
+    "sourcelist": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "TOKEN",
+              "content": {
+                "type": "STRING",
+                "value": "%sourcelist"
+              }
+            },
+            "named": true,
+            "value": "section_name"
+          },
+          {
+            "type": "PATTERN",
+            "value": "\\n"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_filelist_content"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
     },
     "patchlist": {
       "type": "PREC_RIGHT",
@@ -7347,7 +7347,7 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "_patchlist_content"
+                "name": "_filelist_content"
               },
               {
                 "type": "BLANK"
@@ -7356,454 +7356,6 @@
           }
         ]
       }
-    },
-    "_patchlist_content": {
-      "type": "REPEAT1",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_url_or_file"
-              },
-              {
-                "type": "PATTERN",
-                "value": "\\n"
-              }
-            ]
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_patchlist_if_statement"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_patchlist_ifarch_statement"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "_patchlist_ifos_statement"
-          }
-        ]
-      }
-    },
-    "_patchlist_if_statement": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "subsection_if"
-          },
-          "named": false,
-          "value": "%if"
-        },
-        {
-          "type": "FIELD",
-          "name": "condition",
-          "content": {
-            "type": "SYMBOL",
-            "name": "expression"
-          }
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\n"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "consequence",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_patchlist_content"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "FIELD",
-            "name": "alternative",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_patchlist_elif_clause"
-            }
-          }
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "alternative",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_patchlist_else_clause"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "STRING",
-          "value": "%endif"
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\n"
-        }
-      ]
-    },
-    "_patchlist_elif_clause": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "%elif"
-        },
-        {
-          "type": "FIELD",
-          "name": "condition",
-          "content": {
-            "type": "SYMBOL",
-            "name": "expression"
-          }
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\n"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "consequence",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_patchlist_content"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        }
-      ]
-    },
-    "_patchlist_else_clause": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "%else"
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\n"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "body",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_patchlist_content"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        }
-      ]
-    },
-    "_patchlist_ifarch_statement": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "subsection_ifarch"
-              },
-              "named": false,
-              "value": "%ifarch"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "subsection_ifnarch"
-              },
-              "named": false,
-              "value": "%ifnarch"
-            }
-          ]
-        },
-        {
-          "type": "FIELD",
-          "name": "condition",
-          "content": {
-            "type": "SYMBOL",
-            "name": "arch"
-          }
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\n"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "consequence",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_patchlist_content"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "FIELD",
-            "name": "alternative",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_patchlist_elifarch_clause"
-            }
-          }
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "alternative",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_patchlist_else_clause"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "STRING",
-          "value": "%endif"
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\n"
-        }
-      ]
-    },
-    "_patchlist_elifarch_clause": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "%elifarch"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "condition",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_literal"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\n"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "consequence",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_patchlist_content"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        }
-      ]
-    },
-    "_patchlist_ifos_statement": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "subsection_ifos"
-              },
-              "named": false,
-              "value": "%ifos"
-            },
-            {
-              "type": "ALIAS",
-              "content": {
-                "type": "SYMBOL",
-                "name": "subsection_ifnos"
-              },
-              "named": false,
-              "value": "%ifnos"
-            }
-          ]
-        },
-        {
-          "type": "FIELD",
-          "name": "condition",
-          "content": {
-            "type": "SYMBOL",
-            "name": "os"
-          }
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\n"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "consequence",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_patchlist_content"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "FIELD",
-            "name": "alternative",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_patchlist_elifos_clause"
-            }
-          }
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "alternative",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_patchlist_else_clause"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "STRING",
-          "value": "%endif"
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\n"
-        }
-      ]
-    },
-    "_patchlist_elifos_clause": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "%elifos"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "condition",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_literal"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "PATTERN",
-          "value": "\\n"
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "consequence",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_patchlist_content"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        }
-      ]
     },
     "_url_or_file": {
       "type": "CHOICE",
