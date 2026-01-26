@@ -9777,51 +9777,24 @@
           "value": "("
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "-"
-            },
-            {
-              "type": "PATTERN",
-              "value": "[0-9]+"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_attr_mode"
         },
         {
           "type": "STRING",
           "value": ","
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "-"
-            },
-            {
-              "type": "PATTERN",
-              "value": "[a-zA-Z0-9_]+"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_attr_owner"
         },
         {
           "type": "STRING",
           "value": ","
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "-"
-            },
-            {
-              "type": "PATTERN",
-              "value": "[a-zA-Z0-9_]+"
-            }
-          ]
+          "type": "SYMBOL",
+          "name": "_attr_owner"
         },
         {
           "type": "STRING",
@@ -9833,6 +9806,48 @@
             "type": "PATTERN",
             "value": "( |\\t)+"
           }
+        }
+      ]
+    },
+    "_attr_mode": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "-"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[0-9]+"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_expansion"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_simple_expansion"
+        }
+      ]
+    },
+    "_attr_owner": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "-"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[a-zA-Z0-9_]+"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_expansion"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_simple_expansion"
         }
       ]
     },

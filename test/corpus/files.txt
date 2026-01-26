@@ -173,6 +173,26 @@ Files (%attr + %dir)
       (path))))
 
 ===============================================================================
+Files (%attr with macros in owner/group)
+===============================================================================
+
+%files
+%attr(0750,root,%{app_user}) %{_bindir}/myapp
+
+-------------------------------------------------------------------------------
+
+(spec
+  (files
+    (section_name)
+    (file
+      (attr
+        (macro_expansion
+          (identifier)))
+      (path
+        (macro_expansion
+          (identifier))))))
+
+===============================================================================
 Files (%config)
 ===============================================================================
 
@@ -661,10 +681,24 @@ Files (brace expansion with empty alternative)
 
 ===============================================================================
 Files (complex %attr expressions)
-:skip
 ===============================================================================
 
 %files
 %attr(%{file_mode},%{file_user},%{file_group}) %{_bindir}/myapp
 
 -------------------------------------------------------------------------------
+
+(spec
+  (files
+    (section_name)
+    (file
+      (attr
+        (macro_expansion
+          (identifier))
+        (macro_expansion
+          (identifier))
+        (macro_expansion
+          (identifier)))
+      (path
+        (macro_expansion
+          (identifier))))))

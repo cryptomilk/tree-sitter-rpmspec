@@ -2923,13 +2923,26 @@ module.exports = grammar({
             seq(
                 '%attr',
                 '(',
-                choice('-', /[0-9]+/), // File mode (octal) or '-'
+                $._attr_mode, // File mode (octal) or '-' or macro
                 ',',
-                choice('-', /[a-zA-Z0-9_]+/), // User name or '-'
+                $._attr_owner, // User name or '-' or macro
                 ',',
-                choice('-', /[a-zA-Z0-9_]+/), // Group name or '-'
+                $._attr_owner, // Group name or '-' or macro
                 ')',
                 token.immediate(BLANK) // Required whitespace before filename
+            ),
+
+        // File mode in %attr: octal number, '-' for default, or macro
+        _attr_mode: ($) =>
+            choice('-', /[0-9]+/, $.macro_expansion, $.macro_simple_expansion),
+
+        // User/group name in %attr: identifier, '-' for default, or macro
+        _attr_owner: ($) =>
+            choice(
+                '-',
+                /[a-zA-Z0-9_]+/,
+                $.macro_expansion,
+                $.macro_simple_expansion
             ),
 
         // Verify attributes: control package verification behavior
