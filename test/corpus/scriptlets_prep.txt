@@ -167,7 +167,7 @@ Prep Section (%setup edge cases)
           number: (integer))
         argument: (macro_option
           directory: (quoted_string
-            (quoted_string_content)))))))
+            (string_content)))))))
 
 ===============================================================================
 Prep Section (%setup with combined flags)
@@ -583,7 +583,7 @@ Prep Section (%patch edge cases)
         (builtin)
         (macro_option
           (quoted_string
-            (quoted_string_content)))
+            (string_content)))
         (macro_option
           (integer))))))
 

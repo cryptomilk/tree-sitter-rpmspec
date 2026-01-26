@@ -128,7 +128,7 @@ BuildRequires:  foo
         (macro_expansion
           (identifier)))
       (quoted_string
-        (quoted_string_content)))
+        (string_content)))
     consequence: (preamble
       (tags
         (dependency_tag)

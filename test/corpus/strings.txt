@@ -11,7 +11,7 @@ Basic quoted string
     (builtin)
     (identifier)
     (quoted_string
-      (quoted_string_content))))
+      (string_content))))
 
 ===============================================================================
 Escaped quotes in quoted strings
@@ -26,7 +26,7 @@ Escaped quotes in quoted strings
     (builtin)
     (identifier)
     (quoted_string
-      (quoted_string_content))))
+      (string_content))))
 
 ===============================================================================
 Mixed escaped and unescaped content
@@ -41,7 +41,7 @@ Mixed escaped and unescaped content
     (builtin)
     (identifier)
     (quoted_string
-      (quoted_string_content))))
+      (string_content))))
 
 ===============================================================================
 Multiple escape sequences
@@ -56,4 +56,4 @@ Multiple escape sequences
     (builtin)
     (identifier)
     (quoted_string
-      (quoted_string_content))))
+      (string_content))))

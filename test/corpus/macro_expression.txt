@@ -69,9 +69,9 @@ Macro Expression (ternary with comparison)
           (integer)
           (integer))
         (quoted_string
-          (quoted_string_content))
+          (string_content))
         (quoted_string
-          (quoted_string_content))))))
+          (string_content))))))
 
 ===============================================================================
 Macro Expression (version literal comparison)
@@ -88,9 +88,9 @@ Macro Expression (version literal comparison)
     (macro_expression
       (macro_comparison_operator
         (version_literal
-          (quoted_string_content))
+          (string_content))
         (version_literal
-          (quoted_string_content))))))
+          (string_content))))))
 
 ===============================================================================
 Macro Expression (version literal with epoch)
@@ -107,9 +107,9 @@ Macro Expression (version literal with epoch)
     (macro_expression
       (macro_comparison_operator
         (version_literal
-          (quoted_string_content))
+          (string_content))
         (version_literal
-          (quoted_string_content))))))
+          (string_content))))))
 
 ===============================================================================
 Macro Expression (with macro expansion)
@@ -146,9 +146,9 @@ Macro Expression (ternary with macro in condition)
         (macro_expansion
           (identifier))
         (quoted_string
-          (quoted_string_content))
+          (string_content))
         (quoted_string
-          (quoted_string_content))))))
+          (string_content))))))
 
 ===============================================================================
 Macro Expression (expr builtin simple)
@@ -214,6 +214,6 @@ Macro Expression (ternary with concatenation)
           (conditional_expansion
             condition: (identifier))))
       consequence: (quoted_string
-        (quoted_string_content))
+        (string_content))
       alternative: (quoted_string
-        (quoted_string_content)))))
+        (string_content)))))

@@ -98,4 +98,4 @@ Macro Builtin Multi-arg (rep with separator)
     argument: (word)
     argument: (integer)
     argument: (quoted_string
-      (quoted_string_content))))
+      (string_content))))

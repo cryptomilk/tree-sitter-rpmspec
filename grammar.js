@@ -3345,7 +3345,12 @@ module.exports = grammar({
         // Example: %[ v"3.1.0-1" < v"1.0~alpha-2" ]
         // The 'v' is followed immediately by '"' (no space allowed)
         version_literal: ($) =>
-            seq('v', token.immediate('"'), $.quoted_string_content, '"'),
+            seq(
+                'v',
+                token.immediate('"'),
+                alias($._quoted_string_content, $.string_content),
+                '"'
+            ),
 
         // Release literals: RPM release numbers
         // Examples: 1, 2, 1.fc35, 3.el8
@@ -3475,7 +3480,7 @@ module.exports = grammar({
                 repeat(
                     choice(
                         $.macro_expansion, // %{macro} inside quotes
-                        $.quoted_string_content // Literal text
+                        alias($._quoted_string_content, $.string_content) // Literal text
                     )
                 ),
                 '"' // Closing quote
@@ -3484,7 +3489,8 @@ module.exports = grammar({
         // Quoted string content: literal text within quotes
         // Includes escaped quotes (\") and other escape sequences
         // Excludes unescaped quotes, macro delimiters, and line breaks
-        quoted_string_content: (_) => token(prec(-1, /([^"%\\\r\n]|\\.)+/)),
+        // Aliased to string_content for simpler AST
+        _quoted_string_content: (_) => token(prec(-1, /([^"%\\\r\n]|\\.)+/)),
 
         // Word tokens: unquoted identifiers and simple values
         // Excludes whitespace and special characters that have syntactic meaning

@@ -168,7 +168,7 @@ Macros (%global with quoted string)
     (builtin)
     (identifier)
     (quoted_string
-      (quoted_string_content))))
+      (string_content))))
 
 ===============================================================================
 Macros (%undefine)
@@ -256,14 +256,14 @@ Macros (Complex arguments with quotes)
         (macro_option)
         (macro_option
           (quoted_string
-            (quoted_string_content))))
+            (string_content))))
       (patch_macro
         (patch_legacy_token
           (builtin))
         (macro_option)
         (macro_option
           (quoted_string
-            (quoted_string_content)))))))
+            (string_content)))))))
 
 ===============================================================================
 Macros (Nested macro arguments)
@@ -648,7 +648,7 @@ Provides: %1 \
         (identifier)))
     value: (word)
     value: (quoted_string
-      (quoted_string_content))
+      (string_content))
     value: (line_continuation)
     value: (word)
     value: (macro_simple_expansion

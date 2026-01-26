@@ -11215,8 +11215,13 @@
           }
         },
         {
-          "type": "SYMBOL",
-          "name": "quoted_string_content"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_quoted_string_content"
+          },
+          "named": true,
+          "value": "string_content"
         },
         {
           "type": "STRING",
@@ -11554,8 +11559,13 @@
                 "name": "macro_expansion"
               },
               {
-                "type": "SYMBOL",
-                "name": "quoted_string_content"
+                "type": "ALIAS",
+                "content": {
+                  "type": "SYMBOL",
+                  "name": "_quoted_string_content"
+                },
+                "named": true,
+                "value": "string_content"
               }
             ]
           }
@@ -11566,7 +11576,7 @@
         }
       ]
     },
-    "quoted_string_content": {
+    "_quoted_string_content": {
       "type": "TOKEN",
       "content": {
         "type": "PREC",
