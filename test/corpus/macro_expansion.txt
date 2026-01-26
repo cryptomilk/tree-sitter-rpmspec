@@ -624,3 +624,34 @@ Macros (Single quotes in shell command)
     value: (word)
     value: (word)
     value: (word)))
+
+===============================================================================
+Macros (Conditionals inside macro body)
+===============================================================================
+
+%define compat() \
+%if "%{name}" != "foo" \
+Provides: %1 \
+%endif
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_definition
+    (builtin)
+    name: (identifier)
+    (parametric_options)
+    value: (line_continuation)
+    value: (word)
+    value: (quoted_string
+      (macro_expansion
+        (identifier)))
+    value: (word)
+    value: (quoted_string
+      (quoted_string_content))
+    value: (line_continuation)
+    value: (word)
+    value: (macro_simple_expansion
+      (special_macro))
+    value: (line_continuation)
+    value: (word)))

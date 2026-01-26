@@ -1978,6 +1978,15 @@
           {
             "type": "ALIAS",
             "content": {
+              "type": "SYMBOL",
+              "name": "_macro_body_keyword"
+            },
+            "named": true,
+            "value": "word"
+          },
+          {
+            "type": "ALIAS",
+            "content": {
               "type": "PREC",
               "value": -2,
               "content": {
@@ -1990,6 +1999,63 @@
             },
             "named": true,
             "value": "word"
+          }
+        ]
+      }
+    },
+    "_macro_body_keyword": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "%"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "if"
+              },
+              {
+                "type": "STRING",
+                "value": "elif"
+              },
+              {
+                "type": "STRING",
+                "value": "else"
+              },
+              {
+                "type": "STRING",
+                "value": "endif"
+              },
+              {
+                "type": "STRING",
+                "value": "ifarch"
+              },
+              {
+                "type": "STRING",
+                "value": "ifnarch"
+              },
+              {
+                "type": "STRING",
+                "value": "elifarch"
+              },
+              {
+                "type": "STRING",
+                "value": "ifos"
+              },
+              {
+                "type": "STRING",
+                "value": "ifnos"
+              },
+              {
+                "type": "STRING",
+                "value": "elifos"
+              }
+            ]
           }
         ]
       }

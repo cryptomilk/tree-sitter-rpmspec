@@ -923,9 +923,33 @@ module.exports = grammar({
                     $.version,
                     $.word,
                     $.quoted_string,
+                    // Reserved keywords as literal text in macro body
+                    // %if, %endif, etc. are NOT directives inside %define body
+                    alias($._macro_body_keyword, $.word),
                     // Lowest priority: special characters as word
                     // Handles cases like %%{uid}, ];, etc.
                     alias(prec(-2, repeat1($._special_character)), $.word)
+                )
+            ),
+
+        // Reserved keywords that appear as literal text in macro bodies
+        // These are NOT treated as directives when inside %define/%global body
+        _macro_body_keyword: (_) =>
+            token(
+                seq(
+                    '%',
+                    choice(
+                        'if',
+                        'elif',
+                        'else',
+                        'endif',
+                        'ifarch',
+                        'ifnarch',
+                        'elifarch',
+                        'ifos',
+                        'ifnos',
+                        'elifos'
+                    )
                 )
             ),
 
