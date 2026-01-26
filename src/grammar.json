@@ -12190,7 +12190,8 @@
     "_scriptlet_conditional_content",
     "_files_conditional_content",
     "_literal",
-    "_macro_inline"
+    "_macro_inline",
+    "_macro_statement"
   ],
   "supertypes": [
     "_compound_statements",

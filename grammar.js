@@ -234,6 +234,7 @@ module.exports = grammar({
         $._files_conditional_content, // Flatten files conditional content
         $._literal, // Flatten literal value types
         $._macro_inline, // Flatten inline macro types
+        $._macro_statement, // Flatten macro statement types
     ],
 
     // Default token type for unrecognized words
