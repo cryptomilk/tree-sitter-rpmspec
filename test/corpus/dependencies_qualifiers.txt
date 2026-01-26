@@ -10,15 +10,14 @@ Requires: perl(Carp) >= 3.2
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (qualified_dependency
-            name: (word)
-            qualifier: (dependency_qualifier
-              content: (identifier))
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (qualified_dependency
+          name: (word)
+          qualifier: (dependency_qualifier
+            content: (identifier))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Qualifier dependency (Python module)
@@ -32,12 +31,11 @@ BuildRequires: python3dist(pytest)
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (qualified_dependency
-            name: (word)
-            qualifier: (dependency_qualifier
-              content: (identifier))))))))
+      value: (dependency
+        (qualified_dependency
+          name: (word)
+          qualifier: (dependency_qualifier
+            content: (identifier)))))))
 
 ===============================================================================
 Qualifier dependency (ISA specific)
@@ -51,15 +49,14 @@ Requires: libbar-devel(x86-64) >= 2.2
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (qualified_dependency
-            name: (word)
-            qualifier: (dependency_qualifier
-              content: (word))
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (qualified_dependency
+          name: (word)
+          qualifier: (dependency_qualifier
+            content: (word))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Qualifier dependency (bundled library)
@@ -73,12 +70,11 @@ Provides: bundled(libreplace)
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
-        (dependency
-          (qualified_dependency
-            name: (word)
-            qualifier: (dependency_qualifier
-              content: (identifier))))))))
+      value: (dependency
+        (qualified_dependency
+          name: (word)
+          qualifier: (dependency_qualifier
+            content: (identifier)))))))
 
 ===============================================================================
 Qualifier dependency (Lua ABI with macro version)
@@ -92,16 +88,15 @@ Requires: lua(abi) = %{lua_version}
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (qualified_dependency
-            name: (word)
-            qualifier: (dependency_qualifier
-              content: (identifier))
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (macro_expansion
-                (identifier)))))))))
+      value: (dependency
+        (qualified_dependency
+          name: (word)
+          qualifier: (dependency_qualifier
+            content: (identifier))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (macro_expansion
+              (identifier))))))))
 
 ===============================================================================
 Qualifier dependency (simple without version)
@@ -115,12 +110,11 @@ Requires: perl(strict)
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (qualified_dependency
-            name: (word)
-            qualifier: (dependency_qualifier
-              content: (identifier))))))))
+      value: (dependency
+        (qualified_dependency
+          name: (word)
+          qualifier: (dependency_qualifier
+            content: (identifier)))))))
 
 ===============================================================================
 Qualifier dependency (pkgconfig)
@@ -134,15 +128,14 @@ BuildRequires: pkgconfig(glib-2.0) >= 2.50
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (qualified_dependency
-            name: (word)
-            qualifier: (dependency_qualifier
-              content: (word))
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (qualified_dependency
+          name: (word)
+          qualifier: (dependency_qualifier
+            content: (word))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Qualifier dependency (nested golang bundled)
@@ -156,18 +149,17 @@ Provides: bundled(golang(golang.org/x/arch)) = 0.18.1
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
-        (dependency
-          (qualified_dependency
-            name: (word)
-            qualifier: (dependency_qualifier
-              content: (nested_qualified_dependency
-                name: (identifier)
-                qualifier: (dependency_qualifier
-                  content: (word))))
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (qualified_dependency
+          name: (word)
+          qualifier: (dependency_qualifier
+            content: (nested_qualified_dependency
+              name: (identifier)
+              qualifier: (dependency_qualifier
+                content: (word))))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Qualifier dependency (macro in qualifier)
@@ -181,14 +173,13 @@ Provides: npm(%{pkgname}) = %{version}
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
-        (dependency
-          (qualified_dependency
-            name: (word)
-            qualifier: (dependency_qualifier
-              content: (macro_expansion
-                (identifier)))
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (macro_expansion
-                (identifier)))))))))
+      value: (dependency
+        (qualified_dependency
+          name: (word)
+          qualifier: (dependency_qualifier
+            content: (macro_expansion
+              (identifier)))
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (macro_expansion
+              (identifier))))))))

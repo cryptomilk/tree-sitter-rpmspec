@@ -1604,21 +1604,21 @@ module.exports = grammar({
                 // Note: _requires_tag includes the colon (same reason as Provides)
                 seq(
                     alias($._requires_tag, $.dependency_tag),
-                    field('value', $.rich_dependency_list), // Supports boolean deps
+                    field('value', $._rich_dependency_list), // Supports boolean deps
                     /\n/
                 ),
                 // Weak dependency tags (Recommends, Suggests, etc.) - full boolean support
                 // Note: _weak_requires_tag includes the colon (same reason as Provides)
                 seq(
                     alias($._weak_requires_tag, $.dependency_tag),
-                    field('value', $.rich_dependency_list), // Supports boolean deps
+                    field('value', $._rich_dependency_list), // Supports boolean deps
                     /\n/
                 ),
                 // Conflicts/Obsoletes tags - NO boolean expressions
                 // Note: _conflicts_tag includes the colon (same reason as Provides)
                 seq(
                     alias($._conflicts_tag, $.dependency_tag),
-                    field('value', $.dependency_list), // No boolean deps
+                    field('value', $._dependency_list), // No boolean deps
                     /\n/
                 ),
                 // Provides tag - NO boolean expressions
@@ -1626,7 +1626,7 @@ module.exports = grammar({
                 // matching in text content (e.g., description starting with "Provides...")
                 seq(
                     alias($._provides_tag, $.dependency_tag),
-                    field('value', $.dependency_list), // No boolean deps
+                    field('value', $._dependency_list), // No boolean deps
                     /\n/
                 ),
                 // Architecture/OS constraint tags - use literals
@@ -1648,7 +1648,7 @@ module.exports = grammar({
                 // Note: _legacy_dependency_tag includes the colon via tagWithColon()
                 seq(
                     alias($._legacy_dependency_tag, $.dependency_tag),
-                    field('value', $.rich_dependency_list),
+                    field('value', $._rich_dependency_list),
                     /\n/
                 )
             ),
@@ -1831,14 +1831,14 @@ module.exports = grammar({
                 $.path_dependency,
                 // Qualified dependency: perl(Carp) >= 3.2 - has qualifier
                 $.qualified_dependency,
-                // Versioned dependency: cmake-filesystem >= 3 - simple name with optional version
-                $.versioned_dependency
+                // Simple dependency: make, cmake-filesystem >= 3 - name with optional version
+                $.simple_dependency
             ),
 
-        // Simple versioned dependency: package name with optional version constraint
+        // Simple dependency: package name with optional version constraint
         // This is the fallback for dependencies that don't match other patterns
-        // Examples: cmake-filesystem, filesystem >= 3, python3-libs = 3.14.2
-        versioned_dependency: ($) =>
+        // Examples: make, cmake-filesystem, filesystem >= 3, python3-libs = 3.14.2
+        simple_dependency: ($) =>
             seq(
                 field('name', $._dependency_name_base),
                 optional(field('version', $.dependency_version_constraint))
@@ -1940,13 +1940,13 @@ module.exports = grammar({
         // Simple dependency list: NO boolean expressions allowed
         // Used for Conflicts, Obsoletes, and Provides tags
         // Examples: "python perl", "python, perl", "python >= 3.6, perl"
-        dependency_list: ($) =>
+        _dependency_list: ($) =>
             seq($.dependency, repeat(seq(optional(','), $.dependency))),
 
         // Rich dependency list: supports boolean expressions (RPM 4.13+)
         // Used for Requires, BuildRequires, and weak dependency tags
         // Examples: "(foo or bar), baz", "(pkgA and pkgB)"
-        rich_dependency_list: ($) =>
+        _rich_dependency_list: ($) =>
             seq(
                 $._rich_dependency_item,
                 repeat(seq(optional(','), $._rich_dependency_item))
@@ -2151,7 +2151,7 @@ module.exports = grammar({
                     $.elf_dependency,
                     $.path_dependency,
                     $.qualified_dependency,
-                    $.versioned_dependency,
+                    $.simple_dependency,
                     $.boolean_dependency // Nested parentheses
                 )
             ),
@@ -2703,7 +2703,7 @@ module.exports = grammar({
         trigger_subpackage: ($) => seq(optional('-n'), $.package_name),
 
         // Trigger condition: -- <dependency_list>
-        trigger_condition: ($) => seq('--', $.dependency_list),
+        trigger_condition: ($) => seq('--', $._dependency_list),
 
         ///////////////////////////////////////////////////////////////////////
         // File triggers (%filetriggerin, %filetriggerun, ...)

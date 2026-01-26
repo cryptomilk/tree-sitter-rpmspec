@@ -62,8 +62,8 @@
    content: (word) @attribute)
  (#match? @attribute "^(x86-64|x86-32|aarch64|arm|ppc-64|ppc-32|s390x)$"))
 
-; Versioned dependencies: cmake-filesystem >= 3
-(versioned_dependency
+; Simple dependencies: make, cmake-filesystem >= 3
+(simple_dependency
   name: (_) @module)
 
 ; Source tag file paths

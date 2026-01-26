@@ -87,10 +87,9 @@ Conflicts: baz
     (preamble
       (tags
         (dependency_tag)
-        value: (rich_dependency_list
-          (dependency
-            (versioned_dependency
-              name: (word))))))
+        value: (dependency
+          (simple_dependency
+            name: (word)))))
     condition: (concatenation
       (integer)
       (macro_expansion
@@ -99,17 +98,15 @@ Conflicts: baz
     consequence: (preamble
       (tags
         (dependency_tag)
-        value: (rich_dependency_list
-          (dependency
-            (versioned_dependency
-              name: (word))))))
+        value: (dependency
+          (simple_dependency
+            name: (word)))))
     (preamble
       (tags
         (dependency_tag)
-        value: (dependency_list
-          (dependency
-            (versioned_dependency
-              name: (word))))))))
+        value: (dependency
+          (simple_dependency
+            name: (word)))))))
 
 ===============================================================================
 Subpackage (with %ifarch and %global)
@@ -144,13 +141,12 @@ BuildRequires: binutils %{?binutils_version_req}
     (preamble
       (tags
         (dependency_tag)
-        value: (rich_dependency_list
-          (dependency
-            (versioned_dependency
-              name: (word)
-              name: (macro_expansion
-                (conditional_expansion
-                  condition: (identifier))))))))))
+        value: (dependency
+          (simple_dependency
+            name: (word)
+            name: (macro_expansion
+              (conditional_expansion
+                condition: (identifier)))))))))
 
 ===============================================================================
 Subpackage (with plus in name)

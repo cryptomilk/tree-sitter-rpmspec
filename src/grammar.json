@@ -4741,7 +4741,7 @@
               "name": "value",
               "content": {
                 "type": "SYMBOL",
-                "name": "rich_dependency_list"
+                "name": "_rich_dependency_list"
               }
             },
             {
@@ -4767,7 +4767,7 @@
               "name": "value",
               "content": {
                 "type": "SYMBOL",
-                "name": "rich_dependency_list"
+                "name": "_rich_dependency_list"
               }
             },
             {
@@ -4793,7 +4793,7 @@
               "name": "value",
               "content": {
                 "type": "SYMBOL",
-                "name": "dependency_list"
+                "name": "_dependency_list"
               }
             },
             {
@@ -4819,7 +4819,7 @@
               "name": "value",
               "content": {
                 "type": "SYMBOL",
-                "name": "dependency_list"
+                "name": "_dependency_list"
               }
             },
             {
@@ -4897,7 +4897,7 @@
               "name": "value",
               "content": {
                 "type": "SYMBOL",
-                "name": "rich_dependency_list"
+                "name": "_rich_dependency_list"
               }
             },
             {
@@ -5500,11 +5500,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "versioned_dependency"
+          "name": "simple_dependency"
         }
       ]
     },
-    "versioned_dependency": {
+    "simple_dependency": {
       "type": "SEQ",
       "members": [
         {
@@ -5797,7 +5797,7 @@
         }
       ]
     },
-    "dependency_list": {
+    "_dependency_list": {
       "type": "SEQ",
       "members": [
         {
@@ -5830,7 +5830,7 @@
         }
       ]
     },
-    "rich_dependency_list": {
+    "_rich_dependency_list": {
       "type": "SEQ",
       "members": [
         {
@@ -6383,7 +6383,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "versioned_dependency"
+            "name": "simple_dependency"
           },
           {
             "type": "SYMBOL",
@@ -9112,7 +9112,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "dependency_list"
+          "name": "_dependency_list"
         }
       ]
     },

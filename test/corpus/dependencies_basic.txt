@@ -10,10 +10,9 @@ Requires: python
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)))))))
+      value: (dependency
+        (simple_dependency
+          name: (word))))))
 
 ===============================================================================
 Simple dependency (BuildRequires)
@@ -27,10 +26,9 @@ BuildRequires: gcc
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)))))))
+      value: (dependency
+        (simple_dependency
+          name: (word))))))
 
 ===============================================================================
 Versioned dependency (>=)
@@ -44,13 +42,12 @@ Requires: python >= 3.6
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (simple_dependency
+          name: (word)
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Versioned dependency (<=)
@@ -64,13 +61,12 @@ Requires: cmake <= 3.20
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (simple_dependency
+          name: (word)
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Versioned dependency (=)
@@ -84,13 +80,12 @@ Requires: package = 1.0.0
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (simple_dependency
+          name: (word)
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Versioned dependency (<)
@@ -104,13 +99,12 @@ Requires: oldpkg < 2.0
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (simple_dependency
+          name: (word)
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Versioned dependency (>)
@@ -124,13 +118,12 @@ Requires: newpkg > 1.0
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (simple_dependency
+          name: (word)
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Versioned dependency with epoch
@@ -144,13 +137,12 @@ Requires: package = 2:1.0.0
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (simple_dependency
+          name: (word)
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Versioned dependency with epoch and release
@@ -164,13 +156,12 @@ Requires: package = 2:1.0.0-1
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (simple_dependency
+          name: (word)
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Requires with qualifier (pre)
@@ -185,10 +176,9 @@ Requires(pre): shadow-utils
     (tags
       (dependency_tag
         (qualifier))
-      value: (rich_dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)))))))
+      value: (dependency
+        (simple_dependency
+          name: (word))))))
 
 ===============================================================================
 Requires with qualifier (post) and version
@@ -203,13 +193,12 @@ Requires(post): systemd >= 250
     (tags
       (dependency_tag
         (qualifier))
-      value: (rich_dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (simple_dependency
+          name: (word)
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 BuildRequires with version
@@ -223,13 +212,12 @@ BuildRequires: cmake >= 3.10
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (simple_dependency
+          name: (word)
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Provides simple
@@ -243,10 +231,9 @@ Provides: virtual-package
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)))))))
+      value: (dependency
+        (simple_dependency
+          name: (word))))))
 
 ===============================================================================
 Provides with version
@@ -260,13 +247,12 @@ Provides: virtual-package = 1.0
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (simple_dependency
+          name: (word)
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Conflicts simple
@@ -280,10 +266,9 @@ Conflicts: conflicting-package
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)))))))
+      value: (dependency
+        (simple_dependency
+          name: (word))))))
 
 ===============================================================================
 Obsoletes with version
@@ -297,13 +282,12 @@ Obsoletes: old-package < 2.0
   (preamble
     (tags
       (dependency_tag)
-      value: (dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (simple_dependency
+          name: (word)
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
 ===============================================================================
 Recommends simple
@@ -317,10 +301,9 @@ Recommends: optional-package
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)))))))
+      value: (dependency
+        (simple_dependency
+          name: (word))))))
 
 ===============================================================================
 Suggests with version
@@ -334,11 +317,10 @@ Suggests: nice-to-have >= 1.0
   (preamble
     (tags
       (dependency_tag)
-      value: (rich_dependency_list
-        (dependency
-          (versioned_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
+      value: (dependency
+        (simple_dependency
+          name: (word)
+          version: (dependency_version_constraint
+            operator: (dependency_comparison_operator)
+            version: (version)))))))
 
