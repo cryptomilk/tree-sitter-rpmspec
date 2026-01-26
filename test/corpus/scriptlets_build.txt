@@ -60,3 +60,35 @@ Build Section (%configure macro not confused with %conf section)
       (script_line
         (macro_simple_expansion
           (simple_macro))))))
+
+===============================================================================
+Build Section (heredoc with preamble-like content)
+===============================================================================
+
+%build
+cat > file.pc << EOF
+key=value
+
+Name: mypackage
+Description: A package
+EOF
+echo done
+
+-------------------------------------------------------------------------------
+
+(spec
+  (build_scriptlet
+    (section_name)
+    (script_block
+      (script_line
+        (script_content))
+      (script_line
+        (script_content))
+      (script_line
+        (script_content))
+      (script_line
+        (script_content))
+      (script_line
+        (script_content))
+      (script_line
+        (script_content)))))

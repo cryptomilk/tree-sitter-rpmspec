@@ -147,7 +147,6 @@ module.exports = grammar({
     // Supertypes define abstract syntax tree node categories
     // These help with syntax highlighting and semantic analysis
     supertypes: ($) => [
-        $._simple_statements, // Single-line statements (tags, macros, etc.)
         $._compound_statements, // Multi-line blocks (if/else, sections)
         $.expression, // Mathematical and logical expressions
         $._primary_expression, // Basic expression components
@@ -165,6 +164,10 @@ module.exports = grammar({
         // a direct child of script_block or embedded inside script_line (for line
         // continuation sequences with conditionals).
         [$.script_block, $.script_line],
+        // header vs body: Macros and conditionals can appear in both contexts.
+        // At the boundary, GLR handles the ambiguity.
+        [$._header_item, $._body_item],
+        [$._header_statements, $._body_statements],
     ],
 
     // External scanner tokens (implemented in src/scanner.c)
@@ -223,7 +226,8 @@ module.exports = grammar({
     // Inline rules are flattened in the parse tree to reduce nesting
     // This improves the tree structure for syntax highlighting and analysis
     inline: ($) => [
-        $._simple_statements, // Flatten statement types
+        // Note: _header_statements and _body_statements are NOT inlined
+        // to allow proper conflict resolution at the header/body boundary
         $._compound_statements, // Flatten compound statement types
         $._scriptlet_compound_statements, // Flatten shell compound statement types
         $._files_compound_statements, // Flatten files compound statement types
@@ -237,15 +241,18 @@ module.exports = grammar({
     word: ($) => $.identifier,
 
     rules: {
-        // Root rule: An RPM spec file is a sequence of statements
-        spec: ($) => repeat($._statements),
+        // Root rule: An RPM spec file has header (preamble) then body (sections)
+        // Header contains preamble tags, %package, %description, macros
+        // Body contains scriptlets, %files, %changelog (NO preamble tags)
+        spec: ($) =>
+            seq(repeat($._header_statements), repeat($._body_statements)),
 
-        // Top-level statements in spec files
-        _statements: ($) =>
-            choice($._simple_statements, $._compound_statements),
+        // Header statements: preamble tags allowed here
+        // Includes: preamble, %package (with its own preamble), %description, macros
+        _header_statements: ($) =>
+            choice($._header_item, $._compound_statements),
 
-        // Simple statements: single-line directives and sections
-        _simple_statements: ($) =>
+        _header_item: ($) =>
             choice(
                 $.macro_definition, // %define, %global
                 $.macro_undefinition, // %undefine
@@ -256,9 +263,27 @@ module.exports = grammar({
                 $.macro_expression, // %[expression]
                 $.preamble, // Name:, Version:, etc.
                 $.description, // %description section
-                $.package, // %package subsection
+                $.package, // %package subsection (has its own preamble)
                 $.sourcelist, // %sourcelist section
-                $.patchlist, // %patchlist section
+                $.patchlist // %patchlist section
+            ),
+
+        // Body statements: NO preamble tags allowed here
+        // Includes: scriptlets, %files, %changelog, macros
+        _body_statements: ($) => choice($._body_item, $._compound_statements),
+
+        _body_item: ($) =>
+            choice(
+                $.macro_definition, // %define, %global
+                $.macro_undefinition, // %undefine
+                $.macro_expansion, // %{name}, %name
+                $.macro_parametric_expansion, // %name [options] [arguments]
+                $.macro_simple_expansion, // %name - simple expansion
+                $.macro_shell_expansion, // %(shell command)
+                $.macro_expression, // %[expression]
+                // NO preamble here - preamble tags not valid in body
+                $.description, // %description can appear in body too
+                $.package, // %package can appear in body too
                 $.prep_scriptlet, // %prep section
                 $.generate_buildrequires, // %generate_buildrequires section
                 $.conf_scriptlet, // %conf section
@@ -1254,9 +1279,14 @@ module.exports = grammar({
             ),
 
         // Content allowed inside top-level conditionals
+        // Can contain both header and body items
         _conditional_block: ($) =>
             repeat1(
-                choice(prec(-1, $._simple_statements), $._compound_statements)
+                choice(
+                    prec(-1, $._header_item),
+                    prec(-1, $._body_item),
+                    $._compound_statements
+                )
             ),
 
         // Content allowed inside shell conditionals (scriptlet context)
@@ -2466,7 +2496,8 @@ module.exports = grammar({
                         $.patch_macro, // %patch with specific option support
                         $.autopatch_macro, // %autopatch for automatic patching
                         $.macro_parametric_expansion, // %name args (consumes to EOL)
-                        $.script_line // Line of script content (for injection)
+                        $.script_line, // Line of script content (for injection)
+                        /\n/ // Empty lines (keeps script_block context active)
                     )
                 )
             ),

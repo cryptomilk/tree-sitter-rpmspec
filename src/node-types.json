@@ -68,112 +68,6 @@
     ]
   },
   {
-    "type": "_simple_statements",
-    "named": true,
-    "subtypes": [
-      {
-        "type": "build_scriptlet",
-        "named": true
-      },
-      {
-        "type": "changelog",
-        "named": true
-      },
-      {
-        "type": "check_scriptlet",
-        "named": true
-      },
-      {
-        "type": "clean_scriptlet",
-        "named": true
-      },
-      {
-        "type": "conf_scriptlet",
-        "named": true
-      },
-      {
-        "type": "description",
-        "named": true
-      },
-      {
-        "type": "file_trigger",
-        "named": true
-      },
-      {
-        "type": "files",
-        "named": true
-      },
-      {
-        "type": "generate_buildrequires",
-        "named": true
-      },
-      {
-        "type": "install_scriptlet",
-        "named": true
-      },
-      {
-        "type": "macro_definition",
-        "named": true
-      },
-      {
-        "type": "macro_expansion",
-        "named": true
-      },
-      {
-        "type": "macro_expression",
-        "named": true
-      },
-      {
-        "type": "macro_parametric_expansion",
-        "named": true
-      },
-      {
-        "type": "macro_shell_expansion",
-        "named": true
-      },
-      {
-        "type": "macro_simple_expansion",
-        "named": true
-      },
-      {
-        "type": "macro_undefinition",
-        "named": true
-      },
-      {
-        "type": "package",
-        "named": true
-      },
-      {
-        "type": "patchlist",
-        "named": true
-      },
-      {
-        "type": "preamble",
-        "named": true
-      },
-      {
-        "type": "prep_scriptlet",
-        "named": true
-      },
-      {
-        "type": "runtime_scriptlet",
-        "named": true
-      },
-      {
-        "type": "runtime_scriptlet_interpreter",
-        "named": true
-      },
-      {
-        "type": "sourcelist",
-        "named": true
-      },
-      {
-        "type": "trigger",
-        "named": true
-      }
-    ]
-  },
-  {
     "type": "expression",
     "named": true,
     "subtypes": [
@@ -1766,7 +1660,103 @@
             "named": true
           },
           {
-            "type": "_simple_statements",
+            "type": "build_scriptlet",
+            "named": true
+          },
+          {
+            "type": "changelog",
+            "named": true
+          },
+          {
+            "type": "check_scriptlet",
+            "named": true
+          },
+          {
+            "type": "clean_scriptlet",
+            "named": true
+          },
+          {
+            "type": "conf_scriptlet",
+            "named": true
+          },
+          {
+            "type": "description",
+            "named": true
+          },
+          {
+            "type": "file_trigger",
+            "named": true
+          },
+          {
+            "type": "files",
+            "named": true
+          },
+          {
+            "type": "generate_buildrequires",
+            "named": true
+          },
+          {
+            "type": "install_scriptlet",
+            "named": true
+          },
+          {
+            "type": "macro_definition",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_expression",
+            "named": true
+          },
+          {
+            "type": "macro_parametric_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_shell_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_undefinition",
+            "named": true
+          },
+          {
+            "type": "package",
+            "named": true
+          },
+          {
+            "type": "patchlist",
+            "named": true
+          },
+          {
+            "type": "preamble",
+            "named": true
+          },
+          {
+            "type": "prep_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet_interpreter",
+            "named": true
+          },
+          {
+            "type": "sourcelist",
+            "named": true
+          },
+          {
+            "type": "trigger",
             "named": true
           }
         ]
@@ -1800,7 +1790,103 @@
             "named": true
           },
           {
-            "type": "_simple_statements",
+            "type": "build_scriptlet",
+            "named": true
+          },
+          {
+            "type": "changelog",
+            "named": true
+          },
+          {
+            "type": "check_scriptlet",
+            "named": true
+          },
+          {
+            "type": "clean_scriptlet",
+            "named": true
+          },
+          {
+            "type": "conf_scriptlet",
+            "named": true
+          },
+          {
+            "type": "description",
+            "named": true
+          },
+          {
+            "type": "file_trigger",
+            "named": true
+          },
+          {
+            "type": "files",
+            "named": true
+          },
+          {
+            "type": "generate_buildrequires",
+            "named": true
+          },
+          {
+            "type": "install_scriptlet",
+            "named": true
+          },
+          {
+            "type": "macro_definition",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_expression",
+            "named": true
+          },
+          {
+            "type": "macro_parametric_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_shell_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_undefinition",
+            "named": true
+          },
+          {
+            "type": "package",
+            "named": true
+          },
+          {
+            "type": "patchlist",
+            "named": true
+          },
+          {
+            "type": "preamble",
+            "named": true
+          },
+          {
+            "type": "prep_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet_interpreter",
+            "named": true
+          },
+          {
+            "type": "sourcelist",
+            "named": true
+          },
+          {
+            "type": "trigger",
             "named": true
           }
         ]
@@ -1834,7 +1920,103 @@
             "named": true
           },
           {
-            "type": "_simple_statements",
+            "type": "build_scriptlet",
+            "named": true
+          },
+          {
+            "type": "changelog",
+            "named": true
+          },
+          {
+            "type": "check_scriptlet",
+            "named": true
+          },
+          {
+            "type": "clean_scriptlet",
+            "named": true
+          },
+          {
+            "type": "conf_scriptlet",
+            "named": true
+          },
+          {
+            "type": "description",
+            "named": true
+          },
+          {
+            "type": "file_trigger",
+            "named": true
+          },
+          {
+            "type": "files",
+            "named": true
+          },
+          {
+            "type": "generate_buildrequires",
+            "named": true
+          },
+          {
+            "type": "install_scriptlet",
+            "named": true
+          },
+          {
+            "type": "macro_definition",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_expression",
+            "named": true
+          },
+          {
+            "type": "macro_parametric_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_shell_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_undefinition",
+            "named": true
+          },
+          {
+            "type": "package",
+            "named": true
+          },
+          {
+            "type": "patchlist",
+            "named": true
+          },
+          {
+            "type": "preamble",
+            "named": true
+          },
+          {
+            "type": "prep_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet_interpreter",
+            "named": true
+          },
+          {
+            "type": "sourcelist",
+            "named": true
+          },
+          {
+            "type": "trigger",
             "named": true
           }
         ]
@@ -1854,7 +2036,103 @@
             "named": true
           },
           {
-            "type": "_simple_statements",
+            "type": "build_scriptlet",
+            "named": true
+          },
+          {
+            "type": "changelog",
+            "named": true
+          },
+          {
+            "type": "check_scriptlet",
+            "named": true
+          },
+          {
+            "type": "clean_scriptlet",
+            "named": true
+          },
+          {
+            "type": "conf_scriptlet",
+            "named": true
+          },
+          {
+            "type": "description",
+            "named": true
+          },
+          {
+            "type": "file_trigger",
+            "named": true
+          },
+          {
+            "type": "files",
+            "named": true
+          },
+          {
+            "type": "generate_buildrequires",
+            "named": true
+          },
+          {
+            "type": "install_scriptlet",
+            "named": true
+          },
+          {
+            "type": "macro_definition",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_expression",
+            "named": true
+          },
+          {
+            "type": "macro_parametric_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_shell_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_undefinition",
+            "named": true
+          },
+          {
+            "type": "package",
+            "named": true
+          },
+          {
+            "type": "patchlist",
+            "named": true
+          },
+          {
+            "type": "preamble",
+            "named": true
+          },
+          {
+            "type": "prep_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet_interpreter",
+            "named": true
+          },
+          {
+            "type": "sourcelist",
+            "named": true
+          },
+          {
+            "type": "trigger",
             "named": true
           }
         ]
@@ -2362,10 +2640,6 @@
             "named": true
           },
           {
-            "type": "_simple_statements",
-            "named": true
-          },
-          {
             "type": "autopatch_macro",
             "named": true
           },
@@ -2374,7 +2648,31 @@
             "named": true
           },
           {
+            "type": "build_scriptlet",
+            "named": true
+          },
+          {
+            "type": "changelog",
+            "named": true
+          },
+          {
+            "type": "check_scriptlet",
+            "named": true
+          },
+          {
+            "type": "clean_scriptlet",
+            "named": true
+          },
+          {
+            "type": "conf_scriptlet",
+            "named": true
+          },
+          {
             "type": "defattr",
+            "named": true
+          },
+          {
+            "type": "description",
             "named": true
           },
           {
@@ -2382,7 +2680,75 @@
             "named": true
           },
           {
+            "type": "file_trigger",
+            "named": true
+          },
+          {
+            "type": "files",
+            "named": true
+          },
+          {
+            "type": "generate_buildrequires",
+            "named": true
+          },
+          {
+            "type": "install_scriptlet",
+            "named": true
+          },
+          {
+            "type": "macro_definition",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_expression",
+            "named": true
+          },
+          {
+            "type": "macro_parametric_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_shell_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_undefinition",
+            "named": true
+          },
+          {
+            "type": "package",
+            "named": true
+          },
+          {
             "type": "patch_macro",
+            "named": true
+          },
+          {
+            "type": "patchlist",
+            "named": true
+          },
+          {
+            "type": "preamble",
+            "named": true
+          },
+          {
+            "type": "prep_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet_interpreter",
             "named": true
           },
           {
@@ -2391,6 +2757,14 @@
           },
           {
             "type": "setup_macro",
+            "named": true
+          },
+          {
+            "type": "sourcelist",
+            "named": true
+          },
+          {
+            "type": "trigger",
             "named": true
           }
         ]
@@ -2450,10 +2824,6 @@
             "named": true
           },
           {
-            "type": "_simple_statements",
-            "named": true
-          },
-          {
             "type": "autopatch_macro",
             "named": true
           },
@@ -2462,7 +2832,31 @@
             "named": true
           },
           {
+            "type": "build_scriptlet",
+            "named": true
+          },
+          {
+            "type": "changelog",
+            "named": true
+          },
+          {
+            "type": "check_scriptlet",
+            "named": true
+          },
+          {
+            "type": "clean_scriptlet",
+            "named": true
+          },
+          {
+            "type": "conf_scriptlet",
+            "named": true
+          },
+          {
             "type": "defattr",
+            "named": true
+          },
+          {
+            "type": "description",
             "named": true
           },
           {
@@ -2470,7 +2864,75 @@
             "named": true
           },
           {
+            "type": "file_trigger",
+            "named": true
+          },
+          {
+            "type": "files",
+            "named": true
+          },
+          {
+            "type": "generate_buildrequires",
+            "named": true
+          },
+          {
+            "type": "install_scriptlet",
+            "named": true
+          },
+          {
+            "type": "macro_definition",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_expression",
+            "named": true
+          },
+          {
+            "type": "macro_parametric_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_shell_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_undefinition",
+            "named": true
+          },
+          {
+            "type": "package",
+            "named": true
+          },
+          {
             "type": "patch_macro",
+            "named": true
+          },
+          {
+            "type": "patchlist",
+            "named": true
+          },
+          {
+            "type": "preamble",
+            "named": true
+          },
+          {
+            "type": "prep_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet_interpreter",
             "named": true
           },
           {
@@ -2479,6 +2941,14 @@
           },
           {
             "type": "setup_macro",
+            "named": true
+          },
+          {
+            "type": "sourcelist",
+            "named": true
+          },
+          {
+            "type": "trigger",
             "named": true
           }
         ]
@@ -2538,10 +3008,6 @@
             "named": true
           },
           {
-            "type": "_simple_statements",
-            "named": true
-          },
-          {
             "type": "autopatch_macro",
             "named": true
           },
@@ -2550,7 +3016,31 @@
             "named": true
           },
           {
+            "type": "build_scriptlet",
+            "named": true
+          },
+          {
+            "type": "changelog",
+            "named": true
+          },
+          {
+            "type": "check_scriptlet",
+            "named": true
+          },
+          {
+            "type": "clean_scriptlet",
+            "named": true
+          },
+          {
+            "type": "conf_scriptlet",
+            "named": true
+          },
+          {
             "type": "defattr",
+            "named": true
+          },
+          {
+            "type": "description",
             "named": true
           },
           {
@@ -2558,7 +3048,75 @@
             "named": true
           },
           {
+            "type": "file_trigger",
+            "named": true
+          },
+          {
+            "type": "files",
+            "named": true
+          },
+          {
+            "type": "generate_buildrequires",
+            "named": true
+          },
+          {
+            "type": "install_scriptlet",
+            "named": true
+          },
+          {
+            "type": "macro_definition",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_expression",
+            "named": true
+          },
+          {
+            "type": "macro_parametric_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_shell_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_undefinition",
+            "named": true
+          },
+          {
+            "type": "package",
+            "named": true
+          },
+          {
             "type": "patch_macro",
+            "named": true
+          },
+          {
+            "type": "patchlist",
+            "named": true
+          },
+          {
+            "type": "preamble",
+            "named": true
+          },
+          {
+            "type": "prep_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet",
+            "named": true
+          },
+          {
+            "type": "runtime_scriptlet_interpreter",
             "named": true
           },
           {
@@ -2567,6 +3125,14 @@
           },
           {
             "type": "setup_macro",
+            "named": true
+          },
+          {
+            "type": "sourcelist",
+            "named": true
+          },
+          {
+            "type": "trigger",
             "named": true
           }
         ]
@@ -4520,7 +5086,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "autopatch_macro",
@@ -5247,7 +5813,103 @@
           "named": true
         },
         {
-          "type": "_simple_statements",
+          "type": "build_scriptlet",
+          "named": true
+        },
+        {
+          "type": "changelog",
+          "named": true
+        },
+        {
+          "type": "check_scriptlet",
+          "named": true
+        },
+        {
+          "type": "clean_scriptlet",
+          "named": true
+        },
+        {
+          "type": "conf_scriptlet",
+          "named": true
+        },
+        {
+          "type": "description",
+          "named": true
+        },
+        {
+          "type": "file_trigger",
+          "named": true
+        },
+        {
+          "type": "files",
+          "named": true
+        },
+        {
+          "type": "generate_buildrequires",
+          "named": true
+        },
+        {
+          "type": "install_scriptlet",
+          "named": true
+        },
+        {
+          "type": "macro_definition",
+          "named": true
+        },
+        {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_expression",
+          "named": true
+        },
+        {
+          "type": "macro_parametric_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_shell_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_undefinition",
+          "named": true
+        },
+        {
+          "type": "package",
+          "named": true
+        },
+        {
+          "type": "patchlist",
+          "named": true
+        },
+        {
+          "type": "preamble",
+          "named": true
+        },
+        {
+          "type": "prep_scriptlet",
+          "named": true
+        },
+        {
+          "type": "runtime_scriptlet",
+          "named": true
+        },
+        {
+          "type": "runtime_scriptlet_interpreter",
+          "named": true
+        },
+        {
+          "type": "sourcelist",
+          "named": true
+        },
+        {
+          "type": "trigger",
           "named": true
         }
       ]
