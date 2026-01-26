@@ -15,9 +15,7 @@ Requires: perl(Carp) >= 3.2
           name: (word)
           qualifier: (dependency_qualifier
             content: (identifier))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))))
+          version: (version))))))
 
 ===============================================================================
 Qualifier dependency (Python module)
@@ -54,9 +52,7 @@ Requires: libbar-devel(x86-64) >= 2.2
           name: (word)
           qualifier: (dependency_qualifier
             content: (word))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))))
+          version: (version))))))
 
 ===============================================================================
 Qualifier dependency (bundled library)
@@ -93,10 +89,8 @@ Requires: lua(abi) = %{lua_version}
           name: (word)
           qualifier: (dependency_qualifier
             content: (identifier))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (macro_expansion
-              (identifier))))))))
+          version: (macro_expansion
+            (identifier)))))))
 
 ===============================================================================
 Qualifier dependency (simple without version)
@@ -133,9 +127,7 @@ BuildRequires: pkgconfig(glib-2.0) >= 2.50
           name: (word)
           qualifier: (dependency_qualifier
             content: (word))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))))
+          version: (version))))))
 
 ===============================================================================
 Qualifier dependency (nested golang bundled)
@@ -157,9 +149,7 @@ Provides: bundled(golang(golang.org/x/arch)) = 0.18.1
               name: (identifier)
               qualifier: (dependency_qualifier
                 content: (word))))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))))
+          version: (version))))))
 
 ===============================================================================
 Qualifier dependency (macro in qualifier)
@@ -179,7 +169,5 @@ Provides: npm(%{pkgname}) = %{version}
           qualifier: (dependency_qualifier
             content: (macro_expansion
               (identifier)))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (macro_expansion
-              (identifier))))))))
+          version: (macro_expansion
+            (identifier)))))))

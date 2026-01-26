@@ -11,13 +11,10 @@ Requires: %{name} = %{version}
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (macro_expansion
-            (identifier))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (macro_expansion
-              (identifier))))))))
+        name: (macro_expansion
+          (identifier))
+        version: (macro_expansion
+          (identifier))))))
 
 ===============================================================================
 Macro dependency (name with ISA suffix)
@@ -32,16 +29,13 @@ Requires: %{name}%{?_isa} = %{version}
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (macro_expansion
-            (identifier))
-          name: (macro_expansion
-            (conditional_expansion
-              condition: (identifier)))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (macro_expansion
-              (identifier))))))))
+        name: (macro_expansion
+          (identifier))
+        name: (macro_expansion
+          (conditional_expansion
+            condition: (identifier)))
+        version: (macro_expansion
+          (identifier))))))
 
 ===============================================================================
 Macro dependency (name with literal suffix)
@@ -56,14 +50,11 @@ Requires: %{name}-libs >= %{version}
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (macro_expansion
-            (identifier))
-          name: (word)
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (macro_expansion
-              (identifier))))))))
+        name: (macro_expansion
+          (identifier))
+        name: (word)
+        version: (macro_expansion
+          (identifier))))))
 
 ===============================================================================
 Macro dependency (version with release)
@@ -78,15 +69,12 @@ Requires: %{name} = %{version}-%{release}
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (macro_expansion
-            (identifier))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (macro_expansion
-              (identifier))
-            version: (macro_expansion
-              (identifier))))))))
+        name: (macro_expansion
+          (identifier))
+        version: (macro_expansion
+          (identifier))
+        version: (macro_expansion
+          (identifier))))))
 
 ===============================================================================
 Macro dependency (full ISA dependency)
@@ -101,18 +89,15 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (macro_expansion
-            (identifier))
-          name: (macro_expansion
-            (conditional_expansion
-              condition: (identifier)))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (macro_expansion
-              (identifier))
-            version: (macro_expansion
-              (identifier))))))))
+        name: (macro_expansion
+          (identifier))
+        name: (macro_expansion
+          (conditional_expansion
+            condition: (identifier)))
+        version: (macro_expansion
+          (identifier))
+        version: (macro_expansion
+          (identifier))))))
 
 ===============================================================================
 Macro dependency (literal name with macro suffix)
@@ -127,14 +112,11 @@ Requires: foo%{?_isa} >= 1.0
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (word)
-          name: (macro_expansion
-            (conditional_expansion
-              condition: (identifier)))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))))
+        name: (word)
+        name: (macro_expansion
+          (conditional_expansion
+            condition: (identifier)))
+        version: (version)))))
 
 ===============================================================================
 Macro dependency (simple macro expansion in name)
@@ -149,9 +131,6 @@ Requires: %name = 1.0
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (macro_simple_expansion
-            (simple_macro))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))))
+        name: (macro_simple_expansion
+          (simple_macro))
+        version: (version)))))

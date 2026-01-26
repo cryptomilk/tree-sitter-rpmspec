@@ -12,10 +12,8 @@ Requires: (pkgA or pkgB)
       (dependency_tag)
       value: (boolean_dependency
         (boolean_or_expression
-          left: (simple_dependency
-            name: (word))
-          right: (simple_dependency
-            name: (word)))))))
+          name: (word)
+          name: (word))))))
 
 ===============================================================================
 Boolean dependency (simple AND)
@@ -31,10 +29,8 @@ Requires: (pkgA and pkgB)
       (dependency_tag)
       value: (boolean_dependency
         (boolean_and_expression
-          left: (simple_dependency
-            name: (word))
-          right: (simple_dependency
-            name: (word)))))))
+          name: (word)
+          name: (word))))))
 
 ===============================================================================
 Boolean dependency (AND with version constraint)
@@ -50,13 +46,9 @@ Requires: (pkgA >= 1.0 and pkgB)
       (dependency_tag)
       value: (boolean_dependency
         (boolean_and_expression
-          left: (simple_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version)))
-          right: (simple_dependency
-            name: (word)))))))
+          name: (word)
+          version: (version)
+          name: (word))))))
 
 ===============================================================================
 Boolean dependency (nested with AND inside OR)
@@ -72,14 +64,11 @@ Requires: (pkgA or (pkgB and pkgC))
       (dependency_tag)
       value: (boolean_dependency
         (boolean_or_expression
-          left: (simple_dependency
-            name: (word))
+          name: (word)
           right: (boolean_dependency
             (boolean_and_expression
-              left: (simple_dependency
-                name: (word))
-              right: (simple_dependency
-                name: (word)))))))))
+              name: (word)
+              name: (word))))))))
 
 ===============================================================================
 Boolean dependency (chained OR)
@@ -96,12 +85,9 @@ Requires: (pkgA or pkgB or pkgC)
       value: (boolean_dependency
         (boolean_or_expression
           left: (boolean_or_expression
-            left: (simple_dependency
-              name: (word))
-            right: (simple_dependency
-              name: (word)))
-          right: (simple_dependency
-            name: (word)))))))
+            name: (word)
+            name: (word))
+          name: (word))))))
 
 ===============================================================================
 Boolean dependency (real-world util-linux example)
@@ -117,10 +103,8 @@ Requires: (util-linux-core or util-linux)
       (dependency_tag)
       value: (boolean_dependency
         (boolean_or_expression
-          left: (simple_dependency
-            name: (word))
-          right: (simple_dependency
-            name: (word)))))))
+          name: (word)
+          name: (word))))))
 
 ===============================================================================
 Boolean dependency (OR with version on both sides)
@@ -136,14 +120,7 @@ Requires: (pkgA >= 3.2 or pkgB >= 1.0)
       (dependency_tag)
       value: (boolean_dependency
         (boolean_or_expression
-          left: (simple_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version)))
-          right: (simple_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version))))))))
-
+          name: (word)
+          version: (version)
+          name: (word)
+          version: (version))))))

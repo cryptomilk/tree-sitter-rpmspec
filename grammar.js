@@ -1832,16 +1832,16 @@ module.exports = grammar({
                 // Qualified dependency: perl(Carp) >= 3.2 - has qualifier
                 $.qualified_dependency,
                 // Simple dependency: make, cmake-filesystem >= 3 - name with optional version
-                $.simple_dependency
+                $._simple_dependency
             ),
 
         // Simple dependency: package name with optional version constraint
         // This is the fallback for dependencies that don't match other patterns
         // Examples: make, cmake-filesystem, filesystem >= 3, python3-libs = 3.14.2
-        simple_dependency: ($) =>
+        _simple_dependency: ($) =>
             seq(
                 field('name', $._dependency_name_base),
-                optional(field('version', $.dependency_version_constraint))
+                optional(field('version', $._dependency_version_constraint))
             ),
 
         // ELF/shared library dependency: libc.so.6(GLIBC_2.2.5)(64bit)
@@ -1904,7 +1904,7 @@ module.exports = grammar({
             seq(
                 field('name', $._dependency_name_base),
                 field('qualifier', $.dependency_qualifier),
-                optional(field('version', $.dependency_version_constraint))
+                optional(field('version', $._dependency_version_constraint))
             ),
 
         // The qualifier: (content) - parenthesized qualifier content
@@ -2001,9 +2001,9 @@ module.exports = grammar({
 
         // Version constraint: comparison operator followed by version
         // Examples: >= 1.0, = 2:1.0.0-1, < 3.0, = %{version}-%{release}
-        dependency_version_constraint: ($) =>
+        _dependency_version_constraint: ($) =>
             seq(
-                field('operator', $.dependency_comparison_operator),
+                $._dependency_comparison_operator,
                 field('version', $._dependency_version_value)
             ),
 
@@ -2043,7 +2043,7 @@ module.exports = grammar({
 
         // Comparison operators for dependencies
         // Note: spaces are required around these in RPM syntax
-        dependency_comparison_operator: (_) =>
+        _dependency_comparison_operator: (_) =>
             choice(
                 '<', // Less than
                 '<=', // Less than or equal
@@ -2151,7 +2151,7 @@ module.exports = grammar({
                     $.elf_dependency,
                     $.path_dependency,
                     $.qualified_dependency,
-                    $.simple_dependency,
+                    $._simple_dependency,
                     $.boolean_dependency // Nested parentheses
                 )
             ),

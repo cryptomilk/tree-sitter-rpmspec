@@ -16,8 +16,7 @@ BuildRequires:  foo
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%ifos)
@@ -37,8 +36,7 @@ BuildRequires:  foo
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%ifnarch)
@@ -58,8 +56,7 @@ BuildRequires:  magic
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%if with simple macros)
@@ -79,8 +76,7 @@ BuildRequires:  foo
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%if with complex macros)
@@ -103,8 +99,7 @@ BuildRequires:  foo
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%if with string comparison)
@@ -128,8 +123,7 @@ BuildRequires:  foo
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%if with mathematical comparison)
@@ -162,8 +156,7 @@ BuildRequires:  foo
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%if with expansion)
@@ -186,8 +179,7 @@ BuildRequires:  foo
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%if with paranthesis)
@@ -219,8 +211,7 @@ BuildRequires:  foo
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%if with %else)
@@ -245,15 +236,13 @@ BuildRequires:  bar
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))
+          name: (word))))
     alternative: (else_clause
       body: (preamble
         (tags
           (dependency_tag)
           value: (dependency
-            (simple_dependency
-              name: (word))))))))
+            name: (word)))))))
 
 ===============================================================================
 Conditionals (%if with %elif)
@@ -278,8 +267,7 @@ BuildRequires:  bar
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))
+          name: (word))))
     alternative: (elif_clause
       condition: (concatenation
         (integer)
@@ -290,8 +278,7 @@ BuildRequires:  bar
         (tags
           (dependency_tag)
           value: (dependency
-            (simple_dependency
-              name: (word))))))))
+            name: (word)))))))
 
 ===============================================================================
 Conditionals (%if with %elif and %else)
@@ -318,8 +305,7 @@ BuildRequires:  wurst
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))
+          name: (word))))
     alternative: (elif_clause
       condition: (concatenation
         (integer)
@@ -330,15 +316,13 @@ BuildRequires:  wurst
         (tags
           (dependency_tag)
           value: (dependency
-            (simple_dependency
-              name: (word))))))
+            name: (word)))))
     alternative: (else_clause
       body: (preamble
         (tags
           (dependency_tag)
           value: (dependency
-            (simple_dependency
-              name: (word))))))))
+            name: (word)))))))
 
 ===============================================================================
 Conditionals (%if %{with ..})
@@ -359,8 +343,7 @@ Requires(post): libwbclient
         (dependency_tag
           (qualifier))
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%ifnarch with negation)
@@ -381,8 +364,7 @@ BuildRequires:  foo
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%ifnos with negation)
@@ -402,8 +384,7 @@ BuildRequires:  linux-only-package
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%ifos with simple macro expansion)
@@ -423,8 +404,7 @@ BuildRequires:  os-specific-package
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%ifarch with macro expressions)
@@ -446,8 +426,7 @@ BuildRequires:  arch-specific-package
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%ifnarch with simple macro expansion)
@@ -467,8 +446,7 @@ BuildRequires:  bpftool
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%elifarch support)
@@ -492,23 +470,20 @@ BuildRequires:  generic-package
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))
+          name: (word))))
     alternative: (elifarch_clause
       condition: (word)
       consequence: (preamble
         (tags
           (dependency_tag)
           value: (dependency
-            (simple_dependency
-              name: (word))))))
+            name: (word)))))
     alternative: (else_clause
       body: (preamble
         (tags
           (dependency_tag)
           value: (dependency
-            (simple_dependency
-              name: (word))))))))
+            name: (word)))))))
 
 ===============================================================================
 Conditionals (%if with runtime scriptlet after shell section)

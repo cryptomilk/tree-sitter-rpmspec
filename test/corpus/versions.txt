@@ -36,20 +36,14 @@ BuildRequires:  another-package >= 1:2.0.0
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (word)
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version))))))
+        name: (word)
+        version: (version))))
   (preamble
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (word)
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))))
+        name: (word)
+        version: (version)))))
 
 ===============================================================================
 Version (Complex epoch with release)
@@ -98,13 +92,9 @@ Requires:       (package >= 2:1.0 or alternative-package)
       (dependency_tag)
       value: (boolean_dependency
         (boolean_or_expression
-          left: (simple_dependency
-            name: (word)
-            version: (dependency_version_constraint
-              operator: (dependency_comparison_operator)
-              version: (version)))
-          right: (simple_dependency
-            name: (word)))))))
+          name: (word)
+          version: (version)
+          name: (word))))))
 
 ===============================================================================
 Version (Epoch zero explicit)
@@ -124,11 +114,8 @@ Provides:       virtual-package = 0:1.0.0
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (word)
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))))
+        name: (word)
+        version: (version)))))
 
 ===============================================================================
 Version (Git hash as version)
@@ -152,7 +139,4 @@ Provides:       bundled(sdb) = db7edd4a96a89b6749b677a85d7fa4ee2c6fbbb9
           name: (word)
           qualifier: (dependency_qualifier
             content: (identifier))
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (dependency_version_string)))))))
-
+          version: (dependency_version_string))))))

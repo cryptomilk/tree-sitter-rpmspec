@@ -88,8 +88,7 @@ Conflicts: baz
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))
+          name: (word))))
     condition: (concatenation
       (integer)
       (macro_expansion
@@ -99,14 +98,12 @@ Conflicts: baz
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))
+          name: (word))))
     (preamble
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)))))))
+          name: (word))))))
 
 ===============================================================================
 Subpackage (with %ifarch and %global)
@@ -142,11 +139,10 @@ BuildRequires: binutils %{?binutils_version_req}
       (tags
         (dependency_tag)
         value: (dependency
-          (simple_dependency
-            name: (word)
-            name: (macro_expansion
-              (conditional_expansion
-                condition: (identifier)))))))))
+          name: (word)
+          name: (macro_expansion
+            (conditional_expansion
+              condition: (identifier))))))))
 
 ===============================================================================
 Subpackage (with plus in name)
@@ -170,6 +166,7 @@ Summary: Default feature devel
           (word)
           (word)
           (word))))))
+
 ===============================================================================
 Subpackage (with macro expansion in content)
 ===============================================================================

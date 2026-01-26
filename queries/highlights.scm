@@ -18,9 +18,6 @@
   (dependency_tag)
 ] @type.definition
 
-; Dependency comparison operators (>=, <=, =, etc.)
-(dependency_comparison_operator) @operator
-
 ; Dependency tag qualifier (e.g., post in Requires(post):)
 (qualifier) @attribute.builtin
 
@@ -63,8 +60,11 @@
  (#match? @attribute "^(x86-64|x86-32|aarch64|arm|ppc-64|ppc-32|s390x)$"))
 
 ; Simple dependencies: make, cmake-filesystem >= 3
-(simple_dependency
+; Note: qualified_dependency also has name field
+(qualified_dependency
   name: (_) @module)
+(dependency
+  (word) @module)
 
 ; Source tag file paths
 (tags

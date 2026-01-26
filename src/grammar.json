@@ -5476,11 +5476,11 @@
         },
         {
           "type": "SYMBOL",
-          "name": "simple_dependency"
+          "name": "_simple_dependency"
         }
       ]
     },
-    "simple_dependency": {
+    "_simple_dependency": {
       "type": "SEQ",
       "members": [
         {
@@ -5499,7 +5499,7 @@
               "name": "version",
               "content": {
                 "type": "SYMBOL",
-                "name": "dependency_version_constraint"
+                "name": "_dependency_version_constraint"
               }
             },
             {
@@ -5684,7 +5684,7 @@
               "name": "version",
               "content": {
                 "type": "SYMBOL",
-                "name": "dependency_version_constraint"
+                "name": "_dependency_version_constraint"
               }
             },
             {
@@ -5962,16 +5962,12 @@
         ]
       }
     },
-    "dependency_version_constraint": {
+    "_dependency_version_constraint": {
       "type": "SEQ",
       "members": [
         {
-          "type": "FIELD",
-          "name": "operator",
-          "content": {
-            "type": "SYMBOL",
-            "name": "dependency_comparison_operator"
-          }
+          "type": "SYMBOL",
+          "name": "_dependency_comparison_operator"
         },
         {
           "type": "FIELD",
@@ -6089,7 +6085,7 @@
         ]
       }
     },
-    "dependency_comparison_operator": {
+    "_dependency_comparison_operator": {
       "type": "CHOICE",
       "members": [
         {
@@ -6359,7 +6355,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "simple_dependency"
+            "name": "_simple_dependency"
           },
           {
             "type": "SYMBOL",

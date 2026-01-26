@@ -11,14 +11,11 @@ Requires: python perl ruby
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (word)))
+        name: (word))
       value: (dependency
-        (simple_dependency
-          name: (word)))
+        name: (word))
       value: (dependency
-        (simple_dependency
-          name: (word))))))
+        name: (word)))))
 
 ===============================================================================
 Multiple dependencies (comma-separated)
@@ -33,14 +30,11 @@ Requires: python, perl, ruby
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (word)))
+        name: (word))
       value: (dependency
-        (simple_dependency
-          name: (word)))
+        name: (word))
       value: (dependency
-        (simple_dependency
-          name: (word))))))
+        name: (word)))))
 
 ===============================================================================
 Multiple dependencies (mixed versioned and simple)
@@ -55,14 +49,10 @@ BuildRequires: libaio-devel, device-mapper-devel >= 1.02.89
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (word)))
+        name: (word))
       value: (dependency
-        (simple_dependency
-          name: (word)
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))))
+        name: (word)
+        version: (version)))))
 
 ===============================================================================
 Multiple dependencies (all versioned comma-separated)
@@ -77,17 +67,11 @@ Requires: python >= 3.6, perl >= 5.0
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (word)
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version))))
+        name: (word)
+        version: (version))
       value: (dependency
-        (simple_dependency
-          name: (word)
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version)))))))
+        name: (word)
+        version: (version)))))
 
 ===============================================================================
 Multiple dependencies (space-separated with version)
@@ -102,12 +86,7 @@ Requires: python >= 3.6 perl
     (tags
       (dependency_tag)
       value: (dependency
-        (simple_dependency
-          name: (word)
-          version: (dependency_version_constraint
-            operator: (dependency_comparison_operator)
-            version: (version))))
+        name: (word)
+        version: (version))
       value: (dependency
-        (simple_dependency
-          name: (word))))))
-
+        name: (word)))))

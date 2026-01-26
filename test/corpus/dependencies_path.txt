@@ -116,6 +116,4 @@ Requires: /usr/bin/sh cmake-filesystem
         (path_dependency
           (path)))
       value: (dependency
-        (simple_dependency
-          name: (word))))))
-
+        name: (word)))))
