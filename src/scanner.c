@@ -661,27 +661,28 @@ done:
 /* TOKEN SCANNERS                                                             */
 /* ========================================================================== */
 
+/** Function pointer type for keyword checking */
+typedef bool (*keyword_checker_fn)(const char *, size_t);
+
 /**
- * @brief Lookahead to check if %if body contains section keywords
+ * @brief Lookahead to check if %if body contains matching keywords
  *
- * When we encounter %if inside a scriptlet section, we need to determine
- * whether it's a scriptlet-level conditional (e.g., if [ -f foo ]; then)
- * or a top-level conditional containing sections (e.g., %if with %files).
- *
- * This function scans ahead until %endif, looking for section keywords.
- * It tracks conditional nesting to find the matching %endif.
+ * Scans ahead until %endif, looking for keywords that match the checker.
+ * Tracks conditional nesting to find the matching %endif.
  *
  * @param lexer The Tree-sitter lexer (position will be restored)
- * @return true if the body contains section keywords, false otherwise
+ * @param checker Function to check if a keyword matches
+ * @return true if the body contains matching keywords, false otherwise
  */
-static bool conditional_body_has_section(TSLexer *lexer)
+static bool conditional_body_has_keyword(TSLexer *lexer,
+                                         keyword_checker_fn checker)
 {
     /* Track nesting depth of conditionals */
     int32_t nesting = 1; /* We're already inside one %if */
     int32_t lines_scanned = 0;
     bool at_line_start = true;
 
-    /* Scan character by character, looking for section keywords */
+    /* Scan character by character, looking for matching keywords */
     while (!lexer->eof(lexer) && lines_scanned < MAX_LOOKAHEAD_LINES) {
         int32_t c = lexer->lookahead;
 
@@ -722,7 +723,7 @@ static bool conditional_body_has_section(TSLexer *lexer)
                 if (strequal("endif", id_buf, id_len)) {
                     nesting--;
                     if (nesting == 0) {
-                        /* Found matching %endif - no section keywords found */
+                        /* Found matching %endif - no matching keywords found */
                         return false;
                     }
                 }
@@ -734,9 +735,8 @@ static bool conditional_body_has_section(TSLexer *lexer)
                          strequal("ifnos", id_buf, id_len)) {
                     nesting++;
                 }
-                /* Check for section keywords */
-                else if (is_section_keyword(id_buf, id_len)) {
-                    /* Found a section keyword - this is top-level! */
+                /* Check using the provided checker function */
+                else if (checker(id_buf, id_len)) {
                     return true;
                 }
             }
@@ -748,8 +748,30 @@ static bool conditional_body_has_section(TSLexer *lexer)
         }
     }
 
-    /* Reached EOF or max lines without finding section keyword */
+    /* Reached EOF or max lines without finding matching keyword */
     return false;
+}
+
+/**
+ * @brief Lookahead to check if %if body contains section keywords
+ *
+ * Used to determine if a conditional inside a scriptlet is top-level
+ * (contains sections like %files, %package) or scriptlet-level.
+ */
+static bool conditional_body_has_section(TSLexer *lexer)
+{
+    return conditional_body_has_keyword(lexer, is_section_keyword);
+}
+
+/**
+ * @brief Lookahead to check if %if body contains scriptlet keywords
+ *
+ * Used inside %files sections to determine if a conditional should exit
+ * files context. %files can contain nested %files but not scriptlets.
+ */
+static bool conditional_body_has_scriptlet(TSLexer *lexer)
+{
+    return conditional_body_has_keyword(lexer, is_scriptlet_keyword);
 }
 
 /**
@@ -985,7 +1007,30 @@ select_conditional_token_type(struct Scanner *scanner,
                               TSLexer *lexer,
                               const struct CondTokens *ctx)
 {
-    /* Files context always wins - it can handle nested sections */
+    /*
+     * Files context with top-level also valid - use lookahead
+     *
+     * When both files_valid and top_valid are true, we need to check
+     * if the conditional body contains SCRIPTLET keywords (like %pre, %post).
+     * If it does, we should use top_level_if to allow the scriptlet to
+     * be parsed correctly, not files_if which would try to parse
+     * %pre as a file path.
+     *
+     * Note: We only check for scriptlet keywords, NOT %files or subsection
+     * keywords, because nested %files sections ARE valid inside files
+     * conditionals (e.g., %if %{with x} ... %files subpkg ... %endif).
+     */
+    if (ctx->files_valid && ctx->top_valid) {
+        bool has_scriptlet = conditional_body_has_scriptlet(lexer);
+        if (has_scriptlet) {
+            /* Body contains scriptlet - use top-level */
+            return ctx->top;
+        }
+        /* Body only contains files content - use files context */
+        return ctx->files;
+    }
+
+    /* Only files context is valid */
     if (ctx->files_valid) {
         return ctx->files;
     }

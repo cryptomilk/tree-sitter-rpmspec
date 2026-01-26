@@ -602,3 +602,34 @@ Conditionals (%if with nested %files sections)
             (word))
           (file
             (path)))))))
+
+===============================================================================
+Conditionals (%if with scriptlet after %files section)
+===============================================================================
+
+%files passkey
+/usr/bin/passkey
+
+%if %{use_sssd_user}
+%pre common
+echo hello
+%endif
+
+-------------------------------------------------------------------------------
+
+(spec
+  (files
+    (section_name)
+    (package_name
+      (word))
+    (file
+      (path)))
+  (if_statement
+    condition: (macro_expansion
+      (identifier))
+    consequence: (runtime_scriptlet
+      (package_name
+        (word))
+      (script_block
+        (script_line
+          (script_content))))))
