@@ -4507,6 +4507,14 @@
           "named": true
         },
         {
+          "type": "macro_expansion",
+          "named": true
+        },
+        {
+          "type": "macro_simple_expansion",
+          "named": true
+        },
+        {
           "type": "package_name",
           "named": true
         },

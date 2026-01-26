@@ -174,3 +174,27 @@ Summary: Default feature devel
           (word)
           (word)
           (word))))))
+===============================================================================
+Subpackage (with macro expansion in content)
+===============================================================================
+
+%package master
+Summary: Master package
+%{?systemd_requires}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (package
+    (section_name)
+    (package_name
+      (word))
+    (preamble
+      (tags
+        (tag)
+        value: (concatenation
+          (word)
+          (word))))
+    (macro_expansion
+      (conditional_expansion
+        condition: (identifier)))))

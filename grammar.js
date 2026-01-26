@@ -2398,12 +2398,14 @@ module.exports = grammar({
             ),
 
         // Content allowed inside %package sections
-        // Includes preamble tags and package-specific conditionals
+        // Includes preamble tags, macros, and package-specific conditionals
         _package_content: ($) =>
             repeat1(
                 choice(
                     $.preamble,
                     $.macro_definition,
+                    $.macro_expansion, // %{?systemd_requires}, etc.
+                    $.macro_simple_expansion, // %systemd_requires, etc.
                     $._package_if_statement,
                     $._package_ifarch_statement,
                     $._package_ifos_statement

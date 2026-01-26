@@ -7907,6 +7907,14 @@
           },
           {
             "type": "SYMBOL",
+            "name": "macro_expansion"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "macro_simple_expansion"
+          },
+          {
+            "type": "SYMBOL",
             "name": "_package_if_statement"
           },
           {
