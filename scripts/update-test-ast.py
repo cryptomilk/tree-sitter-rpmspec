@@ -8,14 +8,16 @@ Usage:
     # Interactive mode - run tests and select failing ones to update
     ./scripts/update-test-ast.py -i
 
-    # Update a specific test by name
+    # Update a specific test by name (uses regex matching)
     ./scripts/update-test-ast.py "Test Name"
 
     # Dry run - show AST without updating
     ./scripts/update-test-ast.py -n "Test Name"
 
-The script finds the test by name, extracts its input, runs tree-sitter parse,
-and updates the expected AST in the test file.
+This script wraps 'tree-sitter test --update' with additional features:
+- Interactive selection of failing tests to update
+- Dry-run mode to preview changes
+- Partial name matching to find tests
 """
 
 import argparse
@@ -96,10 +98,6 @@ def parse_test_file(content):
                     "name": name,
                     "input": "\n".join(input_lines),
                     "ast": "\n".join(ast_lines),
-                    "input_start": input_start,
-                    "input_end": input_end,
-                    "ast_start": ast_start,
-                    "ast_end": ast_end,
                 }
             )
         else:
@@ -127,12 +125,6 @@ def get_ast_from_parser(input_text):
 
         output = result.stdout
 
-        # The output format is:
-        # (spec [0, 0] - [N, 0]
-        #   (node [x, y] - [a, b]
-        #     ...))
-        # file.spec    Parse: ...
-
         # Remove position annotations [x, y] - [a, b]
         output = re.sub(r"\s*\[\d+, \d+\] - \[\d+, \d+\]", "", output)
 
@@ -145,27 +137,10 @@ def get_ast_from_parser(input_text):
         ):
             lines.pop()
 
-        # Convert 2-space indentation (tree-sitter uses 2 spaces)
-        ast = "\n".join(lines)
-
-        return ast
+        return "\n".join(lines)
 
     finally:
         os.unlink(temp_path)
-
-
-def update_test_file(test_file, content, test, new_ast):
-    """Update the test file with new AST."""
-    lines = content.split("\n")
-
-    # Replace AST lines
-    new_lines = (
-        lines[: test["ast_start"]]
-        + new_ast.split("\n")
-        + lines[test["ast_end"] :]
-    )
-
-    return "\n".join(new_lines)
 
 
 def get_failing_tests():
@@ -190,6 +165,27 @@ def get_failing_tests():
                 failing.append(name)
 
     return failing
+
+
+def update_tests_with_tree_sitter(test_names):
+    """Use tree-sitter test --update to update specific tests."""
+    # Escape regex special characters and join with |
+    patterns = [re.escape(name) for name in test_names]
+    regex = "^(" + "|".join(patterns) + ")$"
+
+    result = subprocess.run(
+        ["tree-sitter", "test", "--update", "-i", regex],
+        capture_output=True,
+        text=True,
+    )
+
+    # Print output for user feedback
+    if result.stdout:
+        print(result.stdout)
+    if result.stderr:
+        print(result.stderr, file=sys.stderr)
+
+    return result.returncode == 0
 
 
 def interactive_mode(corpus_dir, dry_run=False):
@@ -232,44 +228,23 @@ def interactive_mode(corpus_dir, dry_run=False):
         print("No tests selected.")
         return
 
-    # Update each selected test
-    for test_name in selected:
-        print(f"\nUpdating: {test_name}")
+    if dry_run:
+        # Show what would be updated
+        for test_name in selected:
+            print(f"\nWould update: {test_name}")
+            result = find_test_file(test_name, corpus_dir)
+            if result:
+                test_file, content = result
+                tests = parse_test_file(content)
+                matching = [t for t in tests if t["name"] == test_name]
+                if matching:
+                    new_ast = get_ast_from_parser(matching[0]["input"])
+                    print(f"  New AST:\n{new_ast}")
+        return
 
-        result = find_test_file(test_name, corpus_dir)
-        if not result:
-            print("  Error: test file not found")
-            continue
-
-        test_file, content = result
-        tests = parse_test_file(content)
-
-        # Find exact match
-        matching = [t for t in tests if t["name"] == test_name]
-        if not matching:
-            # Try partial match
-            matching = [t for t in tests if test_name in t["name"]]
-
-        if not matching:
-            print(f"  Error: test not found in {test_file}")
-            continue
-
-        test = matching[0]
-
-        # Get AST from parser
-        new_ast = get_ast_from_parser(test["input"])
-        if not new_ast:
-            print("  Error: failed to get AST from parser")
-            continue
-
-        if dry_run:
-            print(f"  Would update with:\n{new_ast}")
-            continue
-
-        # Update file
-        new_content = update_test_file(test_file, content, test, new_ast)
-        test_file.write_text(new_content)
-        print(f"  Updated {test_file.name}")
+    # Use tree-sitter test --update for the selected tests
+    print(f"\nUpdating {len(selected)} test(s)...")
+    update_tests_with_tree_sitter(selected)
 
 
 def main():
@@ -279,12 +254,7 @@ def main():
     parser.add_argument(
         "test_name",
         nargs="?",
-        help="Name of the test to update (partial match)",
-    )
-    parser.add_argument(
-        "--file",
-        "-f",
-        help="Specific test file (default: search all corpus files)",
+        help="Name of the test to update (regex pattern)",
     )
     parser.add_argument(
         "--dry-run",
@@ -320,14 +290,8 @@ def main():
         parser.print_help()
         sys.exit(1)
 
-    # Find test file
-    if args.file:
-        test_file = Path(args.file)
-        if not test_file.exists():
-            print(f"Error: file not found: {test_file}", file=sys.stderr)
-            sys.exit(1)
-        content = test_file.read_text()
-    else:
+    if args.dry_run:
+        # Find and show AST for matching test
         result = find_test_file(args.test_name, corpus_dir)
         if not result:
             print(
@@ -335,48 +299,40 @@ def main():
                 file=sys.stderr,
             )
             sys.exit(1)
+
         test_file, content = result
+        tests = parse_test_file(content)
+        matching = [
+            t for t in tests if args.test_name.lower() in t["name"].lower()
+        ]
 
-    # Parse tests
-    tests = parse_test_file(content)
+        if not matching:
+            print(
+                f"Error: no test matching '{args.test_name}' found",
+                file=sys.stderr,
+            )
+            sys.exit(1)
 
-    # Find matching test
-    matching = [
-        t for t in tests if args.test_name.lower() in t["name"].lower()
-    ]
+        if len(matching) > 1:
+            print(f"Multiple tests match '{args.test_name}':", file=sys.stderr)
+            for t in matching:
+                print(f"  - {t['name']}", file=sys.stderr)
+            sys.exit(1)
 
-    if not matching:
-        print(
-            f"Error: no test matching '{args.test_name}' found",
-            file=sys.stderr,
-        )
-        sys.exit(1)
-
-    if len(matching) > 1:
-        print(f"Multiple tests match '{args.test_name}':", file=sys.stderr)
-        for t in matching:
-            print(f"  - {t['name']}", file=sys.stderr)
-        sys.exit(1)
-
-    test = matching[0]
-    print(f"Found test: {test['name']}")
-    print(f"File: {test_file}")
-
-    # Get AST from parser
-    new_ast = get_ast_from_parser(test["input"])
-    if not new_ast:
-        print("Error: failed to get AST from parser", file=sys.stderr)
-        sys.exit(1)
-
-    if args.dry_run:
-        print("\nNew AST:")
-        print(new_ast)
+        test = matching[0]
+        print(f"Found test: {test['name']}")
+        print(f"File: {test_file}")
+        new_ast = get_ast_from_parser(test["input"])
+        print(f"\nNew AST:\n{new_ast}")
         return
 
-    # Update file
-    new_content = update_test_file(test_file, content, test, new_ast)
-    test_file.write_text(new_content)
-    print(f"Updated {test_file}")
+    # Use tree-sitter test --update with the pattern
+    # The pattern is passed directly as a regex to -i
+    result = subprocess.run(
+        ["tree-sitter", "test", "--update", "-i", args.test_name],
+        text=True,
+    )
+    sys.exit(result.returncode)
 
 
 if __name__ == "__main__":
