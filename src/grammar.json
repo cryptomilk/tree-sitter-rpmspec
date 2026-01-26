@@ -4615,13 +4615,6 @@
               "name": "tag"
             },
             {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
-              }
-            },
-            {
               "type": "FIELD",
               "name": "value",
               "content": {
@@ -4646,13 +4639,6 @@
               },
               "named": true,
               "value": "tag"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
-              }
             },
             {
               "type": "FIELD",
@@ -4681,13 +4667,6 @@
               "value": "tag"
             },
             {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
-              }
-            },
-            {
               "type": "FIELD",
               "name": "value",
               "content": {
@@ -4712,13 +4691,6 @@
               },
               "named": true,
               "value": "tag"
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
-              }
             },
             {
               "type": "FIELD",
@@ -4895,13 +4867,6 @@
               "value": "tag"
             },
             {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "PATTERN",
-                "value": ":( |\\t)*"
-              }
-            },
-            {
               "type": "FIELD",
               "name": "value",
               "content": {
@@ -4944,118 +4909,166 @@
       ]
     },
     "tag": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "AutoProv"
-        },
-        {
-          "type": "STRING",
-          "value": "AutoReq"
-        },
-        {
-          "type": "STRING",
-          "value": "AutoReqProv"
-        },
-        {
-          "type": "STRING",
-          "value": "Name"
-        },
-        {
-          "type": "STRING",
-          "value": "Version"
-        },
-        {
-          "type": "STRING",
-          "value": "Release"
-        },
-        {
-          "type": "STRING",
-          "value": "Epoch"
-        },
-        {
-          "type": "STRING",
-          "value": "Summary"
-        },
-        {
-          "type": "STRING",
-          "value": "License"
-        },
-        {
-          "type": "STRING",
-          "value": "Packager"
-        },
-        {
-          "type": "STRING",
-          "value": "Vendor"
-        },
-        {
-          "type": "STRING",
-          "value": "Group"
-        },
-        {
-          "type": "STRING",
-          "value": "BuildRoot"
-        },
-        {
-          "type": "STRING",
-          "value": "BuildSystem"
-        },
-        {
-          "type": "STRING",
-          "value": "Distribution"
-        },
-        {
-          "type": "STRING",
-          "value": "DistTag"
-        },
-        {
-          "type": "STRING",
-          "value": "ModularityLabel"
-        },
-        {
-          "type": "STRING",
-          "value": "VCS"
-        },
-        {
-          "type": "STRING",
-          "value": "SourceLicense"
-        },
-        {
-          "type": "STRING",
-          "value": "NoPatch"
-        },
-        {
-          "type": "STRING",
-          "value": "NoSource"
-        }
-      ]
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "AutoProv"
+              },
+              {
+                "type": "STRING",
+                "value": "AutoReq"
+              },
+              {
+                "type": "STRING",
+                "value": "AutoReqProv"
+              },
+              {
+                "type": "STRING",
+                "value": "Name"
+              },
+              {
+                "type": "STRING",
+                "value": "Version"
+              },
+              {
+                "type": "STRING",
+                "value": "Release"
+              },
+              {
+                "type": "STRING",
+                "value": "Epoch"
+              },
+              {
+                "type": "STRING",
+                "value": "Summary"
+              },
+              {
+                "type": "STRING",
+                "value": "License"
+              },
+              {
+                "type": "STRING",
+                "value": "Packager"
+              },
+              {
+                "type": "STRING",
+                "value": "Vendor"
+              },
+              {
+                "type": "STRING",
+                "value": "Group"
+              },
+              {
+                "type": "STRING",
+                "value": "BuildRoot"
+              },
+              {
+                "type": "STRING",
+                "value": "BuildSystem"
+              },
+              {
+                "type": "STRING",
+                "value": "Distribution"
+              },
+              {
+                "type": "STRING",
+                "value": "DistTag"
+              },
+              {
+                "type": "STRING",
+                "value": "ModularityLabel"
+              },
+              {
+                "type": "STRING",
+                "value": "VCS"
+              },
+              {
+                "type": "STRING",
+                "value": "SourceLicense"
+              },
+              {
+                "type": "STRING",
+                "value": "NoPatch"
+              },
+              {
+                "type": "STRING",
+                "value": "NoSource"
+              }
+            ]
+          },
+          {
+            "type": "PATTERN",
+            "value": ":( |\\t)*"
+          }
+        ]
+      }
     },
     "_source_tag": {
-      "type": "PATTERN",
-      "value": "Source\\d*"
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "Source\\d*"
+          },
+          {
+            "type": "PATTERN",
+            "value": ":( |\\t)*"
+          }
+        ]
+      }
     },
     "_patch_tag": {
-      "type": "PATTERN",
-      "value": "Patch\\d*"
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "Patch\\d*"
+          },
+          {
+            "type": "PATTERN",
+            "value": ":( |\\t)*"
+          }
+        ]
+      }
     },
     "_url_tag": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "URL"
-        },
-        {
-          "type": "STRING",
-          "value": "Url"
-        },
-        {
-          "type": "STRING",
-          "value": "BugUrl"
-        }
-      ]
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "URL"
+              },
+              {
+                "type": "STRING",
+                "value": "Url"
+              },
+              {
+                "type": "STRING",
+                "value": "BugUrl"
+              }
+            ]
+          },
+          {
+            "type": "PATTERN",
+            "value": ":( |\\t)*"
+          }
+        ]
+      }
     },
     "qualifier": {
       "type": "CHOICE",
@@ -5132,41 +5145,72 @@
       ]
     },
     "_build_option_tag": {
-      "type": "SEQ",
+      "type": "CHOICE",
       "members": [
         {
-          "type": "STRING",
-          "value": "BuildOption"
-        },
-        {
-          "type": "CHOICE",
+          "type": "SEQ",
           "members": [
             {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "STRING",
-                  "value": "("
-                },
-                {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_build_option_qualifier"
+              "type": "TOKEN",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "BuildOption"
                   },
-                  "named": true,
-                  "value": "qualifier"
-                },
-                {
-                  "type": "STRING",
-                  "value": ")"
-                }
-              ]
+                  {
+                    "type": "IMMEDIATE_TOKEN",
+                    "content": {
+                      "type": "STRING",
+                      "value": "("
+                    }
+                  }
+                ]
+              }
             },
             {
-              "type": "BLANK"
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_build_option_qualifier"
+              },
+              "named": true,
+              "value": "qualifier"
+            },
+            {
+              "type": "TOKEN",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": ")"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": ":( |\\t)*"
+                  }
+                ]
+              }
             }
           ]
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "BuildOption"
+              },
+              {
+                "type": "PATTERN",
+                "value": ":( |\\t)*"
+              }
+            ]
+          }
         }
       ]
     },

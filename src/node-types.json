@@ -6746,47 +6746,7 @@
     "named": false
   },
   {
-    "type": "AutoProv",
-    "named": false
-  },
-  {
-    "type": "AutoReq",
-    "named": false
-  },
-  {
-    "type": "AutoReqProv",
-    "named": false
-  },
-  {
-    "type": "BugUrl",
-    "named": false
-  },
-  {
-    "type": "BuildOption",
-    "named": false
-  },
-  {
-    "type": "BuildRoot",
-    "named": false
-  },
-  {
-    "type": "BuildSystem",
-    "named": false
-  },
-  {
-    "type": "DistTag",
-    "named": false
-  },
-  {
-    "type": "Distribution",
-    "named": false
-  },
-  {
     "type": "E",
-    "named": false
-  },
-  {
-    "type": "Epoch",
     "named": false
   },
   {
@@ -6794,71 +6754,11 @@
     "named": false
   },
   {
-    "type": "Group",
-    "named": false
-  },
-  {
-    "type": "License",
-    "named": false
-  },
-  {
-    "type": "ModularityLabel",
-    "named": false
-  },
-  {
-    "type": "Name",
-    "named": false
-  },
-  {
-    "type": "NoPatch",
-    "named": false
-  },
-  {
-    "type": "NoSource",
-    "named": false
-  },
-  {
     "type": "P",
     "named": false
   },
   {
-    "type": "Packager",
-    "named": false
-  },
-  {
     "type": "R",
-    "named": false
-  },
-  {
-    "type": "Release",
-    "named": false
-  },
-  {
-    "type": "SourceLicense",
-    "named": false
-  },
-  {
-    "type": "Summary",
-    "named": false
-  },
-  {
-    "type": "URL",
-    "named": false
-  },
-  {
-    "type": "Url",
-    "named": false
-  },
-  {
-    "type": "VCS",
-    "named": false
-  },
-  {
-    "type": "Vendor",
-    "named": false
-  },
-  {
-    "type": "Version",
     "named": false
   },
   {

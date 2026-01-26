@@ -1566,30 +1566,30 @@ module.exports = grammar({
         tags: ($) =>
             choice(
                 // Regular tags (Name, Version, etc.) - only support literals
+                // Note: tag includes the colon via tagWithColon()
                 seq(
-                    $.tag, // Tag name
-                    token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
+                    $.tag, // Tag name (includes colon)
                     field('value', $._literal), // Simple values (can contain macros)
                     /\n/
                 ),
                 // Source tags (Source0, Source1, etc.) - URL or file path
+                // Note: _source_tag includes the colon
                 seq(
-                    alias($._source_tag, $.tag), // Source tag name
-                    token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
+                    alias($._source_tag, $.tag), // Source tag name (includes colon)
                     field('value', $._url_or_file), // URL or file path
                     /\n/
                 ),
                 // Patch tags (Patch0, Patch1, etc.) - URL or file path
+                // Note: _patch_tag includes the colon
                 seq(
-                    alias($._patch_tag, $.tag), // Patch tag name
-                    token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
+                    alias($._patch_tag, $.tag), // Patch tag name (includes colon)
                     field('value', $._url_or_file), // URL or file path
                     /\n/
                 ),
                 // URL tags (URL, Url, BugUrl) - URL value or macro
+                // Note: _url_tag includes the colon via tagWithColon()
                 seq(
-                    alias($._url_tag, $.tag), // URL tag name
-                    token.immediate(/:( |\t)*/), // Colon separator with optional whitespace
+                    alias($._url_tag, $.tag), // URL tag name (includes colon)
                     field(
                         'value',
                         choice(
@@ -1637,10 +1637,10 @@ module.exports = grammar({
                     /\n/
                 ),
                 // BuildOption tag - pass options to build system phases
+                // Note: _build_option_tag includes the colon
                 // Examples: BuildOption: --enable-foo, BuildOption(conf): --enable-foo
                 seq(
-                    alias($._build_option_tag, $.tag),
-                    token.immediate(/:( |\t)*/),
+                    alias($._build_option_tag, $.tag), // Tag name (includes colon)
                     field('value', $._literal), // Option string
                     /\n/
                 ),
@@ -1655,8 +1655,10 @@ module.exports = grammar({
 
         // Standard RPM tags: core package metadata fields
         // These are the fundamental tags recognized by RPM
-        tag: ($) =>
-            choice(
+        // Note: tag includes the colon via tagWithColon() to prevent
+        // matching in text content (e.g., description starting with "Name...")
+        tag: (_) =>
+            tagWithColon(
                 // Automatic dependency generation control
                 'AutoProv', // Enable/disable automatic Provides generation
                 'AutoReq', // Enable/disable automatic Requires generation
@@ -1690,13 +1692,16 @@ module.exports = grammar({
             ),
 
         // Source tag: Source0, Source1, Source, etc.
-        _source_tag: (_) => /Source\d*/,
+        // Note: includes the colon to match as complete token
+        _source_tag: (_) => token(seq(/Source\d*/, /:( |\t)*/)),
 
         // Patch tag: Patch0, Patch1, Patch, etc.
-        _patch_tag: (_) => /Patch\d*/,
+        // Note: includes the colon to match as complete token
+        _patch_tag: (_) => token(seq(/Patch\d*/, /:( |\t)*/)),
 
         // URL tag: URL, Url, BugUrl
-        _url_tag: (_) => choice('URL', 'Url', 'BugUrl'),
+        // Note: includes the colon via tagWithColon() to match as complete token
+        _url_tag: (_) => tagWithColon('URL', 'Url', 'BugUrl'),
 
         // Dependency qualifiers: specify when dependencies are needed
         // Used with Requires tag to indicate timing of dependency check
@@ -1730,13 +1735,18 @@ module.exports = grammar({
 
         // BuildOption tag: pass options to build system phases
         // Supports optional qualifier for specific phases, defaults to conf
+        // Note: colon is included in token to match as complete token
         // Examples: BuildOption: --enable-foo, BuildOption(build): -j4
         _build_option_tag: ($) =>
-            seq(
-                'BuildOption',
-                optional(
-                    seq('(', alias($._build_option_qualifier, $.qualifier), ')')
-                )
+            choice(
+                // BuildOption with qualifier: BuildOption(conf):
+                seq(
+                    token(seq('BuildOption', token.immediate('('))),
+                    alias($._build_option_qualifier, $.qualifier),
+                    token(seq(')', /:( |\t)*/))
+                ),
+                // BuildOption without qualifier: BuildOption:
+                tagWithColon('BuildOption')
             ),
 
         // Strong dependency tags: Requires (with qualifier), BuildRequires
