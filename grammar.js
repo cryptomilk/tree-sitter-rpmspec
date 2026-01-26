@@ -817,21 +817,24 @@ module.exports = grammar({
                     optional(
                         seq(
                             ':',
-                            field(
-                                'consequence',
-                                choice(
-                                    alias(
-                                        $._macro_definition,
-                                        $.macro_definition
-                                    ),
-                                    $.macro_undefinition,
-                                    $.macro_simple_expansion,
-                                    $.macro_expansion,
-                                    alias($._macro_body_text, $.text)
-                                )
-                            )
+                            field('consequence', $._conditional_consequence)
                         )
                     )
+                )
+            ),
+
+        // Hidden rule for conditional expansion consequence
+        // Extracted to reduce parser state count
+        // prec(1) to prefer direct matches over _macro_body_text (prec -1)
+        _conditional_consequence: ($) =>
+            prec(
+                1,
+                choice(
+                    alias($._macro_definition, $.macro_definition),
+                    $.macro_undefinition,
+                    $.macro_simple_expansion,
+                    $.macro_expansion,
+                    alias($._macro_body_text, $.text)
                 )
             ),
 

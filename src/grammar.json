@@ -1702,39 +1702,8 @@
                     "type": "FIELD",
                     "name": "consequence",
                     "content": {
-                      "type": "CHOICE",
-                      "members": [
-                        {
-                          "type": "ALIAS",
-                          "content": {
-                            "type": "SYMBOL",
-                            "name": "_macro_definition"
-                          },
-                          "named": true,
-                          "value": "macro_definition"
-                        },
-                        {
-                          "type": "SYMBOL",
-                          "name": "macro_undefinition"
-                        },
-                        {
-                          "type": "SYMBOL",
-                          "name": "macro_simple_expansion"
-                        },
-                        {
-                          "type": "SYMBOL",
-                          "name": "macro_expansion"
-                        },
-                        {
-                          "type": "ALIAS",
-                          "content": {
-                            "type": "SYMBOL",
-                            "name": "_macro_body_text"
-                          },
-                          "named": true,
-                          "value": "text"
-                        }
-                      ]
+                      "type": "SYMBOL",
+                      "name": "_conditional_consequence"
                     }
                   }
                 ]
@@ -1743,6 +1712,45 @@
                 "type": "BLANK"
               }
             ]
+          }
+        ]
+      }
+    },
+    "_conditional_consequence": {
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_macro_definition"
+            },
+            "named": true,
+            "value": "macro_definition"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "macro_undefinition"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "macro_simple_expansion"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "macro_expansion"
+          },
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_macro_body_text"
+            },
+            "named": true,
+            "value": "text"
           }
         ]
       }
