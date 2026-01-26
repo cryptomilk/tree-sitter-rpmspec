@@ -6677,8 +6677,20 @@
     "_package_name_word": {
       "type": "TOKEN",
       "content": {
-        "type": "PATTERN",
-        "value": "[^\\s\"#%{}()<>|&=\\\\,]+"
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "PATTERN",
+            "value": "[^\"<>{}\\[\\]()%|\\\\\\s#&=,]"
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "PATTERN",
+              "value": "[^\"<>{}\\[\\]()%|\\\\\\s#&=,]"
+            }
+          }
+        ]
       }
     },
     "package_name": {
@@ -6717,8 +6729,20 @@
                 {
                   "type": "IMMEDIATE_TOKEN",
                   "content": {
-                    "type": "PATTERN",
-                    "value": "[^\\s\"#%{}()<>|&=\\\\,]+"
+                    "type": "SEQ",
+                    "members": [
+                      {
+                        "type": "PATTERN",
+                        "value": "[^\"<>{}\\[\\]()%|\\\\\\s#&=,]"
+                      },
+                      {
+                        "type": "REPEAT",
+                        "content": {
+                          "type": "PATTERN",
+                          "value": "[^\"<>{}\\[\\]()%|\\\\\\s#&=,]"
+                        }
+                      }
+                    ]
                   }
                 },
                 {

@@ -82,6 +82,14 @@ const SPECIAL_CHARACTERS = [
 ];
 
 /**
+ * Special characters for package names
+ *
+ * Package names have stricter rules than general words:
+ * - Must not include whitespace or version comparison operators (<>=)
+ */
+const PACKAGE_NAME_SPECIAL_CHARS = [...SPECIAL_CHARACTERS, '&', '=', ','];
+
+/**
  * Creates a build scriptlet rule with -a (append) and -p (prepend) options
  *
  * Build scriptlets support augmentation options since rpm >= 4.20.
@@ -2146,7 +2154,13 @@ module.exports = grammar({
         // Can be a word, macro, or immediate concatenation (no spaces)
         // Per RPM spec: names must not include whitespace or numeric operators (<>=)
         // Examples: libssh-devel, %{crate}, %{name}-libs, perl, paket-ü
-        _package_name_word: (_) => token(/[^\s"#%{}()<>|&=\\,]+/),
+        _package_name_word: (_) =>
+            token(
+                seq(
+                    noneOf(...PACKAGE_NAME_SPECIAL_CHARS),
+                    repeat(noneOf(...PACKAGE_NAME_SPECIAL_CHARS))
+                )
+            ),
         package_name: ($) =>
             prec.left(
                 seq(
@@ -2160,7 +2174,14 @@ module.exports = grammar({
                     // 2. Keep continuation parts anonymous in the AST
                     repeat(
                         choice(
-                            token.immediate(/[^\s"#%{}()<>|&=\\,]+/),
+                            token.immediate(
+                                seq(
+                                    noneOf(...PACKAGE_NAME_SPECIAL_CHARS),
+                                    repeat(
+                                        noneOf(...PACKAGE_NAME_SPECIAL_CHARS)
+                                    )
+                                )
+                            ),
                             $.macro_simple_expansion,
                             $.macro_expansion
                         )
