@@ -815,6 +815,8 @@ module.exports = grammar({
         // - %{!?macro_name:value} - include 'value' if macro_name is NOT defined
         // - %{?macro_name} - expand to macro_name's value if defined
         // - %{!?macro_name} - expand to macro_name's value if NOT defined
+        // Note: Only !? is documented, but ?! also works due to RPM's
+        // setNegateAndCheck() in macro.c which parses ? and ! in any order.
         conditional_expansion: ($) =>
             prec.left(
                 1,
@@ -822,7 +824,10 @@ module.exports = grammar({
                     choice(
                         field(
                             'operator',
-                            alias(token.immediate('!?'), $.negation_operator)
+                            alias(
+                                token.immediate(choice('!?', '?!')),
+                                $.negation_operator
+                            )
                         ),
                         token.immediate('?')
                     ),

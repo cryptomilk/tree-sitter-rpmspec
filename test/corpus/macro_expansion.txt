@@ -487,6 +487,22 @@ Macros (Negated conditional expansion with text consequence)
         (text_content)))))
 
 ===============================================================================
+Macros (Negated conditional with reversed operator order)
+===============================================================================
+
+%{?!noselinux:1}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (macro_expansion
+    (conditional_expansion
+      operator: (negation_operator)
+      condition: (identifier)
+      consequence: (text
+        (text_content)))))
+
+===============================================================================
 Macros (Conditional expansion with shell command consequence)
 ===============================================================================
 
