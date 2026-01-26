@@ -2860,8 +2860,7 @@ module.exports = grammar({
                     // %config( forces parsing of options
                     seq(
                         token(seq('%config', '(')),
-                        $.config_option,
-                        repeat(seq(',', $.config_option)),
+                        commaSep1($.config_option),
                         ')'
                     ),
                     // Plain %config without options
@@ -3569,6 +3568,37 @@ module.exports = grammar({
  */
 function sep1(rule, separator) {
     return seq(rule, repeat(seq(separator, rule)));
+}
+
+/**
+ * Creates a rule to match zero or more occurrences of `rule` separated by `separator`
+ *
+ * @param {RuleOrLiteral} rule - The rule to match
+ * @param {RuleOrLiteral} separator - The separator between occurrences
+ * @return {ChoiceRule} A rule matching zero or more separated items
+ */
+function sep(rule, separator) {
+    return optional(sep1(rule, separator));
+}
+
+/**
+ * Creates a rule to match one or more comma-separated occurrences of `rule`
+ *
+ * @param {RuleOrLiteral} rule - The rule to match
+ * @return {SeqRule} A rule matching one or more comma-separated items
+ */
+function commaSep1(rule) {
+    return sep1(rule, ',');
+}
+
+/**
+ * Creates a rule to match zero or more comma-separated occurrences of `rule`
+ *
+ * @param {RuleOrLiteral} rule - The rule to match
+ * @return {ChoiceRule} A rule matching zero or more comma-separated items
+ */
+function commaSep(rule) {
+    return optional(commaSep1(rule));
 }
 
 /**
