@@ -53,6 +53,50 @@ cat /dev/urandom
         (script_content)))))
 
 ===============================================================================
+Post Section (shell if/fi block)
+===============================================================================
+
+%post
+if bootctl --quiet is-installed >/dev/null 2>&1 ; then
+    bootctl --no-variables --graceful update || echo "warning"
+fi
+
+-------------------------------------------------------------------------------
+
+(spec
+  (runtime_scriptlet
+    (script_block
+      (script_line
+        (script_content))
+      (script_line
+        (script_content))
+      (script_line
+        (script_content)))))
+
+===============================================================================
+Post Section (subpackage name with if/fi block)
+===============================================================================
+
+%post boot-efi
+if bootctl --quiet is-installed >/dev/null 2>&1 ; then
+    bootctl --no-variables --graceful update || echo "warning"
+fi
+
+-------------------------------------------------------------------------------
+
+(spec
+  (runtime_scriptlet
+    (package_name
+      (word))
+    (script_block
+      (script_line
+        (script_content))
+      (script_line
+        (script_content))
+      (script_line
+        (script_content)))))
+
+===============================================================================
 Pre Section (custom interpreter)
 ===============================================================================
 

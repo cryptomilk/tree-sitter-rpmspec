@@ -55,12 +55,15 @@
 ; RUNTIME SCRIPTLETS
 ; ============================================================
 
-; runtime_scriptlet (no -p option) -> always bash
+; runtime_scriptlet (no -p option) -> bash
+; Combine script_line nodes so multi-line constructs (if/fi, case/esac)
+; parse in one bash injection while skipping macro-only lines.
 (runtime_scriptlet
   (script_block (script_line) @injection.content)
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 
 ; ============================================================
 ; RUNTIME SCRIPTLETS WITH INTERPRETER (-p option)
@@ -105,7 +108,8 @@
   (#match? @_interp "(bash|/sh$)")
   (#not-match? @injection.content "^\\s*[%]")
   (#set! injection.language "bash")
-  (#set! injection.include-children))
+  (#set! injection.include-children)
+  (#set! injection.combined))
 
 ; ============================================================
 ; TRIGGERS (have optional interpreter like runtime_scriptlet_interpreter)
