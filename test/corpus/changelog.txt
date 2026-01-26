@@ -87,3 +87,21 @@ Changelog (with continuation line)
         (string_content))
       (string
         (string_content)))))
+
+===============================================================================
+Changelog (with escape sequence in text)
+===============================================================================
+
+%changelog
+* Wed Apr 01 2015 John Doe <john@example.com> 1.0-1
+- ignore variables with embedded '=' or '\0' characters
+
+-------------------------------------------------------------------------------
+
+(spec
+  (changelog
+    (section_name)
+    (changelog_entry
+      (string_content)
+      (string
+        (string_content)))))

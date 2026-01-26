@@ -3417,8 +3417,9 @@ module.exports = grammar({
             ),
 
         // String content: raw text excluding macro delimiters
-        // Does not include quotes, backslashes, or newlines
-        string_content: (_) => token(prec(-1, /([^%\\\r\n])+/)),
+        // Includes escape sequences (backslash followed by any char)
+        // Excludes unescaped %, bare backslash at EOL, and newlines
+        string_content: (_) => token(prec(-1, /([^%\\\r\n]|\\.)+/)),
 
         // Shell content: permissive raw text for shell script sections
         // Stops at: %, backslash, newline
