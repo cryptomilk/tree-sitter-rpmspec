@@ -177,10 +177,13 @@
 [
   "%artifact"
   "%attr"
+  "%caps"
   "%config"
+  "%defattr"
   "%dir"
   "%doc"
   "%docdir"
+  "%exclude"
   "%ghost"
   "%license"
   "%missingok"
