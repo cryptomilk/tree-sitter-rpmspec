@@ -233,6 +233,7 @@ module.exports = grammar({
         $._scriptlet_conditional_content, // Flatten shell conditional content
         $._files_conditional_content, // Flatten files conditional content
         $._literal, // Flatten literal value types
+        $._macro_inline, // Flatten inline macro types
     ],
 
     // Default token type for unrecognized words
@@ -258,6 +259,16 @@ module.exports = grammar({
                 $.macro_undefinition, // %undefine
                 $.macro_expansion, // %{name}
                 $.macro_parametric_expansion, // %name [options] [arguments]
+                $.macro_simple_expansion, // %name
+                $.macro_shell_expansion, // %(shell command)
+                $.macro_expression // %[expression]
+            ),
+
+        // Inline macro expansions that can appear within text/values
+        // These don't consume the whole line (unlike macro_parametric_expansion)
+        _macro_inline: ($) =>
+            choice(
+                $.macro_expansion, // %{name}
                 $.macro_simple_expansion, // %name
                 $.macro_shell_expansion, // %(shell command)
                 $.macro_expression // %[expression]
@@ -345,6 +356,8 @@ module.exports = grammar({
 
         // Primary expressions: the basic atomic values in RPM specs
         // Precedence 1 ensures these bind tightly in larger expressions
+        // Note: Macros listed explicitly here (not via _macro_inline) to avoid
+        // conflicts with $.string in expression contexts
         _primary_expression: ($) =>
             prec(
                 1,
@@ -898,10 +911,7 @@ module.exports = grammar({
                 choice(
                     $.line_continuation, // Allow value to start with line continuation
                     $.escape_sequence, // Backslash escapes like \\, \(, etc.
-                    $.macro_simple_expansion,
-                    $.macro_expansion,
-                    $.macro_shell_expansion,
-                    $.macro_expression, // %[expression]
+                    $._macro_inline, // %{name}, %name, %(shell), %[expr]
                     $.integer,
                     $.float,
                     $.version,
@@ -2526,10 +2536,7 @@ module.exports = grammar({
                             $.line_continuation, // Allow line continuation (backslash-newline)
                             $._scriptlet_compound_statements, // Embedded conditionals
                             $._script_escape, // Backslash escapes (\n, \t, etc.)
-                            $.macro_expansion, // %{...}
-                            $.macro_simple_expansion, // %name
-                            $.macro_shell_expansion, // %(shell)
-                            $.macro_expression, // %[expr]
+                            $._macro_inline, // %{...}, %name, %(shell), %[expr]
                             alias($._literal_percent, $.script_content), // Fallback for % followed by invalid char
                             $.script_content // Raw script text
                         )
@@ -2556,10 +2563,7 @@ module.exports = grammar({
                         choice(
                             $._script_escape, // Backslash escapes (\n, \t, etc.)
                             $._trailing_backslash, // Backslash at end of line
-                            $.macro_expansion, // %{...}
-                            $.macro_simple_expansion, // %name
-                            $.macro_shell_expansion, // %(shell)
-                            $.macro_expression, // %[expr]
+                            $._macro_inline, // %{...}, %name, %(shell), %[expr]
                             alias($._literal_percent, $.script_content), // Fallback for % followed by invalid char
                             $.script_content // Raw script text
                         )

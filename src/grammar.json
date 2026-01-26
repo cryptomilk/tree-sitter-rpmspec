@@ -68,6 +68,27 @@
         }
       ]
     },
+    "_macro_inline": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "macro_expansion"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_simple_expansion"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_shell_expansion"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_expression"
+        }
+      ]
+    },
     "_header_item": {
       "type": "CHOICE",
       "members": [
@@ -1923,19 +1944,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "macro_simple_expansion"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "macro_expansion"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "macro_shell_expansion"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "macro_expression"
+            "name": "_macro_inline"
           },
           {
             "type": "SYMBOL",
@@ -8413,19 +8422,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "macro_expansion"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "macro_simple_expansion"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "macro_shell_expansion"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "macro_expression"
+                  "name": "_macro_inline"
                 },
                 {
                   "type": "ALIAS",
@@ -8491,19 +8488,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "macro_expansion"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "macro_simple_expansion"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "macro_shell_expansion"
-                },
-                {
-                  "type": "SYMBOL",
-                  "name": "macro_expression"
+                  "name": "_macro_inline"
                 },
                 {
                   "type": "ALIAS",
@@ -12204,7 +12189,8 @@
     "_conditional_block",
     "_scriptlet_conditional_content",
     "_files_conditional_content",
-    "_literal"
+    "_literal",
+    "_macro_inline"
   ],
   "supertypes": [
     "_compound_statements",
