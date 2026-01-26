@@ -1555,7 +1555,7 @@ module.exports = grammar({
         // Basic package metadata and dependencies
 
         // Preamble: wrapper for tag-value pairs in the package header
-        preamble: ($) => seq($.tags),
+        preamble: ($) => seq($._tags),
 
         // Tag-value pairs: the fundamental structure of RPM preamble
         // Format: "Tag: value" or "Tag(qualifier): value"
@@ -1563,7 +1563,7 @@ module.exports = grammar({
         //   Name: tree-sitter-rpmspec
         //   Requires(pre): tree-sitter
         //   Summary: A parser generator tool
-        tags: ($) =>
+        _tags: ($) =>
             choice(
                 // Regular tags (Name, Version, etc.) - only support literals
                 // Note: tag includes the colon via tagWithColon()

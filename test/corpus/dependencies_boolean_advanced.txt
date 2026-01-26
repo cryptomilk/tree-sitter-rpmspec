@@ -8,12 +8,11 @@ Requires: (pkgA if pkgB)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_if_expression
-          name: (word)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_if_expression
+        name: (word)
+        name: (word)))))
 
 ===============================================================================
 Boolean dependency (if with else)
@@ -25,13 +24,12 @@ Requires: (pkgA if pkgB else pkgC)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_if_expression
-          name: (word)
-          name: (word)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_if_expression
+        name: (word)
+        name: (word)
+        name: (word)))))
 
 ===============================================================================
 Boolean dependency (if with version constraint)
@@ -43,13 +41,12 @@ Requires: (libbpf >= 2:1.4.7 if libbpf)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_if_expression
-          name: (word)
-          version: (version)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_if_expression
+        name: (word)
+        version: (version)
+        name: (word)))))
 
 ===============================================================================
 Boolean dependency (with capability)
@@ -61,12 +58,11 @@ Requires: (pkgA with capB)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_with_expression
-          name: (word)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_with_expression
+        name: (word)
+        name: (word)))))
 
 ===============================================================================
 Boolean dependency (without capability)
@@ -78,12 +74,11 @@ Requires: (pkgA without capB)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_without_expression
-          name: (word)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_without_expression
+        name: (word)
+        name: (word)))))
 
 ===============================================================================
 Boolean dependency (complex with and or)
@@ -95,18 +90,17 @@ Requires: ((pkgA with capB) or (pkgB without capA))
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_or_expression
-          left: (boolean_dependency
-            (boolean_with_expression
-              name: (word)
-              name: (word)))
-          right: (boolean_dependency
-            (boolean_without_expression
-              name: (word)
-              name: (word))))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_or_expression
+        left: (boolean_dependency
+          (boolean_with_expression
+            name: (word)
+            name: (word)))
+        right: (boolean_dependency
+          (boolean_without_expression
+            name: (word)
+            name: (word)))))))
 
 ===============================================================================
 Boolean dependency (if with else real-world)
@@ -118,13 +112,12 @@ Requires: (myPkg-backend-mariaDB if mariaDB else sqlite)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_if_expression
-          name: (word)
-          name: (word)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_if_expression
+        name: (word)
+        name: (word)
+        name: (word)))))
 
 ===============================================================================
 Boolean dependency (simple unless)
@@ -136,12 +129,11 @@ Requires: (pkgA unless pkgB)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_if_expression
-          name: (word)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_if_expression
+        name: (word)
+        name: (word)))))
 
 ===============================================================================
 Boolean dependency (unless with else)
@@ -153,13 +145,12 @@ Requires: (pkgA unless pkgB else pkgC)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_if_expression
-          name: (word)
-          name: (word)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_if_expression
+        name: (word)
+        name: (word)
+        name: (word)))))
 
 ===============================================================================
 Boolean dependency (unless with version constraint)
@@ -171,10 +162,9 @@ Requires: (badpkg unless goodpkg >= 2.0)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_if_expression
-          name: (word)
-          name: (word)
-          version: (version))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_if_expression
+        name: (word)
+        name: (word)
+        version: (version)))))

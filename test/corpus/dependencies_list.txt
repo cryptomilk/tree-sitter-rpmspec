@@ -8,14 +8,13 @@ Requires: python perl ruby
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word))
-      value: (dependency
-        name: (word))
-      value: (dependency
-        name: (word)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word))
+    value: (dependency
+      name: (word))
+    value: (dependency
+      name: (word))))
 
 ===============================================================================
 Multiple dependencies (comma-separated)
@@ -27,14 +26,13 @@ Requires: python, perl, ruby
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word))
-      value: (dependency
-        name: (word))
-      value: (dependency
-        name: (word)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word))
+    value: (dependency
+      name: (word))
+    value: (dependency
+      name: (word))))
 
 ===============================================================================
 Multiple dependencies (mixed versioned and simple)
@@ -46,13 +44,12 @@ BuildRequires: libaio-devel, device-mapper-devel >= 1.02.89
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word))
-      value: (dependency
-        name: (word)
-        version: (version)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word))
+    value: (dependency
+      name: (word)
+      version: (version))))
 
 ===============================================================================
 Multiple dependencies (all versioned comma-separated)
@@ -64,14 +61,13 @@ Requires: python >= 3.6, perl >= 5.0
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)
-        version: (version))
-      value: (dependency
-        name: (word)
-        version: (version)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word)
+      version: (version))
+    value: (dependency
+      name: (word)
+      version: (version))))
 
 ===============================================================================
 Multiple dependencies (space-separated with version)
@@ -83,10 +79,9 @@ Requires: python >= 3.6 perl
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)
-        version: (version))
-      value: (dependency
-        name: (word)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word)
+      version: (version))
+    value: (dependency
+      name: (word))))

@@ -66,10 +66,9 @@ Name: %pkg_name
 
 (spec
   (preamble
-    (tags
-      (tag)
-      (macro_simple_expansion
-        (simple_macro)))))
+    (tag)
+    (macro_simple_expansion
+      (simple_macro))))
 
 ===============================================================================
 Simple Macro Expansion (Special variable all arguments)

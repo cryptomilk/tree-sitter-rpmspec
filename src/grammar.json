@@ -4600,11 +4600,11 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "tags"
+          "name": "_tags"
         }
       ]
     },
-    "tags": {
+    "_tags": {
       "type": "CHOICE",
       "members": [
         {

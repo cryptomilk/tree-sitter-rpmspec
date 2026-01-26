@@ -195,7 +195,6 @@ Macros (Usage/Braces)
   (macro_expansion
     (builtin)))
 
-
 ===============================================================================
 Macros (Conditional macro defintion #1)
 ===============================================================================
@@ -247,6 +246,7 @@ Macros (Complex arguments with quotes)
 %patch0 -p1 -b "file.bak"
 
 -------------------------------------------------------------------------------
+
 (spec
   (prep_scriptlet
     (section_name)
@@ -549,18 +549,17 @@ Version: %{?version_override}%{!?version_override:258.3}
 
 (spec
   (preamble
-    (tags
-      (tag)
-      value: (concatenation
-        (macro_expansion
-          (conditional_expansion
-            condition: (identifier)))
-        (macro_expansion
-          (conditional_expansion
-            operator: (negation_operator)
-            condition: (identifier)
-            consequence: (text
-              (text_content))))))))
+    (tag)
+    value: (concatenation
+      (macro_expansion
+        (conditional_expansion
+          condition: (identifier)))
+      (macro_expansion
+        (conditional_expansion
+          operator: (negation_operator)
+          condition: (identifier)
+          consequence: (text
+            (text_content)))))))
 
 ===============================================================================
 Macros (Escape sequence in macro value - regex pattern)

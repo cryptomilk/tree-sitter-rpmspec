@@ -8,14 +8,13 @@ Requires: libc.so.6(GLIBC_2.2.5)(64bit)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (elf_dependency
-          soname: (soname)
-          symbol_version: (elf_symbol_version
-            version: (identifier))
-          arch: (elf_arch))))))
+    (dependency_tag)
+    value: (dependency
+      (elf_dependency
+        soname: (soname)
+        symbol_version: (elf_symbol_version
+          version: (identifier))
+        arch: (elf_arch)))))
 
 ===============================================================================
 ELF dependency (empty symbol version)
@@ -27,13 +26,12 @@ Requires: libssh.so.4()(64bit)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (elf_dependency
-          soname: (soname)
-          symbol_version: (elf_symbol_version)
-          arch: (elf_arch))))))
+    (dependency_tag)
+    value: (dependency
+      (elf_dependency
+        soname: (soname)
+        symbol_version: (elf_symbol_version)
+        arch: (elf_arch)))))
 
 ===============================================================================
 ELF dependency (32bit)
@@ -45,14 +43,13 @@ Requires: libc.so.6(GLIBC_2.0)(32bit)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (elf_dependency
-          soname: (soname)
-          symbol_version: (elf_symbol_version
-            version: (identifier))
-          arch: (elf_arch))))))
+    (dependency_tag)
+    value: (dependency
+      (elf_dependency
+        soname: (soname)
+        symbol_version: (elf_symbol_version
+          version: (identifier))
+        arch: (elf_arch)))))
 
 ===============================================================================
 ELF dependency (multiple)
@@ -64,20 +61,19 @@ Requires: libc.so.6(GLIBC_2.2.5)(64bit), libcrypto.so.3(OPENSSL_3.0.0)(64bit)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (elf_dependency
-          soname: (soname)
-          symbol_version: (elf_symbol_version
-            version: (identifier))
-          arch: (elf_arch)))
-      value: (dependency
-        (elf_dependency
-          soname: (soname)
-          symbol_version: (elf_symbol_version
-            version: (identifier))
-          arch: (elf_arch))))))
+    (dependency_tag)
+    value: (dependency
+      (elf_dependency
+        soname: (soname)
+        symbol_version: (elf_symbol_version
+          version: (identifier))
+        arch: (elf_arch)))
+    value: (dependency
+      (elf_dependency
+        soname: (soname)
+        symbol_version: (elf_symbol_version
+          version: (identifier))
+        arch: (elf_arch)))))
 
 ===============================================================================
 Path dependency (simple)
@@ -89,11 +85,10 @@ Requires: /usr/bin/pkg-config
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (path_dependency
-          (path))))))
+    (dependency_tag)
+    value: (dependency
+      (path_dependency
+        (path)))))
 
 ===============================================================================
 Path dependency (multiple)
@@ -105,14 +100,13 @@ Requires: /usr/bin/sh, /usr/sbin/useradd
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (path_dependency
-          (path)))
-      value: (dependency
-        (path_dependency
-          (path))))))
+    (dependency_tag)
+    value: (dependency
+      (path_dependency
+        (path)))
+    value: (dependency
+      (path_dependency
+        (path)))))
 
 ===============================================================================
 Qualified dependency (perl module)
@@ -124,13 +118,12 @@ Requires: perl(Carp)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (qualified_dependency
-          name: (word)
-          qualifier: (dependency_qualifier
-            content: (identifier)))))))
+    (dependency_tag)
+    value: (dependency
+      (qualified_dependency
+        name: (word)
+        qualifier: (dependency_qualifier
+          content: (identifier))))))
 
 ===============================================================================
 Qualified dependency (perl with version)
@@ -142,14 +135,13 @@ Requires: perl(Carp) >= 3.2
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (qualified_dependency
-          name: (word)
-          qualifier: (dependency_qualifier
-            content: (identifier))
-          version: (version))))))
+    (dependency_tag)
+    value: (dependency
+      (qualified_dependency
+        name: (word)
+        qualifier: (dependency_qualifier
+          content: (identifier))
+        version: (version)))))
 
 ===============================================================================
 Qualified dependency (pkgconfig)
@@ -161,14 +153,13 @@ BuildRequires: pkgconfig(glib-2.0) >= 2.50
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (qualified_dependency
-          name: (word)
-          qualifier: (dependency_qualifier
-            content: (word))
-          version: (version))))))
+    (dependency_tag)
+    value: (dependency
+      (qualified_dependency
+        name: (word)
+        qualifier: (dependency_qualifier
+          content: (word))
+        version: (version)))))
 
 ===============================================================================
 Qualified dependency (python3dist)
@@ -180,13 +171,12 @@ BuildRequires: python3dist(pytest)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (qualified_dependency
-          name: (word)
-          qualifier: (dependency_qualifier
-            content: (identifier)))))))
+    (dependency_tag)
+    value: (dependency
+      (qualified_dependency
+        name: (word)
+        qualifier: (dependency_qualifier
+          content: (identifier))))))
 
 ===============================================================================
 Qualified dependency (rpmlib)
@@ -198,14 +188,13 @@ Requires: rpmlib(CompressedFileNames) <= 3.0.4-1
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (qualified_dependency
-          name: (word)
-          qualifier: (dependency_qualifier
-            content: (identifier))
-          version: (version))))))
+    (dependency_tag)
+    value: (dependency
+      (qualified_dependency
+        name: (word)
+        qualifier: (dependency_qualifier
+          content: (identifier))
+        version: (version)))))
 
 ===============================================================================
 Qualified dependency (ISA qualifier)
@@ -217,14 +206,13 @@ Requires: libssh(x86-64) = 0.11.3-1.fc43
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (qualified_dependency
-          name: (word)
-          qualifier: (dependency_qualifier
-            content: (word))
-          version: (version))))))
+    (dependency_tag)
+    value: (dependency
+      (qualified_dependency
+        name: (word)
+        qualifier: (dependency_qualifier
+          content: (word))
+        version: (version)))))
 
 ===============================================================================
 Qualified dependency (nested bundled golang)
@@ -236,17 +224,16 @@ Provides: bundled(golang(golang.org/x/arch)) = 0.18.1
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (qualified_dependency
-          name: (word)
-          qualifier: (dependency_qualifier
-            content: (nested_qualified_dependency
-              name: (identifier)
-              qualifier: (dependency_qualifier
-                content: (word))))
-          version: (version))))))
+    (dependency_tag)
+    value: (dependency
+      (qualified_dependency
+        name: (word)
+        qualifier: (dependency_qualifier
+          content: (nested_qualified_dependency
+            name: (identifier)
+            qualifier: (dependency_qualifier
+              content: (word))))
+        version: (version)))))
 
 ===============================================================================
 Qualified dependency (nested bundled npm)
@@ -258,17 +245,16 @@ Provides: bundled(npm(@babel/core)) = 7.24.5
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (qualified_dependency
-          name: (word)
-          qualifier: (dependency_qualifier
-            content: (nested_qualified_dependency
-              name: (identifier)
-              qualifier: (dependency_qualifier
-                content: (word))))
-          version: (version))))))
+    (dependency_tag)
+    value: (dependency
+      (qualified_dependency
+        name: (word)
+        qualifier: (dependency_qualifier
+          content: (nested_qualified_dependency
+            name: (identifier)
+            qualifier: (dependency_qualifier
+              content: (word))))
+        version: (version)))))
 
 ===============================================================================
 Versioned dependency (simple name)
@@ -280,10 +266,9 @@ Requires: cmake-filesystem
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word))))
 
 ===============================================================================
 Versioned dependency (with version constraint)
@@ -295,11 +280,10 @@ Requires: filesystem >= 3
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)
-        version: (version)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word)
+      version: (version))))
 
 ===============================================================================
 Versioned dependency (exact version)
@@ -311,11 +295,10 @@ Requires: python3-libs = 3.14.2-1.fc43
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)
-        version: (version)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word)
+      version: (version))))
 
 ===============================================================================
 Versioned dependency (multiple)
@@ -327,15 +310,14 @@ BuildRequires: gcc, make, cmake >= 3.10
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word))
-      value: (dependency
-        name: (word))
-      value: (dependency
-        name: (word)
-        version: (version)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word))
+    value: (dependency
+      name: (word))
+    value: (dependency
+      name: (word)
+      version: (version))))
 
 ===============================================================================
 Boolean dependency (simple or)
@@ -347,12 +329,11 @@ Requires: (pkgA or pkgB)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_or_expression
-          name: (word)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_or_expression
+        name: (word)
+        name: (word)))))
 
 ===============================================================================
 Boolean dependency (simple and)
@@ -364,12 +345,11 @@ Requires: (pkgA and pkgB)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_and_expression
-          name: (word)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_and_expression
+        name: (word)
+        name: (word)))))
 
 ===============================================================================
 Boolean dependency (with qualified deps)
@@ -381,18 +361,17 @@ Requires: (perl(Carp) and python3dist(pytest))
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_and_expression
-          left: (qualified_dependency
-            name: (word)
-            qualifier: (dependency_qualifier
-              content: (identifier)))
-          right: (qualified_dependency
-            name: (word)
-            qualifier: (dependency_qualifier
-              content: (identifier))))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_and_expression
+        left: (qualified_dependency
+          name: (word)
+          qualifier: (dependency_qualifier
+            content: (identifier)))
+        right: (qualified_dependency
+          name: (word)
+          qualifier: (dependency_qualifier
+            content: (identifier)))))))
 
 ===============================================================================
 Boolean dependency (with version constraints)
@@ -404,13 +383,12 @@ Requires: (cmake >= 3.10 and ninja)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_and_expression
-          name: (word)
-          version: (version)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_and_expression
+        name: (word)
+        version: (version)
+        name: (word)))))
 
 ===============================================================================
 Boolean dependency (ELF in boolean)
@@ -422,16 +400,15 @@ Requires: (libc.so.6(GLIBC_2.2.5)(64bit) or fallback-pkg)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_or_expression
-          left: (elf_dependency
-            soname: (soname)
-            symbol_version: (elf_symbol_version
-              version: (identifier))
-            arch: (elf_arch))
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_or_expression
+        left: (elf_dependency
+          soname: (soname)
+          symbol_version: (elf_symbol_version
+            version: (identifier))
+          arch: (elf_arch))
+        name: (word)))))
 
 ===============================================================================
 Boolean dependency (path in boolean)
@@ -443,13 +420,12 @@ Requires: (/usr/bin/python3 or python3)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_or_expression
-          left: (path_dependency
-            (path))
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_or_expression
+        left: (path_dependency
+          (path))
+        name: (word)))))
 
 ===============================================================================
 Boolean dependency (if expression)
@@ -461,12 +437,11 @@ Suggests: (nice-pkg if feature-pkg)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_if_expression
-          name: (word)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_if_expression
+        name: (word)
+        name: (word)))))
 
 ===============================================================================
 Boolean dependency (unless expression)
@@ -478,12 +453,11 @@ Recommends: (optional-pkg unless minimal-install)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_if_expression
-          name: (word)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_if_expression
+        name: (word)
+        name: (word)))))
 
 ===============================================================================
 Mixed dependency list
@@ -495,16 +469,15 @@ Requires: cmake-filesystem, perl(Carp) >= 1.0, /usr/bin/sh
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word))
-      value: (dependency
-        (qualified_dependency
-          name: (word)
-          qualifier: (dependency_qualifier
-            content: (identifier))
-          version: (version)))
-      value: (dependency
-        (path_dependency
-          (path))))))
+    (dependency_tag)
+    value: (dependency
+      name: (word))
+    value: (dependency
+      (qualified_dependency
+        name: (word)
+        qualifier: (dependency_qualifier
+          content: (identifier))
+        version: (version)))
+    value: (dependency
+      (path_dependency
+        (path)))))

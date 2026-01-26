@@ -8,12 +8,11 @@ Requires: (pkgA or pkgB)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_or_expression
-          name: (word)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_or_expression
+        name: (word)
+        name: (word)))))
 
 ===============================================================================
 Tag-specific: BuildRequires with boolean dependency
@@ -25,13 +24,12 @@ BuildRequires: (cmake >= 3.10 and ninja)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_and_expression
-          name: (word)
-          version: (version)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_and_expression
+        name: (word)
+        version: (version)
+        name: (word)))))
 
 ===============================================================================
 Tag-specific: BuildPreReq (deprecated)
@@ -43,10 +41,9 @@ BuildPreReq: rpm-macros-systemd
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word))))
 
 ===============================================================================
 Tag-specific: BuildRequires with qualifier
@@ -58,10 +55,9 @@ BuildRequires(pre): rpm-build-xdg
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word))))
 
 ===============================================================================
 Tag-specific: BuildRequires with invalid qualifier
@@ -91,12 +87,11 @@ Recommends: (pkgA and pkgB)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_and_expression
-          name: (word)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_and_expression
+        name: (word)
+        name: (word)))))
 
 ===============================================================================
 Tag-specific: Suggests with boolean dependency
@@ -108,12 +103,11 @@ Suggests: (nice-pkg if feature-pkg)
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_if_expression
-          name: (word)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_if_expression
+        name: (word)
+        name: (word)))))
 
 ===============================================================================
 Tag-specific: Conflicts without boolean (simple)
@@ -125,11 +119,10 @@ Conflicts: bad-package >= 1.0
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)
-        version: (version)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word)
+      version: (version))))
 
 ===============================================================================
 Tag-specific: BuildConflicts without boolean
@@ -141,10 +134,9 @@ BuildConflicts: conflicting-build-tool
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word))))
 
 ===============================================================================
 Tag-specific: Obsoletes without boolean (versioned)
@@ -156,11 +148,10 @@ Obsoletes: old-package <= 1.0
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)
-        version: (version)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word)
+      version: (version))))
 
 ===============================================================================
 Tag-specific: Provides without boolean (versioned)
@@ -172,11 +163,10 @@ Provides: virtual-pkg = 2.0
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)
-        version: (version)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word)
+      version: (version))))
 
 ===============================================================================
 Tag-specific: Provides bundled library
@@ -188,14 +178,13 @@ Provides: bundled(libfoo) = 1.2.3
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (qualified_dependency
-          name: (word)
-          qualifier: (dependency_qualifier
-            content: (identifier))
-          version: (version))))))
+    (dependency_tag)
+    value: (dependency
+      (qualified_dependency
+        name: (word)
+        qualifier: (dependency_qualifier
+          content: (identifier))
+        version: (version)))))
 
 ===============================================================================
 Tag-specific: BuildArch literal
@@ -207,9 +196,8 @@ BuildArch: noarch
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (word))))
+    (dependency_tag)
+    value: (word)))
 
 ===============================================================================
 Tag-specific: ExclusiveArch multiple
@@ -221,11 +209,10 @@ ExclusiveArch: x86_64 aarch64
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (concatenation
-        (word)
-        (word)))))
+    (dependency_tag)
+    value: (concatenation
+      (word)
+      (word))))
 
 ===============================================================================
 Tag-specific: ExcludeArch with macro
@@ -237,7 +224,6 @@ ExcludeArch: %{ix86}
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (macro_expansion
-        (identifier)))))
+    (dependency_tag)
+    value: (macro_expansion
+      (identifier))))

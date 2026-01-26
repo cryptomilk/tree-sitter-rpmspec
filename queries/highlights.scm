@@ -67,7 +67,7 @@
   (word) @module)
 
 ; Source tag file paths
-(tags
+(preamble
   (tag)
   value: (file) @string.special.path)
 

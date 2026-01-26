@@ -5744,13 +5744,52 @@
   {
     "type": "preamble",
     "named": true,
-    "fields": {},
+    "fields": {
+      "value": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "_primary_expression",
+            "named": true
+          },
+          {
+            "type": "boolean_dependency",
+            "named": true
+          },
+          {
+            "type": "concatenation",
+            "named": true
+          },
+          {
+            "type": "dependency",
+            "named": true
+          },
+          {
+            "type": "file",
+            "named": true
+          },
+          {
+            "type": "url",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": false,
       "required": true,
       "types": [
         {
-          "type": "tags",
+          "type": "dependency_tag",
+          "named": true
+        },
+        {
+          "type": "tag",
           "named": true
         }
       ]
@@ -6807,60 +6846,6 @@
       "types": [
         {
           "type": "qualifier",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "tags",
-    "named": true,
-    "fields": {
-      "value": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": ",",
-            "named": false
-          },
-          {
-            "type": "_primary_expression",
-            "named": true
-          },
-          {
-            "type": "boolean_dependency",
-            "named": true
-          },
-          {
-            "type": "concatenation",
-            "named": true
-          },
-          {
-            "type": "dependency",
-            "named": true
-          },
-          {
-            "type": "file",
-            "named": true
-          },
-          {
-            "type": "url",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "dependency_tag",
-          "named": true
-        },
-        {
-          "type": "tag",
           "named": true
         }
       ]

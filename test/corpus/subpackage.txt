@@ -13,9 +13,8 @@ Summary: Client
     (package_name
       (word))
     (preamble
-      (tags
-        (tag)
-        (word)))))
+      (tag)
+      (word))))
 
 ===============================================================================
 Subpackage (subpackage with arbitrary name)
@@ -32,9 +31,8 @@ Summary: Subpackage
     (package_name
       (word))
     (preamble
-      (tags
-        (tag)
-        (word)))))
+      (tag)
+      (word))))
 
 ===============================================================================
 Subpackage (subpackage with arbitrary name with macros)
@@ -52,9 +50,8 @@ Summary: Subpackage
       (macro_expansion
         (identifier)))
     (preamble
-      (tags
-        (tag)
-        (word)))))
+      (tag)
+      (word))))
 
 ===============================================================================
 Subpackage (with %if conditional)
@@ -77,33 +74,28 @@ Conflicts: baz
     (package_name
       (word))
     (preamble
-      (tags
-        (tag)
-        value: (word)))
+      (tag)
+      value: (word))
     (preamble
-      (tags
-        (tag)
-        value: (word)))
+      (tag)
+      value: (word))
     (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))
     condition: (concatenation
       (integer)
       (macro_expansion
         (conditional_expansion
           condition: (identifier))))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))
     (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Subpackage (with %ifarch and %global)
@@ -124,9 +116,8 @@ BuildRequires: binutils %{?binutils_version_req}
     (package_name
       (word))
     (preamble
-      (tags
-        (tag)
-        value: (word)))
+      (tag)
+      value: (word))
     condition: (arch
       (identifier))
     consequence: (macro_definition
@@ -136,13 +127,12 @@ BuildRequires: binutils %{?binutils_version_req}
       value: (word)
       value: (version))
     (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word)
-          name: (macro_expansion
-            (conditional_expansion
-              condition: (identifier))))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)
+        name: (macro_expansion
+          (conditional_expansion
+            condition: (identifier)))))))
 
 ===============================================================================
 Subpackage (with plus in name)
@@ -160,12 +150,11 @@ Summary: Default feature devel
       (macro_expansion
         (identifier)))
     (preamble
-      (tags
-        (tag)
-        value: (concatenation
-          (word)
-          (word)
-          (word))))))
+      (tag)
+      value: (concatenation
+        (word)
+        (word)
+        (word)))))
 
 ===============================================================================
 Subpackage (with macro expansion in content)
@@ -183,11 +172,10 @@ Summary: Master package
     (package_name
       (word))
     (preamble
-      (tags
-        (tag)
-        value: (concatenation
-          (word)
-          (word))))
+      (tag)
+      value: (concatenation
+        (word)
+        (word)))
     (macro_expansion
       (conditional_expansion
         condition: (identifier)))))

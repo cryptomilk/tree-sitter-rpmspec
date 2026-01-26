@@ -8,13 +8,12 @@ Requires: %{name} = %{version}
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (macro_expansion
-          (identifier))
-        version: (macro_expansion
-          (identifier))))))
+    (dependency_tag)
+    value: (dependency
+      name: (macro_expansion
+        (identifier))
+      version: (macro_expansion
+        (identifier)))))
 
 ===============================================================================
 Macro dependency (name with ISA suffix)
@@ -26,16 +25,15 @@ Requires: %{name}%{?_isa} = %{version}
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (macro_expansion
-          (identifier))
-        name: (macro_expansion
-          (conditional_expansion
-            condition: (identifier)))
-        version: (macro_expansion
-          (identifier))))))
+    (dependency_tag)
+    value: (dependency
+      name: (macro_expansion
+        (identifier))
+      name: (macro_expansion
+        (conditional_expansion
+          condition: (identifier)))
+      version: (macro_expansion
+        (identifier)))))
 
 ===============================================================================
 Macro dependency (name with literal suffix)
@@ -47,14 +45,13 @@ Requires: %{name}-libs >= %{version}
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (macro_expansion
-          (identifier))
-        name: (word)
-        version: (macro_expansion
-          (identifier))))))
+    (dependency_tag)
+    value: (dependency
+      name: (macro_expansion
+        (identifier))
+      name: (word)
+      version: (macro_expansion
+        (identifier)))))
 
 ===============================================================================
 Macro dependency (version with release)
@@ -66,15 +63,14 @@ Requires: %{name} = %{version}-%{release}
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (macro_expansion
-          (identifier))
-        version: (macro_expansion
-          (identifier))
-        version: (macro_expansion
-          (identifier))))))
+    (dependency_tag)
+    value: (dependency
+      name: (macro_expansion
+        (identifier))
+      version: (macro_expansion
+        (identifier))
+      version: (macro_expansion
+        (identifier)))))
 
 ===============================================================================
 Macro dependency (full ISA dependency)
@@ -86,18 +82,17 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (macro_expansion
-          (identifier))
-        name: (macro_expansion
-          (conditional_expansion
-            condition: (identifier)))
-        version: (macro_expansion
-          (identifier))
-        version: (macro_expansion
-          (identifier))))))
+    (dependency_tag)
+    value: (dependency
+      name: (macro_expansion
+        (identifier))
+      name: (macro_expansion
+        (conditional_expansion
+          condition: (identifier)))
+      version: (macro_expansion
+        (identifier))
+      version: (macro_expansion
+        (identifier)))))
 
 ===============================================================================
 Macro dependency (literal name with macro suffix)
@@ -109,14 +104,13 @@ Requires: foo%{?_isa} >= 1.0
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)
-        name: (macro_expansion
-          (conditional_expansion
-            condition: (identifier)))
-        version: (version)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word)
+      name: (macro_expansion
+        (conditional_expansion
+          condition: (identifier)))
+      version: (version))))
 
 ===============================================================================
 Macro dependency (simple macro expansion in name)
@@ -128,9 +122,8 @@ Requires: %name = 1.0
 
 (spec
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (macro_simple_expansion
-          (simple_macro))
-        version: (version)))))
+    (dependency_tag)
+    value: (dependency
+      name: (macro_simple_expansion
+        (simple_macro))
+      version: (version))))

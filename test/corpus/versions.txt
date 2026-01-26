@@ -9,13 +9,11 @@ Version:        2:1.0.0
 
 (spec
   (preamble
-    (tags
-      (tag)
-      (word)))
+    (tag)
+    (word))
   (preamble
-    (tags
-      (tag)
-      (version))))
+    (tag)
+    (version)))
 
 ===============================================================================
 Version (Epoch in dependencies)
@@ -29,21 +27,18 @@ BuildRequires:  another-package >= 1:2.0.0
 
 (spec
   (preamble
-    (tags
-      (tag)
-      value: (word)))
+    (tag)
+    value: (word))
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)
-        version: (version))))
+    (dependency_tag)
+    value: (dependency
+      name: (word)
+      version: (version)))
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)
-        version: (version)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word)
+      version: (version))))
 
 ===============================================================================
 Version (Complex epoch with release)
@@ -57,21 +52,18 @@ Release:        3%{?dist}
 
 (spec
   (preamble
-    (tags
-      (tag)
-      (word)))
+    (tag)
+    (word))
   (preamble
-    (tags
-      (tag)
-      (version)))
+    (tag)
+    (version))
   (preamble
-    (tags
-      (tag)
-      (concatenation
-        (integer)
-        (macro_expansion
-          (conditional_expansion
-            (identifier)))))))
+    (tag)
+    (concatenation
+      (integer)
+      (macro_expansion
+        (conditional_expansion
+          (identifier))))))
 
 ===============================================================================
 Version (Epoch in conditional dependencies)
@@ -84,17 +76,15 @@ Requires:       (package >= 2:1.0 or alternative-package)
 
 (spec
   (preamble
-    (tags
-      (tag)
-      value: (word)))
+    (tag)
+    value: (word))
   (preamble
-    (tags
-      (dependency_tag)
-      value: (boolean_dependency
-        (boolean_or_expression
-          name: (word)
-          version: (version)
-          name: (word))))))
+    (dependency_tag)
+    value: (boolean_dependency
+      (boolean_or_expression
+        name: (word)
+        version: (version)
+        name: (word)))))
 
 ===============================================================================
 Version (Epoch zero explicit)
@@ -107,15 +97,13 @@ Provides:       virtual-package = 0:1.0.0
 
 (spec
   (preamble
-    (tags
-      (tag)
-      value: (word)))
+    (tag)
+    value: (word))
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        name: (word)
-        version: (version)))))
+    (dependency_tag)
+    value: (dependency
+      name: (word)
+      version: (version))))
 
 ===============================================================================
 Version (Git hash as version)
@@ -128,15 +116,13 @@ Provides:       bundled(sdb) = db7edd4a96a89b6749b677a85d7fa4ee2c6fbbb9
 
 (spec
   (preamble
-    (tags
-      (tag)
-      value: (word)))
+    (tag)
+    value: (word))
   (preamble
-    (tags
-      (dependency_tag)
-      value: (dependency
-        (qualified_dependency
-          name: (word)
-          qualifier: (dependency_qualifier
-            content: (identifier))
-          version: (dependency_version_string))))))
+    (dependency_tag)
+    value: (dependency
+      (qualified_dependency
+        name: (word)
+        qualifier: (dependency_qualifier
+          content: (identifier))
+        version: (dependency_version_string)))))

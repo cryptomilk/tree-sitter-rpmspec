@@ -179,11 +179,10 @@ DC description.
       (package_name
         (word))
       (preamble
-        (tags
-          (tag)
-          value: (concatenation
-            (word)
-            (word)))))
+        (tag)
+        value: (concatenation
+          (word)
+          (word))))
     consequence: (description
       (section_name)
       (package_name
@@ -229,11 +228,10 @@ Devel description.
       (package_name
         (word))
       (preamble
-        (tags
-          (tag)
-          value: (concatenation
-            (word)
-            (word)))))
+        (tag)
+        value: (concatenation
+          (word)
+          (word))))
     consequence: (description
       (section_name)
       (package_name
@@ -245,12 +243,11 @@ Devel description.
       (package_name
         (word))
       (preamble
-        (tags
-          (tag)
-          value: (concatenation
-            (word)
-            (word)
-            (word)))))
+        (tag)
+        value: (concatenation
+          (word)
+          (word)
+          (word))))
     consequence: (description
       (section_name)
       (package_name
@@ -280,6 +277,7 @@ use the "%{crate}" crate.
         (macro_expansion
           (identifier)))
       (text_content))))
+
 ===============================================================================
 Description (text starting with dependency keywords)
 ===============================================================================

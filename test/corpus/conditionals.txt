@@ -13,10 +13,9 @@ BuildRequires:  foo
     condition: (arch
       (identifier))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%ifos)
@@ -33,10 +32,9 @@ BuildRequires:  foo
     condition: (os
       (identifier))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%ifnarch)
@@ -53,10 +51,9 @@ BuildRequires:  magic
     condition: (arch
       (identifier))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%if with simple macros)
@@ -73,10 +70,9 @@ BuildRequires:  foo
     condition: (defined_operator
       (identifier))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%if with complex macros)
@@ -96,10 +92,9 @@ BuildRequires:  foo
       right: (defined_operator
         (identifier)))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%if with string comparison)
@@ -120,10 +115,9 @@ BuildRequires:  foo
       (quoted_string
         (string_content)))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%if with mathematical comparison)
@@ -153,10 +147,9 @@ BuildRequires:  foo
               condition: (identifier))))
         (integer)))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%if with expansion)
@@ -176,10 +169,9 @@ BuildRequires:  foo
         (conditional_expansion
           condition: (identifier))))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%if with paranthesis)
@@ -208,10 +200,9 @@ BuildRequires:  foo
                 condition: (identifier))))
           (integer))))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%if with %else)
@@ -233,16 +224,14 @@ BuildRequires:  bar
         (conditional_expansion
           condition: (identifier))))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))
     alternative: (else_clause
       body: (preamble
-        (tags
-          (dependency_tag)
-          value: (dependency
-            name: (word)))))))
+        (dependency_tag)
+        value: (dependency
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%if with %elif)
@@ -264,10 +253,9 @@ BuildRequires:  bar
         (conditional_expansion
           condition: (identifier))))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))
     alternative: (elif_clause
       condition: (concatenation
         (integer)
@@ -275,10 +263,9 @@ BuildRequires:  bar
           (conditional_expansion
             condition: (identifier))))
       consequence: (preamble
-        (tags
-          (dependency_tag)
-          value: (dependency
-            name: (word)))))))
+        (dependency_tag)
+        value: (dependency
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%if with %elif and %else)
@@ -302,10 +289,9 @@ BuildRequires:  wurst
         (conditional_expansion
           condition: (identifier))))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))
     alternative: (elif_clause
       condition: (concatenation
         (integer)
@@ -313,16 +299,14 @@ BuildRequires:  wurst
           (conditional_expansion
             condition: (identifier))))
       consequence: (preamble
-        (tags
-          (dependency_tag)
-          value: (dependency
-            name: (word)))))
+        (dependency_tag)
+        value: (dependency
+          name: (word))))
     alternative: (else_clause
       body: (preamble
-        (tags
-          (dependency_tag)
-          value: (dependency
-            name: (word)))))))
+        (dependency_tag)
+        value: (dependency
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%if %{with ..})
@@ -339,11 +323,10 @@ Requires(post): libwbclient
     condition: (with_operator
       (identifier))
     consequence: (preamble
-      (tags
-        (dependency_tag
-          (qualifier))
-        value: (dependency
-          name: (word))))))
+      (dependency_tag
+        (qualifier))
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%ifnarch with negation)
@@ -361,10 +344,9 @@ BuildRequires:  foo
       (identifier)
       (identifier))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%ifnos with negation)
@@ -381,10 +363,9 @@ BuildRequires:  linux-only-package
     condition: (os
       (identifier))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%ifos with simple macro expansion)
@@ -401,10 +382,9 @@ BuildRequires:  os-specific-package
     condition: (os
       (identifier))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%ifarch with macro expressions)
@@ -423,10 +403,9 @@ BuildRequires:  arch-specific-package
         (identifier))
       (identifier))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%ifnarch with simple macro expansion)
@@ -443,10 +422,9 @@ BuildRequires:  bpftool
     condition: (arch
       (identifier))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))))
 
 ===============================================================================
 Conditionals (%elifarch support)
@@ -467,23 +445,20 @@ BuildRequires:  generic-package
     condition: (arch
       (identifier))
     consequence: (preamble
-      (tags
-        (dependency_tag)
-        value: (dependency
-          name: (word))))
+      (dependency_tag)
+      value: (dependency
+        name: (word)))
     alternative: (elifarch_clause
       condition: (word)
       consequence: (preamble
-        (tags
-          (dependency_tag)
-          value: (dependency
-            name: (word)))))
+        (dependency_tag)
+        value: (dependency
+          name: (word))))
     alternative: (else_clause
       body: (preamble
-        (tags
-          (dependency_tag)
-          value: (dependency
-            name: (word)))))))
+        (dependency_tag)
+        value: (dependency
+          name: (word))))))
 
 ===============================================================================
 Conditionals (%if with runtime scriptlet after shell section)
