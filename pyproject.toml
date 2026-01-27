@@ -22,7 +22,7 @@ readme = "README.md"
 Homepage = "https://gitlab.com/cryptomilk/tree-sitter-rpmspec"
 
 [project.optional-dependencies]
-core = ["tree-sitter~=0.24"]
+core = ["tree-sitter~=0.25"]
 
 [tool.cibuildwheel]
 build = "cp310-*"
