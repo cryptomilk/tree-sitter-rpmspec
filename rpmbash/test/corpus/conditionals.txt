@@ -1,0 +1,197 @@
+================================================================================
+Basic if/endif between commands
+================================================================================
+
+echo start
+%if 0%{?fedora}
+echo fedora
+%endif
+echo end
+
+--------------------------------------------------------------------------------
+
+(program
+  (command
+    (command_name
+      (word))
+    (word))
+  (rpm_conditional)
+  (command
+    (command_name
+      (word))
+    (word))
+  (rpm_endif)
+  (command
+    (command_name
+      (word))
+    (word)))
+
+================================================================================
+If/else/endif between commands
+================================================================================
+
+%if 0%{?rhel}
+echo rhel
+%else
+echo other
+%endif
+
+--------------------------------------------------------------------------------
+
+(program
+  (rpm_conditional)
+  (command
+    (command_name
+      (word))
+    (word))
+  (rpm_else)
+  (command
+    (command_name
+      (word))
+    (word))
+  (rpm_endif))
+
+================================================================================
+Elif conditional
+================================================================================
+
+%if 0%{?fedora}
+echo fedora
+%elif 0%{?rhel}
+echo rhel
+%else
+echo other
+%endif
+
+--------------------------------------------------------------------------------
+
+(program
+  (rpm_conditional)
+  (command
+    (command_name
+      (word))
+    (word))
+  (rpm_conditional)
+  (command
+    (command_name
+      (word))
+    (word))
+  (rpm_else)
+  (command
+    (command_name
+      (word))
+    (word))
+  (rpm_endif))
+
+================================================================================
+Ifarch conditional
+================================================================================
+
+%ifarch x86_64 aarch64
+echo 64bit
+%endif
+
+--------------------------------------------------------------------------------
+
+(program
+  (rpm_conditional)
+  (command
+    (command_name
+      (word))
+    (word))
+  (rpm_endif))
+
+================================================================================
+Ifnarch conditional
+================================================================================
+
+%ifnarch i686
+echo not-i686
+%endif
+
+--------------------------------------------------------------------------------
+
+(program
+  (rpm_conditional)
+  (command
+    (command_name
+      (word))
+    (word))
+  (rpm_endif))
+
+================================================================================
+Ifos conditional
+================================================================================
+
+%ifos linux
+echo linux
+%endif
+
+--------------------------------------------------------------------------------
+
+(program
+  (rpm_conditional)
+  (command
+    (command_name
+      (word))
+    (word))
+  (rpm_endif))
+
+================================================================================
+Ifnos conditional
+================================================================================
+
+%ifnos windows
+echo not-windows
+%endif
+
+--------------------------------------------------------------------------------
+
+(program
+  (rpm_conditional)
+  (command
+    (command_name
+      (word))
+    (word))
+  (rpm_endif))
+
+================================================================================
+Nested conditionals
+================================================================================
+
+%if 0%{?fedora}
+%ifarch x86_64
+echo fedora-x64
+%endif
+%endif
+
+--------------------------------------------------------------------------------
+
+(program
+  (rpm_conditional)
+  (rpm_conditional)
+  (command
+    (command_name
+      (word))
+    (word))
+  (rpm_endif)
+  (rpm_endif))
+
+================================================================================
+Conditional with macro expansion in body
+================================================================================
+
+%if 0%{?with_tests}
+make %{?_smp_mflags} check
+%endif
+
+--------------------------------------------------------------------------------
+
+(program
+  (rpm_conditional)
+  (command
+    (command_name
+      (word))
+    (rpm_macro_expansion)
+    (word))
+  (rpm_endif))

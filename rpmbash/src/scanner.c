@@ -1,9 +1,12 @@
 /**
  * RPMBash external scanner
  *
- * This includes the tree-sitter-bash scanner and renames its functions
- * to use the rpmbash prefix via preprocessor macros.
+ * This wraps the tree-sitter-bash scanner for use with rpmbash.
+ * Currently no additional external tokens are needed - all RPM constructs
+ * are handled by grammar rules.
  */
+
+#include "tree_sitter/parser.h"
 
 // Rename bash scanner functions to rpmbash before including
 #define tree_sitter_bash_external_scanner_create \

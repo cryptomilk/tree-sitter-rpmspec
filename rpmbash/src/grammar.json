@@ -7169,6 +7169,142 @@
     "_rpm_macro_body": {
       "type": "PATTERN",
       "value": "([^\\\\\\n]|\\\\\\n|\\\\[^\\n])+"
+    },
+    "rpm_conditional": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 20,
+        "content": {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "%if"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[ \\t]+"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[^\\n]*"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "%elif"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[ \\t]+"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[^\\n]*"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "%ifarch"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[ \\t]+"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[^\\n]*"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "%ifnarch"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[ \\t]+"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[^\\n]*"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "%ifos"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[ \\t]+"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[^\\n]*"
+                }
+              ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "%ifnos"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[ \\t]+"
+                },
+                {
+                  "type": "PATTERN",
+                  "value": "[^\\n]*"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "rpm_else": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 20,
+        "content": {
+          "type": "STRING",
+          "value": "%else"
+        }
+      }
+    },
+    "rpm_endif": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 20,
+        "content": {
+          "type": "STRING",
+          "value": "%endif"
+        }
+      }
     }
   },
   "extras": [
@@ -7187,6 +7323,18 @@
     {
       "type": "PATTERN",
       "value": "\\\\( |\\t|\\v|\\f)"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "rpm_conditional"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "rpm_else"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "rpm_endif"
     }
   ],
   "conflicts": [

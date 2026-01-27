@@ -2886,6 +2886,21 @@
     "named": true
   },
   {
+    "type": "rpm_conditional",
+    "named": true,
+    "extra": true
+  },
+  {
+    "type": "rpm_else",
+    "named": true,
+    "extra": true
+  },
+  {
+    "type": "rpm_endif",
+    "named": true,
+    "extra": true
+  },
+  {
     "type": "rpm_macro_simple",
     "named": true
   },

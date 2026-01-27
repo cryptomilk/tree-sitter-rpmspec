@@ -48,6 +48,18 @@ function noneOf(...characters) {
 module.exports = grammar(Bash, {
     name: 'rpmbash',
 
+    // Add RPM conditionals as extras - allows them to appear anywhere
+    // without breaking parse structure (like comments). This is critical
+    // for conditionals inside multi-line commands:
+    //   ./configure \
+    //     --prefix=/usr \
+    //   %if %{with ssl}
+    //     --with-ssl \
+    //   %endif
+    //     --disable-gzip
+    extras: ($, previous) =>
+        previous.concat([$.rpm_conditional, $.rpm_else, $.rpm_endif]),
+
     rules: {
         // Add RPM macro expansion to concatenation choices
         // This allows %{...} and %name to appear in command arguments
@@ -73,7 +85,7 @@ module.exports = grammar(Bash, {
         // RPM simple expansion: %name (without braces)
         // Requires 2+ chars to avoid conflicts with printf specifiers (%s, %d)
         // Single-char macros must use braces: %{s} not %s
-        // Must be a single token with high precedence to win over bash's word rule
+        // High precedence token to win over bash's word rule
         rpm_macro_simple: ($) =>
             token(prec(10, seq('%', /[a-zA-Z_][a-zA-Z0-9_]+/))),
 
@@ -120,6 +132,35 @@ module.exports = grammar(Bash, {
         //   |\\\n    - OR backslash followed by newline (line continuation)
         //   |\\[^\n] - OR backslash followed by non-newline (escape sequence)
         _rpm_macro_body: ($) => /([^\\\n]|\\\n|\\[^\n])+/,
+
+        // RPM conditionals with arguments - appear in extras so they don't break
+        // multi-line commands. Keywords require whitespace after to avoid matching
+        // %iframe as %if + rame. Use [ \t] instead of \s to avoid matching newlines.
+        rpm_conditional: ($) =>
+            token(
+                prec(
+                    20,
+                    choice(
+                        seq('%if', /[ \t]+/, /[^\n]*/), // %if condition
+                        seq('%elif', /[ \t]+/, /[^\n]*/), // %elif condition
+                        seq('%ifarch', /[ \t]+/, /[^\n]*/), // %ifarch arch...
+                        seq('%ifnarch', /[ \t]+/, /[^\n]*/), // %ifnarch arch...
+                        seq('%ifos', /[ \t]+/, /[^\n]*/), // %ifos os...
+                        seq('%ifnos', /[ \t]+/, /[^\n]*/) // %ifnos os...
+                    )
+                )
+            ),
+
+        // %else and %endif as grammar rules with high precedence
+        // These typically appear on their own line, so we can match them simply
+        //
+        // Note: %else/%endif will match instead of rpm_macro_simple even in
+        // contexts like command arguments. This is fine because:
+        // 1. %else/%endif are not valid macro names - they're conditional directives
+        // 2. Via injection.parent, rpmspec receives them and highlights correctly
+        // 3. %elsewhere would match as %else + where, but that's not valid RPM
+        rpm_else: ($) => token(prec(20, '%else')),
+        rpm_endif: ($) => token(prec(20, '%endif')),
 
         // Override word to treat '%' as a word-breaking character
         // This allows %name to be recognized within concatenations
