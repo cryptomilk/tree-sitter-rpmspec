@@ -3930,6 +3930,10 @@
           "name": "rpm_macro_expansion"
         },
         {
+          "type": "SYMBOL",
+          "name": "rpm_macro_simple"
+        },
+        {
           "type": "CHOICE",
           "members": [
             {
@@ -6883,7 +6887,7 @@
             "members": [
               {
                 "type": "PATTERN",
-                "value": "[^#'\"<>{}\\[\\]()`$|&;\\\\\\s]"
+                "value": "[^#'\"<>{}\\[\\]()`$%|&;\\\\\\s]"
               },
               {
                 "type": "SEQ",
@@ -6907,7 +6911,7 @@
               "members": [
                 {
                   "type": "PATTERN",
-                  "value": "[^'\"<>{}\\[\\]()`$|&;\\\\\\s]"
+                  "value": "[^'\"<>{}\\[\\]()`$%|&;\\\\\\s]"
                 },
                 {
                   "type": "SEQ",
@@ -7013,6 +7017,26 @@
             "value": "%"
           }
         ]
+      }
+    },
+    "rpm_macro_simple": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 10,
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "%"
+            },
+            {
+              "type": "PATTERN",
+              "value": "[a-zA-Z_][a-zA-Z0-9_]+"
+            }
+          ]
+        }
       }
     }
   },

@@ -78,6 +78,10 @@
         "named": true
       },
       {
+        "type": "rpm_macro_simple",
+        "named": true
+      },
+      {
         "type": "simple_expansion",
         "named": true
       },
@@ -2836,6 +2840,10 @@
   },
   {
     "type": "regex",
+    "named": true
+  },
+  {
+    "type": "rpm_macro_simple",
     "named": true
   },
   {
