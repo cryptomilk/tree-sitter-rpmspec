@@ -6,6 +6,10 @@ project(tree-sitter-rpmspec
         HOMEPAGE_URL "https://gitlab.com/cryptomilk/tree-sitter-rpmspec"
         LANGUAGES C)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
+include(GNUInstallDirs)
+include(TSAddParserLibrary)
+
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
 option(TREE_SITTER_REUSE_ALLOCATOR "Reuse the library allocator" OFF)
 option(PICKY_DEVELOPER "Enable strict compiler warnings for scanner.c" OFF)
@@ -52,52 +56,7 @@ endif()
 
 find_program(TREE_SITTER_CLI tree-sitter DOC "Tree-sitter CLI")
 
-add_custom_command(OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/src/parser.c"
-                   DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/grammar.json"
-                   COMMAND "${TREE_SITTER_CLI}" generate src/grammar.json
-                            --abi=${TREE_SITTER_ABI_VERSION}
-                   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-                   COMMENT "Generating parser.c")
-
-add_library(tree-sitter-rpmspec src/parser.c)
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/src/scanner.c)
-  target_sources(tree-sitter-rpmspec PRIVATE src/scanner.c)
-  if(SCANNER_WARNING_FLAGS)
-    set_source_files_properties(src/scanner.c PROPERTIES COMPILE_OPTIONS "${SCANNER_WARNING_FLAGS}")
-  endif()
-endif()
-target_include_directories(tree-sitter-rpmspec
-                           PRIVATE src
-                           INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/bindings/c>
-                                     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
-
-target_compile_definitions(tree-sitter-rpmspec PRIVATE
-                           $<$<BOOL:${TREE_SITTER_REUSE_ALLOCATOR}>:TREE_SITTER_REUSE_ALLOCATOR>
-                           $<$<CONFIG:Debug>:TREE_SITTER_DEBUG>)
-
-set_target_properties(tree-sitter-rpmspec
-                      PROPERTIES
-                      C_STANDARD 11
-                      POSITION_INDEPENDENT_CODE ON
-                      SOVERSION "${TREE_SITTER_ABI_VERSION}.${PROJECT_VERSION_MAJOR}"
-                      DEFINE_SYMBOL "")
-
-configure_file(bindings/c/tree-sitter-rpmspec.pc.in
-               "${CMAKE_CURRENT_BINARY_DIR}/tree-sitter-rpmspec.pc" @ONLY)
-
-include(GNUInstallDirs)
-
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bindings/c/tree_sitter"
-        DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
-        FILES_MATCHING PATTERN "*.h")
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/tree-sitter-rpmspec.pc"
-        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig")
-install(TARGETS tree-sitter-rpmspec
-        LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-
-file(GLOB QUERIES queries/*.scm)
-install(FILES ${QUERIES}
-        DESTINATION "${CMAKE_INSTALL_DATADIR}/tree-sitter/queries/rpmspec")
+ts_add_parser_library(rpmspec)
 
 add_custom_target(ts-test "${TREE_SITTER_CLI}" test
                   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
