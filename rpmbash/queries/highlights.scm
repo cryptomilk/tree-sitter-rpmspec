@@ -8,7 +8,7 @@
 ; for RPM constructs when used standalone (not via rpmspec injection).
 (rpm_macro_expansion) @embedded
 (rpm_macro_simple) @embedded
-(rpm_conditional) @keyword.conditional
+(rpm_conditional_keyword) @keyword.conditional
 (rpm_else) @keyword.conditional
 (rpm_endif) @keyword.conditional
 (rpm_define) @keyword.directive

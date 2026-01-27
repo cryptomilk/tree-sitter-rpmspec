@@ -22,47 +22,37 @@
 ; These always use rpmbash (no interpreter option)
 ; ============================================================
 
-(prep_scriptlet (script_block (script_line) @injection.content)
+(prep_scriptlet (script_block) @injection.content
   (#set! injection.language "rpmbash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
-(build_scriptlet (script_block (script_line) @injection.content)
+  (#set! injection.include-children))
+(build_scriptlet (script_block) @injection.content
   (#set! injection.language "rpmbash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
-(install_scriptlet (script_block (script_line) @injection.content)
+  (#set! injection.include-children))
+(install_scriptlet (script_block) @injection.content
   (#set! injection.language "rpmbash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
-(check_scriptlet (script_block (script_line) @injection.content)
+  (#set! injection.include-children))
+(check_scriptlet (script_block) @injection.content
   (#set! injection.language "rpmbash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
-(clean_scriptlet (script_block (script_line) @injection.content)
+  (#set! injection.include-children))
+(clean_scriptlet (script_block) @injection.content
   (#set! injection.language "rpmbash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
-(conf_scriptlet (script_block (script_line) @injection.content)
+  (#set! injection.include-children))
+(conf_scriptlet (script_block) @injection.content
   (#set! injection.language "rpmbash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
-(generate_buildrequires (script_block (script_line) @injection.content)
+  (#set! injection.include-children))
+(generate_buildrequires (script_block) @injection.content
   (#set! injection.language "rpmbash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
+  (#set! injection.include-children))
 
 ; ============================================================
 ; RUNTIME SCRIPTLETS
 ; ============================================================
 
 ; runtime_scriptlet (no -p option) -> rpmbash
-; Combine script_line nodes so multi-line constructs (if/fi, case/esac)
-; parse in one rpmbash injection.
 (runtime_scriptlet
-  (script_block (script_line) @injection.content)
+  (script_block) @injection.content
   (#set! injection.language "rpmbash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
+  (#set! injection.include-children))
 
 ; ============================================================
 ; RUNTIME SCRIPTLETS WITH INTERPRETER (-p option)
@@ -103,11 +93,10 @@
 (runtime_scriptlet_interpreter
   interpreter: (script_interpreter
     program: (interpreter_program) @_interp)
-  (script_block (script_line) @injection.content)
+  (script_block) @injection.content
   (#match? @_interp "(bash|/sh$)")
   (#set! injection.language "rpmbash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
+  (#set! injection.include-children))
 
 ; ============================================================
 ; TRIGGERS (have optional interpreter like runtime_scriptlet_interpreter)
@@ -116,10 +105,9 @@
 
 ; Default rpmbash for triggers
 (trigger
-  (script_block (script_line) @injection.content)
+  (script_block) @injection.content
   (#set! injection.language "rpmbash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
+  (#set! injection.include-children))
 
 ; Lua interpreter for triggers
 (trigger
@@ -149,10 +137,9 @@
 
 ; Default rpmbash for file triggers
 (file_trigger
-  (script_block (script_line) @injection.content)
+  (script_block) @injection.content
   (#set! injection.language "rpmbash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
+  (#set! injection.include-children))
 
 ; Lua interpreter for file triggers
 (file_trigger
@@ -168,9 +155,8 @@
 ; ============================================================
 ; CONDITIONALS INSIDE SCRIPTLETS
 ; ============================================================
-; Note: Content inside RPM conditionals (%if/%endif, %ifarch/%endif, etc.)
-; is included in the parent scriptlet injection via include-children.
-; No separate injection needed - rpmbash handles %if/%endif as extras.
+; No separate injection needed - script_block injection includes all content
+; with include-children, and rpmbash handles %if/%endif as extras.
 
 ; ============================================================
 ; SHELL COMMAND EXPANSION %(...)

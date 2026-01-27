@@ -19,17 +19,10 @@
 ; =============================================================================
 ; RPM CONDITIONALS -> rpmspec
 ; =============================================================================
+; rpm_conditional is structured as keyword + condition.
+; The condition is handed back to rpmspec for proper macro/expression highlighting.
 
-; Conditional directives: %if, %elif, %ifarch, etc.
-(rpm_conditional) @injection.content
-  (#set! injection.parent)
-
-; %else directive
-(rpm_else) @injection.content
-  (#set! injection.parent)
-
-; %endif directive
-(rpm_endif) @injection.content
+(rpm_condition) @injection.content
   (#set! injection.parent)
 
 ; =============================================================================

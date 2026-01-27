@@ -134,22 +134,33 @@ module.exports = grammar(Bash, {
         _rpm_macro_body: ($) => /([^\\\n]|\\\n|\\[^\n])+/,
 
         // RPM conditionals with arguments - appear in extras so they don't break
-        // multi-line commands. Keywords require whitespace after to avoid matching
-        // %iframe as %if + rame. Use [ \t] instead of \s to avoid matching newlines.
-        rpm_conditional: ($) =>
+        // multi-line commands. Structured as keyword + condition so the condition
+        // can be handed back to rpmspec for proper macro highlighting.
+        // Both parts are tokens for clear boundaries (required by extras mechanism).
+        rpm_conditional: ($) => seq($.rpm_conditional_keyword, $.rpm_condition),
+
+        // Keywords require whitespace after to avoid matching %iframe as %if + rame.
+        rpm_conditional_keyword: ($) =>
             token(
                 prec(
                     20,
-                    choice(
-                        seq('%if', /[ \t]+/, /[^\n]*/), // %if condition
-                        seq('%elif', /[ \t]+/, /[^\n]*/), // %elif condition
-                        seq('%ifarch', /[ \t]+/, /[^\n]*/), // %ifarch arch...
-                        seq('%ifnarch', /[ \t]+/, /[^\n]*/), // %ifnarch arch...
-                        seq('%ifos', /[ \t]+/, /[^\n]*/), // %ifos os...
-                        seq('%ifnos', /[ \t]+/, /[^\n]*/) // %ifnos os...
+                    seq(
+                        choice(
+                            '%if',
+                            '%elif',
+                            '%ifarch',
+                            '%ifnarch',
+                            '%ifos',
+                            '%ifnos'
+                        ),
+                        /[ \t]+/
                     )
                 )
             ),
+
+        // Condition content - single token matching to end of line.
+        // Handed back to rpmspec via injection.parent for macro highlighting.
+        rpm_condition: ($) => token(prec(20, /[^\n]+/)),
 
         // %else and %endif as grammar rules with high precedence
         // These typically appear on their own line, so we can match them simply

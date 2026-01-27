@@ -15,7 +15,9 @@ echo end
     (command_name
       (word))
     (word))
-  (rpm_conditional)
+  (rpm_conditional
+    (rpm_conditional_keyword)
+    (rpm_condition))
   (command
     (command_name
       (word))
@@ -39,7 +41,9 @@ echo other
 --------------------------------------------------------------------------------
 
 (program
-  (rpm_conditional)
+  (rpm_conditional
+    (rpm_conditional_keyword)
+    (rpm_condition))
   (command
     (command_name
       (word))
@@ -66,12 +70,16 @@ echo other
 --------------------------------------------------------------------------------
 
 (program
-  (rpm_conditional)
+  (rpm_conditional
+    (rpm_conditional_keyword)
+    (rpm_condition))
   (command
     (command_name
       (word))
     (word))
-  (rpm_conditional)
+  (rpm_conditional
+    (rpm_conditional_keyword)
+    (rpm_condition))
   (command
     (command_name
       (word))
@@ -94,7 +102,9 @@ echo 64bit
 --------------------------------------------------------------------------------
 
 (program
-  (rpm_conditional)
+  (rpm_conditional
+    (rpm_conditional_keyword)
+    (rpm_condition))
   (command
     (command_name
       (word))
@@ -112,7 +122,9 @@ echo not-i686
 --------------------------------------------------------------------------------
 
 (program
-  (rpm_conditional)
+  (rpm_conditional
+    (rpm_conditional_keyword)
+    (rpm_condition))
   (command
     (command_name
       (word))
@@ -130,7 +142,9 @@ echo linux
 --------------------------------------------------------------------------------
 
 (program
-  (rpm_conditional)
+  (rpm_conditional
+    (rpm_conditional_keyword)
+    (rpm_condition))
   (command
     (command_name
       (word))
@@ -148,7 +162,9 @@ echo not-windows
 --------------------------------------------------------------------------------
 
 (program
-  (rpm_conditional)
+  (rpm_conditional
+    (rpm_conditional_keyword)
+    (rpm_condition))
   (command
     (command_name
       (word))
@@ -168,8 +184,12 @@ echo fedora-x64
 --------------------------------------------------------------------------------
 
 (program
-  (rpm_conditional)
-  (rpm_conditional)
+  (rpm_conditional
+    (rpm_conditional_keyword)
+    (rpm_condition))
+  (rpm_conditional
+    (rpm_conditional_keyword)
+    (rpm_condition))
   (command
     (command_name
       (word))
@@ -188,7 +208,9 @@ make %{?_smp_mflags} check
 --------------------------------------------------------------------------------
 
 (program
-  (rpm_conditional)
+  (rpm_conditional
+    (rpm_conditional_keyword)
+    (rpm_condition))
   (command
     (command_name
       (word))

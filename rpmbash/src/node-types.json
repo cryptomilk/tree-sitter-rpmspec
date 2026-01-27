@@ -1873,6 +1873,26 @@
     }
   },
   {
+    "type": "rpm_conditional",
+    "named": true,
+    "extra": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "rpm_condition",
+          "named": true
+        },
+        {
+          "type": "rpm_conditional_keyword",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "rpm_define",
     "named": true,
     "fields": {}
@@ -2886,9 +2906,12 @@
     "named": true
   },
   {
-    "type": "rpm_conditional",
-    "named": true,
-    "extra": true
+    "type": "rpm_condition",
+    "named": true
+  },
+  {
+    "type": "rpm_conditional_keyword",
+    "named": true
   },
   {
     "type": "rpm_else",
