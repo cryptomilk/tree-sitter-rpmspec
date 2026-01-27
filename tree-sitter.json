@@ -10,8 +10,8 @@
       "file-types": ["spec"],
       "injection-regex": "^rpmspec$",
       "class-name": "TreeSitterRPMSpec",
-      "highlights": "queries/highlights.scm",
-      "injections": "queries/injections.scm"
+      "highlights": "rpmspec/queries/highlights.scm",
+      "injections": "rpmspec/queries/injections.scm"
     },
     {
       "name": "rpmbash",
@@ -20,7 +20,12 @@
       "scope": "source.rpmbash",
       "path": "rpmbash",
       "injection-regex": "^rpmbash$",
-      "class-name": "TreeSitterRPMBash"
+      "class-name": "TreeSitterRPMBash",
+      "highlights": [
+        "rpmbash/queries/highlights.scm",
+        "rpmbash/node_modules/tree-sitter-bash/queries/highlights.scm"
+      ],
+      "injections": "rpmbash/queries/injections.scm"
     }
   ],
   "metadata": {

@@ -4,57 +4,50 @@
 ; RPM spec file scriptlets (%build, %install, %pre, etc.).
 ;
 ; Interpreter-based injection:
-; - Default (no -p): bash
+; - Default (no -p): rpmbash (RPM-aware bash with macro support)
 ; - -p <lua>: lua
 ; - -p /path/to/python: python
 ; - -p /path/to/perl: perl
 ;
-; Limitations:
-; - Each script_line is injected independently due to RPM macros
-; - Lines with macros may not form valid syntax for the target language
+; rpmbash extends tree-sitter-bash to recognize RPM macros (%{...}, %name)
+; and conditionals (%if/%endif). These are delegated back to rpmspec via
+; injection.parent for proper highlighting.
 ;
 ; Requirements:
-; - tree-sitter-bash, tree-sitter-lua, tree-sitter-python, etc.
+; - tree-sitter-rpmbash (included), tree-sitter-lua, tree-sitter-python, etc.
 ; - Editor must support tree-sitter language injection
 
 ; ============================================================
 ; BUILD SCRIPTLETS (%prep, %build, %install, %check, %clean, %conf)
-; These always use bash (no interpreter option)
+; These always use rpmbash (no interpreter option)
 ; ============================================================
 
 (prep_scriptlet (script_block (script_line) @injection.content)
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
+  (#set! injection.language "rpmbash")
   (#set! injection.include-children)
   (#set! injection.combined))
 (build_scriptlet (script_block (script_line) @injection.content)
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
+  (#set! injection.language "rpmbash")
   (#set! injection.include-children)
   (#set! injection.combined))
 (install_scriptlet (script_block (script_line) @injection.content)
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
+  (#set! injection.language "rpmbash")
   (#set! injection.include-children)
   (#set! injection.combined))
 (check_scriptlet (script_block (script_line) @injection.content)
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
+  (#set! injection.language "rpmbash")
   (#set! injection.include-children)
   (#set! injection.combined))
 (clean_scriptlet (script_block (script_line) @injection.content)
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
+  (#set! injection.language "rpmbash")
   (#set! injection.include-children)
   (#set! injection.combined))
 (conf_scriptlet (script_block (script_line) @injection.content)
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
+  (#set! injection.language "rpmbash")
   (#set! injection.include-children)
   (#set! injection.combined))
 (generate_buildrequires (script_block (script_line) @injection.content)
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
+  (#set! injection.language "rpmbash")
   (#set! injection.include-children)
   (#set! injection.combined))
 
@@ -62,13 +55,12 @@
 ; RUNTIME SCRIPTLETS
 ; ============================================================
 
-; runtime_scriptlet (no -p option) -> bash
+; runtime_scriptlet (no -p option) -> rpmbash
 ; Combine script_line nodes so multi-line constructs (if/fi, case/esac)
-; parse in one bash injection while skipping macro-only lines.
+; parse in one rpmbash injection.
 (runtime_scriptlet
   (script_block (script_line) @injection.content)
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
+  (#set! injection.language "rpmbash")
   (#set! injection.include-children)
   (#set! injection.combined))
 
@@ -107,14 +99,13 @@
   (#set! injection.language "perl")
   (#set! injection.include-children))
 
-; Bash: -p /bin/bash, -p /bin/sh, -p /usr/bin/bash, etc.
+; Bash/sh: -p /bin/bash, -p /bin/sh, -p /usr/bin/bash, etc.
 (runtime_scriptlet_interpreter
   interpreter: (script_interpreter
     program: (interpreter_program) @_interp)
   (script_block (script_line) @injection.content)
   (#match? @_interp "(bash|/sh$)")
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
+  (#set! injection.language "rpmbash")
   (#set! injection.include-children)
   (#set! injection.combined))
 
@@ -123,11 +114,10 @@
 ; Order: default bash first, specific interpreters last to override
 ; ============================================================
 
-; Default bash for triggers
+; Default rpmbash for triggers
 (trigger
   (script_block (script_line) @injection.content)
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
+  (#set! injection.language "rpmbash")
   (#set! injection.include-children)
   (#set! injection.combined))
 
@@ -157,11 +147,10 @@
 ; FILE TRIGGERS
 ; ============================================================
 
-; Default bash for file triggers
+; Default rpmbash for file triggers
 (file_trigger
   (script_block (script_line) @injection.content)
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
+  (#set! injection.language "rpmbash")
   (#set! injection.include-children)
   (#set! injection.combined))
 
@@ -179,51 +168,16 @@
 ; ============================================================
 ; CONDITIONALS INSIDE SCRIPTLETS
 ; ============================================================
-
-(if_statement (script_line) @injection.content
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
-(scriptlet_elif_clause (script_line) @injection.content
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
-(scriptlet_else_clause (script_line) @injection.content
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
-
-(ifarch_statement (script_line) @injection.content
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
-(scriptlet_elifarch_clause (script_line) @injection.content
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
-
-(ifos_statement (script_line) @injection.content
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
-(scriptlet_elifos_clause (script_line) @injection.content
-  (#not-match? @injection.content "^\\s*[%]")
-  (#set! injection.language "bash")
-  (#set! injection.include-children)
-  (#set! injection.combined))
+; Note: Content inside RPM conditionals (%if/%endif, %ifarch/%endif, etc.)
+; is included in the parent scriptlet injection via include-children.
+; No separate injection needed - rpmbash handles %if/%endif as extras.
 
 ; ============================================================
 ; SHELL COMMAND EXPANSION %(...)
 ; ============================================================
 
 (shell_command) @injection.content
-  (#set! injection.language "bash")
+  (#set! injection.language "rpmbash")
   (#set! injection.include-children)
 
 ; ============================================================
