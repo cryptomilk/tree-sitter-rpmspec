@@ -152,6 +152,18 @@
         "named": true
       },
       {
+        "type": "rpm_define",
+        "named": true
+      },
+      {
+        "type": "rpm_global",
+        "named": true
+      },
+      {
+        "type": "rpm_undefine",
+        "named": true
+      },
+      {
         "type": "subshell",
         "named": true
       },
@@ -1861,6 +1873,16 @@
     }
   },
   {
+    "type": "rpm_define",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "rpm_global",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "rpm_macro_expansion",
     "named": true,
     "fields": {},
@@ -1874,6 +1896,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "rpm_undefine",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "simple_expansion",
@@ -2431,6 +2458,18 @@
   },
   {
     "type": "%=",
+    "named": false
+  },
+  {
+    "type": "%define",
+    "named": false
+  },
+  {
+    "type": "%global",
+    "named": false
+  },
+  {
+    "type": "%undefine",
     "named": false
   },
   {

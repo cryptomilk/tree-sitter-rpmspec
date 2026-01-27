@@ -83,6 +83,39 @@ module.exports = grammar(Bash, {
         command_substitution: ($, previous) =>
             choice(seq('%(', $._statements, ')'), previous),
 
+        // Extend _statement to include RPM macro definitions
+        _statement: ($, previous) =>
+            choice($.rpm_define, $.rpm_global, $.rpm_undefine, previous),
+
+        // RPM macro definitions - common in scriptlets
+        // Use token() with high precedence to match before rpm_macro_simple
+        // %define name value - define local macro
+        rpm_define: ($) =>
+            seq(
+                token(prec(20, '%define')),
+                $._rpm_macro_name,
+                optional($._rpm_macro_body)
+            ),
+
+        // %global name value - define global macro (persists across scriptlets)
+        rpm_global: ($) =>
+            seq(
+                token(prec(20, '%global')),
+                $._rpm_macro_name,
+                optional($._rpm_macro_body)
+            ),
+
+        // %undefine name - undefine a macro
+        rpm_undefine: ($) =>
+            seq(token(prec(20, '%undefine')), $._rpm_macro_name),
+
+        // Macro name for definitions (hidden, same pattern as simple expansion)
+        _rpm_macro_name: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
+
+        // Macro body - everything until end of line
+        // Content is delegated to rpmspec for full parsing via injection.parent
+        _rpm_macro_body: ($) => /[^\n]+/,
+
         // Override word to treat '%' as a word-breaking character
         // This allows %name to be recognized within concatenations
         word: ($) =>

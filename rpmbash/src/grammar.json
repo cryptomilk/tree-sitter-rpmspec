@@ -78,11 +78,28 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_statement_not_subshell"
+          "name": "rpm_define"
         },
         {
           "type": "SYMBOL",
-          "name": "subshell"
+          "name": "rpm_global"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "rpm_undefine"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_statement_not_subshell"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "subshell"
+            }
+          ]
         }
       ]
     },
@@ -7060,6 +7077,98 @@
           ]
         }
       }
+    },
+    "rpm_define": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 20,
+            "content": {
+              "type": "STRING",
+              "value": "%define"
+            }
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_rpm_macro_name"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_rpm_macro_body"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "rpm_global": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 20,
+            "content": {
+              "type": "STRING",
+              "value": "%global"
+            }
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_rpm_macro_name"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_rpm_macro_body"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "rpm_undefine": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "PREC",
+            "value": 20,
+            "content": {
+              "type": "STRING",
+              "value": "%undefine"
+            }
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_rpm_macro_name"
+        }
+      ]
+    },
+    "_rpm_macro_name": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z_][a-zA-Z0-9_]*"
+    },
+    "_rpm_macro_body": {
+      "type": "PATTERN",
+      "value": "[^\\n]+"
     }
   },
   "extras": [
