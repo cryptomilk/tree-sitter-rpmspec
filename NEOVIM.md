@@ -1,35 +1,90 @@
-# Load the parser in Neovim
+# Developer Setup: Load the parser in Neovim
 
-## Prepare the directory
+This guide is for developers working on the grammar who want to test changes
+in Neovim. For end-user installation, use nvim-treesitter and check README.md.
+
+This project contains two grammars:
+- **rpmspec**: Main RPM spec file grammar
+- **rpmbash**: RPM-aware bash grammar (used for scriptlet injection)
+
+Both are needed for full syntax highlighting with language injection.
+
+## Quick Start
+
+The `neovim/` directory is pre-configured with symlinks to parsers and queries.
+Build the project and generate Neovim-specific files:
 
 ```bash
-mkdir parser
-ln -s ../build/libtree-sitter-rpmspec.so parser/rpmspec.so
-ln -s . queries/rpmspec
+# Build the parsers
+make configure
+make build
+
+# Generate Neovim query files (adds bash inheritance for rpmbash)
+make neovim
 ```
 
-## Load it in Neovim
+```lua
+-- Add to your Neovim config
+vim.opt.runtimepath:prepend('/path/to/tree-sitter-rpmspec/neovim')
+```
+
+## Manual Setup (alternative)
+
+If you prefer to set up symlinks yourself:
+
+```bash
+# Create parser directory with symlinks to built libraries
+mkdir -p parser
+ln -sf ../build/rpmspec/libtree-sitter-rpmspec.so parser/rpmspec.so
+ln -sf ../build/rpmbash/libtree-sitter-rpmbash.so parser/rpmbash.so
+
+# Create queries symlinks (Neovim expects queries/<lang>/)
+mkdir -p queries
+ln -sf ../rpmspec/queries queries/rpmspec
+ln -sf ../rpmbash/queries queries/rpmbash
+```
+
+Then point Neovim to the repo root:
 
 ```lua
 vim.opt.runtimepath:prepend('/path/to/tree-sitter-rpmspec')
-lua vim.treesitter.start(0, 'rpmspec')
 ```
 
 ## Auto command to add it for filetype
 
 This will load rpmspec automatically for the spec filetype and allow you to use
-`:InspectTree`
+`:InspectTree`. Both rpmspec and rpmbash are loaded so injection works.
 
 ```lua
-vim.opt.runtimepath:prepend('/path/to/tree-sitter-rpmspec')
+local rpmspec_path = '/path/to/tree-sitter-rpmspec/neovim'
+
+-- Add path for queries and parsers
+vim.opt.runtimepath:prepend(rpmspec_path)
+
+vim.treesitter.language.register('rpmspec', 'spec')
 
 local augroup = vim.api.nvim_create_augroup('rpmspec', {})
-
 vim.api.nvim_create_autocmd('FileType', {
     group = augroup,
-    pattern = 'spec',
-    callback = function()
-        vim.treesitter.language.register('rpmspec', 'spec')
+    pattern = { 'spec' },
+    callback = function(args)
+        vim.treesitter.start(args.buf, 'rpmspec')
+
+        vim.bo.commentstring = "# %s"
+        vim.bo.comments = "b:#"
     end,
 })
 ```
+
+## Verify injection is working
+
+Open a spec file with scriptlets and run:
+
+```vim
+:InspectTree
+```
+
+You should see:
+- `script_block` / `script_line` nodes in the rpmspec tree
+- Injected rpmbash parsing for bash content
+- RPM macros (`rpm_macro_expansion`, `rpm_macro_simple`) delegated back to rpmspec

@@ -1,0 +1,1 @@
+../../../rpmbash/queries/injections.scm

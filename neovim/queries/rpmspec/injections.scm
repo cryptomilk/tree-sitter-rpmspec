@@ -1,0 +1,1 @@
+../../../rpmspec/queries/injections.scm

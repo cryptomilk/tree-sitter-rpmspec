@@ -1,0 +1,1 @@
+../../../rpmspec/queries/highlights.scm
