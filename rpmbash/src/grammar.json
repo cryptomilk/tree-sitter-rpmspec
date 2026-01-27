@@ -7168,7 +7168,7 @@
     },
     "_rpm_macro_body": {
       "type": "PATTERN",
-      "value": "[^\\n]+"
+      "value": "([^\\\\\\n]|\\\\\\n|\\\\[^\\n])+"
     }
   },
   "extras": [

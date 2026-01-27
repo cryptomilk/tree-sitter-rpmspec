@@ -256,3 +256,21 @@ cd %{builddir}
     (command_name
       (word))
     (rpm_macro_expansion)))
+
+================================================================================
+Define with line continuation
+================================================================================
+
+%define long_macro \
+  this is a \
+  long value
+echo done
+
+--------------------------------------------------------------------------------
+
+(program
+  (rpm_define)
+  (command
+    (command_name
+      (word))
+    (word)))

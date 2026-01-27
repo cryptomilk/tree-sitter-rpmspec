@@ -112,9 +112,14 @@ module.exports = grammar(Bash, {
         // Macro name for definitions (hidden, same pattern as simple expansion)
         _rpm_macro_name: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
 
-        // Macro body - everything until end of line
+        // Macro body - everything until unescaped end of line
+        // Supports line continuation with backslash
         // Content is delegated to rpmspec for full parsing via injection.parent
-        _rpm_macro_body: ($) => /[^\n]+/,
+        // Pattern breakdown:
+        //   [^\\\n]  - any char except backslash or newline
+        //   |\\\n    - OR backslash followed by newline (line continuation)
+        //   |\\[^\n] - OR backslash followed by non-newline (escape sequence)
+        _rpm_macro_body: ($) => /([^\\\n]|\\\n|\\[^\n])+/,
 
         // Override word to treat '%' as a word-breaking character
         // This allows %name to be recognized within concatenations
