@@ -57,8 +57,9 @@ endif()
 find_program(TREE_SITTER_CLI tree-sitter DOC "Tree-sitter CLI")
 
 add_subdirectory(rpmspec)
+add_subdirectory(rpmbash)
 
 # Aggregate test target that runs tests for all grammars
 add_custom_target(ts-test
-                  DEPENDS ts-test-rpmspec
+                  DEPENDS ts-test-rpmspec ts-test-rpmbash
                   COMMENT "Run tree-sitter tests for all grammars")

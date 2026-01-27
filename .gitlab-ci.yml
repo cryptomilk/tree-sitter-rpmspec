@@ -20,17 +20,19 @@ code-format:
     - if: $CI_MERGE_REQUEST_IID
   script:
     - |
-      if prettier --check rpmspec/grammar.js; then
+      if prettier --check rpmspec/grammar.js rpmbash/grammar.js; then
         echo "prettier: OK"
       else
-        prettier rpmspec/grammar.js > grammar.js.prettier
-        diff --unified rpmspec/grammar.js grammar.js.prettier | \
-          bat --style=plain --paging=never --color=always
+        for f in rpmspec/grammar.js rpmbash/grammar.js; do
+          prettier "$f" > grammar.js.prettier
+          diff --unified "$f" grammar.js.prettier | \
+            bat --style=plain --paging=never --color=always
+        done
         exit 1
       fi
     - |
       # Only check src/scanner.c (src/parser.c is generated)
-      diff=$(git-clang-format --diff --commit "$CI_MERGE_REQUEST_DIFF_BASE_SHA" -- rpmspec/src/scanner.c)
+      diff=$(git-clang-format --diff --commit "$CI_MERGE_REQUEST_DIFF_BASE_SHA" -- rpmspec/src/scanner.c rpmbash/src/scanner.c)
       if [ "$diff" = "no modified files to format" ] || \
          [ "$diff" = "clang-format did not modify any files" ]; then
         echo "clang-format: OK"
@@ -43,6 +45,7 @@ code-format:
 tree-sitter/test:
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   script:
+    - npm --prefix rpmbash install
     - cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
     - cmake --build build
     - cmake --build build --target ts-test

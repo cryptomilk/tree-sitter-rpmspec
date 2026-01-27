@@ -3,10 +3,14 @@ TS ?= tree-sitter
 default: build
 
 configure:
+	@if [ ! -d rpmbash/node_modules/tree-sitter-bash ]; then \
+		npm --prefix rpmbash install; \
+	fi
 	cmake -B build -DPICKY_DEVELOPER=ON
 
 build:
 	cd rpmspec && $(TS) generate
+	cd rpmbash && $(TS) generate
 	cmake --build build
 
 test: default

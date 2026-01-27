@@ -1,0 +1,17 @@
+{
+  "name": "tree-sitter-rpmbash",
+  "version": "0.0.1",
+  "description": "RPM-aware Bash grammar for tree-sitter",
+  "private": true,
+  "main": "bindings/node",
+  "dependencies": {
+    "tree-sitter-bash": "~0.25.1"
+  },
+  "devDependencies": {
+    "tree-sitter-cli": "~0.25.8"
+  },
+  "scripts": {
+    "build": "tree-sitter generate",
+    "test": "tree-sitter test"
+  }
+}
