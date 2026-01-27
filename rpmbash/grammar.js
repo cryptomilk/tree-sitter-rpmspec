@@ -77,6 +77,12 @@ module.exports = grammar(Bash, {
         rpm_macro_simple: ($) =>
             token(prec(10, seq('%', /[a-zA-Z_][a-zA-Z0-9_]+/))),
 
+        // Extend command_substitution to include RPM's %(cmd) shell expansion
+        // %(cmd) is semantically equivalent to $(cmd) - executes shell command
+        // Content inside is parsed as bash statements, not delegated to parent
+        command_substitution: ($, previous) =>
+            choice(seq('%(', $._statements, ')'), previous),
+
         // Override word to treat '%' as a word-breaking character
         // This allows %name to be recognized within concatenations
         word: ($) =>
