@@ -20,17 +20,17 @@ code-format:
     - if: $CI_MERGE_REQUEST_IID
   script:
     - |
-      if prettier --check grammar.js; then
+      if prettier --check rpmspec/grammar.js; then
         echo "prettier: OK"
       else
-        prettier grammar.js > grammar.js.prettier
-        diff --unified grammar.js grammar.js.prettier | \
+        prettier rpmspec/grammar.js > grammar.js.prettier
+        diff --unified rpmspec/grammar.js grammar.js.prettier | \
           bat --style=plain --paging=never --color=always
         exit 1
       fi
     - |
       # Only check src/scanner.c (src/parser.c is generated)
-      diff=$(git-clang-format --diff --commit "$CI_MERGE_REQUEST_DIFF_BASE_SHA" -- src/scanner.c)
+      diff=$(git-clang-format --diff --commit "$CI_MERGE_REQUEST_DIFF_BASE_SHA" -- rpmspec/src/scanner.c)
       if [ "$diff" = "no modified files to format" ] || \
          [ "$diff" = "clang-format did not modify any files" ]; then
         echo "clang-format: OK"
@@ -45,4 +45,4 @@ tree-sitter/test:
   script:
     - cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
     - cmake --build build
-    - make -C build ts-test
+    - cmake --build build --target ts-test

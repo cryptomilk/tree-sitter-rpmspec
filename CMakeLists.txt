@@ -56,8 +56,9 @@ endif()
 
 find_program(TREE_SITTER_CLI tree-sitter DOC "Tree-sitter CLI")
 
-ts_add_parser_library(rpmspec)
+add_subdirectory(rpmspec)
 
-add_custom_target(ts-test "${TREE_SITTER_CLI}" test
-                  WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-                  COMMENT "tree-sitter test")
+# Aggregate test target that runs tests for all grammars
+add_custom_target(ts-test
+                  DEPENDS ts-test-rpmspec
+                  COMMENT "Run tree-sitter tests for all grammars")

@@ -6,6 +6,7 @@
       "camelcase": "RPMSpec",
       "title": "RPMSpec",
       "scope": "source.rpmspec",
+      "path": "rpmspec",
       "file-types": ["spec"],
       "injection-regex": "^rpmspec$",
       "class-name": "TreeSitterRPMSpec",

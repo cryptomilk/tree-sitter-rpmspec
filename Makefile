@@ -6,13 +6,13 @@ configure:
 	cmake -B build -DPICKY_DEVELOPER=ON
 
 build:
-	$(TS) generate
+	cd rpmspec && $(TS) generate
 	cmake --build build
 
 test: default
-	$(TS) test
+	cmake --build build --target ts-test
 
 test-fast:
-	$(TS) test
+	cmake --build build --target ts-test
 
-.PHONY: default configure build test
+.PHONY: default configure build test test-fast
