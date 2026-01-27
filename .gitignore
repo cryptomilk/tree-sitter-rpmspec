@@ -19,14 +19,7 @@ dist/
 *.whl
 
 # C artifacts
-*.a
-*.so
-*.so.*
-*.dylib
-*.dll
-*.pc
-*.exp
-*.lib
+/build
 
 # Zig artifacts
 .zig-cache/
