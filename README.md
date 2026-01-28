@@ -15,32 +15,7 @@ A [tree-sitter](https://tree-sitter.github.io/) parser for
 
 This parser is not yet part of
 [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter).
-To use it, add the parser manually:
-
-```lua
-vim.api.nvim_create_autocmd('User', {
-  pattern = 'TSUpdate',
-  callback = function()
-    require('nvim-treesitter.parsers').rpmspec = {
-      install_info = {
-        url = 'https://gitlab.com/cryptomilk/tree-sitter-rpmspec',
-        queries = 'queries',
-      },
-    }
-  end
-})
-```
-
-Then run `:TSInstall rpmspec bash` and enable highlighting:
-
-```lua
-require('nvim-treesitter.configs').setup {
-  highlight = { enable = true },
-}
-```
-
-The `bash` parser is needed for syntax highlighting inside scriptlets (`%prep`,
-`%build`, `%install`, etc.).
+See [NEOVIM.md](NEOVIM.md) for setup instructions.
 
 ---
 
