@@ -7,7 +7,7 @@ A [tree-sitter](https://tree-sitter.github.io/) parser for
 
 - (Almost) Full parsing of RPM spec file syntax
 - Syntax highlighting support via `queries/highlights.scm`
-- Bash injection for shell content in scriptlets
+- RPMBash: Extended bash grammar for scriptlets with RPM macro support
 
 ## Editor Integration
 
@@ -51,10 +51,15 @@ tree-sitter highlight --html example.spec > highlight.html
 
 ### Architecture
 
-See [DESIGN.md](rpmspec/DESIGN.md) for details on key design decisions, including:
-- Section end detection without explicit markers
-- Context-aware conditional parsing with lookahead
-- Macro expansion complexity
+This project contains two grammars:
+
+- **rpmspec**: Main RPM spec file grammar.
+  See [rpmspec/DESIGN.md](rpmspec/DESIGN.md) for design decisions including
+  section end detection, context-aware conditional parsing, and macro expansion.
+
+- **rpmbash**: Extended bash grammar for scriptlets.
+  See [rpmbash/DESIGN.md](rpmbash/DESIGN.md) for how it recognizes RPM macros
+  and delegates highlighting back to rpmspec.
 
 ### References
 
