@@ -244,3 +244,67 @@ echo hello
       (word))
     (word))
   (rpm_endif))
+
+================================================================================
+Conditional inside line-continued command
+================================================================================
+
+./configure \
+        --enable-fhs \
+        --with-piddir=/run \
+%if %{without dc}
+        --without-dc \
+%endif
+        --with-systemd
+
+--------------------------------------------------------------------------------
+
+(program
+  (command
+    (command_name
+      (word))
+    (word)
+    (word)
+    (rpm_conditional
+      (rpm_conditional_keyword)
+      (rpm_condition))
+    (word)
+    (rpm_endif)
+    (word)))
+
+================================================================================
+Multiple conditionals inside line-continued command
+================================================================================
+
+%configure \
+        --enable-fhs \
+%if %{without dc}
+        --without-dc \
+%endif
+%if %{with ssl}
+        --with-ssl \
+%endif
+        --with-systemd
+
+--------------------------------------------------------------------------------
+
+; Back-to-back conditionals without command args between them create
+; a concatenation, but the command still spans all lines correctly.
+
+(program
+  (command
+    (command_name
+      (rpm_macro_simple))
+    (word)
+    (rpm_conditional
+      (rpm_conditional_keyword)
+      (rpm_condition))
+    (concatenation
+      (word)
+      (rpm_endif)
+      (rpm_conditional
+        (rpm_conditional_keyword)
+        (rpm_condition))
+      (word))
+    (rpm_endif)
+    (word)))

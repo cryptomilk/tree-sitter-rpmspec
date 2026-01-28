@@ -168,7 +168,9 @@ module.exports = grammar(Bash, {
 
         // Condition content - single token matching to end of line.
         // Handed back to rpmspec via injection.parent for macro highlighting.
-        rpm_condition: ($) => token(prec(20, /[^\n]+/)),
+        // IMPORTANT: Include trailing newline so it doesn't terminate commands
+        // when rpm_conditional appears as an extra inside multi-line commands.
+        rpm_condition: ($) => token(prec(20, /[^\n]+\n?/)),
 
         // %else and %endif as grammar rules with high precedence
         // These typically appear on their own line, so we can match them simply
@@ -178,8 +180,11 @@ module.exports = grammar(Bash, {
         // 1. %else/%endif are not valid macro names - they're conditional directives
         // 2. Via injection.parent, rpmspec receives them and highlights correctly
         // 3. %elsewhere would match as %else + where, but that's not valid RPM
-        rpm_else: ($) => token(prec(20, '%else')),
-        rpm_endif: ($) => token(prec(20, '%endif')),
+        //
+        // IMPORTANT: Include trailing newline so it doesn't terminate commands
+        // when these appear as extras inside multi-line commands.
+        rpm_else: ($) => token(prec(20, /%else\n?/)),
+        rpm_endif: ($) => token(prec(20, /%endif\n?/)),
 
         // Override word to treat '%' as a word-breaking character
         // This allows %name to be recognized within concatenations

@@ -7275,7 +7275,7 @@
         "value": 20,
         "content": {
           "type": "PATTERN",
-          "value": "[^\\n]+"
+          "value": "[^\\n]+\\n?"
         }
       }
     },
@@ -7285,8 +7285,8 @@
         "type": "PREC",
         "value": 20,
         "content": {
-          "type": "STRING",
-          "value": "%else"
+          "type": "PATTERN",
+          "value": "%else\\n?"
         }
       }
     },
@@ -7296,8 +7296,8 @@
         "type": "PREC",
         "value": 20,
         "content": {
-          "type": "STRING",
-          "value": "%endif"
+          "type": "PATTERN",
+          "value": "%endif\\n?"
         }
       }
     }

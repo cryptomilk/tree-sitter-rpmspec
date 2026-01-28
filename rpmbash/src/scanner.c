@@ -91,6 +91,20 @@ static inline bool is_macro_name_char(int32_t c, bool first)
  * when they appear at the beginning of a line. We require 2+ characters
  * to avoid matching printf specifiers like %s or %d.
  *
+ * IMPORTANT: RPM conditionals (%if, %else, %endif, %elif, %ifarch, etc.)
+ * are defined as extras in the grammar. They can appear ANYWHERE without
+ * breaking parse structure - including inside multi-line commands:
+ *
+ *   ./configure \
+ *     --prefix=/usr \
+ *   %if %{with ssl}
+ *     --with-ssl \
+ *   %endif
+ *     --disable-gzip
+ *
+ * Therefore, conditionals must NOT trigger NEWLINE tokens here, or they
+ * would terminate the command prematurely.
+ *
  * Note: Brace expansions like %{name} are handled differently - they can
  * appear within command arguments and don't start new statements.
  */
