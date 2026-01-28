@@ -11,8 +11,3 @@
 (rpm_conditional_keyword) @keyword.conditional
 (rpm_else) @keyword.conditional
 (rpm_endif) @keyword.conditional
-(rpm_define_keyword) @keyword.directive
-(rpm_global_keyword) @keyword.directive
-(rpm_undefine_keyword) @keyword.directive
-(rpm_macro_name) @variable
-(rpm_macro_body) @embedded
