@@ -76,7 +76,7 @@ tree-sitter highlight --html example.spec > highlight.html
 
 ### Architecture
 
-See [DESIGN.md](DESIGN.md) for details on key design decisions, including:
+See [DESIGN.md](rpmspec/DESIGN.md) for details on key design decisions, including:
 - Section end detection without explicit markers
 - Context-aware conditional parsing with lookahead
 - Macro expansion complexity
