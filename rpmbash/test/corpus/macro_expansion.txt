@@ -217,7 +217,10 @@ Global macro definition
 --------------------------------------------------------------------------------
 
 (program
-  (rpm_global))
+  (rpm_global
+    (rpm_global_keyword)
+    (rpm_macro_name)
+    (rpm_macro_body)))
 
 ================================================================================
 Define macro
@@ -228,7 +231,10 @@ Define macro
 --------------------------------------------------------------------------------
 
 (program
-  (rpm_define))
+  (rpm_define
+    (rpm_define_keyword)
+    (rpm_macro_name)
+    (rpm_macro_body)))
 
 ================================================================================
 Undefine macro
@@ -239,7 +245,9 @@ Undefine macro
 --------------------------------------------------------------------------------
 
 (program
-  (rpm_undefine))
+  (rpm_undefine
+    (rpm_undefine_keyword)
+    (rpm_macro_name)))
 
 ================================================================================
 Mixed definitions and commands
@@ -251,7 +259,10 @@ cd %{builddir}
 --------------------------------------------------------------------------------
 
 (program
-  (rpm_global)
+  (rpm_global
+    (rpm_global_keyword)
+    (rpm_macro_name)
+    (rpm_macro_body))
   (command
     (command_name
       (word))
@@ -269,8 +280,119 @@ echo done
 --------------------------------------------------------------------------------
 
 (program
-  (rpm_define)
+  (rpm_define
+    (rpm_define_keyword)
+    (rpm_macro_name)
+    (rpm_macro_body))
   (command
     (command_name
       (word))
+    (word)))
+
+================================================================================
+Global after variable assignment
+================================================================================
+
+FOO=bar
+%global myvar hello
+
+--------------------------------------------------------------------------------
+
+(program
+  (variable_assignment
+    (variable_name)
+    (word))
+  (rpm_global
+    (rpm_global_keyword)
+    (rpm_macro_name)
+    (rpm_macro_body)))
+
+================================================================================
+Back-to-back export statements
+================================================================================
+
+export A="$(echo hello)"
+export B="$(echo world)"
+
+--------------------------------------------------------------------------------
+
+(program
+  (declaration_command
+    (variable_assignment
+      (variable_name)
+      (string
+        (command_substitution
+          (command
+            (command_name
+              (word))
+            (word))))))
+  (declaration_command
+    (variable_assignment
+      (variable_name)
+      (string
+        (command_substitution
+          (command
+            (command_name
+              (word))
+            (word)))))))
+
+================================================================================
+Export with comment then another export
+================================================================================
+
+# First export
+export FOO="bar"
+# Second export
+export BAZ="qux"
+
+--------------------------------------------------------------------------------
+
+(program
+  (comment)
+  (declaration_command
+    (variable_assignment
+      (variable_name)
+      (string
+        (string_content))))
+  (comment)
+  (declaration_command
+    (variable_assignment
+      (variable_name)
+      (string
+        (string_content)))))
+
+================================================================================
+Export followed by simple macro command
+================================================================================
+
+export PYTHONARCHDIR=%{python3_sitearch}
+%configure --enable-fhs
+
+--------------------------------------------------------------------------------
+
+(program
+  (declaration_command
+    (variable_assignment
+      (variable_name)
+      (rpm_macro_expansion)))
+  (command
+    (command_name
+      (rpm_macro_simple))
+    (word)))
+
+================================================================================
+Simple macro command with line continuation
+================================================================================
+
+%configure \
+    --enable-fhs \
+    --with-piddir=/run
+
+--------------------------------------------------------------------------------
+
+(program
+  (command
+    (command_name
+      (rpm_macro_simple))
+    (word)
     (word)))

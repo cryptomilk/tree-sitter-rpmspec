@@ -217,3 +217,30 @@ make %{?_smp_mflags} check
     (rpm_macro_expansion)
     (word))
   (rpm_endif))
+
+================================================================================
+Conditional after command with empty line
+================================================================================
+
+rm -rfv third_party/heimdal
+
+%if %{with testsuite}
+echo hello
+%endif
+
+--------------------------------------------------------------------------------
+
+(program
+  (command
+    (command_name
+      (word))
+    (word)
+    (word))
+  (rpm_conditional
+    (rpm_conditional_keyword)
+    (rpm_condition))
+  (command
+    (command_name
+      (word))
+    (word))
+  (rpm_endif))

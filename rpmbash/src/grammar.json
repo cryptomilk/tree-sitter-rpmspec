@@ -7013,6 +7013,13 @@
         }
       ]
     },
+    "rpm_macro_simple": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "%[a-zA-Z_][a-zA-Z0-9_]+"
+      }
+    },
     "rpm_macro_expansion": {
       "type": "SEQ",
       "members": [
@@ -7058,50 +7065,23 @@
         ]
       }
     },
-    "rpm_macro_simple": {
-      "type": "TOKEN",
-      "content": {
-        "type": "PREC",
-        "value": 10,
-        "content": {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "STRING",
-              "value": "%"
-            },
-            {
-              "type": "PATTERN",
-              "value": "[a-zA-Z_][a-zA-Z0-9_]+"
-            }
-          ]
-        }
-      }
-    },
     "rpm_define": {
       "type": "SEQ",
       "members": [
         {
-          "type": "TOKEN",
-          "content": {
-            "type": "PREC",
-            "value": 20,
-            "content": {
-              "type": "STRING",
-              "value": "%define"
-            }
-          }
+          "type": "SYMBOL",
+          "name": "rpm_define_keyword"
         },
         {
           "type": "SYMBOL",
-          "name": "_rpm_macro_name"
+          "name": "rpm_macro_name"
         },
         {
           "type": "CHOICE",
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_rpm_macro_body"
+              "name": "rpm_macro_body"
             },
             {
               "type": "BLANK"
@@ -7114,26 +7094,19 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "TOKEN",
-          "content": {
-            "type": "PREC",
-            "value": 20,
-            "content": {
-              "type": "STRING",
-              "value": "%global"
-            }
-          }
+          "type": "SYMBOL",
+          "name": "rpm_global_keyword"
         },
         {
           "type": "SYMBOL",
-          "name": "_rpm_macro_name"
+          "name": "rpm_macro_name"
         },
         {
           "type": "CHOICE",
           "members": [
             {
               "type": "SYMBOL",
-              "name": "_rpm_macro_body"
+              "name": "rpm_macro_body"
             },
             {
               "type": "BLANK"
@@ -7146,29 +7119,96 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "TOKEN",
-          "content": {
-            "type": "PREC",
-            "value": 20,
-            "content": {
-              "type": "STRING",
-              "value": "%undefine"
-            }
-          }
+          "type": "SYMBOL",
+          "name": "rpm_undefine_keyword"
         },
         {
           "type": "SYMBOL",
-          "name": "_rpm_macro_name"
+          "name": "rpm_macro_name"
         }
       ]
     },
-    "_rpm_macro_name": {
-      "type": "PATTERN",
-      "value": "[a-zA-Z_][a-zA-Z0-9_]*"
+    "rpm_define_keyword": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 20,
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "%define"
+            },
+            {
+              "type": "PATTERN",
+              "value": "[ \\t]+"
+            }
+          ]
+        }
+      }
     },
-    "_rpm_macro_body": {
-      "type": "PATTERN",
-      "value": "([^\\\\\\n]|\\\\\\n|\\\\[^\\n])+"
+    "rpm_global_keyword": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 20,
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "%global"
+            },
+            {
+              "type": "PATTERN",
+              "value": "[ \\t]+"
+            }
+          ]
+        }
+      }
+    },
+    "rpm_undefine_keyword": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 20,
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "%undefine"
+            },
+            {
+              "type": "PATTERN",
+              "value": "[ \\t]+"
+            }
+          ]
+        }
+      }
+    },
+    "rpm_macro_name": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 20,
+        "content": {
+          "type": "PATTERN",
+          "value": "[a-zA-Z_][a-zA-Z0-9_]*"
+        }
+      }
+    },
+    "rpm_macro_body": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 20,
+        "content": {
+          "type": "PATTERN",
+          "value": "([^\\\\\\n]|\\\\\\n|\\\\[^\\n])+"
+        }
+      }
     },
     "rpm_conditional": {
       "type": "SEQ",

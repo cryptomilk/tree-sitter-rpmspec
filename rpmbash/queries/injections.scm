@@ -28,15 +28,11 @@
 ; =============================================================================
 ; RPM MACRO DEFINITIONS -> rpmspec
 ; =============================================================================
+; rpm_define/rpm_global are structured as keyword + name + body.
+; Both name and body are handed back to rpmspec for proper highlighting.
 
-; %define name value
-(rpm_define) @injection.content
+(rpm_macro_name) @injection.content
   (#set! injection.parent)
 
-; %global name value
-(rpm_global) @injection.content
-  (#set! injection.parent)
-
-; %undefine name
-(rpm_undefine) @injection.content
+(rpm_macro_body) @injection.content
   (#set! injection.parent)

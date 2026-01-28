@@ -1895,12 +1895,48 @@
   {
     "type": "rpm_define",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "rpm_define_keyword",
+          "named": true
+        },
+        {
+          "type": "rpm_macro_body",
+          "named": true
+        },
+        {
+          "type": "rpm_macro_name",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "rpm_global",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "rpm_global_keyword",
+          "named": true
+        },
+        {
+          "type": "rpm_macro_body",
+          "named": true
+        },
+        {
+          "type": "rpm_macro_name",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "rpm_macro_expansion",
@@ -1920,7 +1956,21 @@
   {
     "type": "rpm_undefine",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "rpm_macro_name",
+          "named": true
+        },
+        {
+          "type": "rpm_undefine_keyword",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "simple_expansion",
@@ -2481,18 +2531,6 @@
     "named": false
   },
   {
-    "type": "%define",
-    "named": false
-  },
-  {
-    "type": "%global",
-    "named": false
-  },
-  {
-    "type": "%undefine",
-    "named": false
-  },
-  {
     "type": "%{",
     "named": false
   },
@@ -2914,6 +2952,10 @@
     "named": true
   },
   {
+    "type": "rpm_define_keyword",
+    "named": true
+  },
+  {
     "type": "rpm_else",
     "named": true,
     "extra": true
@@ -2924,7 +2966,23 @@
     "extra": true
   },
   {
+    "type": "rpm_global_keyword",
+    "named": true
+  },
+  {
+    "type": "rpm_macro_body",
+    "named": true
+  },
+  {
+    "type": "rpm_macro_name",
+    "named": true
+  },
+  {
     "type": "rpm_macro_simple",
+    "named": true
+  },
+  {
+    "type": "rpm_undefine_keyword",
     "named": true
   },
   {

@@ -66,6 +66,13 @@ module.exports = grammar(Bash, {
         _primary_expression: ($, previous) =>
             choice($.rpm_macro_expansion, $.rpm_macro_simple, previous),
 
+        // RPM simple expansion: %name (without braces)
+        // Requires 2+ chars to avoid conflicts with printf specifiers (%s, %d)
+        // Single-char macros must use braces: %{s} not %s
+        // Note: scan_newline_before_rpm_statement in scanner.c returns NEWLINE
+        // before %global/%define/etc to prevent them from matching here
+        rpm_macro_simple: ($) => token(/%[a-zA-Z_][a-zA-Z0-9_]+/),
+
         // RPM brace expansion: %{...}
         // Only recognize the outer boundaries - internal parsing is delegated
         // to rpmspec via injection.parent
@@ -73,21 +80,16 @@ module.exports = grammar(Bash, {
             seq('%{', optional($._rpm_macro_content), '}'),
 
         // Content inside braces - handles nested %{...}
+        // Pattern order: try rpm_macro_expansion first for nested %{...},
+        // then match content without braces or %, then handle lone % chars.
         _rpm_macro_content: ($) =>
             repeat1(
                 choice(
                     $.rpm_macro_expansion, // Nested macros like %{dirname:%{SOURCE0}}
-                    /[^{}%]+/, // Any content except braces and %
-                    /%/ // Literal % when not followed by {
+                    /[^{}%]+/, // Content without braces or %
+                    /%/ // Lone % (when not followed by {, which would match above)
                 )
             ),
-
-        // RPM simple expansion: %name (without braces)
-        // Requires 2+ chars to avoid conflicts with printf specifiers (%s, %d)
-        // Single-char macros must use braces: %{s} not %s
-        // High precedence token to win over bash's word rule
-        rpm_macro_simple: ($) =>
-            token(prec(10, seq('%', /[a-zA-Z_][a-zA-Z0-9_]+/))),
 
         // Extend command_substitution to include RPM's %(cmd) shell expansion
         // %(cmd) is semantically equivalent to $(cmd) - executes shell command
@@ -100,29 +102,35 @@ module.exports = grammar(Bash, {
             choice($.rpm_define, $.rpm_global, $.rpm_undefine, previous),
 
         // RPM macro definitions - common in scriptlets
-        // Use token() with high precedence to match before rpm_macro_simple
+        // Structured as keyword + name + body so the body can be handed back
+        // to rpmspec for proper macro highlighting (like rpm_conditional).
         // %define name value - define local macro
         rpm_define: ($) =>
             seq(
-                token(prec(20, '%define')),
-                $._rpm_macro_name,
-                optional($._rpm_macro_body)
+                $.rpm_define_keyword,
+                $.rpm_macro_name,
+                optional($.rpm_macro_body)
             ),
 
         // %global name value - define global macro (persists across scriptlets)
         rpm_global: ($) =>
             seq(
-                token(prec(20, '%global')),
-                $._rpm_macro_name,
-                optional($._rpm_macro_body)
+                $.rpm_global_keyword,
+                $.rpm_macro_name,
+                optional($.rpm_macro_body)
             ),
 
         // %undefine name - undefine a macro
-        rpm_undefine: ($) =>
-            seq(token(prec(20, '%undefine')), $._rpm_macro_name),
+        rpm_undefine: ($) => seq($.rpm_undefine_keyword, $.rpm_macro_name),
 
-        // Macro name for definitions (hidden, same pattern as simple expansion)
-        _rpm_macro_name: ($) => /[a-zA-Z_][a-zA-Z0-9_]*/,
+        // Keywords with trailing whitespace - tokenized for clear boundaries
+        rpm_define_keyword: ($) => token(prec(20, seq('%define', /[ \t]+/))),
+        rpm_global_keyword: ($) => token(prec(20, seq('%global', /[ \t]+/))),
+        rpm_undefine_keyword: ($) =>
+            token(prec(20, seq('%undefine', /[ \t]+/))),
+
+        // Macro name for definitions
+        rpm_macro_name: ($) => token(prec(20, /[a-zA-Z_][a-zA-Z0-9_]*/)),
 
         // Macro body - everything until unescaped end of line
         // Supports line continuation with backslash
@@ -131,7 +139,7 @@ module.exports = grammar(Bash, {
         //   [^\\\n]  - any char except backslash or newline
         //   |\\\n    - OR backslash followed by newline (line continuation)
         //   |\\[^\n] - OR backslash followed by non-newline (escape sequence)
-        _rpm_macro_body: ($) => /([^\\\n]|\\\n|\\[^\n])+/,
+        rpm_macro_body: ($) => token(prec(20, /([^\\\n]|\\\n|\\[^\n])+/)),
 
         // RPM conditionals with arguments - appear in extras so they don't break
         // multi-line commands. Structured as keyword + condition so the condition
