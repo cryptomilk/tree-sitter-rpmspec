@@ -34,8 +34,7 @@ Simple description
 
 (spec
   (description
-    (package_name
-      (word))
+    (identifier)
     (text
       (text_content))))
 
@@ -50,8 +49,7 @@ The %{name}-subpackage package
 
 (spec
   (description
-    (package_name
-      (word))
+    (identifier)
     (text
       (text_content)
       (macro_expansion
@@ -69,8 +67,7 @@ Simple description
 
 (spec
   (description
-    (package_name
-      (word))
+    (identifier)
     (text
       (text_content))))
 
@@ -85,9 +82,8 @@ Simple description
 
 (spec
   (description
-    (package_name
-      (macro_expansion
-        (identifier)))
+    (macro_expansion
+      (identifier))
     (text
       (text_content))))
 
@@ -101,9 +97,8 @@ Description (subpackage with inline text)
 
 (spec
   (description
-    (package_name
-      (macro_expansion
-        (identifier)))
+    (macro_expansion
+      (identifier))
     (text
       (macro_expansion
         (identifier)))))
@@ -158,24 +153,21 @@ DC description.
 
 (spec
   (description
-    (package_name
-      (word))
+    name: (identifier)
     (text
       (text_content)))
   (if_statement
     condition: (with_operator
       (identifier))
     consequence: (package
-      (package_name
-        (word))
+      name: (identifier)
       (preamble
         (tag)
         value: (concatenation
           (word)
           (word))))
     consequence: (description
-      (package_name
-        (word))
+      name: (identifier)
       (text
         (text_content)))))
 
@@ -204,29 +196,25 @@ Devel description.
 
 (spec
   (description
-    (package_name
-      (word))
+    name: (identifier)
     (text
       (text_content)))
   (if_statement
     condition: (with_operator
       (identifier))
     consequence: (package
-      (package_name
-        (word))
+      name: (identifier)
       (preamble
         (tag)
         value: (concatenation
           (word)
           (word))))
     consequence: (description
-      (package_name
-        (word))
+      name: (identifier)
       (text
         (text_content)))
     consequence: (package
-      (package_name
-        (word))
+      name: (identifier)
       (preamble
         (tag)
         value: (concatenation
@@ -234,8 +222,7 @@ Devel description.
           (word)
           (word))))
     consequence: (description
-      (package_name
-        (word))
+      name: (identifier)
       (text
         (text_content)))))
 
@@ -251,8 +238,7 @@ use the "%{crate}" crate.
 
 (spec
   (description
-    (package_name
-      (word))
+    (identifier)
     (text
       (text_content)
       (text_content)
@@ -275,8 +261,7 @@ Recommends reading the documentation.
 
 (spec
   (description
-    (package_name
-      (word))
+    (identifier)
     (text
       (text_content)
       (text_content)

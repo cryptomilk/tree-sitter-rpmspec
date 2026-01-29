@@ -20,8 +20,7 @@ Filetriggerin Section (subpackage)
 (spec
   (file_trigger
     subpackage: (trigger_subpackage
-      (package_name
-        (word)))))
+      name: (identifier))))
 
 ===============================================================================
 Filetriggerin Section (package)
@@ -34,8 +33,7 @@ Filetriggerin Section (package)
 (spec
   (file_trigger
     subpackage: (trigger_subpackage
-      (package_name
-        (word)))))
+      name: (identifier))))
 
 ===============================================================================
 Filetriggerin Section (shell)
@@ -49,8 +47,7 @@ cat /dev/urandom
 (spec
   (file_trigger
     subpackage: (trigger_subpackage
-      (package_name
-        (word)))
+      name: (identifier))
     (script_block
       (script_line
         (script_content)))))

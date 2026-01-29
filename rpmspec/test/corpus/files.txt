@@ -50,8 +50,7 @@ Files (-n)
 
 (spec
   (files
-    (package_name
-      (word))
+    (identifier)
     (file
       (path))))
 

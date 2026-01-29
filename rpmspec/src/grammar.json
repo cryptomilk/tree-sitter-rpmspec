@@ -6396,8 +6396,12 @@
                     ]
                   },
                   {
-                    "type": "SYMBOL",
-                    "name": "package_name"
+                    "type": "FIELD",
+                    "name": "name",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_package_name"
+                    }
                   }
                 ]
               },
@@ -6895,7 +6899,7 @@
         ]
       }
     },
-    "package_name": {
+    "_package_name": {
       "type": "PREC_LEFT",
       "value": 1,
       "content": {
@@ -6911,7 +6915,7 @@
                   "name": "_package_name_word"
                 },
                 "named": true,
-                "value": "word"
+                "value": "identifier"
               },
               {
                 "type": "SYMBOL",
@@ -7529,8 +7533,12 @@
             ]
           },
           {
-            "type": "SYMBOL",
-            "name": "package_name"
+            "type": "FIELD",
+            "name": "name",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_package_name"
+            }
           },
           {
             "type": "PATTERN",
@@ -8755,8 +8763,12 @@
                     ]
                   },
                   {
-                    "type": "SYMBOL",
-                    "name": "package_name"
+                    "type": "FIELD",
+                    "name": "name",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_package_name"
+                    }
                   }
                 ]
               },
@@ -8813,8 +8825,12 @@
                     ]
                   },
                   {
-                    "type": "SYMBOL",
-                    "name": "package_name"
+                    "type": "FIELD",
+                    "name": "name",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_package_name"
+                    }
                   }
                 ]
               },
@@ -8964,8 +8980,12 @@
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "package_name"
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_package_name"
+          }
         }
       ]
     },
@@ -9162,8 +9182,12 @@
                     ]
                   },
                   {
-                    "type": "SYMBOL",
-                    "name": "package_name"
+                    "type": "FIELD",
+                    "name": "name",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_package_name"
+                    }
                   }
                 ]
               },
@@ -10180,7 +10204,7 @@
           "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
-            "name": "package_name"
+            "name": "_package_name"
           },
           "named": true,
           "value": "directory"

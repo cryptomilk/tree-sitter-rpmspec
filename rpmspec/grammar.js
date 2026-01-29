@@ -153,7 +153,7 @@ module.exports = grammar({
         // file_path: After a path segment, a % could either continue the current
         // path (e.g., /usr/%{name}) or start a new path. Let GLR handle it.
         [$.file_path],
-        // REMOVED: [$.package_name, $.text] - resolved with precedence (package_name prec 1, text prec -1)
+        // REMOVED: [$._package_name, $.text] - resolved with precedence (package_name prec 1, text prec -1)
         // script_block vs script_line: A conditional inside script_block could be
         // a direct child of script_block or embedded inside script_line (for line
         // continuation sequences with conditionals).
@@ -2176,7 +2176,7 @@ module.exports = grammar({
                     optional(
                         seq(
                             optional('-n'),
-                            $.package_name // Package name (stops at whitespace)
+                            field('name', $._package_name) // Package name (stops at whitespace)
                         )
                     ),
                     optional($.text), // Optional inline text on same line
@@ -2257,13 +2257,13 @@ module.exports = grammar({
                     repeat(noneOf(...PACKAGE_NAME_SPECIAL_CHARS))
                 )
             ),
-        // Precedence 1 to prefer package_name over text (prec -1) when both match
-        package_name: ($) =>
+        // Precedence 1 to prefer _package_name over text (prec -1) when both match
+        _package_name: ($) =>
             prec.left(
                 1,
                 seq(
                     choice(
-                        alias($._package_name_word, $.word),
+                        alias($._package_name_word, $.identifier),
                         $.macro_simple_expansion,
                         $.macro_expansion
                     ),
@@ -2382,7 +2382,7 @@ module.exports = grammar({
                 seq(
                     '%package',
                     optional('-n'),
-                    $.package_name,
+                    field('name', $._package_name),
                     /\n/,
                     optional($._package_content)
                 )
@@ -2638,7 +2638,9 @@ module.exports = grammar({
             prec.right(
                 seq(
                     $._runtime_scriptlet_keyword,
-                    optional(seq(optional('-n'), $.package_name)),
+                    optional(
+                        seq(optional('-n'), field('name', $._package_name))
+                    ),
                     /\n/,
                     optional($.script_block)
                 )
@@ -2650,7 +2652,9 @@ module.exports = grammar({
             prec.right(
                 seq(
                     $._runtime_scriptlet_keyword,
-                    optional(seq(optional('-n'), $.package_name)),
+                    optional(
+                        seq(optional('-n'), field('name', $._package_name))
+                    ),
                     field('interpreter', $.script_interpreter),
                     /\n/,
                     optional($.script_block)
@@ -2688,7 +2692,8 @@ module.exports = grammar({
             ),
 
         // Trigger subpackage: [-n] <name>
-        trigger_subpackage: ($) => seq(optional('-n'), $.package_name),
+        trigger_subpackage: ($) =>
+            seq(optional('-n'), field('name', $._package_name)),
 
         // Trigger condition: -- <dependency_list>
         trigger_condition: ($) => seq('--', $._dependency_list),
@@ -2774,7 +2779,7 @@ module.exports = grammar({
                     optional(
                         seq(
                             optional('-n'),
-                            $.package_name // Subpackage name
+                            field('name', $._package_name) // Subpackage name
                         )
                     ),
                     optional(seq('-f', alias($.path_with_macro, $.path))), // Read file list from file
@@ -3068,7 +3073,7 @@ module.exports = grammar({
         // Uses package_name for word/macro combinations, or quoted string for names with spaces
         // Examples: %{name}-%{version}, %{name}-v%{version}, talloc-%{version}, "name with spaces"
         _setup_directory: ($) =>
-            choice(alias($.package_name, $.directory), $.quoted_string),
+            choice(alias($._package_name, $.directory), $.quoted_string),
 
         // Setup name option: -n DIR (or combined forms like -qn, -cqn, -Tqn, etc.)
         // Supports getopt-style combined flags where -n is last and takes directory argument

@@ -513,16 +513,14 @@ Conditionals (%if with nested %files sections)
     condition: (with_operator
       (identifier))
     consequence: (files
-      (package_name
-        (word))
+      name: (identifier)
       (file
         (path))
       (if_statement
         condition: (with_operator
           (identifier))
         consequence: (files
-          (package_name
-            (word))
+          name: (identifier)
           (file
             (path)))))))
 
@@ -542,16 +540,14 @@ echo hello
 
 (spec
   (files
-    (package_name
-      (word))
+    name: (identifier)
     (file
       (path)))
   (if_statement
     condition: (macro_expansion
       (identifier))
     consequence: (runtime_scriptlet
-      (package_name
-        (word))
+      name: (identifier)
       (script_block
         (script_line
           (script_content))))))

@@ -182,10 +182,9 @@ find %{buildroot} -name foo
           (identifier))
         (script_content))))
   (files
-    (package_name
-      (word)
-      (macro_expansion
-        (identifier)))
+    (identifier)
+    (macro_expansion
+      (identifier))
     (file
       (file_qualifier)
       (path))))

@@ -1529,16 +1529,30 @@
             "named": true
           }
         ]
+      },
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
       "multiple": true,
       "required": false,
       "types": [
-        {
-          "type": "package_name",
-          "named": true
-        },
         {
           "type": "text",
           "named": true
@@ -1555,15 +1569,15 @@
       "required": true,
       "types": [
         {
+          "type": "identifier",
+          "named": true
+        },
+        {
           "type": "macro_expansion",
           "named": true
         },
         {
           "type": "macro_simple_expansion",
-          "named": true
-        },
-        {
-          "type": "word",
           "named": true
         }
       ]
@@ -2324,7 +2338,26 @@
   {
     "type": "files",
     "named": true,
-    "fields": {},
+    "fields": {
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": false,
@@ -2347,10 +2380,6 @@
         },
         {
           "type": "ifos_statement",
-          "named": true
-        },
-        {
-          "type": "package_name",
           "named": true
         },
         {
@@ -4477,11 +4506,29 @@
             "named": true
           }
         ]
+      },
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "macro_definition",
@@ -4496,34 +4543,7 @@
           "named": true
         },
         {
-          "type": "package_name",
-          "named": true
-        },
-        {
           "type": "preamble",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "package_name",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "macro_expansion",
-          "named": true
-        },
-        {
-          "type": "macro_simple_expansion",
-          "named": true
-        },
-        {
-          "type": "word",
           "named": true
         }
       ]
@@ -5087,15 +5107,30 @@
   {
     "type": "runtime_scriptlet",
     "named": true,
-    "fields": {},
+    "fields": {
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
-        {
-          "type": "package_name",
-          "named": true
-        },
         {
           "type": "script_block",
           "named": true
@@ -5116,16 +5151,30 @@
             "named": true
           }
         ]
+      },
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
-        {
-          "type": "package_name",
-          "named": true
-        },
         {
           "type": "script_block",
           "named": true
@@ -6311,16 +6360,25 @@
   {
     "type": "trigger_subpackage",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "package_name",
-          "named": true
-        }
-      ]
+    "fields": {
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {

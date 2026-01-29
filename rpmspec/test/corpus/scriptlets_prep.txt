@@ -100,7 +100,7 @@ Prep Section (%setup with name option)
         (builtin)
         argument: (macro_option
           directory: (directory
-            (word)))))))
+            (identifier)))))))
 
 ===============================================================================
 Prep Section (%setup complex combination)
@@ -247,7 +247,7 @@ Prep Section (%autosetup with options)
         argument: (macro_option)
         argument: (macro_option
           directory: (directory
-            (word)))
+            (identifier)))
         argument: (macro_option)))))
 
 ===============================================================================
@@ -308,7 +308,7 @@ Prep Section (%autosetup with word-macro directory)
         (builtin)
         argument: (macro_option
           directory: (directory
-            (word)
+            (identifier)
             (macro_expansion
               (identifier))))
         argument: (macro_option)))))
