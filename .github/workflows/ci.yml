@@ -41,7 +41,7 @@ jobs:
       - name: Set up tree-sitter
         uses: tree-sitter/setup-action/cli@v2
       - name: Install rpmbash dependencies
-        run: npm --prefix rpmbash install
+        run: npm --prefix rpmbash install --ignore-scripts
       - name: Run rpmspec tests
         run: tree-sitter test
         working-directory: rpmspec
@@ -89,7 +89,7 @@ jobs:
           fi
       - name: Install rpmbash dependencies
         if: steps.scanner-check.outputs.changed == 'true'
-        run: npm --prefix rpmbash install
+        run: npm --prefix rpmbash install --ignore-scripts
       - name: Run the fuzzer
         uses: tree-sitter/fuzz-action@v4
         if: steps.scanner-check.outputs.changed == 'true'
@@ -105,17 +105,17 @@ jobs:
       - name: Set up tree-sitter
         uses: tree-sitter/setup-action/cli@v2
       - name: Install rpmbash dependencies
-        run: npm --prefix rpmbash install
+        run: npm --prefix rpmbash install --ignore-scripts
       - name: Build parsers
         run: |
           tree-sitter build -o rpmspec.so rpmspec
           tree-sitter build -o rpmbash.so rpmbash
       - name: Install ts_query_ls
         run: |
-          curl -sL $(curl -s https://api.github.com/repos/ribru17/ts_query_ls/releases/latest \
-            | grep browser_download_url | grep linux-x86_64 | cut -d\" -f4) -o ts_query_ls
-          chmod +x ts_query_ls
+          curl -fL https://github.com/ribru17/ts_query_ls/releases/latest/download/ts_query_ls-x86_64-unknown-linux-gnu.tar.gz | tar -xz
       - name: Validate rpmspec queries
-        run: ./ts_query_ls check -f rpmspec/queries/
+        run: ../ts_query_ls check queries/
+        working-directory: rpmspec
       - name: Validate rpmbash queries
-        run: ./ts_query_ls check -f rpmbash/queries/
+        run: ../ts_query_ls check queries/
+        working-directory: rpmbash
