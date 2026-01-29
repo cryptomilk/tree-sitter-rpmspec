@@ -237,7 +237,7 @@ Macros (Complex arguments with quotes)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (setup_macro
         (builtin)

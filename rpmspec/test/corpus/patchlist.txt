@@ -7,8 +7,7 @@ Patchlist (Empty)
 -------------------------------------------------------------------------------
 
 (spec
-  (patchlist
-    (section_name)))
+  (patchlist))
 
 ===============================================================================
 Patchlist (Single patch file)
@@ -21,7 +20,6 @@ fix-build.patch
 
 (spec
   (patchlist
-    (section_name)
     (file)))
 
 ===============================================================================
@@ -36,7 +34,6 @@ fix-tests.patch
 
 (spec
   (patchlist
-    (section_name)
     (file)
     (file)))
 
@@ -51,7 +48,6 @@ https://example.com/security-fix.patch
 
 (spec
   (patchlist
-    (section_name)
     (url)))
 
 ===============================================================================
@@ -67,7 +63,6 @@ local-fix.patch
 
 (spec
   (patchlist
-    (section_name)
     (file)
     (url)
     (file)))
@@ -83,7 +78,6 @@ Patchlist (File with macros)
 
 (spec
   (patchlist
-    (section_name)
     (file
       (macro_expansion
         (identifier))
@@ -105,7 +99,6 @@ common-fix.patch
 
 (spec
   (patchlist
-    (section_name)
     (file)
     condition: (concatenation
       (integer)

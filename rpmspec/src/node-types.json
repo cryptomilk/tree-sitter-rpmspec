@@ -921,7 +921,7 @@
           "named": true
         },
         {
-          "type": "section_name",
+          "type": "section_build",
           "named": true
         }
       ]
@@ -957,14 +957,10 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "changelog_entry",
-          "named": true
-        },
-        {
-          "type": "section_name",
           "named": true
         }
       ]
@@ -1013,7 +1009,7 @@
           "named": true
         },
         {
-          "type": "section_name",
+          "type": "section_check",
           "named": true
         }
       ]
@@ -1043,7 +1039,7 @@
           "named": true
         },
         {
-          "type": "section_name",
+          "type": "section_clean",
           "named": true
         }
       ]
@@ -1194,7 +1190,7 @@
           "named": true
         },
         {
-          "type": "section_name",
+          "type": "section_conf",
           "named": true
         }
       ]
@@ -1537,14 +1533,10 @@
     },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "package_name",
-          "named": true
-        },
-        {
-          "type": "section_name",
           "named": true
         },
         {
@@ -2335,7 +2327,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "defattr",
@@ -2363,10 +2355,6 @@
         },
         {
           "type": "path",
-          "named": true
-        },
-        {
-          "type": "section_name",
           "named": true
         }
       ]
@@ -2578,7 +2566,7 @@
           "named": true
         },
         {
-          "type": "section_name",
+          "type": "section_generate_buildrequires",
           "named": true
         }
       ]
@@ -3160,7 +3148,7 @@
           "named": true
         },
         {
-          "type": "section_name",
+          "type": "section_install",
           "named": true
         }
       ]
@@ -4514,10 +4502,6 @@
         {
           "type": "preamble",
           "named": true
-        },
-        {
-          "type": "section_name",
-          "named": true
         }
       ]
     }
@@ -4837,7 +4821,7 @@
     },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "file",
@@ -4849,10 +4833,6 @@
         },
         {
           "type": "macro_simple_expansion",
-          "named": true
-        },
-        {
-          "type": "section_name",
           "named": true
         },
         {
@@ -4994,7 +4974,7 @@
           "named": true
         },
         {
-          "type": "section_name",
+          "type": "section_prep",
           "named": true
         }
       ]
@@ -5847,7 +5827,7 @@
     },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "file",
@@ -5859,10 +5839,6 @@
         },
         {
           "type": "macro_simple_expansion",
-          "named": true
-        },
-        {
-          "type": "section_name",
           "named": true
         },
         {
@@ -6551,11 +6527,19 @@
     "named": false
   },
   {
+    "type": "%changelog",
+    "named": false
+  },
+  {
     "type": "%config",
     "named": false
   },
   {
     "type": "%defattr",
+    "named": false
+  },
+  {
+    "type": "%description",
     "named": false
   },
   {
@@ -6592,6 +6576,10 @@
   },
   {
     "type": "%exclude",
+    "named": false
+  },
+  {
+    "type": "%files",
     "named": false
   },
   {
@@ -6639,6 +6627,14 @@
     "named": false
   },
   {
+    "type": "%package",
+    "named": false
+  },
+  {
+    "type": "%patchlist",
+    "named": false
+  },
+  {
     "type": "%post",
     "named": false
   },
@@ -6672,6 +6668,10 @@
   },
   {
     "type": "%readme",
+    "named": false
+  },
+  {
+    "type": "%sourcelist",
     "named": false
   },
   {
@@ -7156,7 +7156,31 @@
     "named": true
   },
   {
-    "type": "section_name",
+    "type": "section_build",
+    "named": true
+  },
+  {
+    "type": "section_check",
+    "named": true
+  },
+  {
+    "type": "section_clean",
+    "named": true
+  },
+  {
+    "type": "section_conf",
+    "named": true
+  },
+  {
+    "type": "section_generate_buildrequires",
+    "named": true
+  },
+  {
+    "type": "section_install",
+    "named": true
+  },
+  {
+    "type": "section_prep",
     "named": true
   },
   {

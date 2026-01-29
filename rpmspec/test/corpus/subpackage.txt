@@ -9,7 +9,6 @@ Summary: Client
 
 (spec
   (package
-    (section_name)
     (package_name
       (word))
     (preamble
@@ -27,7 +26,6 @@ Summary: Subpackage
 
 (spec
   (package
-    (section_name)
     (package_name
       (word))
     (preamble
@@ -45,7 +43,6 @@ Summary: Subpackage
 
 (spec
   (package
-    (section_name)
     (package_name
       (macro_expansion
         (identifier)))
@@ -70,7 +67,6 @@ Conflicts: baz
 
 (spec
   (package
-    (section_name)
     (package_name
       (word))
     (preamble
@@ -112,7 +108,6 @@ BuildRequires: binutils %{?binutils_version_req}
 
 (spec
   (package
-    (section_name)
     (package_name
       (word))
     (preamble
@@ -144,7 +139,6 @@ Summary: Default feature devel
 
 (spec
   (package
-    (section_name)
     (package_name
       (macro_expansion
         (identifier)))
@@ -167,7 +161,6 @@ Summary: Master package
 
 (spec
   (package
-    (section_name)
     (package_name
       (word))
     (preamble

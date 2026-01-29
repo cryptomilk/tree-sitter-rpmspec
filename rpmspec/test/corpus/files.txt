@@ -7,8 +7,7 @@ Files (Empty)
 -------------------------------------------------------------------------------
 
 (spec
-  (files
-    (section_name)))
+  (files))
 
 ===============================================================================
 Files (Simple Path)
@@ -21,7 +20,6 @@ Files (Simple Path)
 
 (spec
   (files
-    (section_name)
     (file
       (path))))
 
@@ -36,7 +34,6 @@ Files (Expansion)
 
 (spec
   (files
-    (section_name)
     (file
       (path
         (macro_expansion
@@ -53,7 +50,6 @@ Files (-n)
 
 (spec
   (files
-    (section_name)
     (package_name
       (word))
     (file
@@ -69,7 +65,6 @@ Files (-f)
 
 (spec
   (files
-    (section_name)
     (path)))
 
 ===============================================================================
@@ -84,7 +79,6 @@ Files (%defattr)
 
 (spec
   (files
-    (section_name)
     (defattr)
     (file
       (path))))
@@ -101,7 +95,6 @@ Files (%defattr with dirmode)
 
 (spec
   (files
-    (section_name)
     (defattr)
     (file
       (path))))
@@ -118,7 +111,6 @@ Files (%defattr with dash dirmode)
 
 (spec
   (files
-    (section_name)
     (defattr)
     (file
       (path))))
@@ -134,7 +126,6 @@ Files (%attr)
 
 (spec
   (files
-    (section_name)
     (file
       (attr)
       (path))))
@@ -150,7 +141,6 @@ Files (%attr with all dashes)
 
 (spec
   (files
-    (section_name)
     (file
       (attr)
       (path))))
@@ -166,7 +156,6 @@ Files (%attr + %dir)
 
 (spec
   (files
-    (section_name)
     (file
       (attr)
       (file_qualifier)
@@ -183,7 +172,6 @@ Files (%attr with macros in owner/group)
 
 (spec
   (files
-    (section_name)
     (file
       (attr
         (macro_expansion
@@ -203,7 +191,6 @@ Files (%config)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier
         (config_qualifier))
@@ -220,7 +207,6 @@ Files (%doc)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier)
       (path)
@@ -237,7 +223,6 @@ Files (%doc with subdirectory paths)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier)
       (path)
@@ -255,7 +240,6 @@ Files (%doc standalone)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier))
     (file
@@ -273,7 +257,6 @@ Files (quoted path with spaces)
 
 (spec
   (files
-    (section_name)
     (file
       (path))))
 
@@ -288,7 +271,6 @@ Files (%dir)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier)
       (path))))
@@ -304,7 +286,6 @@ Files (%dir with variables)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier)
       (path
@@ -323,7 +304,6 @@ Files (%license)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier)
       (path))
@@ -342,7 +322,6 @@ Files (%license with multiple files)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier)
       (path)
@@ -359,7 +338,6 @@ Files (%verify)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier
         (verify))
@@ -378,7 +356,6 @@ Files (%verify with caps and user)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier
         (verify))
@@ -395,7 +372,6 @@ Files (%caps)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier
         (caps_qualifier))
@@ -414,7 +390,6 @@ Files (%artifact)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier)
       (path))))
@@ -430,7 +405,6 @@ Files (%ghost)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier)
       (path))))
@@ -446,7 +420,6 @@ Files (%docdir)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier)
       (path))))
@@ -462,7 +435,6 @@ Files (%missingok)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier)
       (path))))
@@ -478,7 +450,6 @@ Files (%readme)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier)
       (path))))
@@ -496,7 +467,6 @@ Files (%ifarch)
 
 (spec
   (files
-    (section_name)
     (ifarch_statement
       (arch
         (identifier))
@@ -518,7 +488,6 @@ Files (%config with parameters)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier
         (config_qualifier
@@ -550,7 +519,6 @@ Files (shell globbing patterns)
 
 (spec
   (files
-    (section_name)
     (file
       (path
         (macro_expansion
@@ -574,7 +542,6 @@ Files (multiple file qualifiers)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier)
       (file_qualifier)
@@ -595,7 +562,6 @@ Files (%ghost %dir before %attr)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier)
       (file_qualifier)
@@ -614,7 +580,6 @@ Files (mixed order of %attr and qualifiers)
 
 (spec
   (files
-    (section_name)
     (file
       (attr)
       (file_qualifier)
@@ -636,7 +601,6 @@ Files (%exclude)
 
 (spec
   (files
-    (section_name)
     (file
       (file_qualifier)
       (path
@@ -654,7 +618,6 @@ Files (brace expansion in path)
 
 (spec
   (files
-    (section_name)
     (file
       (path
         (macro_simple_expansion
@@ -672,7 +635,6 @@ Files (brace expansion with empty alternative)
 
 (spec
   (files
-    (section_name)
     (file
       (path
         (macro_expansion
@@ -690,7 +652,6 @@ Files (complex %attr expressions)
 
 (spec
   (files
-    (section_name)
     (file
       (attr
         (macro_expansion

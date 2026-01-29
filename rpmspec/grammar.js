@@ -107,17 +107,13 @@ function buildScriptlet(name, sectionToken) {
             choice(
                 // With options: %name -a or %name -p
                 seq(
-                    alias(sectionToken($), $.section_name),
+                    sectionToken($),
                     field('argument', $.scriptlet_augment_option),
                     /\n/,
                     optional($.script_block)
                 ),
                 // Without options: %name
-                seq(
-                    alias(sectionToken($), $.section_name),
-                    /\n/,
-                    optional($.script_block)
-                )
+                seq(sectionToken($), /\n/, optional($.script_block))
             )
         );
 }
@@ -2166,8 +2162,6 @@ module.exports = grammar({
         // Description Section (%description)
         ///////////////////////////////////////////////////////////////////////
 
-        section_name: ($) => seq('%', $.identifier),
-
         // Description section: package description text
         // Format: %description [-n name] [inline_text]
         // Examples:
@@ -2178,7 +2172,7 @@ module.exports = grammar({
         description: ($) =>
             prec.right(
                 seq(
-                    alias('%description', $.section_name),
+                    '%description',
                     optional(
                         seq(
                             optional('-n'),
@@ -2357,13 +2351,7 @@ module.exports = grammar({
         //   https://example.com/foo-1.0.tar.gz
         //   https://example.com/foo-data-1.0.zip
         sourcelist: ($) =>
-            prec.right(
-                seq(
-                    alias(token('%sourcelist'), $.section_name),
-                    /\n/,
-                    optional($._filelist_content)
-                )
-            ),
+            prec.right(seq('%sourcelist', /\n/, optional($._filelist_content))),
 
         // %patchlist section: list of patch files, one per line
         // Handled like unnumbered Patch tags
@@ -2372,13 +2360,7 @@ module.exports = grammar({
         //   fix-build.patch
         //   https://example.com/security-fix.patch
         patchlist: ($) =>
-            prec.right(
-                seq(
-                    alias(token('%patchlist'), $.section_name),
-                    /\n/,
-                    optional($._filelist_content)
-                )
-            ),
+            prec.right(seq('%patchlist', /\n/, optional($._filelist_content))),
 
         // URL or file path - reusable for Source:, Patch:, %sourcelist, %patchlist
         // Also accepts a bare macro when the entire URL/path is in a macro (e.g., %{gosource})
@@ -2398,7 +2380,7 @@ module.exports = grammar({
         package: ($) =>
             prec.right(
                 seq(
-                    alias('%package', $.section_name),
+                    '%package',
                     optional('-n'),
                     $.package_name,
                     /\n/,
@@ -2788,7 +2770,7 @@ module.exports = grammar({
         files: ($) =>
             prec.right(
                 seq(
-                    alias('%files', $.section_name),
+                    '%files',
                     optional(
                         seq(
                             optional('-n'),
@@ -3009,12 +2991,7 @@ module.exports = grammar({
         // Changelog Section (%changelog)
         ///////////////////////////////////////////////////////////////////////
 
-        changelog: ($) =>
-            seq(
-                alias(token('%changelog'), $.section_name),
-                /\n/,
-                repeat($.changelog_entry)
-            ),
+        changelog: ($) => seq('%changelog', /\n/, repeat($.changelog_entry)),
 
         // * Tue May 31 2016 Adam Miller <maxamillion@fedoraproject.org> - 0.1-1
         // * Fri Jun 21 2002 Bob Marley <marley@redhat.com>

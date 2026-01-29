@@ -8,7 +8,7 @@ Clean Section (Empty)
 
 (spec
   (clean_scriptlet
-    (section_name)))
+    (section_clean)))
 
 ===============================================================================
 Clean Section (append option)
@@ -21,7 +21,7 @@ echo "appending to clean"
 
 (spec
   (clean_scriptlet
-    (section_name)
+    (section_clean)
     (scriptlet_augment_option)
     (script_block
       (script_line
@@ -38,7 +38,7 @@ echo "prepending to clean"
 
 (spec
   (clean_scriptlet
-    (section_name)
+    (section_clean)
     (scriptlet_augment_option)
     (script_block
       (script_line

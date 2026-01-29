@@ -476,7 +476,7 @@ make test
 
 (spec
   (check_scriptlet
-    (section_name)
+    (section_check)
     (script_block
       (script_line
         (script_content))))
@@ -513,7 +513,6 @@ Conditionals (%if with nested %files sections)
     condition: (with_operator
       (identifier))
     consequence: (files
-      (section_name)
       (package_name
         (word))
       (file
@@ -522,7 +521,6 @@ Conditionals (%if with nested %files sections)
         condition: (with_operator
           (identifier))
         consequence: (files
-          (section_name)
           (package_name
             (word))
           (file
@@ -544,7 +542,6 @@ echo hello
 
 (spec
   (files
-    (section_name)
     (package_name
       (word))
     (file

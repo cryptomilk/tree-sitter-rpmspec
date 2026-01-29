@@ -85,7 +85,7 @@ Simple Macro Expansion (configure with line continuation in script_block)
 
 (spec
   (build_scriptlet
-    (section_name)
+    (section_build)
     (script_block
       (script_line
         (macro_simple_expansion
@@ -111,7 +111,7 @@ Simple Macro Expansion (with embedded conditional in line continuation)
 
 (spec
   (build_scriptlet
-    (section_name)
+    (section_build)
     (script_block
       (script_line
         (macro_simple_expansion
@@ -185,7 +185,7 @@ Parametric Macro Expansion (with option terminator and pass-through)
 
 (spec
   (check_scriptlet
-    (section_name)
+    (section_check)
     (script_block
       (script_line
         (macro_expansion
@@ -206,7 +206,7 @@ KCFLAGS="-fno-pie -fdebug-prefix-map=$(%python3 -c '%find_vmlinux_h')"
 
 (spec
   (build_scriptlet
-    (section_name)
+    (section_build)
     (script_block
       (script_line
         (script_content)

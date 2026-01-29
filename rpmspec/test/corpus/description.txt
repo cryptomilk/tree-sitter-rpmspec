@@ -7,8 +7,7 @@ Description (Empty)
 -------------------------------------------------------------------------------
 
 (spec
-  (description
-    (section_name)))
+  (description))
 
 ===============================================================================
 Description (One-Line)
@@ -21,7 +20,6 @@ Simple description
 
 (spec
   (description
-    (section_name)
     (text
       (text_content))))
 
@@ -36,7 +34,6 @@ Simple description
 
 (spec
   (description
-    (section_name)
     (package_name
       (word))
     (text
@@ -53,7 +50,6 @@ The %{name}-subpackage package
 
 (spec
   (description
-    (section_name)
     (package_name
       (word))
     (text
@@ -73,7 +69,6 @@ Simple description
 
 (spec
   (description
-    (section_name)
     (package_name
       (word))
     (text
@@ -90,7 +85,6 @@ Simple description
 
 (spec
   (description
-    (section_name)
     (package_name
       (macro_expansion
         (identifier)))
@@ -107,7 +101,6 @@ Description (subpackage with inline text)
 
 (spec
   (description
-    (section_name)
     (package_name
       (macro_expansion
         (identifier)))
@@ -129,7 +122,6 @@ Built from %(c=%version; echo "v${c%.*}-stable") branch.
 
 (spec
   (description
-    (section_name)
     (text
       (text_content))
     condition: (concatenation
@@ -166,7 +158,6 @@ DC description.
 
 (spec
   (description
-    (section_name)
     (package_name
       (word))
     (text
@@ -175,7 +166,6 @@ DC description.
     condition: (with_operator
       (identifier))
     consequence: (package
-      (section_name)
       (package_name
         (word))
       (preamble
@@ -184,7 +174,6 @@ DC description.
           (word)
           (word))))
     consequence: (description
-      (section_name)
       (package_name
         (word))
       (text
@@ -215,7 +204,6 @@ Devel description.
 
 (spec
   (description
-    (section_name)
     (package_name
       (word))
     (text
@@ -224,7 +212,6 @@ Devel description.
     condition: (with_operator
       (identifier))
     consequence: (package
-      (section_name)
       (package_name
         (word))
       (preamble
@@ -233,13 +220,11 @@ Devel description.
           (word)
           (word))))
     consequence: (description
-      (section_name)
       (package_name
         (word))
       (text
         (text_content)))
     consequence: (package
-      (section_name)
       (package_name
         (word))
       (preamble
@@ -249,7 +234,6 @@ Devel description.
           (word)
           (word))))
     consequence: (description
-      (section_name)
       (package_name
         (word))
       (text
@@ -267,7 +251,6 @@ use the "%{crate}" crate.
 
 (spec
   (description
-    (section_name)
     (package_name
       (word))
     (text
@@ -292,7 +275,6 @@ Recommends reading the documentation.
 
 (spec
   (description
-    (section_name)
     (package_name
       (word))
     (text

@@ -8,7 +8,7 @@ Prep Section (Empty)
 
 (spec
   (prep_scriptlet
-    (section_name)))
+    (section_prep)))
 
 ===============================================================================
 Prep Section (%setup)
@@ -21,7 +21,7 @@ Prep Section (%setup)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (setup_macro
         (builtin)
@@ -38,7 +38,7 @@ Prep Section (%setup with flags)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (setup_macro
         (builtin)
@@ -56,7 +56,7 @@ Prep Section (%setup with source options)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (setup_macro
         (builtin)
@@ -76,7 +76,7 @@ Prep Section (%setup with attached source numbers)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (setup_macro
         (builtin)
@@ -94,7 +94,7 @@ Prep Section (%setup with name option)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (setup_macro
         (builtin)
@@ -113,7 +113,7 @@ Prep Section (%setup complex combination)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (setup_macro
         (builtin)
@@ -137,7 +137,7 @@ Prep Section (%setup standalone)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (setup_macro
         (builtin)
@@ -156,7 +156,7 @@ Prep Section (%setup edge cases)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (setup_macro
         (builtin)
@@ -180,7 +180,7 @@ Prep Section (%setup with combined flags)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (setup_macro
         (builtin)
@@ -205,7 +205,7 @@ Prep Section (%autosetup basic)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (autosetup_macro
         (builtin)))))
@@ -221,7 +221,7 @@ Prep Section (%autosetup with VCS)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (autosetup_macro
         (builtin)
@@ -238,7 +238,7 @@ Prep Section (%autosetup with options)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (autosetup_macro
         (builtin)
@@ -261,7 +261,7 @@ Prep Section (%autosetup with attached source number)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (autosetup_macro
         (builtin)
@@ -279,7 +279,7 @@ Prep Section (%autosetup with macro-concatenated directory)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (autosetup_macro
         (builtin)
@@ -302,7 +302,7 @@ Prep Section (%autosetup with word-macro directory)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (autosetup_macro
         (builtin)
@@ -324,7 +324,7 @@ Prep Section (%autosetup with dotted version in directory)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (autosetup_macro
         (builtin)
@@ -350,7 +350,7 @@ Prep Section (%autopatch basic)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (autopatch_macro
         (builtin)))))
@@ -366,7 +366,7 @@ Prep Section (%autopatch with range)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (autopatch_macro
         (builtin)
@@ -386,7 +386,7 @@ Prep Section (%autopatch with macro expression)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (autopatch_macro
         (builtin)
@@ -411,7 +411,7 @@ Prep Section (%autopatch with arguments)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (autopatch_macro
         (builtin)
@@ -434,7 +434,7 @@ Prep Section (%patch basic usage)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (patch_macro
         (builtin)
@@ -457,7 +457,7 @@ Prep Section (%patch with flags)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (patch_macro
         (builtin)
@@ -485,7 +485,7 @@ Prep Section (%patch with string options)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (patch_macro
         (builtin)
@@ -512,7 +512,7 @@ Prep Section (%patch complex combination)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (patch_macro
         (builtin)
@@ -545,7 +545,7 @@ Prep Section (%patch standalone)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (patch_macro
         (builtin)
@@ -571,7 +571,7 @@ Prep Section (%patch edge cases)
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (script_block
       (patch_macro
         (builtin)
@@ -598,7 +598,7 @@ echo "pre-prep step"
 
 (spec
   (prep_scriptlet
-    (section_name)
+    (section_prep)
     (scriptlet_augment_option)
     (script_block
       (script_line

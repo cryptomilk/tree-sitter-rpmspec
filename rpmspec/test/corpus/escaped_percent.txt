@@ -9,7 +9,7 @@ echo %%{name}
 
 (spec
   (build_scriptlet
-    (section_name)
+    (section_build)
     (script_block
       (script_line
         (script_content)
@@ -39,7 +39,7 @@ echo %%
 
 (spec
   (build_scriptlet
-    (section_name)
+    (section_build)
     (script_block
       (script_line
         (script_content)
@@ -57,7 +57,7 @@ echo %%{foo} and %%{bar}
 
 (spec
   (build_scriptlet
-    (section_name)
+    (section_build)
     (script_block
       (script_line
         (script_content)
@@ -79,7 +79,7 @@ echo %%{literal} %{real}
 
 (spec
   (build_scriptlet
-    (section_name)
+    (section_build)
     (script_block
       (script_line
         (script_content)

@@ -73,19 +73,19 @@
 
 ; Description and package sections
 (description
-  (section_name) @type.definition)
+  "%description" @type.definition)
 (package
-  (section_name) @type.definition)
+  "%package" @type.definition)
 
 ; Sourcelist section
 (sourcelist
-  (section_name) @type.definition)
+  "%sourcelist" @type.definition)
 (sourcelist
   (file) @string.special.path)
 
 ; Patchlist section
 (patchlist
-  (section_name) @type.definition)
+  "%patchlist" @type.definition)
 (patchlist
   (file) @string.special.path)
 
@@ -95,19 +95,19 @@
 
 ; Build scriptlets (%prep, %build, %install, %check, %clean)
 (prep_scriptlet
-  (section_name) @module.builtin)
+  (section_prep) @module.builtin)
 (generate_buildrequires
-  (section_name) @module.builtin)
+  (section_generate_buildrequires) @module.builtin)
 (conf_scriptlet
-  (section_name) @module.builtin)
+  (section_conf) @module.builtin)
 (build_scriptlet
-  (section_name) @module.builtin)
+  (section_build) @module.builtin)
 (install_scriptlet
-  (section_name) @module.builtin)
+  (section_install) @module.builtin)
 (check_scriptlet
-  (section_name) @module.builtin)
+  (section_check) @module.builtin)
 (clean_scriptlet
-  (section_name) @module.builtin)
+  (section_clean) @module.builtin)
 
 ; Runtime scriptlets (%pre, %post, %preun, %postun, etc.)
 [
@@ -171,7 +171,7 @@
 ; =============================================================================
 
 (files
-  (section_name) @type.definition)
+  "%files" @type.definition)
 
 ; File directives
 [
@@ -195,7 +195,7 @@
 ; =============================================================================
 
 (changelog
-  (section_name) @type.definition)
+  "%changelog" @type.definition)
 
 ; =============================================================================
 ; MACROS

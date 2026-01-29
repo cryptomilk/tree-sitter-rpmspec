@@ -8,7 +8,7 @@ Install Section (Empty)
 
 (spec
   (install_scriptlet
-    (section_name)))
+    (section_install)))
 
 ===============================================================================
 Install Section (append option)
@@ -21,7 +21,7 @@ echo "appending to install"
 
 (spec
   (install_scriptlet
-    (section_name)
+    (section_install)
     (scriptlet_augment_option)
     (script_block
       (script_line
@@ -38,7 +38,7 @@ echo "prepending to install"
 
 (spec
   (install_scriptlet
-    (section_name)
+    (section_install)
     (scriptlet_augment_option)
     (script_block
       (script_line
@@ -55,7 +55,7 @@ sed -i 's/[^%]//g' file.txt
 
 (spec
   (install_scriptlet
-    (section_name)
+    (section_install)
     (script_block
       (script_line
         (script_content)

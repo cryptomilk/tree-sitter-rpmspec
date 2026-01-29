@@ -7,8 +7,7 @@ Changelog (Empty)
 -------------------------------------------------------------------------------
 
 (spec
-  (changelog
-    (section_name)))
+  (changelog))
 
 ===============================================================================
 Changelog (without Version)
@@ -22,7 +21,6 @@ Changelog (without Version)
 
 (spec
   (changelog
-    (section_name)
     (changelog_entry
       (string_content)
       (string
@@ -40,7 +38,6 @@ Changelog (Version)
 
 (spec
   (changelog
-    (section_name)
     (changelog_entry
       (string_content)
       (string
@@ -59,7 +56,6 @@ Changelog (Multi-line)
 
 (spec
   (changelog
-    (section_name)
     (changelog_entry
       (string_content)
       (string
@@ -80,7 +76,6 @@ Changelog (with continuation line)
 
 (spec
   (changelog
-    (section_name)
     (changelog_entry
       (string_content)
       (string
@@ -100,7 +95,6 @@ Changelog (with escape sequence in text)
 
 (spec
   (changelog
-    (section_name)
     (changelog_entry
       (string_content)
       (string
@@ -118,7 +112,6 @@ Changelog (item without leading dash)
 
 (spec
   (changelog
-    (section_name)
     (changelog_entry
       (string_content)
       (string
