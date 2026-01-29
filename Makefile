@@ -2,6 +2,18 @@ TS ?= tree-sitter
 
 default: build
 
+help:
+	@echo "Available targets:"
+	@echo "  configure          - Install npm dependencies and configure cmake"
+	@echo "  build              - Generate parsers and build with cmake"
+	@echo "  test               - Build and run all tests"
+	@echo "  test-fast          - Run tests without rebuilding"
+	@echo "  neovim             - Generate neovim query files (with ; inherits)"
+	@echo "  check-queries      - Validate queries with ts_query_ls"
+	@echo "  check-bash-scanner - Check if vendored bash scanner is up to date"
+	@echo "  update-bash-scanner- Update vendored bash scanner from node_modules"
+	@echo "  help               - Show this help message"
+
 configure:
 	@if [ ! -d rpmbash/node_modules/tree-sitter-bash ]; then \
 		npm --prefix rpmbash install; \
@@ -47,4 +59,14 @@ check-bash-scanner:
 		exit 1; \
 	fi
 
-.PHONY: default configure build test test-fast neovim update-bash-scanner check-bash-scanner
+# Validate queries with ts_query_ls
+check-queries:
+	@command -v ts_query_ls >/dev/null 2>&1 || { echo "Error: ts_query_ls not found. Install from https://github.com/ribru17/ts_query_ls"; exit 1; }
+	@test -f build/rpmspec/libtree-sitter-rpmspec.so || { echo "Error: Run 'make build' first"; exit 1; }
+	@ln -sf ../build/rpmspec/libtree-sitter-rpmspec.so rpmspec/rpmspec.so; \
+		ln -sf ../build/rpmbash/libtree-sitter-rpmbash.so rpmbash/rpmbash.so; \
+		(cd rpmspec && ts_query_ls check queries/) && \
+		(cd rpmbash && ts_query_ls check queries/); \
+		ret=$$?; rm -f rpmspec/rpmspec.so rpmbash/rpmbash.so; exit $$ret
+
+.PHONY: default configure build test test-fast neovim update-bash-scanner check-bash-scanner check-queries
