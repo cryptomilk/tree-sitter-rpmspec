@@ -55,3 +55,13 @@ check-bash-scanner:
   script:
     - npm --prefix rpmbash install
     - make check-bash-scanner
+
+validate-queries:
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
+  script:
+    - npm --prefix rpmbash install
+    - cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
+    - cmake --build build
+    - curl -fL https://github.com/ribru17/ts_query_ls/releases/latest/download/ts_query_ls-x86_64-unknown-linux-gnu.tar.gz | tar -xz
+    - (cd rpmspec && ../ts_query_ls check queries/)
+    - (cd rpmbash && ../ts_query_ls check queries/)
