@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - .github/workflows/**
       - rpmspec/grammar.js
       - rpmspec/src/**
       - rpmspec/test/**
@@ -14,6 +15,7 @@ on:
       - rpmbash/queries/**
   pull_request:
     paths:
+      - .github/workflows/**
       - rpmspec/grammar.js
       - rpmspec/src/**
       - rpmspec/test/**
