@@ -11,3 +11,8 @@
 (rpm_conditional_keyword) @keyword.conditional
 (rpm_else) @keyword.conditional
 (rpm_endif) @keyword.conditional
+
+; Override bash's "}" @punctuation.bracket for the closing brace of RPM macro expansions
+; to match rpmspec's @punctuation.special highlighting for the opening brace
+(rpm_macro_expansion
+  "}" @punctuation.special)
