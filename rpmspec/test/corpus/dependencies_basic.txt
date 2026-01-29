@@ -37,7 +37,7 @@ Requires: python >= 3.6
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -52,7 +52,7 @@ Requires: cmake <= 3.20
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -67,7 +67,7 @@ Requires: package = 1.0.0
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -82,7 +82,7 @@ Requires: oldpkg < 2.0
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -97,7 +97,7 @@ Requires: newpkg > 1.0
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -112,7 +112,7 @@ Requires: package = 2:1.0.0
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -127,7 +127,7 @@ Requires: package = 2:1.0.0-1
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -158,7 +158,7 @@ Requires(post): systemd >= 250
   (preamble
     (dependency_tag
       (qualifier))
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -173,7 +173,7 @@ BuildRequires: cmake >= 3.10
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -202,7 +202,7 @@ Provides: virtual-package = 1.0
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -231,7 +231,7 @@ Obsoletes: old-package < 2.0
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -260,6 +260,6 @@ Suggests: nice-to-have >= 1.0
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))

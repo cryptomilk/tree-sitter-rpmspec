@@ -8,7 +8,6 @@ Macro Expression (simple arithmetic)
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (macro_expression
       (macro_arithmetic_operator
@@ -25,7 +24,6 @@ Macro Expression (arithmetic with precedence)
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (macro_expression
       (macro_arithmetic_operator
@@ -44,7 +42,6 @@ Macro Expression (comparison)
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (macro_expression
       (macro_comparison_operator
@@ -61,7 +58,6 @@ Macro Expression (ternary with comparison)
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (macro_expression
       (ternary_operator
@@ -83,7 +79,6 @@ Macro Expression (version literal comparison)
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (macro_expression
       (macro_comparison_operator
@@ -102,7 +97,6 @@ Macro Expression (version literal with epoch)
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (macro_expression
       (macro_comparison_operator
@@ -121,7 +115,6 @@ Macro Expression (with macro expansion)
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (macro_expression
       (macro_arithmetic_operator
@@ -139,7 +132,6 @@ Macro Expression (ternary with macro in condition)
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (macro_expression
       (ternary_operator

@@ -207,8 +207,8 @@
 
 (macro_definition
   "%" @punctuation.special
-  (builtin) @constant.builtin
-  (identifier) @keyword.macro)
+  ["define" "global"] @constant.builtin
+  name: (identifier) @keyword.macro)
 
 (macro_undefinition
   "%" @punctuation.special

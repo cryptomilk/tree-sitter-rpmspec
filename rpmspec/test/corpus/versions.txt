@@ -31,12 +31,12 @@ BuildRequires:  another-package >= 1:2.0.0
     value: (word))
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version)))
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -82,9 +82,11 @@ Requires:       (package >= 2:1.0 or alternative-package)
     (dependency_tag)
     value: (boolean_dependency
       (boolean_or_expression
-        name: (word)
-        version: (version)
-        name: (word)))))
+        left: (version_dependency
+          name: (word)
+          version: (version))
+        right: (dependency
+          name: (word))))))
 
 ===============================================================================
 Version (Epoch zero explicit)
@@ -101,7 +103,7 @@ Provides:       virtual-package = 0:1.0.0
     value: (word))
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -120,9 +122,8 @@ Provides:       bundled(sdb) = db7edd4a96a89b6749b677a85d7fa4ee2c6fbbb9
     value: (word))
   (preamble
     (dependency_tag)
-    value: (dependency
-      (qualified_dependency
-        name: (word)
-        qualifier: (dependency_qualifier
-          content: (identifier))
-        version: (dependency_version_string)))))
+    value: (qualified_dependency
+      name: (word)
+      qualifier: (dependency_qualifier
+        content: (identifier))
+      version: (dependency_version_string))))

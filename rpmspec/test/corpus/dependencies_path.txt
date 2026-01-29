@@ -9,9 +9,8 @@ Requires: /usr/bin/pkg-config
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (path_dependency
-        (path)))))
+    value: (path_dependency
+      (path))))
 
 ===============================================================================
 Path dependency (sbin path)
@@ -24,9 +23,8 @@ Requires: /usr/sbin/useradd
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (path_dependency
-        (path)))))
+    value: (path_dependency
+      (path))))
 
 ===============================================================================
 Path dependency (library path)
@@ -39,9 +37,8 @@ Provides: /usr/lib64/libfoo.so
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (path_dependency
-        (path)))))
+    value: (path_dependency
+      (path))))
 
 ===============================================================================
 Path dependency (shell)
@@ -54,9 +51,8 @@ Requires: /bin/sh
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (path_dependency
-        (path)))))
+    value: (path_dependency
+      (path))))
 
 ===============================================================================
 Multiple path dependencies
@@ -69,12 +65,10 @@ Requires: /usr/bin/sh /usr/bin/bash
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (path_dependency
-        (path)))
-    value: (dependency
-      (path_dependency
-        (path)))))
+    value: (path_dependency
+      (path))
+    value: (path_dependency
+      (path))))
 
 ===============================================================================
 Path dependency with comma separator
@@ -87,12 +81,10 @@ Requires: /usr/bin/sh, /usr/bin/bash
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (path_dependency
-        (path)))
-    value: (dependency
-      (path_dependency
-        (path)))))
+    value: (path_dependency
+      (path))
+    value: (path_dependency
+      (path))))
 
 ===============================================================================
 Mixed path and package dependencies
@@ -105,8 +97,7 @@ Requires: /usr/bin/sh cmake-filesystem
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (path_dependency
-        (path)))
+    value: (path_dependency
+      (path))
     value: (dependency
       name: (word))))

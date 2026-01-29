@@ -66,7 +66,7 @@ Triggerin Section (with version constraint)
 (spec
   (trigger
     condition: (trigger_condition
-      (dependency
+      (version_dependency
         name: (word)
         version: (version)))))
 
@@ -87,10 +87,10 @@ print "I'm in my trigger!\n";
     interpreter: (script_interpreter
       program: (interpreter_program))
     condition: (trigger_condition
-      (dependency
+      (version_dependency
         name: (word)
         version: (version))
-      (dependency
+      (version_dependency
         name: (word)
         version: (version)))
     (script_block

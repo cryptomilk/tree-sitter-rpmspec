@@ -200,33 +200,9 @@
     "named": true,
     "fields": {
       "left": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
           {
             "type": "boolean_and_expression",
             "named": true
@@ -252,19 +228,11 @@
             "named": true
           },
           {
-            "type": "dependency_version_string",
+            "type": "dependency",
             "named": true
           },
           {
             "type": "elf_dependency",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -276,61 +244,15 @@
             "named": true
           },
           {
-            "type": "version",
-            "named": true
-          },
-          {
-            "type": "word",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "word",
+            "type": "version_dependency",
             "named": true
           }
         ]
       },
       "right": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
           {
             "type": "boolean_and_expression",
             "named": true
@@ -356,19 +278,11 @@
             "named": true
           },
           {
-            "type": "dependency_version_string",
+            "type": "dependency",
             "named": true
           },
           {
             "type": "elf_dependency",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -380,57 +294,7 @@
             "named": true
           },
           {
-            "type": "version",
-            "named": true
-          },
-          {
-            "type": "word",
-            "named": true
-          }
-        ]
-      },
-      "version": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
-          {
-            "type": "dependency_version_string",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "version",
+            "type": "version_dependency",
             "named": true
           }
         ]
@@ -440,75 +304,10 @@
   {
     "type": "boolean_dependency",
     "named": true,
-    "fields": {
-      "name": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "word",
-            "named": true
-          }
-        ]
-      },
-      "version": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
-          {
-            "type": "dependency_version_string",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "version",
-            "named": true
-          }
-        ]
-      }
-    },
+    "fields": {},
     "children": {
       "multiple": false,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "boolean_and_expression",
@@ -535,6 +334,10 @@
           "named": true
         },
         {
+          "type": "dependency",
+          "named": true
+        },
+        {
           "type": "elf_dependency",
           "named": true
         },
@@ -545,6 +348,10 @@
         {
           "type": "qualified_dependency",
           "named": true
+        },
+        {
+          "type": "version_dependency",
+          "named": true
         }
       ]
     }
@@ -554,33 +361,9 @@
     "named": true,
     "fields": {
       "alternative": {
-        "multiple": true,
+        "multiple": false,
         "required": false,
         "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
           {
             "type": "boolean_and_expression",
             "named": true
@@ -606,19 +389,11 @@
             "named": true
           },
           {
-            "type": "dependency_version_string",
+            "type": "dependency",
             "named": true
           },
           {
             "type": "elf_dependency",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -630,43 +405,15 @@
             "named": true
           },
           {
-            "type": "version",
-            "named": true
-          },
-          {
-            "type": "word",
+            "type": "version_dependency",
             "named": true
           }
         ]
       },
       "condition": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
           {
             "type": "boolean_and_expression",
             "named": true
@@ -692,19 +439,11 @@
             "named": true
           },
           {
-            "type": "dependency_version_string",
+            "type": "dependency",
             "named": true
           },
           {
             "type": "elf_dependency",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -716,43 +455,15 @@
             "named": true
           },
           {
-            "type": "version",
-            "named": true
-          },
-          {
-            "type": "word",
+            "type": "version_dependency",
             "named": true
           }
         ]
       },
       "consequence": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
           {
             "type": "boolean_and_expression",
             "named": true
@@ -778,19 +489,11 @@
             "named": true
           },
           {
-            "type": "dependency_version_string",
+            "type": "dependency",
             "named": true
           },
           {
             "type": "elf_dependency",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -802,75 +505,7 @@
             "named": true
           },
           {
-            "type": "version",
-            "named": true
-          },
-          {
-            "type": "word",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "word",
-            "named": true
-          }
-        ]
-      },
-      "version": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
-          {
-            "type": "dependency_version_string",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "version",
+            "type": "version_dependency",
             "named": true
           }
         ]
@@ -930,33 +565,9 @@
     "named": true,
     "fields": {
       "left": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
           {
             "type": "boolean_and_expression",
             "named": true
@@ -982,19 +593,11 @@
             "named": true
           },
           {
-            "type": "dependency_version_string",
+            "type": "dependency",
             "named": true
           },
           {
             "type": "elf_dependency",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -1006,61 +609,15 @@
             "named": true
           },
           {
-            "type": "version",
-            "named": true
-          },
-          {
-            "type": "word",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "word",
+            "type": "version_dependency",
             "named": true
           }
         ]
       },
       "right": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
           {
             "type": "boolean_and_expression",
             "named": true
@@ -1086,19 +643,11 @@
             "named": true
           },
           {
-            "type": "dependency_version_string",
+            "type": "dependency",
             "named": true
           },
           {
             "type": "elf_dependency",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -1110,57 +659,7 @@
             "named": true
           },
           {
-            "type": "version",
-            "named": true
-          },
-          {
-            "type": "word",
-            "named": true
-          }
-        ]
-      },
-      "version": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
-          {
-            "type": "dependency_version_string",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "version",
+            "type": "version_dependency",
             "named": true
           }
         ]
@@ -1172,33 +671,9 @@
     "named": true,
     "fields": {
       "left": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
           {
             "type": "boolean_and_expression",
             "named": true
@@ -1224,19 +699,11 @@
             "named": true
           },
           {
-            "type": "dependency_version_string",
+            "type": "dependency",
             "named": true
           },
           {
             "type": "elf_dependency",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -1248,61 +715,15 @@
             "named": true
           },
           {
-            "type": "version",
-            "named": true
-          },
-          {
-            "type": "word",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "word",
+            "type": "version_dependency",
             "named": true
           }
         ]
       },
       "right": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
           {
             "type": "boolean_and_expression",
             "named": true
@@ -1328,19 +749,11 @@
             "named": true
           },
           {
-            "type": "dependency_version_string",
+            "type": "dependency",
             "named": true
           },
           {
             "type": "elf_dependency",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -1352,57 +765,7 @@
             "named": true
           },
           {
-            "type": "version",
-            "named": true
-          },
-          {
-            "type": "word",
-            "named": true
-          }
-        ]
-      },
-      "version": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
-          {
-            "type": "dependency_version_string",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "version",
+            "type": "version_dependency",
             "named": true
           }
         ]
@@ -1414,33 +777,9 @@
     "named": true,
     "fields": {
       "left": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
           {
             "type": "boolean_and_expression",
             "named": true
@@ -1466,19 +805,11 @@
             "named": true
           },
           {
-            "type": "dependency_version_string",
+            "type": "dependency",
             "named": true
           },
           {
             "type": "elf_dependency",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -1490,61 +821,15 @@
             "named": true
           },
           {
-            "type": "version",
-            "named": true
-          },
-          {
-            "type": "word",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "word",
+            "type": "version_dependency",
             "named": true
           }
         ]
       },
       "right": {
-        "multiple": true,
+        "multiple": false,
         "required": true,
         "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
           {
             "type": "boolean_and_expression",
             "named": true
@@ -1570,19 +855,11 @@
             "named": true
           },
           {
-            "type": "dependency_version_string",
+            "type": "dependency",
             "named": true
           },
           {
             "type": "elf_dependency",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
             "named": true
           },
           {
@@ -1594,57 +871,7 @@
             "named": true
           },
           {
-            "type": "version",
-            "named": true
-          },
-          {
-            "type": "word",
-            "named": true
-          }
-        ]
-      },
-      "version": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
-          {
-            "type": "dependency_version_string",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "version",
+            "type": "version_dependency",
             "named": true
           }
         ]
@@ -2034,7 +1261,7 @@
     "fields": {
       "name": {
         "multiple": true,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "macro_expansion",
@@ -2049,71 +1276,7 @@
             "named": true
           }
         ]
-      },
-      "version": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "-",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          },
-          {
-            "type": "dependency_version_string",
-            "named": true
-          },
-          {
-            "type": "macro_expansion",
-            "named": true
-          },
-          {
-            "type": "macro_simple_expansion",
-            "named": true
-          },
-          {
-            "type": "version",
-            "named": true
-          }
-        ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "elf_dependency",
-          "named": true
-        },
-        {
-          "type": "path_dependency",
-          "named": true
-        },
-        {
-          "type": "qualified_dependency",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -4469,13 +3632,9 @@
       }
     },
     "children": {
-      "multiple": true,
-      "required": true,
+      "multiple": false,
+      "required": false,
       "types": [
-        {
-          "type": "builtin",
-          "named": true
-        },
         {
           "type": "parametric_options",
           "named": true
@@ -5770,11 +4929,27 @@
             "named": true
           },
           {
+            "type": "elf_dependency",
+            "named": true
+          },
+          {
             "type": "file",
             "named": true
           },
           {
+            "type": "path_dependency",
+            "named": true
+          },
+          {
+            "type": "qualified_dependency",
+            "named": true
+          },
+          {
             "type": "url",
+            "named": true
+          },
+          {
+            "type": "version_dependency",
             "named": true
           }
         ]
@@ -7137,6 +6312,22 @@
         {
           "type": "dependency",
           "named": true
+        },
+        {
+          "type": "elf_dependency",
+          "named": true
+        },
+        {
+          "type": "path_dependency",
+          "named": true
+        },
+        {
+          "type": "qualified_dependency",
+          "named": true
+        },
+        {
+          "type": "version_dependency",
+          "named": true
         }
       ]
     }
@@ -7198,6 +6389,76 @@
     "type": "verify",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "version_dependency",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "word",
+            "named": true
+          }
+        ]
+      },
+      "version": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "-",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": "<=",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": ">=",
+            "named": false
+          },
+          {
+            "type": "dependency_version_string",
+            "named": true
+          },
+          {
+            "type": "macro_expansion",
+            "named": true
+          },
+          {
+            "type": "macro_simple_expansion",
+            "named": true
+          },
+          {
+            "type": "version",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "version_literal",

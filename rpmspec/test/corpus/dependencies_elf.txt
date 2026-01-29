@@ -9,11 +9,10 @@ Requires: libc.so.6()(64bit)
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (elf_dependency
-        soname: (soname)
-        symbol_version: (elf_symbol_version)
-        arch: (elf_arch)))))
+    value: (elf_dependency
+      soname: (soname)
+      symbol_version: (elf_symbol_version)
+      arch: (elf_arch))))
 
 ===============================================================================
 ELF dependency with symbol version (Requires)
@@ -26,12 +25,11 @@ Requires: libc.so.6(GLIBC_2.2.5)(64bit)
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (elf_dependency
-        soname: (soname)
-        symbol_version: (elf_symbol_version
-          version: (identifier))
-        arch: (elf_arch)))))
+    value: (elf_dependency
+      soname: (soname)
+      symbol_version: (elf_symbol_version
+        version: (identifier))
+      arch: (elf_arch))))
 
 ===============================================================================
 ELF dependency with empty symbol version (Provides)
@@ -44,11 +42,10 @@ Provides: libssh.so.4()(64bit)
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (elf_dependency
-        soname: (soname)
-        symbol_version: (elf_symbol_version)
-        arch: (elf_arch)))))
+    value: (elf_dependency
+      soname: (soname)
+      symbol_version: (elf_symbol_version)
+      arch: (elf_arch))))
 
 ===============================================================================
 ELF dependency with symbol version (Provides)
@@ -61,12 +58,11 @@ Provides: libssh.so.4(LIBSSH_4_5_0)(64bit)
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (elf_dependency
-        soname: (soname)
-        symbol_version: (elf_symbol_version
-          version: (identifier))
-        arch: (elf_arch)))))
+    value: (elf_dependency
+      soname: (soname)
+      symbol_version: (elf_symbol_version
+        version: (identifier))
+      arch: (elf_arch))))
 
 ===============================================================================
 ELF dependency 32bit architecture
@@ -79,12 +75,11 @@ Requires: libc.so.6(GLIBC_2.0)(32bit)
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (elf_dependency
-        soname: (soname)
-        symbol_version: (elf_symbol_version
-          version: (identifier))
-        arch: (elf_arch)))))
+    value: (elf_dependency
+      soname: (soname)
+      symbol_version: (elf_symbol_version
+        version: (identifier))
+      arch: (elf_arch))))
 
 ===============================================================================
 ELF dependency with complex symbol version
@@ -97,12 +92,11 @@ Requires: libgssapi_krb5.so.2(gssapi_krb5_2_MIT)(64bit)
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (elf_dependency
-        soname: (soname)
-        symbol_version: (elf_symbol_version
-          version: (identifier))
-        arch: (elf_arch)))))
+    value: (elf_dependency
+      soname: (soname)
+      symbol_version: (elf_symbol_version
+        version: (identifier))
+      arch: (elf_arch))))
 
 ===============================================================================
 Multiple ELF dependencies
@@ -115,16 +109,14 @@ Requires: libc.so.6()(64bit) libcrypto.so.3()(64bit)
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (elf_dependency
-        soname: (soname)
-        symbol_version: (elf_symbol_version)
-        arch: (elf_arch)))
-    value: (dependency
-      (elf_dependency
-        soname: (soname)
-        symbol_version: (elf_symbol_version)
-        arch: (elf_arch)))))
+    value: (elf_dependency
+      soname: (soname)
+      symbol_version: (elf_symbol_version)
+      arch: (elf_arch))
+    value: (elf_dependency
+      soname: (soname)
+      symbol_version: (elf_symbol_version)
+      arch: (elf_arch))))
 
 ===============================================================================
 ELF dependency without version suffix in soname
@@ -137,11 +129,10 @@ Requires: libfoo.so()(64bit)
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (elf_dependency
-        soname: (soname)
-        symbol_version: (elf_symbol_version)
-        arch: (elf_arch)))))
+    value: (elf_dependency
+      soname: (soname)
+      symbol_version: (elf_symbol_version)
+      arch: (elf_arch))))
 
 ===============================================================================
 ELF dependency soname only (no symbol version or arch)
@@ -154,9 +145,8 @@ Provides: libssh_threads.so.4
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (elf_dependency
-        soname: (soname)))))
+    value: (elf_dependency
+      soname: (soname))))
 
 ===============================================================================
 ELF dependency with symbol version but no arch
@@ -169,8 +159,7 @@ Provides: libssh.so.4(LIBSSH_4_5_0)
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (elf_dependency
-        soname: (soname)
-        symbol_version: (elf_symbol_version
-          version: (identifier))))))
+    value: (elf_dependency
+      soname: (soname)
+      symbol_version: (elf_symbol_version
+        version: (identifier)))))

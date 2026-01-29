@@ -8,7 +8,6 @@ Macros (%define)
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (word)))
 
@@ -22,7 +21,6 @@ Macros (%global)
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (word)))
 
@@ -36,7 +34,6 @@ Macros (%global positive integer)
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (integer)))
 
@@ -50,7 +47,6 @@ Macros (%global negative integer)
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (integer)))
 
@@ -64,7 +60,6 @@ Macros (%global hex)
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (integer)))
 
@@ -78,7 +73,6 @@ Macros (%global function with empty arguments)
 
 (spec
   (macro_definition
-    (builtin)
     name: (identifier)
     (parametric_options)
     value: (word)))
@@ -94,7 +88,6 @@ Macros (%global function with line continuation)
 
 (spec
   (macro_definition
-    (builtin)
     name: (identifier)
     (parametric_options)
     value: (line_continuation)
@@ -112,7 +105,6 @@ echo test
 
 (spec
   (macro_definition
-    (builtin)
     name: (identifier)
     (parametric_options)
     value: (word)
@@ -134,7 +126,6 @@ fi \
 
 (spec
   (macro_definition
-    (builtin)
     name: (identifier)
     (parametric_options)
     value: (line_continuation)
@@ -165,7 +156,6 @@ Macros (%global with quoted string)
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (quoted_string
       (string_content))))
@@ -209,7 +199,6 @@ Macros (Conditional macro defintion #1)
       (negation_operator)
       (identifier)
       (macro_definition
-        (builtin)
         (identifier)
         (word)
         (word)))))
@@ -230,7 +219,6 @@ Macros (Conditional macro definition #2)
       (negation_operator)
       (identifier)
       (macro_definition
-        (builtin)
         (identifier)
         (macro_expansion
           (identifier))
@@ -368,27 +356,6 @@ Macros (Nested Function Calls)
         argument: (path)))))
 
 ===============================================================================
-Macros (Complex Lua with Variables)
-:skip
-===============================================================================
-
-%{lua:
-local name = rpm.expand("%{name}")
-print("Package: " .. name)
-}
-
--------------------------------------------------------------------------------
-
-(spec
-  (macro_expansion
-    (builtin)
-    (text
-      (text_content)
-      (macro_expansion
-        (identifier))
-      (text_content))))
-
-===============================================================================
 Macros (%global with parenthesized string value)
 ===============================================================================
 
@@ -398,7 +365,6 @@ Macros (%global with parenthesized string value)
 
 (spec
   (macro_definition
-    (builtin)
     name: (identifier)
     value: (word)
     value: (word)
@@ -414,7 +380,6 @@ Macros (%global with parentheses and macro expansion)
 
 (spec
   (macro_definition
-    (builtin)
     name: (identifier)
     value: (word)
     value: (macro_expansion
@@ -430,7 +395,6 @@ Macros (%global with angle brackets)
 
 (spec
   (macro_definition
-    (builtin)
     name: (identifier)
     value: (word)
     value: (word)
@@ -446,7 +410,6 @@ Macros (%global with pipe and semicolon)
 
 (spec
   (macro_definition
-    (builtin)
     name: (identifier)
     value: (word)
     value: (word)
@@ -571,7 +534,6 @@ Macros (Escape sequence in macro value - regex pattern)
 
 (spec
   (macro_definition
-    (builtin)
     name: (identifier)
     value: (word)
     value: (escape_sequence)
@@ -592,7 +554,6 @@ Macros (Triple backslash - escaped backslash with line continuation)
 
 (spec
   (macro_definition
-    (builtin)
     name: (identifier)
     value: (word)
     value: (word)
@@ -610,7 +571,6 @@ Macros (Single quotes in shell command)
 
 (spec
   (macro_definition
-    (builtin)
     name: (identifier)
     value: (macro_simple_expansion
       (escaped_percent))
@@ -637,7 +597,6 @@ Provides: %1 \
 
 (spec
   (macro_definition
-    (builtin)
     name: (identifier)
     (parametric_options)
     value: (line_continuation)

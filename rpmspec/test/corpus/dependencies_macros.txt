@@ -9,7 +9,7 @@ Requires: %{name} = %{version}
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (macro_expansion
         (identifier))
       version: (macro_expansion
@@ -26,7 +26,7 @@ Requires: %{name}%{?_isa} = %{version}
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (macro_expansion
         (identifier))
       name: (macro_expansion
@@ -46,7 +46,7 @@ Requires: %{name}-libs >= %{version}
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (macro_expansion
         (identifier))
       name: (word)
@@ -64,7 +64,7 @@ Requires: %{name} = %{version}-%{release}
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (macro_expansion
         (identifier))
       version: (macro_expansion
@@ -83,7 +83,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (macro_expansion
         (identifier))
       name: (macro_expansion
@@ -105,7 +105,7 @@ Requires: foo%{?_isa} >= 1.0
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       name: (macro_expansion
         (conditional_expansion
@@ -123,7 +123,7 @@ Requires: %name = 1.0
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (macro_simple_expansion
         (simple_macro))
       version: (version))))

@@ -121,7 +121,6 @@ BuildRequires: binutils %{?binutils_version_req}
     condition: (arch
       (identifier))
     consequence: (macro_definition
-      (builtin)
       name: (identifier)
       value: (word)
       value: (word)

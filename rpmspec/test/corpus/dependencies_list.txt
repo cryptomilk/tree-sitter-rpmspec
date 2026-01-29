@@ -47,7 +47,7 @@ BuildRequires: libaio-devel, device-mapper-devel >= 1.02.89
     (dependency_tag)
     value: (dependency
       name: (word))
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -62,10 +62,10 @@ Requires: python >= 3.6, perl >= 5.0
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -80,7 +80,7 @@ Requires: python >= 3.6 perl
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))
     value: (dependency

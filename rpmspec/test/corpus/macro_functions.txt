@@ -8,7 +8,6 @@ Parametric Macro (builtin colon syntax)
 
 (spec
   (macro_definition
-    (builtin)
     name: (identifier)
     (parametric_options)
     value: (macro_expansion

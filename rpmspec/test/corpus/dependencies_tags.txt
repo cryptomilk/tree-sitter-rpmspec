@@ -11,8 +11,10 @@ Requires: (pkgA or pkgB)
     (dependency_tag)
     value: (boolean_dependency
       (boolean_or_expression
-        name: (word)
-        name: (word)))))
+        left: (dependency
+          name: (word))
+        right: (dependency
+          name: (word))))))
 
 ===============================================================================
 Tag-specific: BuildRequires with boolean dependency
@@ -27,9 +29,11 @@ BuildRequires: (cmake >= 3.10 and ninja)
     (dependency_tag)
     value: (boolean_dependency
       (boolean_and_expression
-        name: (word)
-        version: (version)
-        name: (word)))))
+        left: (version_dependency
+          name: (word)
+          version: (version))
+        right: (dependency
+          name: (word))))))
 
 ===============================================================================
 Tag-specific: BuildPreReq (deprecated)
@@ -90,8 +94,10 @@ Recommends: (pkgA and pkgB)
     (dependency_tag)
     value: (boolean_dependency
       (boolean_and_expression
-        name: (word)
-        name: (word)))))
+        left: (dependency
+          name: (word))
+        right: (dependency
+          name: (word))))))
 
 ===============================================================================
 Tag-specific: Suggests with boolean dependency
@@ -106,8 +112,10 @@ Suggests: (nice-pkg if feature-pkg)
     (dependency_tag)
     value: (boolean_dependency
       (boolean_if_expression
-        name: (word)
-        name: (word)))))
+        consequence: (dependency
+          name: (word))
+        condition: (dependency
+          name: (word))))))
 
 ===============================================================================
 Tag-specific: Conflicts without boolean (simple)
@@ -120,7 +128,7 @@ Conflicts: bad-package >= 1.0
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -149,7 +157,7 @@ Obsoletes: old-package <= 1.0
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -164,7 +172,7 @@ Provides: virtual-pkg = 2.0
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
+    value: (version_dependency
       name: (word)
       version: (version))))
 
@@ -179,12 +187,11 @@ Provides: bundled(libfoo) = 1.2.3
 (spec
   (preamble
     (dependency_tag)
-    value: (dependency
-      (qualified_dependency
-        name: (word)
-        qualifier: (dependency_qualifier
-          content: (identifier))
-        version: (version)))))
+    value: (qualified_dependency
+      name: (word)
+      qualifier: (dependency_qualifier
+        content: (identifier))
+      version: (version))))
 
 ===============================================================================
 Tag-specific: BuildArch literal

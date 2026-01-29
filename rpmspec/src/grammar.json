@@ -1794,13 +1794,8 @@
             "value": "%"
           },
           {
-            "type": "ALIAS",
-            "content": {
-              "type": "SYMBOL",
-              "name": "_macro_define"
-            },
-            "named": true,
-            "value": "builtin"
+            "type": "SYMBOL",
+            "name": "_macro_define"
           },
           {
             "type": "IMMEDIATE_TOKEN",
@@ -5459,7 +5454,7 @@
         ]
       }
     },
-    "dependency": {
+    "_dependency": {
       "type": "CHOICE",
       "members": [
         {
@@ -5476,11 +5471,23 @@
         },
         {
           "type": "SYMBOL",
-          "name": "_simple_dependency"
+          "name": "version_dependency"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "dependency"
         }
       ]
     },
-    "_simple_dependency": {
+    "dependency": {
+      "type": "FIELD",
+      "name": "name",
+      "content": {
+        "type": "SYMBOL",
+        "name": "_dependency_name_base"
+      }
+    },
+    "version_dependency": {
       "type": "SEQ",
       "members": [
         {
@@ -5492,20 +5499,12 @@
           }
         },
         {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "FIELD",
-              "name": "version",
-              "content": {
-                "type": "SYMBOL",
-                "name": "_dependency_version_constraint"
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
+          "type": "FIELD",
+          "name": "version",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_dependency_version_constraint"
+          }
         }
       ]
     },
@@ -5778,7 +5777,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "dependency"
+          "name": "_dependency"
         },
         {
           "type": "REPEAT",
@@ -5799,7 +5798,7 @@
               },
               {
                 "type": "SYMBOL",
-                "name": "dependency"
+                "name": "_dependency"
               }
             ]
           }
@@ -5844,7 +5843,7 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "dependency"
+          "name": "_dependency"
         },
         {
           "type": "SYMBOL",
@@ -6355,7 +6354,11 @@
           },
           {
             "type": "SYMBOL",
-            "name": "_simple_dependency"
+            "name": "version_dependency"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "dependency"
           },
           {
             "type": "SYMBOL",

@@ -99,7 +99,6 @@ Escaped Percent (with braces in macro value)
 
 (spec
   (macro_definition
-    (builtin)
     name: (identifier)
     value: (word)
     value: (macro_simple_expansion

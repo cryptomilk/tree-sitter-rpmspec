@@ -8,7 +8,6 @@ Basic quoted string
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (quoted_string
       (string_content))))
@@ -23,7 +22,6 @@ Escaped quotes in quoted strings
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (quoted_string
       (string_content))))
@@ -38,7 +36,6 @@ Mixed escaped and unescaped content
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (quoted_string
       (string_content))))
@@ -53,7 +50,6 @@ Multiple escape sequences
 
 (spec
   (macro_definition
-    (builtin)
     (identifier)
     (quoted_string
       (string_content))))

@@ -865,7 +865,7 @@ module.exports = grammar({
             prec.left(
                 seq(
                     '%',
-                    alias($._macro_define, $.builtin),
+                    $._macro_define,
                     token.immediate(BLANK),
                     field('name', alias($.macro_name, $.identifier)),
                     optional($.parametric_options),
@@ -1823,7 +1823,7 @@ module.exports = grammar({
 
         // A single dependency: can be ELF, path, qualified, or simple versioned
         // Examples: libc.so.6()(64bit), /usr/bin/sh, perl(Carp) >= 3.2, python >= 3.6
-        dependency: ($) =>
+        _dependency: ($) =>
             choice(
                 // ELF dependency: libc.so.6(GLIBC_2.2.5)(64bit) - no version constraint
                 $.elf_dependency,
@@ -1831,17 +1831,22 @@ module.exports = grammar({
                 $.path_dependency,
                 // Qualified dependency: perl(Carp) >= 3.2 - has qualifier
                 $.qualified_dependency,
-                // Simple dependency: make, cmake-filesystem >= 3 - name with optional version
-                $._simple_dependency
+                // Simple dependency with version: cmake-filesystem >= 3
+                $.version_dependency,
+                // Simple dependency: make, python3-libs - just a name
+                $.dependency
             ),
 
-        // Simple dependency: package name with optional version constraint
-        // This is the fallback for dependencies that don't match other patterns
-        // Examples: make, cmake-filesystem, filesystem >= 3, python3-libs = 3.14.2
-        _simple_dependency: ($) =>
+        // Simple dependency: package name without version constraint
+        // Examples: make, cmake-filesystem, python3-libs
+        dependency: ($) => field('name', $._dependency_name_base),
+
+        // Simple dependency with version: package name with version constraint
+        // Examples: filesystem >= 3, python3-libs = 3.14.2
+        version_dependency: ($) =>
             seq(
                 field('name', $._dependency_name_base),
-                optional(field('version', $._dependency_version_constraint))
+                field('version', $._dependency_version_constraint)
             ),
 
         // ELF/shared library dependency: libc.so.6(GLIBC_2.2.5)(64bit)
@@ -1941,7 +1946,7 @@ module.exports = grammar({
         // Used for Conflicts, Obsoletes, and Provides tags
         // Examples: "python perl", "python, perl", "python >= 3.6, perl"
         _dependency_list: ($) =>
-            seq($.dependency, repeat(seq(optional(','), $.dependency))),
+            seq($._dependency, repeat(seq(optional(','), $._dependency))),
 
         // Rich dependency list: supports boolean expressions (RPM 4.13+)
         // Used for Requires, BuildRequires, and weak dependency tags
@@ -1954,7 +1959,7 @@ module.exports = grammar({
 
         // A single item in a rich dependency list: regular or boolean
         _rich_dependency_item: ($) =>
-            choice($.dependency, $.boolean_dependency),
+            choice($._dependency, $.boolean_dependency),
 
         // Base part of dependency name
         _dependency_name_base: ($) =>
@@ -2151,7 +2156,8 @@ module.exports = grammar({
                     $.elf_dependency,
                     $.path_dependency,
                     $.qualified_dependency,
-                    $._simple_dependency,
+                    $.version_dependency,
+                    $.dependency,
                     $.boolean_dependency // Nested parentheses
                 )
             ),
