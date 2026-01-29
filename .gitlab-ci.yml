@@ -2,11 +2,11 @@
 # Run a single pipeline per push to avoid duplicate pipelines
 workflow:
   rules:
-    # Run MR pipeline for merge requests
-    - if: $CI_MERGE_REQUEST_IID
     # Skip branch pipeline if an MR is open (MR pipeline handles it)
     - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
       when: never
+    # Run MR pipeline for merge requests
+    - if: $CI_MERGE_REQUEST_IID
     # Run branch pipeline for pushes without an MR
     - if: $CI_COMMIT_BRANCH
 
