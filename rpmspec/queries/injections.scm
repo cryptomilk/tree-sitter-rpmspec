@@ -162,9 +162,9 @@
 ; SHELL COMMAND EXPANSION %(...)
 ; ============================================================
 
-(shell_command) @injection.content
+((shell_command) @injection.content
   (#set! injection.language "rpmbash")
-  (#set! injection.include-children)
+  (#set! injection.include-children))
 
 ; ============================================================
 ; LUA MACRO EXPANSION %{lua:...}
