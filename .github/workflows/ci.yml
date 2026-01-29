@@ -108,10 +108,12 @@ jobs:
         uses: tree-sitter/setup-action/cli@v2
       - name: Install rpmbash dependencies
         run: npm --prefix rpmbash install --ignore-scripts
-      - name: Build parsers
-        run: |
-          tree-sitter build -o rpmspec.so rpmspec
-          tree-sitter build -o rpmbash.so rpmbash
+      - name: Build rpmspec parser
+        run: tree-sitter build -o rpmspec.so
+        working-directory: rpmspec
+      - name: Build rpmbash parser
+        run: tree-sitter build -o rpmbash.so
+        working-directory: rpmbash
       - name: Install ts_query_ls
         run: |
           curl -fL https://github.com/ribru17/ts_query_ls/releases/latest/download/ts_query_ls-x86_64-unknown-linux-gnu.tar.gz | tar -xz
