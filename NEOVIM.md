@@ -19,7 +19,7 @@ vim.api.nvim_create_autocmd('User', {
     callback = function()
         require('nvim-treesitter.parsers').rpmspec = {
             install_info = {
-                url = 'https://gitlab.com/cryptomilk/tree-sitter-rpmspec',
+                url = 'https://github.com/cryptomilk/tree-sitter-rpmspec',
                 location = 'rpmspec',
                 queries = 'neovim/queries/rpmspec',
             },
@@ -27,7 +27,7 @@ vim.api.nvim_create_autocmd('User', {
 
         require('nvim-treesitter.parsers').rpmbash = {
             install_info = {
-                url = 'https://gitlab.com/cryptomilk/tree-sitter-rpmspec',
+                url = 'https://github.com/cryptomilk/tree-sitter-rpmspec',
                 location = 'rpmbash',
                 queries = 'neovim/queries/rpmbash',
             },
