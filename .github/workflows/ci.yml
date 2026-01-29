@@ -1,0 +1,114 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - rpmspec/grammar.js
+      - rpmspec/src/**
+      - rpmspec/test/**
+      - rpmspec/queries/**
+      - rpmbash/grammar.js
+      - rpmbash/src/**
+      - rpmbash/test/**
+      - rpmbash/queries/**
+  pull_request:
+    paths:
+      - rpmspec/grammar.js
+      - rpmspec/src/**
+      - rpmspec/test/**
+      - rpmspec/queries/**
+      - rpmbash/grammar.js
+      - rpmbash/src/**
+      - rpmbash/test/**
+      - rpmbash/queries/**
+
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test parser
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up tree-sitter
+        uses: tree-sitter/setup-action/cli@v2
+      - name: Run rpmspec tests
+        run: tree-sitter test
+        working-directory: rpmspec
+      - name: Run rpmbash tests
+        run: tree-sitter test
+        working-directory: rpmbash
+
+  fuzz-rpmspec:
+    name: Fuzz rpmspec scanner
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Check for scanner changes
+        id: scanner-check
+        run: |-
+          if git diff --quiet HEAD^ -- rpmspec/src/scanner.c 2>/dev/null; then
+            printf 'changed=false\n' >> "$GITHUB_OUTPUT"
+          else
+            printf 'changed=true\n' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Run the fuzzer
+        uses: tree-sitter/fuzz-action@v4
+        if: steps.scanner-check.outputs.changed == 'true'
+        with:
+          directory: rpmspec
+
+  fuzz-rpmbash:
+    name: Fuzz rpmbash scanner
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Check for scanner changes
+        id: scanner-check
+        run: |-
+          if git diff --quiet HEAD^ -- rpmbash/src/scanner.c 2>/dev/null; then
+            printf 'changed=false\n' >> "$GITHUB_OUTPUT"
+          else
+            printf 'changed=true\n' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Run the fuzzer
+        uses: tree-sitter/fuzz-action@v4
+        if: steps.scanner-check.outputs.changed == 'true'
+        with:
+          directory: rpmbash
+
+  query:
+    name: Validate queries
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up tree-sitter
+        uses: tree-sitter/setup-action/cli@v2
+      - name: Build parsers
+        run: |
+          tree-sitter build -o rpmspec.so rpmspec
+          tree-sitter build -o rpmbash.so rpmbash
+      - name: Install ts_query_ls
+        run: |
+          curl -sL $(curl -s https://api.github.com/repos/ribru17/ts_query_ls/releases/latest \
+            | grep browser_download_url | grep linux-x86_64 | cut -d\" -f4) -o ts_query_ls
+          chmod +x ts_query_ls
+      - name: Validate rpmspec queries
+        run: ./ts_query_ls check -f rpmspec/queries/
+      - name: Validate rpmbash queries
+        run: ./ts_query_ls check -f rpmbash/queries/
