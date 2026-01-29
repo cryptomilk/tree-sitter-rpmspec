@@ -24,4 +24,27 @@ neovim:
 	@cat rpmbash/queries/highlights.scm >> neovim/queries/rpmbash/highlights.scm
 	@echo "Created neovim/queries/rpmbash/highlights.scm"
 
-.PHONY: default configure build test test-fast neovim
+# Update vendored bash scanner from node_modules (run after npm install)
+update-bash-scanner:
+	@if [ ! -f rpmbash/node_modules/tree-sitter-bash/src/scanner.c ]; then \
+		echo "Error: Run 'npm --prefix rpmbash install' first"; \
+		exit 1; \
+	fi
+	cp rpmbash/node_modules/tree-sitter-bash/src/scanner.c rpmbash/src/third_party/bash_scanner.c
+	@echo "Updated rpmbash/src/third_party/bash_scanner.c"
+
+# Check if vendored bash scanner matches node_modules version
+check-bash-scanner:
+	@if [ ! -f rpmbash/node_modules/tree-sitter-bash/src/scanner.c ]; then \
+		echo "Error: Run 'npm --prefix rpmbash install' first"; \
+		exit 1; \
+	fi
+	@if diff -q rpmbash/node_modules/tree-sitter-bash/src/scanner.c rpmbash/src/third_party/bash_scanner.c > /dev/null; then \
+		echo "bash_scanner.c is up to date"; \
+	else \
+		echo "Error: bash_scanner.c differs from node_modules version"; \
+		echo "Run 'make update-bash-scanner' to update"; \
+		exit 1; \
+	fi
+
+.PHONY: default configure build test test-fast neovim update-bash-scanner check-bash-scanner

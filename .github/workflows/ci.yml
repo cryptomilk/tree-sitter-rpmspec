@@ -40,6 +40,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up tree-sitter
         uses: tree-sitter/setup-action/cli@v2
+      - name: Install rpmbash dependencies
+        run: npm --prefix rpmbash install
       - name: Run rpmspec tests
         run: tree-sitter test
         working-directory: rpmspec
@@ -85,6 +87,9 @@ jobs:
           else
             printf 'changed=true\n' >> "$GITHUB_OUTPUT"
           fi
+      - name: Install rpmbash dependencies
+        if: steps.scanner-check.outputs.changed == 'true'
+        run: npm --prefix rpmbash install
       - name: Run the fuzzer
         uses: tree-sitter/fuzz-action@v4
         if: steps.scanner-check.outputs.changed == 'true'
@@ -99,6 +104,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up tree-sitter
         uses: tree-sitter/setup-action/cli@v2
+      - name: Install rpmbash dependencies
+        run: npm --prefix rpmbash install
       - name: Build parsers
         run: |
           tree-sitter build -o rpmspec.so rpmspec

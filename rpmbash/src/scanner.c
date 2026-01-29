@@ -59,7 +59,17 @@
     _bash_external_scanner_deserialize
 #define tree_sitter_bash_external_scanner_scan _bash_external_scanner_scan
 
-#include "../node_modules/tree-sitter-bash/src/scanner.c"
+/*
+ * We use a vendored copy of tree-sitter-bash's scanner for compatibility with
+ * nvim-treesitter, which builds parsers without npm/node_modules.
+ *
+ * To update the vendored copy after `npm install`:
+ *   make update-bash-scanner
+ *
+ * Original path (for local development with node_modules):
+ *   #include "../node_modules/tree-sitter-bash/src/scanner.c"
+ */
+#include "third_party/bash_scanner.c"
 
 #undef tree_sitter_bash_external_scanner_create
 #undef tree_sitter_bash_external_scanner_destroy

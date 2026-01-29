@@ -49,3 +49,9 @@ tree-sitter/test:
     - cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
     - cmake --build build
     - cmake --build build --target ts-test
+
+check-bash-scanner:
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
+  script:
+    - npm --prefix rpmbash install
+    - make check-bash-scanner
