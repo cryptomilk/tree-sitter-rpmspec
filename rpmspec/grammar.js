@@ -979,7 +979,7 @@ module.exports = grammar({
         // Used as operands for the ternary operator to ensure correct precedence
         _macro_expression_operand: ($) =>
             choice(
-                $.macro_arithmetic_operator, // +, -, *, /
+                alias($._macro_arithmetic_expression, $.binary_expression), // +, -, *, /
                 alias($._macro_binary_expression, $.binary_expression), // <, <=, ==, !=, >=, >
                 alias($._macro_unary_expression, $.unary_expression), // !
                 alias($._macro_boolean_expression, $.boolean_expression), // &&, ||, and, or
@@ -1034,9 +1034,9 @@ module.exports = grammar({
                 )
             ),
 
-        // Macro-specific arithmetic operator: +, -, *, /
+        // Macro-specific arithmetic expression (hidden, aliased to binary_expression)
         // Uses _macro_expression_operand for recursive operands
-        macro_arithmetic_operator: ($) => {
+        _macro_arithmetic_expression: ($) => {
             const table = [
                 [prec.left, '+', PREC.plus],
                 [prec.left, '-', PREC.plus],

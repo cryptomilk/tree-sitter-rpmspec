@@ -392,8 +392,8 @@ Prep Section (%autopatch with macro expression)
         (builtin)
         argument: (macro_option
           value: (macro_expression
-            (macro_arithmetic_operator
-              left: (macro_arithmetic_operator
+            (binary_expression
+              left: (binary_expression
                 left: (macro_expansion
                   (conditional_expansion
                     condition: (identifier)))

@@ -226,7 +226,7 @@ echo "Result: %[1 + 2]"
       (script_line
         (script_content)
         (macro_expression
-          (macro_arithmetic_operator
+          (binary_expression
             (integer)
             (integer)))
         (script_content)))))

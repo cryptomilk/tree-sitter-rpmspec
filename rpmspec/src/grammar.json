@@ -2138,8 +2138,13 @@
       "type": "CHOICE",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "macro_arithmetic_operator"
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_macro_arithmetic_expression"
+          },
+          "named": true,
+          "value": "binary_expression"
         },
         {
           "type": "ALIAS",
@@ -2350,7 +2355,7 @@
         ]
       }
     },
-    "macro_arithmetic_operator": {
+    "_macro_arithmetic_expression": {
       "type": "CHOICE",
       "members": [
         {
