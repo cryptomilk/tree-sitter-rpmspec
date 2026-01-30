@@ -108,11 +108,11 @@ BuildRequires:  foo
 
 (spec
   (if_statement
-    condition: (comparison_operator
-      (quoted_string
+    condition: (binary_expression
+      left: (quoted_string
         (macro_expansion
           (identifier)))
-      (quoted_string
+      right: (quoted_string
         (string_content)))
     consequence: (preamble
       (dependency_tag)
@@ -132,20 +132,20 @@ BuildRequires:  foo
 (spec
   (if_statement
     condition: (boolean_operator
-      left: (comparison_operator
-        (concatenation
+      left: (binary_expression
+        left: (concatenation
           (integer)
           (macro_expansion
             (conditional_expansion
               condition: (identifier))))
-        (integer))
-      right: (comparison_operator
-        (concatenation
+        right: (integer))
+      right: (binary_expression
+        left: (concatenation
           (integer)
           (macro_expansion
             (conditional_expansion
               condition: (identifier))))
-        (integer)))
+        right: (integer)))
     consequence: (preamble
       (dependency_tag)
       value: (dependency
@@ -192,13 +192,13 @@ BuildRequires:  foo
           (macro_expansion
             (conditional_expansion
               condition: (identifier))))
-        right: (comparison_operator
-          (concatenation
+        right: (binary_expression
+          left: (concatenation
             (integer)
             (macro_expansion
               (conditional_expansion
                 condition: (identifier))))
-          (integer))))
+          right: (integer))))
     consequence: (preamble
       (dependency_tag)
       value: (dependency

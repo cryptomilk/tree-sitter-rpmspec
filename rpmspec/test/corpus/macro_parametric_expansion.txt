@@ -25,11 +25,11 @@ Parametric Macro Expansion (bcond with expression)
     name: (identifier)
     argument: (word)
     argument: (macro_expression
-      (macro_comparison_operator
-        (macro_expansion
+      (binary_expression
+        left: (macro_expansion
           (conditional_expansion
             condition: (identifier)))
-        (integer)))))
+        right: (integer)))))
 
 ===============================================================================
 Parametric Macro Expansion (configure with line continuation)

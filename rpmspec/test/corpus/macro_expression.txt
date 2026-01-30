@@ -44,7 +44,7 @@ Macro Expression (comparison)
   (macro_definition
     (identifier)
     (macro_expression
-      (macro_comparison_operator
+      (binary_expression
         (integer)
         (integer)))))
 
@@ -61,7 +61,7 @@ Macro Expression (ternary with comparison)
     (identifier)
     (macro_expression
       (ternary_operator
-        (macro_comparison_operator
+        (binary_expression
           (integer)
           (integer))
         (quoted_string
@@ -81,7 +81,7 @@ Macro Expression (version literal comparison)
   (macro_definition
     (identifier)
     (macro_expression
-      (macro_comparison_operator
+      (binary_expression
         (version_literal
           (string_content))
         (version_literal
@@ -99,7 +99,7 @@ Macro Expression (version literal with epoch)
   (macro_definition
     (identifier)
     (macro_expression
-      (macro_comparison_operator
+      (binary_expression
         (version_literal
           (string_content))
         (version_literal

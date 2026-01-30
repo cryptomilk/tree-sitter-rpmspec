@@ -76,11 +76,11 @@
         "named": true
       },
       {
-        "type": "boolean_operator",
+        "type": "binary_expression",
         "named": true
       },
       {
-        "type": "comparison_operator",
+        "type": "boolean_operator",
         "named": true
       },
       {
@@ -193,6 +193,122 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "binary_expression",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_primary_expression",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "concatenation",
+            "named": true
+          },
+          {
+            "type": "macro_arithmetic_operator",
+            "named": true
+          },
+          {
+            "type": "macro_boolean_operator",
+            "named": true
+          },
+          {
+            "type": "macro_expression_concatenation",
+            "named": true
+          },
+          {
+            "type": "macro_not_operator",
+            "named": true
+          },
+          {
+            "type": "macro_parenthesized_expression",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "!=",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": "<=",
+            "named": false
+          },
+          {
+            "type": "=",
+            "named": false
+          },
+          {
+            "type": "==",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": ">=",
+            "named": false
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_primary_expression",
+            "named": true
+          },
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "concatenation",
+            "named": true
+          },
+          {
+            "type": "macro_arithmetic_operator",
+            "named": true
+          },
+          {
+            "type": "macro_boolean_operator",
+            "named": true
+          },
+          {
+            "type": "macro_expression_concatenation",
+            "named": true
+          },
+          {
+            "type": "macro_not_operator",
+            "named": true
+          },
+          {
+            "type": "macro_parenthesized_expression",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1040,60 +1156,6 @@
         },
         {
           "type": "section_clean",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "comparison_operator",
-    "named": true,
-    "fields": {
-      "operators": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "!=",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": "==",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "_primary_expression",
-          "named": true
-        },
-        {
-          "type": "concatenation",
           "named": true
         }
       ]
@@ -3226,6 +3288,10 @@
         "required": true,
         "types": [
           {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
             "type": "float",
             "named": true
           },
@@ -3239,10 +3305,6 @@
           },
           {
             "type": "macro_boolean_operator",
-            "named": true
-          },
-          {
-            "type": "macro_comparison_operator",
             "named": true
           },
           {
@@ -3302,6 +3364,10 @@
         "required": true,
         "types": [
           {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
             "type": "float",
             "named": true
           },
@@ -3315,10 +3381,6 @@
           },
           {
             "type": "macro_boolean_operator",
-            "named": true
-          },
-          {
-            "type": "macro_comparison_operator",
             "named": true
           },
           {
@@ -3362,6 +3424,10 @@
         "required": true,
         "types": [
           {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
             "type": "float",
             "named": true
           },
@@ -3375,10 +3441,6 @@
           },
           {
             "type": "macro_boolean_operator",
-            "named": true
-          },
-          {
-            "type": "macro_comparison_operator",
             "named": true
           },
           {
@@ -3438,6 +3500,10 @@
         "required": true,
         "types": [
           {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
             "type": "float",
             "named": true
           },
@@ -3451,10 +3517,6 @@
           },
           {
             "type": "macro_boolean_operator",
-            "named": true
-          },
-          {
-            "type": "macro_comparison_operator",
             "named": true
           },
           {
@@ -3487,100 +3549,6 @@
           }
         ]
       }
-    }
-  },
-  {
-    "type": "macro_comparison_operator",
-    "named": true,
-    "fields": {
-      "operators": {
-        "multiple": true,
-        "required": true,
-        "types": [
-          {
-            "type": "!=",
-            "named": false
-          },
-          {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": "<=",
-            "named": false
-          },
-          {
-            "type": "=",
-            "named": false
-          },
-          {
-            "type": "==",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": ">=",
-            "named": false
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "float",
-          "named": true
-        },
-        {
-          "type": "integer",
-          "named": true
-        },
-        {
-          "type": "macro_arithmetic_operator",
-          "named": true
-        },
-        {
-          "type": "macro_boolean_operator",
-          "named": true
-        },
-        {
-          "type": "macro_comparison_operator",
-          "named": true
-        },
-        {
-          "type": "macro_expansion",
-          "named": true
-        },
-        {
-          "type": "macro_expression_concatenation",
-          "named": true
-        },
-        {
-          "type": "macro_not_operator",
-          "named": true
-        },
-        {
-          "type": "macro_parenthesized_expression",
-          "named": true
-        },
-        {
-          "type": "macro_simple_expansion",
-          "named": true
-        },
-        {
-          "type": "quoted_string",
-          "named": true
-        },
-        {
-          "type": "version_literal",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -3672,6 +3640,10 @@
             "named": true
           },
           {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
             "type": "concatenation",
             "named": true
           },
@@ -3685,10 +3657,6 @@
           },
           {
             "type": "macro_boolean_operator",
-            "named": true
-          },
-          {
-            "type": "macro_comparison_operator",
             "named": true
           },
           {
@@ -3780,6 +3748,10 @@
       "required": true,
       "types": [
         {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
           "type": "float",
           "named": true
         },
@@ -3793,10 +3765,6 @@
         },
         {
           "type": "macro_boolean_operator",
-          "named": true
-        },
-        {
-          "type": "macro_comparison_operator",
           "named": true
         },
         {
@@ -3866,6 +3834,10 @@
         "required": true,
         "types": [
           {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
             "type": "float",
             "named": true
           },
@@ -3879,10 +3851,6 @@
           },
           {
             "type": "macro_boolean_operator",
-            "named": true
-          },
-          {
-            "type": "macro_comparison_operator",
             "named": true
           },
           {
@@ -4086,6 +4054,10 @@
       "required": true,
       "types": [
         {
+          "type": "binary_expression",
+          "named": true
+        },
+        {
           "type": "float",
           "named": true
         },
@@ -4099,10 +4071,6 @@
         },
         {
           "type": "macro_boolean_operator",
-          "named": true
-        },
-        {
-          "type": "macro_comparison_operator",
           "named": true
         },
         {
@@ -6060,6 +6028,10 @@
         "required": true,
         "types": [
           {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
             "type": "float",
             "named": true
           },
@@ -6073,10 +6045,6 @@
           },
           {
             "type": "macro_boolean_operator",
-            "named": true
-          },
-          {
-            "type": "macro_comparison_operator",
             "named": true
           },
           {
@@ -6118,6 +6086,10 @@
         "required": true,
         "types": [
           {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
             "type": "float",
             "named": true
           },
@@ -6131,10 +6103,6 @@
           },
           {
             "type": "macro_boolean_operator",
-            "named": true
-          },
-          {
-            "type": "macro_comparison_operator",
             "named": true
           },
           {
@@ -6172,6 +6140,10 @@
         "required": true,
         "types": [
           {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
             "type": "float",
             "named": true
           },
@@ -6185,10 +6157,6 @@
           },
           {
             "type": "macro_boolean_operator",
-            "named": true
-          },
-          {
-            "type": "macro_comparison_operator",
             "named": true
           },
           {

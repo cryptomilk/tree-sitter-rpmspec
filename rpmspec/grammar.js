@@ -980,7 +980,7 @@ module.exports = grammar({
         _macro_expression_operand: ($) =>
             choice(
                 $.macro_arithmetic_operator, // +, -, *, /
-                $.macro_comparison_operator, // <, <=, ==, !=, >=, >
+                alias($._macro_binary_expression, $.binary_expression), // <, <=, ==, !=, >=, >
                 $.macro_not_operator, // !
                 $.macro_boolean_operator, // &&, ||, and, or
                 $._macro_expression_primary // literals, macros, version literals
@@ -1016,22 +1016,18 @@ module.exports = grammar({
                 seq('!', field('argument', $._macro_expression_operand))
             ),
 
-        // Macro-specific comparison operator
+        // Macro-specific comparison operator (hidden, aliased to binary_expression)
         // Uses _macro_expression_operand for recursive operands
-        macro_comparison_operator: ($) =>
+        _macro_binary_expression: ($) =>
             prec.left(
                 PREC.compare,
                 seq(
-                    $._macro_expression_operand,
-                    repeat1(
-                        seq(
-                            field(
-                                'operators',
-                                choice('<', '<=', '=', '==', '!=', '>=', '>')
-                            ),
-                            $._macro_expression_operand
-                        )
-                    )
+                    field('left', $._macro_expression_operand),
+                    field(
+                        'operator',
+                        choice('<', '<=', '=', '==', '!=', '>=', '>')
+                    ),
+                    field('right', $._macro_expression_operand)
                 )
             ),
 
@@ -1244,31 +1240,18 @@ module.exports = grammar({
             );
         },
 
-        // Comparison operators: relational comparisons between values
-        // Supports chaining: a < b <= c is parsed as (a < b) && (b <= c)
+        // Binary expression: relational comparisons between values
         // Common in RPM for version comparisons: %{version} >= 1.2.0
-        comparison_operator: ($) =>
+        binary_expression: ($) =>
             prec.left(
                 PREC.compare,
                 seq(
-                    $._literal,
-                    repeat1(
-                        seq(
-                            field(
-                                'operators',
-                                choice(
-                                    '<', // Less than
-                                    '<=', // Less than or equal
-                                    '=', // Equal (RPM uses single =)
-                                    '==', // Equal (alternative form)
-                                    '!=', // Not equal
-                                    '>=', // Greater than or equal
-                                    '>' // Greater than
-                                )
-                            ),
-                            $._literal
-                        )
-                    )
+                    field('left', $._literal),
+                    field(
+                        'operator',
+                        choice('<', '<=', '=', '==', '!=', '>=', '>')
+                    ),
+                    field('right', $._literal)
                 )
             ),
 
@@ -1305,7 +1288,7 @@ module.exports = grammar({
         // Combines logical, comparison, and RPM-specific operators (no arithmetic)
         expression: ($) =>
             choice(
-                $.comparison_operator, // <, <=, ==, !=, >=, >
+                $.binary_expression, // <, <=, ==, !=, >=, >
                 $.not_operator, // !
                 $.boolean_operator, // &&, ||, and, or
                 $.with_operator, // %{with feature}
