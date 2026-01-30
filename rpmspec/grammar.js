@@ -981,7 +981,7 @@ module.exports = grammar({
             choice(
                 $.macro_arithmetic_operator, // +, -, *, /
                 alias($._macro_binary_expression, $.binary_expression), // <, <=, ==, !=, >=, >
-                $.macro_not_operator, // !
+                alias($._macro_unary_expression, $.unary_expression), // !
                 $.macro_boolean_operator, // &&, ||, and, or
                 $._macro_expression_primary // literals, macros, version literals
             ),
@@ -1008,12 +1008,15 @@ module.exports = grammar({
                 )
             ),
 
-        // Macro-specific NOT operator: !
+        // Macro-specific unary expression (hidden, aliased to unary_expression)
         // Uses _macro_expression_operand for recursive operand
-        macro_not_operator: ($) =>
+        _macro_unary_expression: ($) =>
             prec(
                 PREC.not,
-                seq('!', field('argument', $._macro_expression_operand))
+                seq(
+                    field('operator', '!'),
+                    field('argument', $._macro_expression_operand)
+                )
             ),
 
         // Macro-specific comparison operator (hidden, aliased to binary_expression)
@@ -1192,10 +1195,13 @@ module.exports = grammar({
                 )
             ),
 
-        // Logical NOT operator: negates boolean expressions
+        // Unary expression: negates boolean expressions
         // Has high precedence to bind tightly to its operand
-        not_operator: ($) =>
-            prec(PREC.not, seq('!', field('argument', $.expression))),
+        unary_expression: ($) =>
+            prec(
+                PREC.not,
+                seq(field('operator', '!'), field('argument', $.expression))
+            ),
 
         // Ternary conditional operator: condition ? consequence : alternative
         // Used in macro expressions: %[expr ? val1 : val2]
@@ -1289,7 +1295,7 @@ module.exports = grammar({
         expression: ($) =>
             choice(
                 $.binary_expression, // <, <=, ==, !=, >=, >
-                $.not_operator, // !
+                $.unary_expression, // !
                 $.boolean_operator, // &&, ||, and, or
                 $.with_operator, // %{with feature}
                 $.defined_operator, // %{defined macro}

@@ -481,7 +481,7 @@ make test
       (script_line
         (script_content))))
   (if_statement
-    condition: (not_operator
+    condition: (unary_expression
       argument: (with_operator
         (identifier)))
     consequence: (runtime_scriptlet
