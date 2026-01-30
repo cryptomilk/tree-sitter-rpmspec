@@ -86,7 +86,7 @@ BuildRequires:  foo
 
 (spec
   (if_statement
-    condition: (boolean_operator
+    condition: (binary_expression
       left: (defined_operator
         (identifier))
       right: (defined_operator
@@ -131,7 +131,7 @@ BuildRequires:  foo
 
 (spec
   (if_statement
-    condition: (boolean_operator
+    condition: (binary_expression
       left: (binary_expression
         left: (concatenation
           (integer)
@@ -186,7 +186,7 @@ BuildRequires:  foo
 (spec
   (if_statement
     condition: (parenthesized_expression
-      (boolean_operator
+      (binary_expression
         left: (concatenation
           (integer)
           (macro_expansion

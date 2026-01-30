@@ -982,13 +982,13 @@ module.exports = grammar({
                 $.macro_arithmetic_operator, // +, -, *, /
                 alias($._macro_binary_expression, $.binary_expression), // <, <=, ==, !=, >=, >
                 alias($._macro_unary_expression, $.unary_expression), // !
-                $.macro_boolean_operator, // &&, ||, and, or
+                alias($._macro_boolean_expression, $.boolean_expression), // &&, ||, and, or
                 $._macro_expression_primary // literals, macros, version literals
             ),
 
-        // Macro-specific boolean operator: &&, ||, and, or
+        // Macro-specific boolean expression (hidden, aliased to boolean_expression)
         // Uses _macro_expression_operand for recursive operands (no ternary in operands)
-        macro_boolean_operator: ($) =>
+        _macro_boolean_expression: ($) =>
             choice(
                 prec.left(
                     PREC.and,
@@ -1171,30 +1171,6 @@ module.exports = grammar({
                 $.ifos_statement // %ifos/%ifnos/%endif
             ),
 
-        // Boolean operators: logical AND and OR with proper precedence
-        // Supports both symbolic (&&, ||) and word forms (and, or)
-        boolean_operator: ($) =>
-            choice(
-                // Logical AND: higher precedence than OR
-                prec.left(
-                    PREC.and,
-                    seq(
-                        field('left', $.expression),
-                        field('operator', choice('&&', 'and')),
-                        field('right', $.expression)
-                    )
-                ),
-                // Logical OR: lower precedence than AND
-                prec.left(
-                    PREC.or,
-                    seq(
-                        field('left', $.expression),
-                        field('operator', choice('||', 'or')),
-                        field('right', $.expression)
-                    )
-                )
-            ),
-
         // Unary expression: negates boolean expressions
         // Has high precedence to bind tightly to its operand
         unary_expression: ($) =>
@@ -1246,18 +1222,40 @@ module.exports = grammar({
             );
         },
 
-        // Binary expression: relational comparisons between values
+        // Binary expression: comparisons and logical operators
         // Common in RPM for version comparisons: %{version} >= 1.2.0
+        // Also handles boolean operators: &&, ||, and, or
         binary_expression: ($) =>
-            prec.left(
-                PREC.compare,
-                seq(
-                    field('left', $._literal),
-                    field(
-                        'operator',
-                        choice('<', '<=', '=', '==', '!=', '>=', '>')
-                    ),
-                    field('right', $._literal)
+            choice(
+                // Comparison operators
+                prec.left(
+                    PREC.compare,
+                    seq(
+                        field('left', $.expression),
+                        field(
+                            'operator',
+                            choice('<', '<=', '=', '==', '!=', '>=', '>')
+                        ),
+                        field('right', $.expression)
+                    )
+                ),
+                // Logical AND: higher precedence than OR
+                prec.left(
+                    PREC.and,
+                    seq(
+                        field('left', $.expression),
+                        field('operator', choice('&&', 'and')),
+                        field('right', $.expression)
+                    )
+                ),
+                // Logical OR: lower precedence than AND
+                prec.left(
+                    PREC.or,
+                    seq(
+                        field('left', $.expression),
+                        field('operator', choice('||', 'or')),
+                        field('right', $.expression)
+                    )
                 )
             ),
 
@@ -1294,9 +1292,8 @@ module.exports = grammar({
         // Combines logical, comparison, and RPM-specific operators (no arithmetic)
         expression: ($) =>
             choice(
-                $.binary_expression, // <, <=, ==, !=, >=, >
+                $.binary_expression, // <, <=, ==, !=, >=, >, &&, ||, and, or
                 $.unary_expression, // !
-                $.boolean_operator, // &&, ||, and, or
                 $.with_operator, // %{with feature}
                 $.defined_operator, // %{defined macro}
                 $._literal
