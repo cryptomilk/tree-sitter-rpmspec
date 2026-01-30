@@ -89,6 +89,22 @@
           "name": "rpm_undefine"
         },
         {
+          "type": "SYMBOL",
+          "name": "rpm_setup"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "rpm_autosetup"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "rpm_patch"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "rpm_autopatch"
+        },
+        {
           "type": "CHOICE",
           "members": [
             {
@@ -7128,6 +7144,90 @@
         }
       ]
     },
+    "rpm_setup": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "rpm_setup_keyword"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "rpm_macro_body"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "rpm_autosetup": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "rpm_autosetup_keyword"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "rpm_macro_body"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "rpm_patch": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "rpm_patch_keyword"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "rpm_macro_body"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "rpm_autopatch": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "rpm_autopatch_keyword"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "rpm_macro_body"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
     "rpm_define_keyword": {
       "type": "TOKEN",
       "content": {
@@ -7185,6 +7285,50 @@
               "value": "[ \\t]+"
             }
           ]
+        }
+      }
+    },
+    "rpm_setup_keyword": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 20,
+        "content": {
+          "type": "STRING",
+          "value": "%setup"
+        }
+      }
+    },
+    "rpm_autosetup_keyword": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 20,
+        "content": {
+          "type": "STRING",
+          "value": "%autosetup"
+        }
+      }
+    },
+    "rpm_patch_keyword": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 20,
+        "content": {
+          "type": "STRING",
+          "value": "%patch"
+        }
+      }
+    },
+    "rpm_autopatch_keyword": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 20,
+        "content": {
+          "type": "STRING",
+          "value": "%autopatch"
         }
       }
     },

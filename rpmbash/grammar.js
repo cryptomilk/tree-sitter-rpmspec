@@ -97,9 +97,18 @@ module.exports = grammar(Bash, {
         command_substitution: ($, previous) =>
             choice(seq('%(', $._statements, ')'), previous),
 
-        // Extend _statement to include RPM macro definitions
+        // Extend _statement to include RPM macro definitions and special prep macros
         _statement: ($, previous) =>
-            choice($.rpm_define, $.rpm_global, $.rpm_undefine, previous),
+            choice(
+                $.rpm_define,
+                $.rpm_global,
+                $.rpm_undefine,
+                $.rpm_setup,
+                $.rpm_autosetup,
+                $.rpm_patch,
+                $.rpm_autopatch,
+                previous
+            ),
 
         // RPM macro definitions - common in scriptlets
         // Structured as keyword + name + body so the body can be handed back
@@ -123,11 +132,34 @@ module.exports = grammar(Bash, {
         // %undefine name - undefine a macro
         rpm_undefine: ($) => seq($.rpm_undefine_keyword, $.rpm_macro_name),
 
+        // Special prep macros - consume entire line and delegate to rpmspec
+        // These macros have complex option syntax that rpmspec handles
+        // %setup - source unpacking
+        rpm_setup: ($) => seq($.rpm_setup_keyword, optional($.rpm_macro_body)),
+
+        // %autosetup - automated source unpacking and patching
+        rpm_autosetup: ($) =>
+            seq($.rpm_autosetup_keyword, optional($.rpm_macro_body)),
+
+        // %patch - apply patches
+        rpm_patch: ($) => seq($.rpm_patch_keyword, optional($.rpm_macro_body)),
+
+        // %autopatch - automated patch application
+        rpm_autopatch: ($) =>
+            seq($.rpm_autopatch_keyword, optional($.rpm_macro_body)),
+
         // Keywords with trailing whitespace - tokenized for clear boundaries
         rpm_define_keyword: ($) => token(prec(20, seq('%define', /[ \t]+/))),
         rpm_global_keyword: ($) => token(prec(20, seq('%global', /[ \t]+/))),
         rpm_undefine_keyword: ($) =>
             token(prec(20, seq('%undefine', /[ \t]+/))),
+
+        // Keywords for special prep macros - no trailing whitespace required
+        // (arguments are optional)
+        rpm_setup_keyword: ($) => token(prec(20, '%setup')),
+        rpm_autosetup_keyword: ($) => token(prec(20, '%autosetup')),
+        rpm_patch_keyword: ($) => token(prec(20, '%patch')),
+        rpm_autopatch_keyword: ($) => token(prec(20, '%autopatch')),
 
         // Macro name for definitions
         rpm_macro_name: ($) => token(prec(20, /[a-zA-Z_][a-zA-Z0-9_]*/)),
@@ -135,6 +167,7 @@ module.exports = grammar(Bash, {
         // Macro body - everything until unescaped end of line
         // Supports line continuation with backslash
         // Content is delegated to rpmspec for full parsing via injection.parent
+        // Used by: %define, %global, %setup, %autosetup, %patch, %autopatch
         // Pattern breakdown:
         //   [^\\\n]  - any char except backslash or newline
         //   |\\\n    - OR backslash followed by newline (line continuation)

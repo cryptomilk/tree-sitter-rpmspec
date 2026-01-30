@@ -34,3 +34,19 @@
 
 ((rpm_undefine) @injection.content
   (#set! injection.parent))
+
+; =============================================================================
+; RPM SPECIAL PREP MACROS -> rpmspec
+; =============================================================================
+
+((rpm_setup) @injection.content
+  (#set! injection.parent))
+
+((rpm_autosetup) @injection.content
+  (#set! injection.parent))
+
+((rpm_patch) @injection.content
+  (#set! injection.parent))
+
+((rpm_autopatch) @injection.content
+  (#set! injection.parent))

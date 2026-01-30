@@ -152,11 +152,27 @@
         "named": true
       },
       {
+        "type": "rpm_autopatch",
+        "named": true
+      },
+      {
+        "type": "rpm_autosetup",
+        "named": true
+      },
+      {
         "type": "rpm_define",
         "named": true
       },
       {
         "type": "rpm_global",
+        "named": true
+      },
+      {
+        "type": "rpm_patch",
+        "named": true
+      },
+      {
+        "type": "rpm_setup",
         "named": true
       },
       {
@@ -1873,6 +1889,44 @@
     }
   },
   {
+    "type": "rpm_autopatch",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "rpm_autopatch_keyword",
+          "named": true
+        },
+        {
+          "type": "rpm_macro_body",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "rpm_autosetup",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "rpm_autosetup_keyword",
+          "named": true
+        },
+        {
+          "type": "rpm_macro_body",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "rpm_conditional",
     "named": true,
     "extra": true,
@@ -1948,6 +2002,44 @@
       "types": [
         {
           "type": "rpm_macro_expansion",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "rpm_patch",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "rpm_macro_body",
+          "named": true
+        },
+        {
+          "type": "rpm_patch_keyword",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "rpm_setup",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "rpm_macro_body",
+          "named": true
+        },
+        {
+          "type": "rpm_setup_keyword",
           "named": true
         }
       ]
@@ -2944,6 +3036,14 @@
     "named": true
   },
   {
+    "type": "rpm_autopatch_keyword",
+    "named": true
+  },
+  {
+    "type": "rpm_autosetup_keyword",
+    "named": true
+  },
+  {
     "type": "rpm_condition",
     "named": true
   },
@@ -2979,6 +3079,14 @@
   },
   {
     "type": "rpm_macro_simple",
+    "named": true
+  },
+  {
+    "type": "rpm_patch_keyword",
+    "named": true
+  },
+  {
+    "type": "rpm_setup_keyword",
     "named": true
   },
   {
