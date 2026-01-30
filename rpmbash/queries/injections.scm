@@ -19,11 +19,8 @@
 ; =============================================================================
 ; RPM CONDITIONALS -> rpmspec
 ; =============================================================================
-; rpm_conditional is structured as keyword + condition.
-; The condition is handed back to rpmspec for proper macro/expression highlighting.
-
-((rpm_condition) @injection.content
-  (#set! injection.parent))
+; We don't inject rpm_condition itself - just let the macro expansions
+; inside it be injected individually for highlighting.
 
 ; =============================================================================
 ; RPM MACRO DEFINITIONS -> rpmspec
