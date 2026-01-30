@@ -14,6 +14,7 @@ nvim-treesitter. This allows you to install them via
 `:TSInstall rpmspec rpmbash`.
 
 ```lua
+-- Add rpmspec and rpmbash parsers
 vim.api.nvim_create_autocmd('User', {
     pattern = 'TSUpdate',
     callback = function()
@@ -34,6 +35,9 @@ vim.api.nvim_create_autocmd('User', {
         }
     end,
 })
+
+-- User rpmspec for spec file extension
+vim.treesitter.language.register('rpmspec', { 'spec' })
 ```
 
 After adding this configuration:
