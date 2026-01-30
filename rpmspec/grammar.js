@@ -484,10 +484,7 @@ module.exports = grammar({
             prec(
                 1,
                 seq(
-                    field(
-                        'name',
-                        alias($.parametric_macro_name, $.simple_macro)
-                    ),
+                    field('name', alias($.parametric_macro_name, $.identifier)),
                     token.immediate(/[ \t]+/), // Same-line whitespace required
                     repeat($._macro_invocation_argument),
                     optional(

@@ -4034,7 +4034,7 @@
         "required": true,
         "types": [
           {
-            "type": "simple_macro",
+            "type": "identifier",
             "named": true
           }
         ]

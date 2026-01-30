@@ -8,7 +8,7 @@ Parametric Macro Expansion (bcond with arguments)
 
 (spec
   (macro_parametric_expansion
-    name: (simple_macro)
+    name: (identifier)
     argument: (word)
     argument: (integer)))
 
@@ -22,7 +22,7 @@ Parametric Macro Expansion (bcond with expression)
 
 (spec
   (macro_parametric_expansion
-    name: (simple_macro)
+    name: (identifier)
     argument: (word)
     argument: (macro_expression
       (macro_comparison_operator
@@ -43,7 +43,7 @@ Parametric Macro Expansion (configure with line continuation)
 
 (spec
   (macro_parametric_expansion
-    name: (simple_macro)
+    name: (identifier)
     (line_continuation)
     argument: (word)
     (line_continuation)
@@ -63,13 +63,13 @@ Parametric Macro Expansion (bcond inside ifarch)
 
 (spec
   (macro_parametric_expansion
-    name: (simple_macro)
+    name: (identifier)
     argument: (word))
   (ifarch_statement
     condition: (arch
       (identifier))
     consequence: (macro_parametric_expansion
-      name: (simple_macro)
+      name: (identifier)
       argument: (word))))
 
 ===============================================================================
@@ -136,7 +136,7 @@ Parametric Macro Expansion (with short options)
 
 (spec
   (macro_parametric_expansion
-    name: (simple_macro)
+    name: (identifier)
     option: (macro_option)
     option: (macro_option)
     argument: (word)
@@ -152,7 +152,7 @@ Parametric Macro Expansion (with macro arguments)
 
 (spec
   (macro_parametric_expansion
-    name: (simple_macro)
+    name: (identifier)
     argument: (macro_expansion
       (identifier))
     argument: (macro_expansion
@@ -168,7 +168,7 @@ Parametric Macro Expansion (with option terminator)
 
 (spec
   (macro_parametric_expansion
-    name: (simple_macro)
+    name: (identifier)
     option: (macro_option)
     (macro_option_terminator)
     argument: (word)

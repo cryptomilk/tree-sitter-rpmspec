@@ -542,7 +542,7 @@
                 "name": "parametric_macro_name"
               },
               "named": true,
-              "value": "simple_macro"
+              "value": "identifier"
             }
           },
           {

@@ -237,7 +237,7 @@
 
 ; Note: parametric_macro_name includes the '%' prefix and is aliased to simple_macro
 (macro_parametric_expansion
-  name: (simple_macro) @function.macro)
+  name: (identifier) @function.macro)
 
 (macro_parametric_expansion
   option: (macro_option) @variable.parameter)
