@@ -5,7 +5,8 @@ default: build
 help:
 	@echo "Available targets:"
 	@echo "  configure          - Install npm dependencies and configure cmake"
-	@echo "  build              - Generate parsers and build with cmake"
+	@echo "  build              - Generate parsers (if needed) and build with cmake"
+	@echo "  generate           - Force regenerate parsers from grammar.js"
 	@echo "  test               - Build and run all tests"
 	@echo "  test-fast          - Run tests without rebuilding"
 	@echo "  neovim             - Generate neovim query files (with ; inherits)"
@@ -20,21 +21,38 @@ configure:
 	fi
 	cmake -B build -DPICKY_DEVELOPER=ON
 
-build: neovim
+# Generate rpmspec parser only if grammar.js changed
+rpmspec/src/parser.c: rpmspec/grammar.js
+	@echo "Regenerating rpmspec parser (grammar.js changed)..."
 	cd rpmspec && $(TS) generate
+
+# Generate rpmbash parser only if grammar.js changed
+# Also depends on tree-sitter-bash grammar since it extends it
+rpmbash/src/parser.c: rpmbash/grammar.js rpmbash/node_modules/tree-sitter-bash/grammar.js
+	@echo "Regenerating rpmbash parser (grammar.js changed)..."
 	cd rpmbash && $(TS) generate
+
+# Generate neovim query file only if source query changed
+neovim/queries/rpmbash/highlights.scm: rpmbash/queries/highlights.scm
+	@echo "Regenerating neovim query file..."
+	@printf "; inherits: bash\n\n" > $@
+	@cat $< >> $@
+
+# Build target depends on generated parsers and neovim files
+build: rpmspec/src/parser.c rpmbash/src/parser.c neovim/queries/rpmbash/highlights.scm
 	cmake --build build
 
-test: default
+# Force regenerate all parsers
+generate:
+	@echo "Force regenerating all parsers..."
+	cd rpmspec && $(TS) generate
+	cd rpmbash && $(TS) generate
+
+test: build
 	cmake --build build --target ts-test
 
 test-fast:
 	cmake --build build --target ts-test
-
-neovim:
-	@printf "; inherits: bash\n\n" > neovim/queries/rpmbash/highlights.scm
-	@cat rpmbash/queries/highlights.scm >> neovim/queries/rpmbash/highlights.scm
-	@echo "Created neovim/queries/rpmbash/highlights.scm"
 
 # Update vendored bash scanner from node_modules (run after npm install)
 update-bash-scanner:
@@ -69,4 +87,4 @@ check-queries:
 		(cd rpmbash && ts_query_ls check queries/); \
 		ret=$$?; rm -f rpmspec/rpmspec.so rpmbash/rpmbash.so; exit $$ret
 
-.PHONY: default configure build test test-fast neovim update-bash-scanner check-bash-scanner check-queries
+.PHONY: default configure build generate test test-fast update-bash-scanner check-bash-scanner check-queries
