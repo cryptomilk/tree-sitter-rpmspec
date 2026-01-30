@@ -98,7 +98,7 @@
         },
         {
           "type": "SYMBOL",
-          "name": "preamble"
+          "name": "preamble_tag"
         },
         {
           "type": "SYMBOL",
@@ -4614,7 +4614,7 @@
         }
       ]
     },
-    "preamble": {
+    "preamble_tag": {
       "type": "SEQ",
       "members": [
         {
@@ -7589,8 +7589,13 @@
         "type": "CHOICE",
         "members": [
           {
-            "type": "SYMBOL",
-            "name": "preamble"
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "preamble_tag"
+            },
+            "named": true,
+            "value": "package_tag"
           },
           {
             "type": "SYMBOL",

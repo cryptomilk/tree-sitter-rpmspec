@@ -67,8 +67,7 @@
   (word) @module)
 
 ; Source tag file paths
-(preamble
-  (tag)
+(preamble_tag
   value: (file) @string.special.path)
 
 ; Description and package sections

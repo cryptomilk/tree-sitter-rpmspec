@@ -274,7 +274,7 @@ module.exports = grammar({
         _header_item: ($) =>
             choice(
                 $._macro_statement,
-                $.preamble, // Name:, Version:, etc.
+                $.preamble_tag, // Name:, Version:, etc.
                 $.description, // %description section
                 $.package, // %package subsection (has its own preamble)
                 $.sourcelist, // %sourcelist section
@@ -1533,8 +1533,8 @@ module.exports = grammar({
 
         // Basic package metadata and dependencies
 
-        // Preamble: wrapper for tag-value pairs in the package header
-        preamble: ($) => seq($._tags),
+        // Preamble tag: wrapper for tag-value pairs in the main package header
+        preamble_tag: ($) => seq($._tags),
 
         // Tag-value pairs: the fundamental structure of RPM preamble
         // Format: "Tag: value" or "Tag(qualifier): value"
@@ -2372,11 +2372,11 @@ module.exports = grammar({
             ),
 
         // Content allowed inside %package sections
-        // Includes preamble tags, macros, and package-specific conditionals
+        // Includes tags, macros, and package-specific conditionals
         _package_content: ($) =>
             repeat1(
                 choice(
-                    $.preamble,
+                    alias($.preamble_tag, $.package_tag),
                     $.macro_definition,
                     $.macro_expansion, // %{?systemd_requires}, etc.
                     $.macro_simple_expansion, // %systemd_requires, etc.

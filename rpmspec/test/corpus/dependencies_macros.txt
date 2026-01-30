@@ -7,7 +7,7 @@ Requires: %{name} = %{version}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (macro_expansion
@@ -24,7 +24,7 @@ Requires: %{name}%{?_isa} = %{version}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (macro_expansion
@@ -44,7 +44,7 @@ Requires: %{name}-libs >= %{version}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (macro_expansion
@@ -62,7 +62,7 @@ Requires: %{name} = %{version}-%{release}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (macro_expansion
@@ -81,7 +81,7 @@ Requires: %{name}%{?_isa} = %{version}-%{release}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (macro_expansion
@@ -103,7 +103,7 @@ Requires: foo%{?_isa} >= 1.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -121,7 +121,7 @@ Requires: %name = 1.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (macro_simple_expansion

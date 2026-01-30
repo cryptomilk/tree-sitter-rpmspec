@@ -511,7 +511,7 @@ Version: %{?version_override}%{!?version_override:258.3}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     value: (concatenation
       (macro_expansion

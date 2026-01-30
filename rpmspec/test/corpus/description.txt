@@ -161,7 +161,7 @@ DC description.
       (identifier))
     consequence: (package
       name: (identifier)
-      (preamble
+      (package_tag
         (tag)
         value: (concatenation
           (word)
@@ -204,7 +204,7 @@ Devel description.
       (identifier))
     consequence: (package
       name: (identifier)
-      (preamble
+      (package_tag
         (tag)
         value: (concatenation
           (word)
@@ -215,7 +215,7 @@ Devel description.
         (text_content)))
     consequence: (package
       name: (identifier)
-      (preamble
+      (package_tag
         (tag)
         value: (concatenation
           (word)

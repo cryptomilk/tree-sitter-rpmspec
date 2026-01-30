@@ -7,7 +7,7 @@ Requires: (pkgA or pkgB)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_or_expression
@@ -25,7 +25,7 @@ Requires: (pkgA and pkgB)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_and_expression
@@ -43,7 +43,7 @@ Requires: (pkgA >= 1.0 and pkgB)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_and_expression
@@ -62,7 +62,7 @@ Requires: (pkgA or (pkgB and pkgC))
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_or_expression
@@ -84,7 +84,7 @@ Requires: (pkgA or pkgB or pkgC)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_or_expression
@@ -105,7 +105,7 @@ Requires: (util-linux-core or util-linux)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_or_expression
@@ -123,7 +123,7 @@ Requires: (pkgA >= 3.2 or pkgB >= 1.0)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_or_expression

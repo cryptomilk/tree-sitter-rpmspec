@@ -7,7 +7,7 @@ Name:           tree-sitter-rpmspec
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word)))
 
@@ -20,7 +20,7 @@ Name:           %complex_name
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (macro_simple_expansion
       (simple_macro))))
@@ -35,10 +35,10 @@ Version:        1.1~rc1
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (version)))
 
@@ -52,10 +52,10 @@ Release:        %autorelease
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (macro_simple_expansion
       (simple_macro))))
@@ -70,10 +70,10 @@ Release:        1%{?dist}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (concatenation
       (integer)
@@ -91,10 +91,10 @@ Summary:        A parser for RPM Spec
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (concatenation
       (word)
@@ -113,10 +113,10 @@ Summary:        A parser for RPM Spec version %{version}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (concatenation
       (word)
@@ -138,10 +138,10 @@ License:        MIT
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (word)))
 
@@ -155,9 +155,9 @@ License:        # FIXME
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
-    (word))
+    value: (word))
   (ERROR
     (tag))
   (comment))
@@ -172,10 +172,10 @@ URL:            https://gitlab.com/cryptomilk/tree-sitter-rpmspec
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     value: (word))
-  (preamble
+  (preamble_tag
     (tag)
     value: (url)))
 
@@ -189,10 +189,10 @@ Source:         %{name}-%{version}.tar.gz
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     value: (word))
-  (preamble
+  (preamble_tag
     (tag)
     value: (file
       (macro_expansion
@@ -210,10 +210,10 @@ Source0:        %{name}-%{version}.tar.gz
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     value: (word))
-  (preamble
+  (preamble_tag
     (tag)
     value: (file
       (macro_expansion
@@ -231,10 +231,10 @@ Patch0:         fix-xyz.patch
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     value: (word))
-  (preamble
+  (preamble_tag
     (tag)
     value: (file)))
 
@@ -248,10 +248,10 @@ Patch0:         https://example.com/fix-xyz.patch
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     value: (word))
-  (preamble
+  (preamble_tag
     (tag)
     value: (url)))
 
@@ -264,7 +264,7 @@ URL:            %{gourl}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     value: (macro_expansion
       (identifier))))
@@ -278,7 +278,7 @@ Source:         %{gosource}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     value: (file
       (macro_expansion

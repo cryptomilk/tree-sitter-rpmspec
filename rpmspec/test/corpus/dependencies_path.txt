@@ -7,7 +7,7 @@ Requires: /usr/bin/pkg-config
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (path_dependency
       (path))))
@@ -21,7 +21,7 @@ Requires: /usr/sbin/useradd
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (path_dependency
       (path))))
@@ -35,7 +35,7 @@ Provides: /usr/lib64/libfoo.so
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (path_dependency
       (path))))
@@ -49,7 +49,7 @@ Requires: /bin/sh
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (path_dependency
       (path))))
@@ -63,7 +63,7 @@ Requires: /usr/bin/sh /usr/bin/bash
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (path_dependency
       (path))
@@ -79,7 +79,7 @@ Requires: /usr/bin/sh, /usr/bin/bash
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (path_dependency
       (path))
@@ -95,7 +95,7 @@ Requires: /usr/bin/sh cmake-filesystem
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (path_dependency
       (path))

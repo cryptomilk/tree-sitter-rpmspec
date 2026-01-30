@@ -7,7 +7,7 @@ Requires: libc.so.6(GLIBC_2.2.5)(64bit)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (elf_dependency
       soname: (soname)
@@ -24,7 +24,7 @@ Requires: libssh.so.4()(64bit)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (elf_dependency
       soname: (soname)
@@ -40,7 +40,7 @@ Requires: libc.so.6(GLIBC_2.0)(32bit)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (elf_dependency
       soname: (soname)
@@ -57,7 +57,7 @@ Requires: libc.so.6(GLIBC_2.2.5)(64bit), libcrypto.so.3(OPENSSL_3.0.0)(64bit)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (elf_dependency
       soname: (soname)
@@ -79,7 +79,7 @@ Requires: /usr/bin/pkg-config
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (path_dependency
       (path))))
@@ -93,7 +93,7 @@ Requires: /usr/bin/sh, /usr/sbin/useradd
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (path_dependency
       (path))
@@ -109,7 +109,7 @@ Requires: perl(Carp)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -125,7 +125,7 @@ Requires: perl(Carp) >= 3.2
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -142,7 +142,7 @@ BuildRequires: pkgconfig(glib-2.0) >= 2.50
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -159,7 +159,7 @@ BuildRequires: python3dist(pytest)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -175,7 +175,7 @@ Requires: rpmlib(CompressedFileNames) <= 3.0.4-1
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -192,7 +192,7 @@ Requires: libssh(x86-64) = 0.11.3-1.fc43
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -209,7 +209,7 @@ Provides: bundled(golang(golang.org/x/arch)) = 0.18.1
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -229,7 +229,7 @@ Provides: bundled(npm(@babel/core)) = 7.24.5
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -249,7 +249,7 @@ Requires: cmake-filesystem
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (dependency
       name: (word))))
@@ -263,7 +263,7 @@ Requires: filesystem >= 3
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -278,7 +278,7 @@ Requires: python3-libs = 3.14.2-1.fc43
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -293,7 +293,7 @@ BuildRequires: gcc, make, cmake >= 3.10
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (dependency
       name: (word))
@@ -312,7 +312,7 @@ Requires: (pkgA or pkgB)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_or_expression
@@ -330,7 +330,7 @@ Requires: (pkgA and pkgB)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_and_expression
@@ -348,7 +348,7 @@ Requires: (perl(Carp) and python3dist(pytest))
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_and_expression
@@ -370,7 +370,7 @@ Requires: (cmake >= 3.10 and ninja)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_and_expression
@@ -389,7 +389,7 @@ Requires: (libc.so.6(GLIBC_2.2.5)(64bit) or fallback-pkg)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_or_expression
@@ -410,7 +410,7 @@ Requires: (/usr/bin/python3 or python3)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_or_expression
@@ -428,7 +428,7 @@ Suggests: (nice-pkg if feature-pkg)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_if_expression
@@ -446,7 +446,7 @@ Recommends: (optional-pkg unless minimal-install)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_if_expression
@@ -464,7 +464,7 @@ Requires: cmake-filesystem, perl(Carp) >= 1.0, /usr/bin/sh
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (dependency
       name: (word))

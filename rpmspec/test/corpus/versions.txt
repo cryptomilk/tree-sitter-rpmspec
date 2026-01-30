@@ -8,10 +8,10 @@ Version:        2:1.0.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (version)))
 
@@ -26,15 +26,15 @@ BuildRequires:  another-package >= 1:2.0.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     value: (word))
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
       version: (version)))
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -51,13 +51,13 @@ Release:        3%{?dist}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (version))
-  (preamble
+  (preamble_tag
     (tag)
     (concatenation
       (integer)
@@ -75,10 +75,10 @@ Requires:       (package >= 2:1.0 or alternative-package)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     value: (word))
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_or_expression
@@ -98,10 +98,10 @@ Provides:       virtual-package = 0:1.0.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     value: (word))
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -117,10 +117,10 @@ Provides:       bundled(sdb) = db7edd4a96a89b6749b677a85d7fa4ee2c6fbbb9
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     value: (word))
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)

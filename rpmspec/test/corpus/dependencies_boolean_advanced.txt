@@ -7,7 +7,7 @@ Requires: (pkgA if pkgB)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_if_expression
@@ -25,7 +25,7 @@ Requires: (pkgA if pkgB else pkgC)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_if_expression
@@ -45,7 +45,7 @@ Requires: (libbpf >= 2:1.4.7 if libbpf)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_if_expression
@@ -64,7 +64,7 @@ Requires: (pkgA with capB)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_with_expression
@@ -82,7 +82,7 @@ Requires: (pkgA without capB)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_without_expression
@@ -100,7 +100,7 @@ Requires: ((pkgA with capB) or (pkgB without capA))
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_or_expression
@@ -126,7 +126,7 @@ Requires: (myPkg-backend-mariaDB if mariaDB else sqlite)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_if_expression
@@ -146,7 +146,7 @@ Requires: (pkgA unless pkgB)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_if_expression
@@ -164,7 +164,7 @@ Requires: (pkgA unless pkgB else pkgC)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_if_expression
@@ -184,7 +184,7 @@ Requires: (badpkg unless goodpkg >= 2.0)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_if_expression

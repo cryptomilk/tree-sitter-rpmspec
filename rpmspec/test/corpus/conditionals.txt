@@ -12,7 +12,7 @@ BuildRequires:  foo
   (ifarch_statement
     condition: (arch
       (identifier))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -31,7 +31,7 @@ BuildRequires:  foo
   (ifos_statement
     condition: (os
       (identifier))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -50,7 +50,7 @@ BuildRequires:  magic
   (ifarch_statement
     condition: (arch
       (identifier))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -69,7 +69,7 @@ BuildRequires:  foo
   (if_statement
     condition: (defined_operator
       (identifier))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -91,7 +91,7 @@ BuildRequires:  foo
         (identifier))
       right: (defined_operator
         (identifier)))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -114,7 +114,7 @@ BuildRequires:  foo
           (identifier)))
       right: (quoted_string
         (string_content)))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -146,7 +146,7 @@ BuildRequires:  foo
             (conditional_expansion
               condition: (identifier))))
         right: (integer)))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -168,7 +168,7 @@ BuildRequires:  foo
       (macro_expansion
         (conditional_expansion
           condition: (identifier))))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -199,7 +199,7 @@ BuildRequires:  foo
               (conditional_expansion
                 condition: (identifier))))
           right: (integer))))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -223,12 +223,12 @@ BuildRequires:  bar
       (macro_expansion
         (conditional_expansion
           condition: (identifier))))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))
     alternative: (else_clause
-      body: (preamble
+      body: (preamble_tag
         (dependency_tag)
         value: (dependency
           name: (word))))))
@@ -252,7 +252,7 @@ BuildRequires:  bar
       (macro_expansion
         (conditional_expansion
           condition: (identifier))))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))
@@ -262,7 +262,7 @@ BuildRequires:  bar
         (macro_expansion
           (conditional_expansion
             condition: (identifier))))
-      consequence: (preamble
+      consequence: (preamble_tag
         (dependency_tag)
         value: (dependency
           name: (word))))))
@@ -288,7 +288,7 @@ BuildRequires:  wurst
       (macro_expansion
         (conditional_expansion
           condition: (identifier))))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))
@@ -298,12 +298,12 @@ BuildRequires:  wurst
         (macro_expansion
           (conditional_expansion
             condition: (identifier))))
-      consequence: (preamble
+      consequence: (preamble_tag
         (dependency_tag)
         value: (dependency
           name: (word))))
     alternative: (else_clause
-      body: (preamble
+      body: (preamble_tag
         (dependency_tag)
         value: (dependency
           name: (word))))))
@@ -322,7 +322,7 @@ Requires(post): libwbclient
   (if_statement
     condition: (with_operator
       (identifier))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag
         (qualifier))
       value: (dependency
@@ -343,7 +343,7 @@ BuildRequires:  foo
     condition: (arch
       (identifier)
       (identifier))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -362,7 +362,7 @@ BuildRequires:  linux-only-package
   (ifos_statement
     condition: (os
       (identifier))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -381,7 +381,7 @@ BuildRequires:  os-specific-package
   (ifos_statement
     condition: (os
       (identifier))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -402,7 +402,7 @@ BuildRequires:  arch-specific-package
       (macro_expansion
         (identifier))
       (identifier))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -421,7 +421,7 @@ BuildRequires:  bpftool
   (ifarch_statement
     condition: (arch
       (identifier))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -444,18 +444,18 @@ BuildRequires:  generic-package
   (ifarch_statement
     condition: (arch
       (identifier))
-    consequence: (preamble
+    consequence: (preamble_tag
       (dependency_tag)
       value: (dependency
         name: (word)))
     alternative: (elifarch_clause
       condition: (word)
-      consequence: (preamble
+      consequence: (preamble_tag
         (dependency_tag)
         value: (dependency
           name: (word))))
     alternative: (else_clause
-      body: (preamble
+      body: (preamble_tag
         (dependency_tag)
         value: (dependency
           name: (word))))))

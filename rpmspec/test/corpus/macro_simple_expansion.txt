@@ -65,7 +65,7 @@ Name: %pkg_name
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (macro_simple_expansion
       (simple_macro))))

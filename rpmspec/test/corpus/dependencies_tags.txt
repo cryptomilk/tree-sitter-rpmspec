@@ -7,7 +7,7 @@ Requires: (pkgA or pkgB)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_or_expression
@@ -25,7 +25,7 @@ BuildRequires: (cmake >= 3.10 and ninja)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_and_expression
@@ -44,7 +44,7 @@ BuildPreReq: rpm-macros-systemd
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (dependency
       name: (word))))
@@ -58,7 +58,7 @@ BuildRequires(pre): rpm-build-xdg
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (dependency
       name: (word))))
@@ -90,7 +90,7 @@ Recommends: (pkgA and pkgB)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_and_expression
@@ -108,7 +108,7 @@ Suggests: (nice-pkg if feature-pkg)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (boolean_dependency
       (boolean_if_expression
@@ -126,7 +126,7 @@ Conflicts: bad-package >= 1.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -141,7 +141,7 @@ BuildConflicts: conflicting-build-tool
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (dependency
       name: (word))))
@@ -155,7 +155,7 @@ Obsoletes: old-package <= 1.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -170,7 +170,7 @@ Provides: virtual-pkg = 2.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -185,7 +185,7 @@ Provides: bundled(libfoo) = 1.2.3
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -202,7 +202,7 @@ BuildArch: noarch
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (word)))
 
@@ -215,7 +215,7 @@ ExclusiveArch: x86_64 aarch64
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (concatenation
       (word)
@@ -230,7 +230,7 @@ ExcludeArch: %{ix86}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (macro_expansion
       (identifier))))

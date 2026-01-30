@@ -8,10 +8,10 @@ BuildSystem:    cmake
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (word)))
 
@@ -25,10 +25,10 @@ BuildSystem:    autotools
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (word)))
 
@@ -43,13 +43,13 @@ BuildOption:    -DENABLE_FOO=ON
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (word)))
 
@@ -64,13 +64,13 @@ BuildOption(conf): -DENABLE_FOO=ON
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag
       (qualifier))
     (word)))
@@ -86,13 +86,13 @@ BuildOption(prep): -p0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag
       (qualifier))
     (word)))
@@ -108,13 +108,13 @@ BuildOption(build): -j4
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag
       (qualifier))
     (word)))
@@ -130,13 +130,13 @@ BuildOption(install): DESTDIR=%{buildroot}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag
       (qualifier))
     (concatenation
@@ -155,13 +155,13 @@ BuildOption(check): -V
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag
       (qualifier))
     (word)))
@@ -177,13 +177,13 @@ BuildOption(generate_buildrequires): --extra-deps
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag
       (qualifier))
     (word)))
@@ -201,20 +201,20 @@ BuildOption(build): -j8
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag)
     (word))
-  (preamble
+  (preamble_tag
     (tag
       (qualifier))
     (word))
-  (preamble
+  (preamble_tag
     (tag
       (qualifier))
     (word)))

@@ -7,7 +7,7 @@ Requires: perl(Carp) >= 3.2
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -24,7 +24,7 @@ BuildRequires: python3dist(pytest)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -40,7 +40,7 @@ Requires: libbar-devel(x86-64) >= 2.2
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -57,7 +57,7 @@ Provides: bundled(libreplace)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -73,7 +73,7 @@ Requires: lua(abi) = %{lua_version}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -91,7 +91,7 @@ Requires: perl(strict)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -107,7 +107,7 @@ BuildRequires: pkgconfig(glib-2.0) >= 2.50
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -124,7 +124,7 @@ Provides: bundled(golang(golang.org/x/arch)) = 0.18.1
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)
@@ -144,7 +144,7 @@ Provides: npm(%{pkgname}) = %{version}
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (qualified_dependency
       name: (word)

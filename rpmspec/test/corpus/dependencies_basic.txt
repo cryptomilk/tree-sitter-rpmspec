@@ -7,7 +7,7 @@ Requires: python
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (dependency
       name: (word))))
@@ -21,7 +21,7 @@ BuildRequires: gcc
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (dependency
       name: (word))))
@@ -35,7 +35,7 @@ Requires: python >= 3.6
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -50,7 +50,7 @@ Requires: cmake <= 3.20
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -65,7 +65,7 @@ Requires: package = 1.0.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -80,7 +80,7 @@ Requires: oldpkg < 2.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -95,7 +95,7 @@ Requires: newpkg > 1.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -110,7 +110,7 @@ Requires: package = 2:1.0.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -125,7 +125,7 @@ Requires: package = 2:1.0.0-1
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -140,7 +140,7 @@ Requires(pre): shadow-utils
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag
       (qualifier))
     value: (dependency
@@ -155,7 +155,7 @@ Requires(post): systemd >= 250
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag
       (qualifier))
     value: (version_dependency
@@ -171,7 +171,7 @@ BuildRequires: cmake >= 3.10
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -186,7 +186,7 @@ Provides: virtual-package
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (dependency
       name: (word))))
@@ -200,7 +200,7 @@ Provides: virtual-package = 1.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -215,7 +215,7 @@ Conflicts: conflicting-package
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (dependency
       name: (word))))
@@ -229,7 +229,7 @@ Obsoletes: old-package < 2.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)
@@ -244,7 +244,7 @@ Recommends: optional-package
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (dependency
       name: (word))))
@@ -258,7 +258,7 @@ Suggests: nice-to-have >= 1.0
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (version_dependency
       name: (word)

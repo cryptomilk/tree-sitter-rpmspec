@@ -10,7 +10,7 @@ Summary: Client
 (spec
   (package
     (identifier)
-    (preamble
+    (package_tag
       (tag)
       (word))))
 
@@ -26,7 +26,7 @@ Summary: Subpackage
 (spec
   (package
     (identifier)
-    (preamble
+    (package_tag
       (tag)
       (word))))
 
@@ -43,7 +43,7 @@ Summary: Subpackage
   (package
     (macro_expansion
       (identifier))
-    (preamble
+    (package_tag
       (tag)
       (word))))
 
@@ -65,13 +65,13 @@ Conflicts: baz
 (spec
   (package
     name: (identifier)
-    (preamble
+    (package_tag
       (tag)
       value: (word))
-    (preamble
+    (package_tag
       (tag)
       value: (word))
-    (preamble
+    (package_tag
       (dependency_tag)
       value: (dependency
         name: (word)))
@@ -80,11 +80,11 @@ Conflicts: baz
       (macro_expansion
         (conditional_expansion
           condition: (identifier))))
-    consequence: (preamble
+    consequence: (package_tag
       (dependency_tag)
       value: (dependency
         name: (word)))
-    (preamble
+    (package_tag
       (dependency_tag)
       value: (dependency
         name: (word)))))
@@ -105,7 +105,7 @@ BuildRequires: binutils %{?binutils_version_req}
 (spec
   (package
     name: (identifier)
-    (preamble
+    (package_tag
       (tag)
       value: (word))
     condition: (arch
@@ -115,7 +115,7 @@ BuildRequires: binutils %{?binutils_version_req}
       value: (word)
       value: (word)
       value: (version))
-    (preamble
+    (package_tag
       (dependency_tag)
       value: (dependency
         name: (word)
@@ -136,7 +136,7 @@ Summary: Default feature devel
   (package
     name: (macro_expansion
       (identifier))
-    (preamble
+    (package_tag
       (tag)
       value: (concatenation
         (word)
@@ -156,7 +156,7 @@ Summary: Master package
 (spec
   (package
     name: (identifier)
-    (preamble
+    (package_tag
       (tag)
       value: (concatenation
         (word)

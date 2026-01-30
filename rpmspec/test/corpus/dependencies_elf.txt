@@ -7,7 +7,7 @@ Requires: libc.so.6()(64bit)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (elf_dependency
       soname: (soname)
@@ -23,7 +23,7 @@ Requires: libc.so.6(GLIBC_2.2.5)(64bit)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (elf_dependency
       soname: (soname)
@@ -40,7 +40,7 @@ Provides: libssh.so.4()(64bit)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (elf_dependency
       soname: (soname)
@@ -56,7 +56,7 @@ Provides: libssh.so.4(LIBSSH_4_5_0)(64bit)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (elf_dependency
       soname: (soname)
@@ -73,7 +73,7 @@ Requires: libc.so.6(GLIBC_2.0)(32bit)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (elf_dependency
       soname: (soname)
@@ -90,7 +90,7 @@ Requires: libgssapi_krb5.so.2(gssapi_krb5_2_MIT)(64bit)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (elf_dependency
       soname: (soname)
@@ -107,7 +107,7 @@ Requires: libc.so.6()(64bit) libcrypto.so.3()(64bit)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (elf_dependency
       soname: (soname)
@@ -127,7 +127,7 @@ Requires: libfoo.so()(64bit)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (elf_dependency
       soname: (soname)
@@ -143,7 +143,7 @@ Provides: libssh_threads.so.4
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (elf_dependency
       soname: (soname))))
@@ -157,7 +157,7 @@ Provides: libssh.so.4(LIBSSH_4_5_0)
 -------------------------------------------------------------------------------
 
 (spec
-  (preamble
+  (preamble_tag
     (dependency_tag)
     value: (elf_dependency
       soname: (soname)
