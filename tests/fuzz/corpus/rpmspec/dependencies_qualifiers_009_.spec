@@ -1,0 +1,1 @@
+Provides: npm(%{pkgname}) = %{version}

@@ -1,0 +1,2 @@
+%global myfunc() \
+    echo test

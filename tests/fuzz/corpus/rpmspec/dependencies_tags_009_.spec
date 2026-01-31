@@ -1,0 +1,1 @@
+BuildConflicts: conflicting-build-tool

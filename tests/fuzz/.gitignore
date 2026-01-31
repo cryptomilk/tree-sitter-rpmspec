@@ -8,3 +8,12 @@ fuzzer
 crash-*
 leak-*
 timeout-*
+
+# Fuzzer-generated corpus files
+# libFuzzer creates SHA-1 named files when discovering new inputs during
+# fuzzing campaigns. Only seed corpus (*.spec, *.sh) is version controlled.
+# See README.md for corpus management details.
+corpus/rpmspec/*
+!corpus/rpmspec/*.spec
+corpus/rpmbash/*
+!corpus/rpmbash/*.sh

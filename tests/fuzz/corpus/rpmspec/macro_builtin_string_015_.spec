@@ -1,0 +1,5 @@
+%{shrink:
+foo
+bar
+baz
+}

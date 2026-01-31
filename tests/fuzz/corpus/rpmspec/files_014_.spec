@@ -1,0 +1,2 @@
+%files
+%doc README NEWS

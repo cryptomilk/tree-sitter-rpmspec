@@ -1,0 +1,2 @@
+%prep
+%setup -D -T

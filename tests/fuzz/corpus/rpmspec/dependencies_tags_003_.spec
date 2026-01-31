@@ -1,0 +1,1 @@
+BuildPreReq: rpm-macros-systemd

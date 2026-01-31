@@ -1,0 +1,2 @@
+Name:           example
+BuildSystem:    cmake

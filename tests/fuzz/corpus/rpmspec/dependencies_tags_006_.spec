@@ -1,0 +1,1 @@
+Recommends: (pkgA and pkgB)

@@ -1,0 +1,1 @@
+%{suffix:myfile.zip}

@@ -1,0 +1,1 @@
+Provides: libssh_threads.so.4

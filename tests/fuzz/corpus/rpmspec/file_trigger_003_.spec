@@ -1,0 +1,1 @@
+%filetriggerin -n foo

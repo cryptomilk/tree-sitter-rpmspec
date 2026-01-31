@@ -1,0 +1,2 @@
+%sourcelist
+foo-1.0.tar.gz

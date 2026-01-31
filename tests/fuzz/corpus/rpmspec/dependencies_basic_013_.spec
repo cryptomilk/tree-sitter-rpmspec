@@ -1,0 +1,1 @@
+Provides: virtual-package

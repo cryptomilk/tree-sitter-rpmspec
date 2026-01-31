@@ -1,0 +1,1 @@
+%{shrink:aa  bb   ccc   }

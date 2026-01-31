@@ -1,0 +1,4 @@
+%setup
+%autosetup
+%patch
+%autopatch

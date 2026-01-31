@@ -1,0 +1,2 @@
+%description subpackage
+Simple description

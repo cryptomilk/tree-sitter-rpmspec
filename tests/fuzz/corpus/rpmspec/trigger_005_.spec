@@ -1,0 +1,1 @@
+%triggerun -- systemd < 256

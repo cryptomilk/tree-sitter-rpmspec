@@ -1,0 +1,1 @@
+%mymacro %{name} %{version}

@@ -1,0 +1,1 @@
+%global foo 0x20

@@ -1,0 +1,2 @@
+%sourcelist
+https://example.com/foo-1.0.tar.gz

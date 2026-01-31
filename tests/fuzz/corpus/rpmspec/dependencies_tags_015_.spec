@@ -1,0 +1,1 @@
+ExcludeArch: %{ix86}

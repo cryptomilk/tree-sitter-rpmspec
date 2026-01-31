@@ -1,0 +1,1 @@
+Requires: (pkgA if pkgB)

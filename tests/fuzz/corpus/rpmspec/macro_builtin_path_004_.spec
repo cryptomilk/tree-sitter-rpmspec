@@ -1,0 +1,1 @@
+%{exists:%{builddir}/myflag.txt}

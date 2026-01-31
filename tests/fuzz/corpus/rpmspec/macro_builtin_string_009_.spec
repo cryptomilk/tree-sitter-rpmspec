@@ -1,0 +1,1 @@
+%{expand:%{version}-%{release}}

@@ -1,0 +1,2 @@
+%files
+%dir /usr/bin/
