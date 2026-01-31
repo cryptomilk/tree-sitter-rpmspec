@@ -1,0 +1,10 @@
+# Fuzzer outputs
+artifacts/
+out/
+dict
+fuzzer
+
+# Crash files
+crash-*
+leak-*
+timeout-*
