@@ -4,16 +4,23 @@ default: build
 
 help:
 	@echo "Available targets:"
-	@echo "  configure          - Install npm dependencies and configure cmake"
-	@echo "  build              - Generate parsers (if needed) and build with cmake"
-	@echo "  generate           - Force regenerate parsers from grammar.js"
-	@echo "  test               - Build and run all tests"
-	@echo "  test-fast          - Run tests without rebuilding"
-	@echo "  neovim             - Generate neovim query files (with ; inherits)"
-	@echo "  check-queries      - Validate queries with ts_query_ls"
-	@echo "  check-bash-scanner - Check if vendored bash scanner is up to date"
-	@echo "  update-bash-scanner- Update vendored bash scanner from node_modules"
-	@echo "  help               - Show this help message"
+	@echo "  configure            - Install npm dependencies and configure cmake"
+	@echo "  build                - Generate parsers (if needed) and build with cmake"
+	@echo "  generate             - Force regenerate parsers from grammar.js"
+	@echo "  test                 - Build and run all tests"
+	@echo "  test-fast            - Run tests without rebuilding"
+	@echo "  neovim               - Generate neovim query files (with ; inherits)"
+	@echo "  check-queries        - Validate queries with ts_query_ls"
+	@echo "  check-bash-scanner   - Check if vendored bash scanner is up to date"
+	@echo "  update-bash-scanner  - Update vendored bash scanner from node_modules"
+	@echo "  fuzz-rpmspec-scanner - Fuzz rpmspec parser (FUZZ_TIME=60)"
+	@echo "  fuzz-rpmbash-scanner - Fuzz rpmbash parser (FUZZ_TIME=60)"
+	@echo "  fuzz                 - Fuzz all parsers (FUZZ_TIME=60)"
+	@echo "  help                 - Show this help message"
+	@echo ""
+	@echo "Variables:"
+	@echo "  FUZZ_TIME            - Fuzzing timeout in seconds (default: 60)"
+	@echo "                         Example: make fuzz-rpmspec-scanner FUZZ_TIME=300"
 
 configure:
 	@if [ ! -d rpmbash/node_modules/tree-sitter-bash ]; then \
@@ -87,4 +94,27 @@ check-queries:
 		(cd rpmbash && ts_query_ls check queries/); \
 		ret=$$?; rm -f rpmspec/rpmspec.so rpmbash/rpmbash.so; exit $$ret
 
-.PHONY: default configure build generate test test-fast update-bash-scanner check-bash-scanner check-queries
+# Fuzzing targets (requires cmake -B build -DENABLE_FUZZING=ON)
+# Set FUZZ_TIME to override default timeout (default: 60 seconds)
+# Example: make fuzz-rpmspec-scanner FUZZ_TIME=300
+FUZZ_TIME ?= 60
+
+fuzz-rpmspec-scanner:
+	@test -f build/tests/fuzz/fuzz-rpmspec-scanner || { \
+		echo "Error: Fuzzer not built. Run: rm -rf build && cmake -B build -DENABLE_FUZZING=ON && cmake --build build"; \
+		exit 1; \
+	}
+	@test -f build/tests/fuzz/rpmspec.dict && DICT_ARG="-dict=build/tests/fuzz/rpmspec.dict" || DICT_ARG=""; \
+	build/tests/fuzz/fuzz-rpmspec-scanner tests/fuzz/corpus/rpmspec $$DICT_ARG -max_total_time=$(FUZZ_TIME)
+
+fuzz-rpmbash-scanner:
+	@test -f build/tests/fuzz/fuzz-rpmbash-scanner || { \
+		echo "Error: Fuzzer not built. Run: rm -rf build && cmake -B build -DENABLE_FUZZING=ON && cmake --build build"; \
+		exit 1; \
+	}
+	@test -f build/tests/fuzz/rpmbash.dict && DICT_ARG="-dict=build/tests/fuzz/rpmbash.dict" || DICT_ARG=""; \
+	build/tests/fuzz/fuzz-rpmbash-scanner tests/fuzz/corpus/rpmbash $$DICT_ARG -max_total_time=$(FUZZ_TIME)
+
+fuzz: fuzz-rpmspec-scanner fuzz-rpmbash-scanner
+
+.PHONY: default configure build generate test test-fast update-bash-scanner check-bash-scanner check-queries fuzz-rpmspec-scanner fuzz-rpmbash-scanner fuzz
