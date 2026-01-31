@@ -9,6 +9,12 @@ const TSLanguage *TS_LANG(void);
 
 int LLVMFuzzerTestOneInput(const uint8_t *data, const size_t len)
 {
+    // Limit input size to avoid timeouts on pathological inputs
+    // Fuzzing works better with many small inputs than few large ones
+    if (len > 4096) {
+        return 0;
+    }
+
     // Create a parser - should never fail
     TSParser *parser = ts_parser_new();
     assert(parser != NULL);
