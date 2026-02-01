@@ -99,7 +99,7 @@ fuzz-rpmspec-scanner:
     - npm --prefix rpmbash install
     - cmake -B build -DCMAKE_C_COMPILER=clang -DENABLE_FUZZING=ON
     - cmake --build build
-    - make fuzz-rpmspec-scanner FUZZ_TIME=$TS_FUZZ_TIME
+    - make fuzz-rpmspec-scanner FUZZ_TIME=$TS_FUZZ_TIME 2>&1 | python3 scripts/annotate-fuzzer-output.py --passthrough
 
 fuzz-rpmbash-scanner:
   stage: fuzz
@@ -110,4 +110,4 @@ fuzz-rpmbash-scanner:
     - npm --prefix rpmbash install
     - cmake -B build -DCMAKE_C_COMPILER=clang -DENABLE_FUZZING=ON
     - cmake --build build
-    - make fuzz-rpmbash-scanner FUZZ_TIME=$TS_FUZZ_TIME
+    - make fuzz-rpmbash-scanner FUZZ_TIME=$TS_FUZZ_TIME 2>&1 | python3 scripts/annotate-fuzzer-output.py --passthrough
