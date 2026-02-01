@@ -13,9 +13,11 @@ help:
 	@echo "  check-queries        - Validate queries with ts_query_ls"
 	@echo "  check-bash-scanner   - Check if vendored bash scanner is up to date"
 	@echo "  update-bash-scanner  - Update vendored bash scanner from node_modules"
-	@echo "  fuzz-rpmspec-scanner - Fuzz rpmspec parser (FUZZ_TIME=60)"
-	@echo "  fuzz-rpmbash-scanner - Fuzz rpmbash parser (FUZZ_TIME=60)"
-	@echo "  fuzz                 - Fuzz all parsers (FUZZ_TIME=60)"
+	@echo "  fuzz-rpmspec         - Fuzz rpmspec with tree-sitter fuzz (FUZZ_TIME=60)"
+	@echo "  fuzz-rpmbash         - Fuzz rpmbash with tree-sitter fuzz (FUZZ_TIME=60)"
+	@echo "  fuzz-rpmspec-scanner - Fuzz rpmspec parser with libFuzzer (FUZZ_TIME=60)"
+	@echo "  fuzz-rpmbash-scanner - Fuzz rpmbash parser with libFuzzer (FUZZ_TIME=60)"
+	@echo "  fuzz                 - Fuzz all parsers with both methods (FUZZ_TIME=60)"
 	@echo "  help                 - Show this help message"
 	@echo ""
 	@echo "Variables:"
@@ -94,11 +96,21 @@ check-queries:
 		(cd rpmbash && ts_query_ls check queries/); \
 		ret=$$?; rm -f rpmspec/rpmspec.so rpmbash/rpmbash.so; exit $$ret
 
-# Fuzzing targets (requires cmake -B build -DENABLE_FUZZING=ON)
+# Fuzzing targets
 # Set FUZZ_TIME to override default timeout (default: 60 seconds)
-# Example: make fuzz-rpmspec-scanner FUZZ_TIME=300
+# Example: make fuzz-rpmspec FUZZ_TIME=300
 FUZZ_TIME ?= 60
 
+# Tree-sitter native fuzzing (no build required)
+fuzz-rpmspec:
+	@echo "Fuzzing rpmspec with tree-sitter fuzz ($(FUZZ_TIME) seconds)..."
+	cd rpmspec && timeout -f $(FUZZ_TIME)s $(TS) fuzz || [ $$? -eq 124 ]
+
+fuzz-rpmbash:
+	@echo "Fuzzing rpmbash with tree-sitter fuzz ($(FUZZ_TIME) seconds)..."
+	cd rpmbash && timeout -f $(FUZZ_TIME)s $(TS) fuzz || [ $$? -eq 124 ]
+
+# LibFuzzer targets (requires cmake -B build -DENABLE_FUZZING=ON)
 fuzz-rpmspec-scanner:
 	@test -f build/tests/fuzz/fuzz-rpmspec-scanner || { \
 		echo "Error: Fuzzer not built. Run: rm -rf build && cmake -B build -DENABLE_FUZZING=ON && cmake --build build"; \
@@ -115,6 +127,6 @@ fuzz-rpmbash-scanner:
 	@test -f build/tests/fuzz/rpmbash.dict && DICT_ARG="-dict=build/tests/fuzz/rpmbash.dict" || DICT_ARG=""; \
 	build/tests/fuzz/fuzz-rpmbash-scanner tests/fuzz/corpus/rpmbash $$DICT_ARG -max_total_time=$(FUZZ_TIME)
 
-fuzz: fuzz-rpmspec-scanner fuzz-rpmbash-scanner
+fuzz: fuzz-rpmspec fuzz-rpmbash fuzz-rpmspec-scanner fuzz-rpmbash-scanner
 
-.PHONY: default configure build generate test test-fast update-bash-scanner check-bash-scanner check-queries fuzz-rpmspec-scanner fuzz-rpmbash-scanner fuzz
+.PHONY: default configure build generate test test-fast update-bash-scanner check-bash-scanner check-queries fuzz-rpmspec fuzz-rpmbash fuzz-rpmspec-scanner fuzz-rpmbash-scanner fuzz
