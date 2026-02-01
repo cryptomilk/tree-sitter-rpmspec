@@ -112,20 +112,20 @@ fuzz-rpmbash:
 
 # LibFuzzer targets (requires cmake -B build -DENABLE_FUZZING=ON)
 fuzz-rpmspec-scanner:
-	@test -f build/tests/fuzz/fuzz-rpmspec-scanner || { \
+	@test -f build/tests/fuzz/fuzz-rpmspec || { \
 		echo "Error: Fuzzer not built. Run: rm -rf build && cmake -B build -DENABLE_FUZZING=ON && cmake --build build"; \
 		exit 1; \
 	}
 	@test -f build/tests/fuzz/rpmspec.dict && DICT_ARG="-dict=build/tests/fuzz/rpmspec.dict" || DICT_ARG=""; \
-	build/tests/fuzz/fuzz-rpmspec-scanner tests/fuzz/corpus/rpmspec $$DICT_ARG -max_total_time=$(FUZZ_TIME)
+	build/tests/fuzz/fuzz-rpmspec tests/fuzz/corpus/rpmspec $$DICT_ARG -max_total_time=$(FUZZ_TIME)
 
 fuzz-rpmbash-scanner:
-	@test -f build/tests/fuzz/fuzz-rpmbash-scanner || { \
+	@test -f build/tests/fuzz/fuzz-rpmbash || { \
 		echo "Error: Fuzzer not built. Run: rm -rf build && cmake -B build -DENABLE_FUZZING=ON && cmake --build build"; \
 		exit 1; \
 	}
 	@test -f build/tests/fuzz/rpmbash.dict && DICT_ARG="-dict=build/tests/fuzz/rpmbash.dict" || DICT_ARG=""; \
-	build/tests/fuzz/fuzz-rpmbash-scanner tests/fuzz/corpus/rpmbash $$DICT_ARG -max_total_time=$(FUZZ_TIME)
+	build/tests/fuzz/fuzz-rpmbash tests/fuzz/corpus/rpmbash $$DICT_ARG -max_total_time=$(FUZZ_TIME)
 
 fuzz: fuzz-rpmspec fuzz-rpmbash fuzz-rpmspec-scanner fuzz-rpmbash-scanner
 
