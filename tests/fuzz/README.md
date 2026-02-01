@@ -62,7 +62,7 @@ tests/fuzz/
 ## Seed Corpus
 
 The seed corpus is extracted from the tree-sitter test suites using
-`scripts/extract-fuzz-corpus.py`:
+`scripts/ts-extract-fuzz-corpus.py`:
 
 - **rpmspec**: Extracted from `rpmspec/test/corpus/*.txt` (~300 files)
 - **rpmbash**: Extracted from `rpmbash/test/corpus/*.txt` (~50 files)
@@ -70,8 +70,18 @@ The seed corpus is extracted from the tree-sitter test suites using
 To regenerate the corpus:
 
 ```bash
-python3 scripts/extract-fuzz-corpus.py
+# Using the convenience wrapper:
+./scripts/regenerate-fuzz-corpus.sh
+
+# Or using the general-purpose script directly:
+python3 scripts/ts-extract-fuzz-corpus.py \
+  --grammar rpmspec:rpmspec/test/corpus:spec \
+  --grammar rpmbash:rpmbash/test/corpus:sh
 ```
+
+The `ts-extract-fuzz-corpus.py` script is general-purpose and works with any
+tree-sitter project. See `scripts/ts-extract-fuzz-corpus.py --help` for usage
+examples with single-grammar projects.
 
 ## Fuzzer Dictionaries
 
