@@ -10,11 +10,16 @@ workflow:
     # Run branch pipeline for pushes without an MR
     - if: $CI_COMMIT_BRANCH
 
+stages:
+  - lint
+  - test
+
 variables:
   BUILD_IMAGES_PROJECT: cryptomilk/build-images
   FEDORA_BUILD: buildenv-fedora
 
 code-format:
+  stage: lint
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   rules:
     - if: $CI_MERGE_REQUEST_IID
@@ -43,6 +48,7 @@ code-format:
       fi
 
 tree-sitter/test:
+  stage: test
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   script:
     - npm --prefix rpmbash install
@@ -51,12 +57,14 @@ tree-sitter/test:
     - cmake --build build --target ts-test
 
 check-bash-scanner:
+  stage: test
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   script:
     - npm --prefix rpmbash install
     - make check-bash-scanner
 
 validate-queries:
+  stage: test
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   script:
     - npm --prefix rpmbash install
