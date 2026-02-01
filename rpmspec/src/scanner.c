@@ -333,20 +333,6 @@ static inline bool is_horizontal_space(int32_t c)
 }
 
 /**
- * @brief Skip leading whitespace characters
- *
- * Advances the lexer past any whitespace characters without including
- * them in the token. This allows the scanner to find tokens that appear
- * after leading newlines or spaces.
- */
-static inline void skip_whitespace(TSLexer *lexer)
-{
-    while (isspace(lexer->lookahead)) {
-        lexer->advance(lexer, true); /* true = skip (don't include in token) */
-    }
-}
-
-/**
  * @brief Check if identifier matches a literal string
  *
  * Compares a length-prefixed string against a null-terminated literal.
