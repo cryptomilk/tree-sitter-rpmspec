@@ -276,11 +276,17 @@ def main():
 
     lines_iter = iter(sys.stdin)
     found_errors = False
+    fuzzer_summary = None
 
     try:
         for line in lines_iter:
             line = line.rstrip("\n")
             annotation = None
+
+            # Capture fuzzer summary line (e.g., "#12345 DONE cov: 1234 ft: 5678...")
+            # This is typically the last line of libFuzzer output
+            if re.match(r"^#\d+\s+(DONE|RELOAD)\s+", line):
+                fuzzer_summary = line
 
             # Runtime error (UBSan)
             if "runtime error:" in line:
@@ -316,12 +322,20 @@ def main():
                     if annotation["level"] == "error":
                         found_errors = True
 
+            # Always print artifact paths (even without --passthrough)
+            if "Test unit written to" in line or "artifact_prefix=" in line:
+                print(line)
+
             # Passthrough mode: print all lines
-            if args.passthrough:
+            elif args.passthrough:
                 print(line)
     except KeyboardInterrupt:
         # Handle Ctrl+C gracefully (already set up signal handler)
         pass
+
+    # Print fuzzer summary if captured and not in passthrough mode
+    if fuzzer_summary and not args.passthrough:
+        print(fuzzer_summary)
 
     # Exit with error code if sanitizer errors were detected
     return 1 if found_errors else 0
