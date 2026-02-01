@@ -13,6 +13,7 @@ workflow:
 stages:
   - lint
   - test
+  - fuzz
 
 variables:
   BUILD_IMAGES_PROJECT: cryptomilk/build-images
@@ -70,3 +71,43 @@ validate-queries:
     - npm --prefix rpmbash install
     - (cd rpmspec && tree-sitter build -o rpmspec.so && ts_query_ls check queries/)
     - (cd rpmbash && tree-sitter build -o rpmbash.so && ts_query_ls check queries/)
+
+fuzz-rpmspec:
+  stage: fuzz
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $TS_FUZZ_TIME
+  script:
+    - npm --prefix rpmbash install
+    - make fuzz-rpmspec FUZZ_TIME=$TS_FUZZ_TIME
+
+fuzz-rpmbash:
+  stage: fuzz
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $TS_FUZZ_TIME
+  script:
+    - npm --prefix rpmbash install
+    - make fuzz-rpmbash FUZZ_TIME=$TS_FUZZ_TIME
+
+fuzz-rpmspec-scanner:
+  stage: fuzz
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $TS_FUZZ_TIME
+  script:
+    - npm --prefix rpmbash install
+    - cmake -B build -DCMAKE_C_COMPILER=clang -DENABLE_FUZZING=ON
+    - cmake --build build
+    - make fuzz-rpmspec-scanner FUZZ_TIME=$TS_FUZZ_TIME
+
+fuzz-rpmbash-scanner:
+  stage: fuzz
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $TS_FUZZ_TIME
+  script:
+    - npm --prefix rpmbash install
+    - cmake -B build -DCMAKE_C_COMPILER=clang -DENABLE_FUZZING=ON
+    - cmake --build build
+    - make fuzz-rpmbash-scanner FUZZ_TIME=$TS_FUZZ_TIME
