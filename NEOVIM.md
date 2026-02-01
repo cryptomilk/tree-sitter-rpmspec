@@ -38,6 +38,19 @@ vim.api.nvim_create_autocmd('User', {
 
 -- User rpmspec for spec file extension
 vim.treesitter.language.register('rpmspec', { 'spec' })
+
+-- Assign the file type to the parser
+local augroup = vim.api.nvim_create_augroup('rpmspec', {})
+vim.api.nvim_create_autocmd('FileType', {
+    group = augroup,
+    pattern = { 'spec' },
+    callback = function(args)
+        vim.treesitter.start(args.buf, 'rpmspec')
+
+        vim.bo.commentstring = "# %s"
+        vim.bo.comments = "b:#"
+    end,
+})
 ```
 
 After adding this configuration:
