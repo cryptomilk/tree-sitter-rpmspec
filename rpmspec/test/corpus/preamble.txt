@@ -283,3 +283,101 @@ Source:         %{gosource}
     value: (file
       (macro_expansion
         (identifier)))))
+
+===============================================================================
+Preamble (Summary tag with locale qualifier)
+===============================================================================
+
+Name:           test
+Summary:        Default summary
+Summary(zh_TW): 繁體中文摘要
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble_tag
+    (tag)
+    value: (word))
+  (preamble_tag
+    (tag)
+    value: (concatenation
+      (word)
+      (word)))
+  (preamble_tag
+    (tag
+      locale: (locale))
+    value: (word)))
+
+===============================================================================
+Preamble (Group tag with locale qualifier)
+===============================================================================
+
+Name:           test
+Group:          Development/Tools
+Group(de):      Entwicklung/Werkzeuge
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble_tag
+    (tag)
+    value: (word))
+  (preamble_tag
+    (tag)
+    value: (word))
+  (preamble_tag
+    (tag
+      locale: (locale))
+    value: (word)))
+
+===============================================================================
+Preamble (Summary with multiple locales)
+===============================================================================
+
+Name:           test
+Summary:        English
+Summary(de):    Deutsch
+Summary(ja):    日本語
+Summary(ko):    한국어
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble_tag
+    (tag)
+    value: (word))
+  (preamble_tag
+    (tag)
+    value: (word))
+  (preamble_tag
+    (tag
+      locale: (locale))
+    value: (word))
+  (preamble_tag
+    (tag
+      locale: (locale))
+    value: (word))
+  (preamble_tag
+    (tag
+      locale: (locale))
+    value: (word)))
+
+===============================================================================
+Preamble (Summary with locale and charset)
+===============================================================================
+
+Name:           test
+Summary(de_DE.UTF-8): Deutsche Zusammenfassung
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble_tag
+    (tag)
+    value: (word))
+  (preamble_tag
+    (tag
+      locale: (locale))
+    value: (concatenation
+      (word)
+      (word))))

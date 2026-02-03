@@ -267,3 +267,51 @@ Recommends reading the documentation.
       (text_content)
       (text_content)
       (text_content))))
+
+===============================================================================
+Description (with locale)
+===============================================================================
+
+%description -l de
+Deutsche Beschreibung.
+
+-------------------------------------------------------------------------------
+
+(spec
+  (description
+    locale: (locale)
+    (text
+      (text_content))))
+
+===============================================================================
+Description (with locale and subpackage)
+===============================================================================
+
+%description -l zh_TW subpkg
+繁體中文描述。
+
+-------------------------------------------------------------------------------
+
+(spec
+  (description
+    locale: (locale)
+    name: (identifier)
+    (text
+      (text_content))))
+
+===============================================================================
+Description (with locale and explicit name)
+===============================================================================
+
+%description -l ja -n %{name}-tools
+日本語の説明
+
+-------------------------------------------------------------------------------
+
+(spec
+  (description
+    locale: (locale)
+    name: (macro_expansion
+      (identifier))
+    (text
+      (text_content))))

@@ -4654,6 +4654,32 @@
               "type": "ALIAS",
               "content": {
                 "type": "SYMBOL",
+                "name": "_i18n_tag"
+              },
+              "named": true,
+              "value": "tag"
+            },
+            {
+              "type": "FIELD",
+              "name": "value",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_literal"
+              }
+            },
+            {
+              "type": "PATTERN",
+              "value": "\\n"
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
                 "name": "_source_tag"
               },
               "named": true,
@@ -4965,10 +4991,6 @@
               },
               {
                 "type": "STRING",
-                "value": "Summary"
-              },
-              {
-                "type": "STRING",
                 "value": "License"
               },
               {
@@ -4978,10 +5000,6 @@
               {
                 "type": "STRING",
                 "value": "Vendor"
-              },
-              {
-                "type": "STRING",
-                "value": "Group"
               },
               {
                 "type": "STRING",
@@ -5088,6 +5106,85 @@
           }
         ]
       }
+    },
+    "_i18n_tag": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "TOKEN",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "STRING",
+                        "value": "Summary"
+                      },
+                      {
+                        "type": "STRING",
+                        "value": "Group"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "IMMEDIATE_TOKEN",
+                    "content": {
+                      "type": "STRING",
+                      "value": "("
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "FIELD",
+              "name": "locale",
+              "content": {
+                "type": "SYMBOL",
+                "name": "locale"
+              }
+            },
+            {
+              "type": "STRING",
+              "value": "):"
+            }
+          ]
+        },
+        {
+          "type": "TOKEN",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "CHOICE",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "Summary"
+                  },
+                  {
+                    "type": "STRING",
+                    "value": "Group"
+                  }
+                ]
+              },
+              {
+                "type": "STRING",
+                "value": ":"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "locale": {
+      "type": "PATTERN",
+      "value": "[A-Za-z_][A-Za-z0-9_.-]*"
     },
     "qualifier": {
       "type": "CHOICE",
@@ -6400,6 +6497,31 @@
           {
             "type": "STRING",
             "value": "%description"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "-l"
+                  },
+                  {
+                    "type": "FIELD",
+                    "name": "locale",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "locale"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           },
           {
             "type": "CHOICE",

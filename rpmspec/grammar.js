@@ -1551,6 +1551,14 @@ module.exports = grammar({
                     field('value', $._literal), // Simple values (can contain macros)
                     /\n/
                 ),
+                // i18n tags (Summary, Group) - support optional (locale) qualifier
+                // Note: _i18n_tag handles both plain and qualified syntax
+                // Examples: Summary: text, Summary(zh_TW): text, Group(de): text
+                seq(
+                    alias($._i18n_tag, $.tag), // Tag name with optional locale
+                    field('value', $._literal), // Simple values (can contain macros)
+                    /\n/
+                ),
                 // Source tags (Source0, Source1, etc.) - URL or file path
                 // Note: _source_tag includes the colon
                 seq(
@@ -1650,11 +1658,9 @@ module.exports = grammar({
                 'Epoch', // Version epoch for upgrade ordering
 
                 // Descriptive metadata
-                'Summary', // One-line package description (required)
                 'License', // Package license (required)
                 'Packager', // Person/organization who packaged it
                 'Vendor', // Vendor/distributor information
-                'Group', // Package category (deprecated)
 
                 // Build and distribution metadata
                 'BuildRoot', // Build root directory (deprecated)
@@ -1681,6 +1687,28 @@ module.exports = grammar({
         // URL tag: URL, Url, BugUrl
         // Note: includes the colon via tagWithColon() to match as complete token
         _url_tag: (_) => tagWithColon('URL', 'Url', 'BugUrl'),
+
+        // i18n tags: Summary and Group support optional (locale) qualifier
+        // Format: Tag: value or Tag(locale): value
+        // Examples: Summary: text, Summary(zh_TW): 中文, Group(de): Entwicklung
+        // Locale format: language[_territory][.codeset] (e.g., C, de, zh_TW, de_DE.UTF-8)
+        _i18n_tag: ($) =>
+            choice(
+                // With locale qualifier: Summary(zh_TW):
+                seq(
+                    token(
+                        seq(choice('Summary', 'Group'), token.immediate('('))
+                    ),
+                    field('locale', $.locale),
+                    '):'
+                ),
+                // Without locale qualifier: Summary:
+                tagWithColon('Summary', 'Group')
+            ),
+
+        // Locale identifier for i18n tags
+        // Matches: C, POSIX, de, zh_TW, de_DE.UTF-8, etc.
+        locale: (_) => /[A-Za-z_][A-Za-z0-9_.-]*/,
 
         // Dependency qualifiers: specify when dependencies are needed
         // Used with Requires tag to indicate timing of dependency check
@@ -2146,16 +2174,19 @@ module.exports = grammar({
         ///////////////////////////////////////////////////////////////////////
 
         // Description section: package description text
-        // Format: %description [-n name] [inline_text]
+        // Format: %description [-l locale] [-n name | subpackage] [inline_text]
         // Examples:
         //   %description
         //   %description subpackage
         //   %description -n %{crate}
         //   %description -n %{crate} %{_description}
+        //   %description -l de
+        //   %description -l zh_TW subpackage
         description: ($) =>
             prec.right(
                 seq(
                     '%description',
+                    optional(seq('-l', field('locale', $.locale))),
                     optional(
                         seq(
                             optional('-n'),
