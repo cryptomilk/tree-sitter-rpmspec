@@ -9332,30 +9332,25 @@
             ]
           },
           {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SEQ",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": "-f"
+            "type": "REPEAT",
+            "content": {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": "-f"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "path_with_macro"
                   },
-                  {
-                    "type": "ALIAS",
-                    "content": {
-                      "type": "SYMBOL",
-                      "name": "path_with_macro"
-                    },
-                    "named": true,
-                    "value": "path"
-                  }
-                ]
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
+                  "named": true,
+                  "value": "path"
+                }
+              ]
+            }
           },
           {
             "type": "PATTERN",

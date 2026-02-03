@@ -2793,7 +2793,7 @@ module.exports = grammar({
                             field('name', $._package_name) // Subpackage name
                         )
                     ),
-                    optional(seq('-f', alias($.path_with_macro, $.path))), // Read file list from file
+                    repeat(seq('-f', alias($.path_with_macro, $.path))), // Read file list from file(s)
                     /\n/,
                     repeat(
                         choice(
