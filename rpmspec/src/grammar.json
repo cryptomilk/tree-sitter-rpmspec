@@ -5376,22 +5376,6 @@
             "members": [
               {
                 "type": "STRING",
-                "value": "BuildRequires(pre)"
-              },
-              {
-                "type": "STRING",
-                "value": ":"
-              }
-            ]
-          }
-        },
-        {
-          "type": "TOKEN",
-          "content": {
-            "type": "SEQ",
-            "members": [
-              {
-                "type": "STRING",
                 "value": "BuildRequires"
               },
               {

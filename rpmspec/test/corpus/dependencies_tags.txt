@@ -50,38 +50,6 @@ BuildPreReq: rpm-macros-systemd
       name: (word))))
 
 ===============================================================================
-Tag-specific: BuildRequires with qualifier
-===============================================================================
-
-BuildRequires(pre): rpm-build-xdg
-
--------------------------------------------------------------------------------
-
-(spec
-  (preamble_tag
-    (dependency_tag)
-    value: (dependency
-      name: (word))))
-
-===============================================================================
-Tag-specific: BuildRequires with invalid qualifier
-===============================================================================
-
-# BuildRequires(post) is invalid - only Requires supports (post).
-# The entire line ends up in ERROR since "BuildRequires(post):" is not a valid token.
-BuildRequires(post): rpm-build-xdg
-
--------------------------------------------------------------------------------
-
-(spec
-  (comment)
-  (comment)
-  (ERROR
-    (identifier)
-    (simple_macro)
-    (simple_macro)))
-
-===============================================================================
 Tag-specific: Recommends with boolean dependency
 ===============================================================================
 

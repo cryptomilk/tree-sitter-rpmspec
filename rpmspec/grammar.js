@@ -1770,9 +1770,6 @@ module.exports = grammar({
                 ),
                 // Requires without qualifier: Requires:
                 tagWithColon('Requires'),
-                // BuildRequires with qualifier: BuildRequires(pre):
-                // The (pre) is included in token for ALTLinux compatibility
-                token(seq('BuildRequires(pre)', ':')),
                 // BuildRequires without qualifier: BuildRequires:
                 tagWithColon('BuildRequires')
             ),
