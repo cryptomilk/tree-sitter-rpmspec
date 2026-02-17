@@ -2816,9 +2816,9 @@ module.exports = grammar({
                 '(',
                 choice('-', /[0-9]+/), // File mode (octal) or '-'
                 ',',
-                choice('-', /[a-zA-Z0-9_]+/), // User name or '-'
+                choice('-', /[a-zA-Z0-9_.-]+/), // User name or '-'
                 ',',
-                choice('-', /[a-zA-Z0-9_]+/), // Group name or '-'
+                choice('-', /[a-zA-Z0-9_.-]+/), // Group name or '-'
                 optional(seq(',', choice('-', /[0-9]+/))), // Optional dirmode
                 ')',
                 /\n/
@@ -2968,7 +2968,7 @@ module.exports = grammar({
         _attr_owner: ($) =>
             choice(
                 '-',
-                /[a-zA-Z0-9_]+/,
+                /[a-zA-Z0-9_.-]+/,
                 $.macro_expansion,
                 $.macro_simple_expansion
             ),

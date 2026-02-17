@@ -180,6 +180,27 @@ Files (%attr with macros in owner/group)
           (identifier))))))
 
 ===============================================================================
+Files (%attr with hyphenated in owner/group names)
+===============================================================================
+
+%files
+%ghost %dir %attr(2755, root, systemd-journal) %verify(not mode) %_logdir/journal
+
+-------------------------------------------------------------------------------
+
+(spec
+  (files
+    (file
+      (file_qualifier)
+      (file_qualifier)
+      (attr)
+      (file_qualifier
+        (verify))
+      (path
+        (macro_simple_expansion
+          (simple_macro))))))
+
+===============================================================================
 Files (%config)
 ===============================================================================
 
