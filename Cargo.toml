@@ -12,15 +12,15 @@ build = "bindings/rust/build.rs"
 include = [
   "bindings/rust/*",
   "grammar.js",
-  "queries/*",
-  "src/*",
+  "rpmspec/queries/*",
+  "rpmspec/src/*",
 ]
 
 [lib]
 path = "bindings/rust/lib.rs"
 
 [dependencies]
-tree-sitter-language = "0.1.0"
+tree-sitter-language = "0.1.7"
 
 [build-dependencies]
-cc = "1.0"
+cc = "1.2"
