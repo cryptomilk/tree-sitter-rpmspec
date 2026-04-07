@@ -1,8 +1,8 @@
 package tree_sitter_rpmspec
 
 // #cgo CFLAGS: -std=c11 -fPIC
-// #include "../../src/parser.c"
-// // NOTE: if your language has an external scanner, add it here.
+// #include "../../rpmspec/src/parser.c"
+// #include "../../rpmspec/src/scanner.c"
 import "C"
 
 import "unsafe"
