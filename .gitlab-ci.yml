@@ -72,6 +72,13 @@ validate-queries:
     - (cd rpmspec && tree-sitter build -o rpmspec.so && ts_query_ls check queries/)
     - (cd rpmbash && tree-sitter build -o rpmbash.so && ts_query_ls check queries/)
 
+node-gyp/build:
+  stage: test
+  image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
+  script:
+    - npm install --ignore-scripts --omit=peer
+    - npx node-gyp rebuild
+
 fuzz-rpmspec:
   stage: fuzz
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
