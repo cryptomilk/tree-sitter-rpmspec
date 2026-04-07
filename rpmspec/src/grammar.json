@@ -1608,8 +1608,22 @@
                     "type": "FIELD",
                     "name": "argument",
                     "content": {
-                      "type": "SYMBOL",
-                      "name": "_literal"
+                      "type": "CHOICE",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "_literal"
+                        },
+                        {
+                          "type": "ALIAS",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "_comparison_word"
+                          },
+                          "named": true,
+                          "value": "word"
+                        }
+                      ]
                     }
                   }
                 ]
@@ -1631,8 +1645,22 @@
                         "type": "FIELD",
                         "name": "argument",
                         "content": {
-                          "type": "SYMBOL",
-                          "name": "_literal"
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "SYMBOL",
+                              "name": "_literal"
+                            },
+                            {
+                              "type": "ALIAS",
+                              "content": {
+                                "type": "SYMBOL",
+                                "name": "_comparison_word"
+                              },
+                              "named": true,
+                              "value": "word"
+                            }
+                          ]
                         }
                       }
                     }
@@ -11727,6 +11755,13 @@
             }
           }
         ]
+      }
+    },
+    "_comparison_word": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PATTERN",
+        "value": "[<>=]+"
       }
     },
     "_special_character": {

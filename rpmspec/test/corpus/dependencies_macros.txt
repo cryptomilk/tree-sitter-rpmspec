@@ -127,3 +127,30 @@ Requires: %name = 1.0
       name: (macro_simple_expansion
         (simple_macro))
       version: (version))))
+
+===============================================================================
+Macro dependency (comparison operators inside macro arguments)
+===============================================================================
+
+BuildRequires: %{python_module fpdf2 >= 2.8}
+BuildRequires: %{python_module pdfminer.six >= 20220319}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (preamble_tag
+    (dependency_tag)
+    value: (dependency
+      name: (macro_expansion
+        (identifier)
+        argument: (word)
+        argument: (word)
+        argument: (version))))
+  (preamble_tag
+    (dependency_tag)
+    value: (dependency
+      name: (macro_expansion
+        (identifier)
+        argument: (word)
+        argument: (word)
+        argument: (integer)))))

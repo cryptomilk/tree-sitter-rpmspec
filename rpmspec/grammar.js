@@ -789,13 +789,27 @@ module.exports = grammar({
                     repeat(
                         choice(
                             field('option', $.macro_option),
-                            field('argument', $._literal)
+                            field(
+                                'argument',
+                                choice(
+                                    $._literal,
+                                    alias($._comparison_word, $.word)
+                                )
+                            )
                         )
                     ),
                     optional(
                         seq(
                             $.macro_option_terminator,
-                            repeat(field('argument', $._literal))
+                            repeat(
+                                field(
+                                    'argument',
+                                    choice(
+                                        $._literal,
+                                        alias($._comparison_word, $.word)
+                                    )
+                                )
+                            )
                         )
                     )
                 )
@@ -3537,6 +3551,11 @@ module.exports = grammar({
                     repeat(noneOf(...SPECIAL_CHARACTERS))
                 )
             ),
+
+        // Comparison operator tokens for use inside macro arguments
+        // Allows %{python_module fpdf2 >= 2.8} where >= is part of the macro's arguments.
+        // Kept separate from word to avoid widening word in dependency/expression contexts.
+        _comparison_word: (_) => token(/[<>=]+/),
 
         // Special characters that are excluded from word tokens
         // Used with low precedence to catch standalone special chars in macro values
