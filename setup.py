@@ -1,3 +1,4 @@
+from glob import glob
 from os import path
 from sysconfig import get_config_var
 
@@ -10,9 +11,11 @@ from wheel.bdist_wheel import bdist_wheel
 
 class Build(build):
     def run(self):
-        if path.isdir("queries"):
+        if path.isdir("rpmspec/queries"):
             dest = path.join(self.build_lib, "tree_sitter_rpmspec", "queries")
-            self.copy_tree("queries", dest)
+            self.mkpath(dest)
+            for scm in glob("rpmspec/queries/*.scm"):
+                self.copy_file(scm, dest)
         super().run()
 
 
@@ -22,8 +25,9 @@ class BuildExt(build_ext):
             ext.extra_compile_args = ["-std=c11", "-fvisibility=hidden"]
         else:
             ext.extra_compile_args = ["/std:c11", "/utf-8"]
-        if path.exists("src/scanner.c"):
-            ext.sources.append("src/scanner.c")
+        for scanner in ("rpmspec/src/scanner.c", "rpmbash/src/scanner.c"):
+            if path.exists(scanner):
+                ext.sources.append(scanner)
         if ext.py_limited_api:
             ext.define_macros.append(("Py_LIMITED_API", "0x030A0000"))
         super().build_extension(ext)
@@ -40,8 +44,9 @@ class BdistWheel(bdist_wheel):
 class EggInfo(egg_info):
     def find_sources(self):
         super().find_sources()
-        self.filelist.recursive_include("queries", "*.scm")
-        self.filelist.include("src/tree_sitter/*.h")
+        self.filelist.recursive_include("rpmspec/queries", "*.scm")
+        self.filelist.include("rpmspec/src/tree_sitter/*.h")
+        self.filelist.include("rpmbash/src/tree_sitter/*.h")
 
 
 setup(
@@ -57,13 +62,14 @@ setup(
             name="_binding",
             sources=[
                 "bindings/python/tree_sitter_rpmspec/binding.c",
-                "src/parser.c",
+                "rpmspec/src/parser.c",
+                "rpmbash/src/parser.c",
             ],
             define_macros=[
                 ("PY_SSIZE_T_CLEAN", None),
                 ("TREE_SITTER_HIDE_SYMBOLS", None),
             ],
-            include_dirs=["src"],
+            include_dirs=["rpmspec/src", "rpmbash/src"],
             py_limited_api=not get_config_var("Py_GIL_DISABLED"),
         )
     ],
