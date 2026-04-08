@@ -1478,7 +1478,13 @@ module.exports = grammar({
         // Nested %files needed for cases like: %if %{with dc} ... %files subpkg ... %endif
         _files_conditional_content: ($) =>
             repeat1(
-                choice($._files_compound_statements, $.defattr, $.file, $.files)
+                choice(
+                    $._files_compound_statements,
+                    $.defattr,
+                    $.macro_parametric_expansion,
+                    $.file,
+                    $.files
+                )
             ),
 
         // Files-specific %if (uses _files_conditional_content for body)
@@ -2815,6 +2821,7 @@ module.exports = grammar({
                         choice(
                             $._files_compound_statements, // Conditional file inclusion (files context)
                             $.defattr, // Default file attributes
+                            $.macro_parametric_expansion, // Macro calls like %python_alternative %{_bindir}/foo
                             $.file // Individual file entries
                         )
                     )

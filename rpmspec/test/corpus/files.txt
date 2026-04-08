@@ -700,3 +700,31 @@ Files (complex %attr expressions)
       (path
         (macro_expansion
           (identifier))))))
+
+===============================================================================
+Files (parametric macro call in files body)
+===============================================================================
+
+%files %{python_files}
+%license LICENSE
+%python_alternative %{_bindir}/ocrmypdf
+%{python_sitelib}/ocrmypdf
+
+-------------------------------------------------------------------------------
+
+(spec
+  (files
+    name: (macro_expansion
+      (identifier))
+    (file
+      (file_qualifier)
+      (path))
+    (macro_parametric_expansion
+      name: (identifier)
+      argument: (macro_expansion
+        (identifier))
+      argument: (word))
+    (file
+      (path
+        (macro_expansion
+          (identifier))))))

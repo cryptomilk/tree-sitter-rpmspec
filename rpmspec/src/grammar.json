@@ -4218,6 +4218,10 @@
           },
           {
             "type": "SYMBOL",
+            "name": "macro_parametric_expansion"
+          },
+          {
+            "type": "SYMBOL",
             "name": "file"
           },
           {
@@ -9396,6 +9400,10 @@
                 {
                   "type": "SYMBOL",
                   "name": "defattr"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "macro_parametric_expansion"
                 },
                 {
                   "type": "SYMBOL",
