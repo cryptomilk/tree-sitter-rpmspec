@@ -441,8 +441,10 @@ module.exports = grammar({
         // - Shell: %(shell command)
         ///////////////////////////////////////////////////////////////////////
 
-        // Macro names: alphanumeric identifiers starting with letter or underscore
-        macro_name: (_) => /[a-zA-Z_][a-zA-Z0-9_]*/,
+        // Macro names: alphanumeric identifiers starting with letter or underscore.
+        // The optional $ prefix supports openSUSE-specific %{$var} shell variable
+        // references used by %python_expand and similar iteration macros.
+        macro_name: (_) => /\$?[a-zA-Z_][a-zA-Z0-9_]*/,
 
         //// Simple Macro Expansion: %name
         //

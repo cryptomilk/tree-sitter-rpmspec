@@ -61,3 +61,26 @@ sed -i 's/[^%]//g' file.txt
         (script_content)
         (script_content)
         (script_content)))))
+
+===============================================================================
+Install Section (dollar-prefix macro variable reference)
+===============================================================================
+
+%install
+%python_expand %fdupes %{buildroot}%{$python_sitelib}
+
+-------------------------------------------------------------------------------
+
+(spec
+  (install_scriptlet
+    (section_install)
+    (script_block
+      (script_line
+        (macro_simple_expansion
+          (simple_macro))
+        (macro_simple_expansion
+          (simple_macro))
+        (macro_expansion
+          (identifier))
+        (macro_expansion
+          (identifier))))))
