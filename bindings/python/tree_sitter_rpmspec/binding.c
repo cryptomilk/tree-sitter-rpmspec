@@ -3,9 +3,14 @@
 typedef struct TSLanguage TSLanguage;
 
 TSLanguage *tree_sitter_rpmspec(void);
+TSLanguage *tree_sitter_rpmbash(void);
 
-static PyObject* _binding_language(PyObject *Py_UNUSED(self), PyObject *Py_UNUSED(args)) {
+static PyObject* _binding_language_rpmspec(PyObject *Py_UNUSED(self), PyObject *Py_UNUSED(args)) {
     return PyCapsule_New(tree_sitter_rpmspec(), "tree_sitter.Language", NULL);
+}
+
+static PyObject* _binding_language_rpmbash(PyObject *Py_UNUSED(self), PyObject *Py_UNUSED(args)) {
+    return PyCapsule_New(tree_sitter_rpmbash(), "tree_sitter.Language", NULL);
 }
 
 static struct PyModuleDef_Slot slots[] = {
@@ -16,7 +21,11 @@ static struct PyModuleDef_Slot slots[] = {
 };
 
 static PyMethodDef methods[] = {
-    {"language", _binding_language, METH_NOARGS,
+    {"rpmspec", _binding_language_rpmspec, METH_NOARGS,
+     "Get the tree-sitter language for rpmspec."},
+    {"rpmbash", _binding_language_rpmbash, METH_NOARGS,
+     "Get the tree-sitter language for rpmbash."},
+    {"language", _binding_language_rpmspec, METH_NOARGS,
      "Get the tree-sitter language for this grammar."},
     {NULL, NULL, 0, NULL}
 };

@@ -11,9 +11,12 @@ license = "MIT"
 build = "bindings/rust/build.rs"
 include = [
   "bindings/rust/*",
-  "grammar.js",
+  "rpmspec/grammar.js",
   "rpmspec/queries/*",
   "rpmspec/src/*",
+  "rpmbash/grammar.js",
+  "rpmbash/queries/*",
+  "rpmbash/src/*",
 ]
 
 [lib]

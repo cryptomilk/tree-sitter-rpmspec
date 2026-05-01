@@ -24,10 +24,13 @@ use tree_sitter_language::LanguageFn;
 
 extern "C" {
     fn tree_sitter_rpmspec() -> *const ();
+    fn tree_sitter_rpmbash() -> *const ();
 }
 
-/// The tree-sitter [`LanguageFn`] for this grammar.
-pub const LANGUAGE: LanguageFn = unsafe { LanguageFn::from_raw(tree_sitter_rpmspec) };
+pub const LANGUAGE_RPMSPEC: LanguageFn = unsafe { LanguageFn::from_raw(tree_sitter_rpmspec) };
+pub const LANGUAGE_RPMBASH: LanguageFn = unsafe { LanguageFn::from_raw(tree_sitter_rpmbash) };
+
+pub const LANGUAGE: LanguageFn = LANGUAGE_RPMSPEC;
 
 /// The content of the [`node-types.json`][] file for this grammar.
 ///

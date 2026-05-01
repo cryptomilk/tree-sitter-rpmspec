@@ -3,6 +3,7 @@
 typedef struct TSLanguage TSLanguage;
 
 extern "C" TSLanguage *tree_sitter_rpmspec();
+extern "C" TSLanguage *tree_sitter_rpmbash();
 
 // "tree-sitter", "language" hashed with BLAKE2
 const napi_type_tag LANGUAGE_TYPE_TAG = {
@@ -11,9 +12,18 @@ const napi_type_tag LANGUAGE_TYPE_TAG = {
 
 Napi::Object Init(Napi::Env env, Napi::Object exports) {
     exports["name"] = Napi::String::New(env, "rpmspec");
-    auto language = Napi::External<TSLanguage>::New(env, tree_sitter_rpmspec());
-    language.TypeTag(&LANGUAGE_TYPE_TAG);
-    exports["language"] = language;
+
+    auto rpmspec = Napi::External<TSLanguage>::New(env, tree_sitter_rpmspec());
+    rpmspec.TypeTag(&LANGUAGE_TYPE_TAG);
+    exports["rpmspec"] = rpmspec;
+
+    auto rpmbash = Napi::External<TSLanguage>::New(env, tree_sitter_rpmbash());
+    rpmbash.TypeTag(&LANGUAGE_TYPE_TAG);
+    exports["rpmbash"] = rpmbash;
+
+    // For backward compatibility
+    exports["language"] = rpmspec;
+
     return exports;
 }
 
