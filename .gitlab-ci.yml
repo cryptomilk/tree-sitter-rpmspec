@@ -82,7 +82,14 @@ python/build:
   stage: test
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   script:
-    - pip install --no-deps .
+    - python3 -m venv /tmp/venv
+    - . /tmp/venv/bin/activate
+    - pip install build tree-sitter
+    # Builds the sdist first, then the wheel from that sdist (what PyPI
+    # and distro packagers do).
+    - python -m build --outdir dist .
+    - pip install --no-deps dist/*.whl
+    - python -m unittest discover -v -s bindings/python/tests
 
 node-gyp/build:
   stage: test
