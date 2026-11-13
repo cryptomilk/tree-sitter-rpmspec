@@ -95,8 +95,17 @@ node-gyp/build:
   stage: test
   image: $CI_REGISTRY/$BUILD_IMAGES_PROJECT:$FEDORA_BUILD
   script:
-    - npm install --ignore-scripts --omit=peer
-    - npx node-gyp rebuild
+    # Install the packed tarball into a fresh project, like a consumer
+    # would, so files missing from package.json "files" fail the build.
+    - mkdir /tmp/pack
+    - npm pack --pack-destination /tmp/pack
+    - mkdir /tmp/consumer
+    - cd /tmp/consumer
+    - npm init -y
+    - npm install /tmp/pack/tree-sitter-rpmspec-*.tgz tree-sitter
+    # The test runner skips paths containing node_modules, so cd first.
+    - cd node_modules/tree-sitter-rpmspec
+    - node --test bindings/node/binding_test.js
 
 fuzz-rpmspec:
   stage: fuzz
