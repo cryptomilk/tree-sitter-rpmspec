@@ -8,7 +8,7 @@
     "tree-sitter-bash": "~0.25.1"
   },
   "devDependencies": {
-    "tree-sitter-cli": "~0.25.8"
+    "tree-sitter-cli": "~0.26.11"
   },
   "scripts": {
     "build": "tree-sitter generate",

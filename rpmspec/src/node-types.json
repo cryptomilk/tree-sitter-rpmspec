@@ -2579,6 +2579,10 @@
           "named": true
         },
         {
+          "type": "macro_parametric_expansion",
+          "named": true
+        },
+        {
           "type": "path",
           "named": true
         }
@@ -2625,6 +2629,10 @@
           },
           {
             "type": "ifos_statement",
+            "named": true
+          },
+          {
+            "type": "macro_parametric_expansion",
             "named": true
           }
         ]
@@ -2676,6 +2684,10 @@
           {
             "type": "ifos_statement",
             "named": true
+          },
+          {
+            "type": "macro_parametric_expansion",
+            "named": true
           }
         ]
       }
@@ -2726,6 +2738,10 @@
           {
             "type": "ifos_statement",
             "named": true
+          },
+          {
+            "type": "macro_parametric_expansion",
+            "named": true
           }
         ]
       }
@@ -2761,6 +2777,10 @@
           },
           {
             "type": "ifos_statement",
+            "named": true
+          },
+          {
+            "type": "macro_parametric_expansion",
             "named": true
           }
         ]

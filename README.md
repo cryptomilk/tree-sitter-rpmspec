@@ -32,7 +32,7 @@ The generated `src/parser.c` files are committed. You only need to run
 
 ### Prerequisites
 
-- [tree-sitter CLI](https://tree-sitter.github.io/tree-sitter/) 0.25.x
+- [tree-sitter CLI](https://tree-sitter.github.io/tree-sitter/) 0.26.x
 - CMake and a C compiler
 - npm, for the `tree-sitter-bash` dependency of rpmbash
 - prettier and clang-format, for contributions
