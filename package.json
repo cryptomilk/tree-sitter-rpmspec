@@ -37,8 +37,8 @@
   },
   "scripts": {
     "install": "node-gyp-build",
-    "prestart": "tree-sitter build --wasm",
-    "start": "tree-sitter playground",
+    "prestart": "tree-sitter build --wasm -o rpmspec/tree-sitter-rpmspec.wasm rpmspec",
+    "start": "tree-sitter playground --grammar-path rpmspec",
     "test": "node --test bindings/node/*_test.js"
   },
   "tree-sitter": [
