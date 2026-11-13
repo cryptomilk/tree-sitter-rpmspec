@@ -9,19 +9,22 @@
     "incremental"
   ],
   "files": [
-    "grammar.js",
     "binding.gyp",
     "prebuilds/**",
     "bindings/node/*",
-    "queries/*",
-    "src/**"
+    "rpmspec/grammar.js",
+    "rpmspec/queries/*.scm",
+    "rpmspec/src/**",
+    "rpmbash/grammar.js",
+    "rpmbash/queries/*.scm",
+    "rpmbash/src/**"
   ],
   "dependencies": {
     "node-addon-api": "^8.5.0",
     "node-gyp-build": "^4.8.4"
   },
   "peerDependencies": {
-    "tree-sitter": "~0.25.8"
+    "tree-sitter": "^0.25.0"
   },
   "peerDependenciesMeta": {
     "tree-sitter": {
@@ -45,7 +48,7 @@
         "spec"
       ],
       "injection-regex": "spec",
-      "highlights": "queries/highlights.scm"
+      "highlights": "rpmspec/queries/highlights.scm"
     }
   ]
 }

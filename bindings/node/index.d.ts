@@ -21,6 +21,8 @@ type NodeInfo =
 type Language = {
   name: string;
   language: unknown;
+  rpmspec: unknown;
+  rpmbash: unknown;
   nodeTypeInfo: NodeInfo[];
 };
 
