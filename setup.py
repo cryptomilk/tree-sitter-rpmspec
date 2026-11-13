@@ -25,9 +25,6 @@ class BuildExt(build_ext):
             ext.extra_compile_args = ["-std=c11", "-fvisibility=hidden"]
         else:
             ext.extra_compile_args = ["/std:c11", "/utf-8"]
-        for scanner in ("rpmspec/src/scanner.c", "rpmbash/src/scanner.c"):
-            if path.exists(scanner):
-                ext.sources.append(scanner)
         if ext.py_limited_api:
             ext.define_macros.append(("Py_LIMITED_API", "0x030A0000"))
         super().build_extension(ext)
@@ -44,9 +41,13 @@ class BdistWheel(bdist_wheel):
 class EggInfo(egg_info):
     def find_sources(self):
         super().find_sources()
-        self.filelist.recursive_include("rpmspec/queries", "*.scm")
+        # Not recursive: rpmspec/queries/rpmspec is a symlink to '.'.
+        self.filelist.include("rpmspec/queries/*.scm")
         self.filelist.include("rpmspec/src/tree_sitter/*.h")
         self.filelist.include("rpmbash/src/tree_sitter/*.h")
+        # Pulled in by rpmbash/src/scanner.c via #include.
+        self.filelist.include("rpmbash/src/third_party/bash_scanner.c")
+        self.filelist.include("rpmbash/src/third_party/LICENSE.tree-sitter-bash")
 
 
 setup(
@@ -63,7 +64,9 @@ setup(
             sources=[
                 "bindings/python/tree_sitter_rpmspec/binding.c",
                 "rpmspec/src/parser.c",
+                "rpmspec/src/scanner.c",
                 "rpmbash/src/parser.c",
+                "rpmbash/src/scanner.c",
             ],
             define_macros=[
                 ("PY_SSIZE_T_CLEAN", None),
