@@ -60,6 +60,23 @@
 #define tree_sitter_bash_external_scanner_scan _bash_external_scanner_scan
 
 /*
+ * Declare the renamed entry points static before the vendored definitions.
+ * The later definitions without `static` inherit internal linkage (C11
+ * 6.2.2p5), so the vendored file stays identical to upstream and the symbols
+ * are not exported. Exported non-tree-sitter symbols make the tree-sitter CLI
+ * warn and can conflict with other parsers.
+ */
+static void *_bash_external_scanner_create(void);
+static void _bash_external_scanner_destroy(void *payload);
+static unsigned _bash_external_scanner_serialize(void *payload, char *state);
+static void _bash_external_scanner_deserialize(void *payload,
+                                               const char *state,
+                                               unsigned length);
+static bool _bash_external_scanner_scan(void *payload,
+                                        TSLexer *lexer,
+                                        const bool *valid_symbols);
+
+/*
  * We use a vendored copy of tree-sitter-bash's scanner for compatibility with
  * nvim-treesitter, which builds parsers without npm/node_modules.
  *
