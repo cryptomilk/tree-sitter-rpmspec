@@ -6,7 +6,7 @@ A [tree-sitter](https://tree-sitter.github.io/) parser for
 ## Features
 
 - (Almost) Full parsing of RPM spec file syntax
-- Syntax highlighting support via `queries/highlights.scm`
+- Syntax highlighting support via `rpmspec/queries/highlights.scm`
 - RPMBash: Extended bash grammar for scriptlets with RPM macro support
 
 ## Editor Integration
@@ -21,33 +21,92 @@ See [NEOVIM.md](NEOVIM.md) for setup instructions.
 
 ## Development
 
+The repository root is a container for two grammars, `rpmspec/` and
+`rpmbash/`. There is no `grammar.js` or `test/corpus` at the root, so
+`tree-sitter generate`, `tree-sitter test` and `tree-sitter build` only work
+from inside a grammar directory (or through `make`/CMake, which do that for
+you).
+
+The generated `src/parser.c` files are committed. You only need to run
+`tree-sitter generate` after editing a `grammar.js`.
+
+### Prerequisites
+
+- [tree-sitter CLI](https://tree-sitter.github.io/tree-sitter/) 0.25.x
+- CMake and a C compiler
+- npm, for the `tree-sitter-bash` dependency of rpmbash
+- prettier and clang-format, for contributions
+
+### Setup
+
+```sh
+make configure
+```
+
+This installs `tree-sitter-bash` into `rpmbash/node_modules` and configures
+CMake in `build/`. It is needed by `tree-sitter generate` and
+`tree-sitter highlight`, and for the rpmbash tests.
+
 ### Building
 
 ```sh
-tree-sitter generate       # Regenerate parser from grammar.js
-cmake -B build             # Configure
-cmake --build build        # Compile
+make build                      # Regenerate parsers if grammar.js changed, then compile
+make generate                   # Force regenerate both parsers
+cmake --build build             # Compile only
+
+# Regenerate a single grammar
+cd rpmspec && tree-sitter generate
 ```
 
 ### Testing
 
 ```sh
-tree-sitter test                       # Run all tests
-tree-sitter test -i "pattern"          # Run tests matching pattern
-tree-sitter test --file-name file.txt  # Run tests from specific file
+make test                                      # Build and run all tests
+cmake --build build --target ts-test           # All grammars
+cmake --build build --target ts-test-rpmspec   # Only rpmspec
+cmake --build build --target ts-test-rpmbash   # Only rpmbash
+
+# Run from the grammar directory
+cd rpmspec
+tree-sitter test                       # All tests of this grammar
+tree-sitter test -i "pattern"          # Tests matching pattern
+tree-sitter test --file-name file.txt  # Tests from a specific file
 ```
 
 ### Code Quality
 
 ```sh
-prettier -w grammar.js     # Format grammar.js
+prettier -w rpmspec/grammar.js rpmbash/grammar.js
+clang-format -i rpmspec/src/scanner.c rpmbash/src/scanner.c
+make check-queries                     # Needs ts_query_ls
 ```
 
 ### Syntax Highlighting Preview
 
+Run `make configure` first. The rpmbash highlights depend on
+`rpmbash/node_modules/tree-sitter-bash`. From the repository root:
+
 ```sh
 tree-sitter highlight --html example.spec > highlight.html
 ```
+
+The warning about unconfigured parser directories is harmless for rpmspec and
+rpmbash. Scriptlets in Lua, Python or Perl are only highlighted if those
+grammars are in a directory listed by `tree-sitter init-config`.
+
+### WebAssembly
+
+```sh
+# Build the wasm module (needs emscripten, docker or podman)
+tree-sitter build --wasm -o rpmspec/tree-sitter-rpmspec.wasm rpmspec
+tree-sitter build --wasm -o rpmbash/tree-sitter-rpmbash.wasm rpmbash
+
+# Build rpmspec and open the playground
+npm start
+```
+
+**Warning:** The rpmspec parser is large (about 25 MB of C, 20000 states).
+Building it to wasm needs a lot of memory and takes a long time.
 
 ### Architecture
 
